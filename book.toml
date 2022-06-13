@@ -4,7 +4,7 @@ authors = ["The Tari Labs Community"]
 description = "The Tari network RFC library and documentation"
 
 [build]
-build-dir = "../book"
+build-dir = "./book"
 create-missing = false
 preprocess = ["links", "index"]
 
