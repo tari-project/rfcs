@@ -234,20 +234,19 @@ assets. This contract can be very simple or highly complex.
 
 The lifecycle of a contract proceeds via these steps:
 
-1. The asset issuer publishes a [contract definition transaction].
-2. The asset issuer publishes a [contract constitution] transaction.
-3. Once this transaction is published, we enter the [acceptance period].
-4. Each validator node that will be managing the contract publishes a [contract acceptance transaction]. The group of
+1. The asset issuer publishes a [contract constitution] transaction.
+2. Once this transaction is published, we enter the [acceptance period].
+3. Each validator node that will be managing the contract publishes a [contract acceptance transaction]. The group of
    validator nodes that manages the contract is called the Validator Node Committee (VNC).
-5. Once the [acceptance period] has expired, the [side-chain initialization period] begins.
-6. The VNC jointly publishes a [side-chain initialization] transaction.
-7. At this point, the contract is considered live, and users can safely interact with the contract on the side-chain.
+4. Once the [acceptance period] has expired, the [side-chain initialization period] begins.
+5. The VNC jointly publishes a [side-chain initialization] transaction.
+6. At this point, the contract is considered live, and users can safely interact with the contract on the side-chain.
    Technically, users do not have to wait until this point. The VNC COULD start processing transactions
    _optimistically_ as soon as the constitution is published, and print the zero-th and first checkpoints once they are
    mined on the base layer. However, this is not generally recommended.
-8. The VNC periodically publishes a [checkpoint] transaction.
-9. Failure to do so can lead to the contract being [abandoned].
-10. The VNC MAY shut the contract down by publishing a [dissolution] transaction.
+7. The VNC periodically publishes a [checkpoint] transaction.
+8. Failure to do so can lead to the contract being [abandoned].
+9.  The VNC MAY shut the contract down by publishing a [dissolution] transaction.
 
 The following sections will discuss each of these steps in more detail.
 
@@ -259,29 +258,29 @@ process and is ideally represented as a finite-state machine that reacts to tran
 outputs containing specific output features. The combination of output features and FSM allows nodes to accurately track
 the progress of potentially thousands of contracts in a safe and decentralised manner.
 
-### The contract definition transaction
-[contract definition transaction]: #the-contract-definition-transaction
+### The contract constitution transaction
+[contract constitution]: #the-contract-constitution
 
 It bears repeating that every contract is governed by one, and only one, Tari [side-chain]. A contract MAY define one or
 more digital assets. These assets' behaviour is captured in templates and are highly composable. This allows the
 contract to be very simple or highly complex, and be handled with the same contract handling machinery.
 
 <note :tip>
-The contract definition transaction defines the "what" of the digital asset set that will be created.
+The contract constitution transaction defines the "what", "how" and "who" of the digital asset's management.
 </note>
 
 * Every contract MUST be registered on the base layer.
-* Contracts MUST be registered by publishing a `contract definition` transaction.
+* Contracts MUST be registered by publishing a `contract constitution` transaction.
 * Asset issuers MUST stake a small amount of Tari in order to publish a new contract.
-* Exactly ONE output MUST have a `ContractSpecification` output feature.
-* The contract specification UTXO MUST include a covenant that only permits it to be spent to a
-  new `ContractSpecification` UTXO (when transferring ownership of a contract), or as an unencumbered UTXO in
+* Exactly ONE output MUST have a `ContractConstitution` output feature.
+* The contract constitution UTXO MUST include a covenant that only permits it to be spent to a
+  new `ContractConstitution` UTXO (when transferring ownership of a contract), or as an unencumbered UTXO in
   a `ContractDeregistration` transaction.
 
 Note: The latter is desirable because it tidies up the UTXO set. But this transaction MUST NOT be published before
 contract has been dissolved (see [contract dissolution]).
 
-* The  `ContractSpecification` UTXO MUST hold at least the `MINIMUM_OWNER_COLLATERAL` in Tari. The amount is hard-coded
+* The  `ContractConstitution` UTXO MUST hold at least the `MINIMUM_OWNER_COLLATERAL` in Tari. The amount is hard-coded
   into consensus rules and is a nominal amount to prevent spam, and encourages asset owners to tidy up after themselves
   if a contract winds down. Initially, `MINIMUM_OWNER_COLLATERAL` is set at 200 Tari, but MAY be changed across network
   upgrades.
@@ -293,17 +292,46 @@ requires us to modify the
 `TransactionOutput` definition to include a `minimum_value_commitment` field, defaulting to zero, to capture this extra
 information.
 
-* The `ContractSpecification`UTXO MUST also include:
-    * The contract description,
-    * the asset issuer record
-    * the contract definition, as described below.
+* The `ContractConstitution`UTXO MUST also include:
+    * The contract name;
+    * the asset issuer record;
+    * the contract id;
+    * the contract definition;
+    * It MUST include a list of public keys of the proposed VNC;
+    * It MUST include an expiry timestamp before which all VNs must sign and agree to these terms (the [acceptance period]);
+    * It MAY include quorum conditions for acceptance of this proposal (default to 100% of VN signatures required);
+    * If the conditions will unequivocally pass, the acceptance period MAY be shortcut.
+    * There MAY be an initial reward that is paid to the VN committee when the UTXO is spent. This reward is simply included
+        in the value of the `ContractConstitution` UTXO.
+    * The UTXO MUST only be spendable by a multisig of the quorum of VNs performing [side-chain] initialisation. (e.g. a 3
+        of 5 threshold signature).
+    * It MUST include the side-chain metadata record:
+      * The consensus algorithm to be used
+      * checkpoint quorum requirements
+    * It MUST include the following Checkpoint Parameters Record
+      * minimum checkpoint frequency,
+      * committee change rules. (e.g. asset issuer must sign, or a quorum of VNC members, or a whitelist of keys).
+    * It MAY include a `RequirementsForConstitutionChange` record. It omitted, the checkpoint parameters and side-chain
+      metadata records are immutable via covenant.
+      * How and when the Checkpoint Parameters record can change.
+      * How and when the side-chain metadata record can change
+    * It SHOULD include a list of emergency public keys that have signing power if the contract is [abandoned].
 
-#### Contract description
+If both the [acceptance period] and [side-chain initialization period] elapses without quorum, the asset owner MAY spend
+the`ContractConstitution` UTXO back to himself to recover his funds.
+
+In this case, the asset issuer MAY try and publish a new contract constitution.
+
+The following fields may never change and are immutable. This should be enforced via base-layer consensus. This will
+ensure that the contract id will always be verifiable even after constitution updates:
+  * The contract name;
+  * The asset issuer record;
+  * The contract id;
+
+
+#### Contract name
 
 The contract description is a simple metadata record that provides context for the contract. The record includes:
-
-* The contract id -- `<u256 hash>`. This is immutable for the life of the contract and is calculated as
-  `H(contract_name || contract specification hash || Initial data hash || Runtime data hash)`.
 * A contract name -- `utf-8 char[32]`(UTF-8 string) 32 bytes. This is for informational purposes only, so it shouldn't
   be too long, but not too short that it's not useful (this isn't DOS 3.1 after all). 32 bytes is the same length as a
   public key or hash, so feels like a reasonable compromise.
@@ -314,6 +342,13 @@ fields are required:
 
 * the asset issuer's public key, also known as the owner public key, `<PublicKey>`.
 
+#### Contract id
+
+The contract id is a simple metadata record that provides identification for the contract, this should be unique for blockchain. 
+The record includes:
+
+* The contract id -- `<u256 hash>`. This is immutable for the life of the contract and is calculated as
+  `H(contract_name || asset issuer record)`.
 #### Contract definition
 The following information must be captured as part of the `contract definition` in the `ContractSpecification`UTXO of
 the contract definition transaction:
@@ -321,59 +356,6 @@ the contract definition transaction:
 * the full contract specification in a compact serialised format,
 * the initialisation arguments for the contract, in a compact serialisation format,
 * the runtime specification.
-
-This data tells validator nodes _exactly_ what code will be running, and the data needed to initialise that code.
-
-Asset templates will have a strictly defined interface that includes a constructor, or initialisation method. The
-parameters that these constructors accept is what determines the initial data.
-
-The runtime specification includes, for example, the version of the runtime and any meta-parameters that the runtime
-accepts.
-
-These three pieces of data are _necessary_ AND _sufficient_ to enable _any_ validator node to start running the contract
-and execute instructions on it, knowing that any other validator node running the same contract will determine _exactly_
-the same state changes for every instruction it receives.
-
-### The contract constitution
-[contract constitution]: #the-contract-constitution
-
-Following the [contract definition transaction],the asset issuer MUST publish a [contract constitution] transaction in
-order for the contract initialisation process to proceed.
-
-This transaction defines the "how" and "who" of the digital asset's management.
-
-It contains the "contract terms" for the management of the contract.
-
-Exactly ONE UTXO MUST include the `ContractConstitution` output feature flag. The contract constitution UTXO contains
-the following:
-
-* It MUST include the contract id. The contract definition transaction SHOULD be mined prior to publication of the
-  constitution transaction, but it strictly is not necessary if VNs are able to access the contract specification in
-  some other way.
-* It MUST include a list of public keys of the proposed VNC;
-* It MUST include an expiry timestamp before which all VNs must sign and agree to these terms (the [acceptance period]);
-* It MAY include quorum conditions for acceptance of this proposal (default to 100% of VN signatures required);
-* If the conditions will unequivocally pass, the acceptance period MAY be shortcut.
-* There MAY be an initial reward that is paid to the VN committee when the UTXO is spent. This reward is simply included
-  in the value of the `ContractConstitution` UTXO.
-* The UTXO MUST only be spendable by a multisig of the quorum of VNs performing [side-chain] initialisation. (e.g. a 3
-  of 5 threshold signature).
-* It MUST include the side-chain metadata record:
-    * The consensus algorithm to be used
-    * checkpoint quorum requirements
-* It MUST include the following Checkpoint Parameters Record
-    * minimum checkpoint frequency,
-    * committee change rules. (e.g. asset issuer must sign, or a quorum of VNC members, or a whitelist of keys).
-* It MAY include a `RequirementsForConstitutionChange` record. It omitted, the checkpoint parameters and side-chain
-  metadata records are immutable via covenant.
-    * How and when the Checkpoint Parameters record can change.
-    * How and when the side-chain metadata record can change
-* It SHOULD include a list of emergency public keys that have signing power if the contract is [abandoned].
-
-If both the [acceptance period] and [side-chain initialization period] elapses without quorum, the asset owner MAY spend
-the`ContractConstitution` UTXO back to himself to recover his funds.
-
-In this case, the asset issuer MAY try and publish a new contract constitution.
 
 #### Contract constitutions for proof-of-work side-chains
 
@@ -406,6 +388,18 @@ A contract acceptance transaction MUST be rejected if
 * contract id does not exist (the contract definition has not been mined)
 * the signing public key was not nominated in the relevant contract constitution
 * the deposit is insufficient
+
+This data tells validator nodes _exactly_ what code will be running, and the data needed to initialise that code.
+
+Asset templates will have a strictly defined interface that includes a constructor, or initialisation method. The
+parameters that these constructors accept is what determines the initial data.
+
+The runtime specification includes, for example, the version of the runtime and any meta-parameters that the runtime
+accepts.
+
+These pieces of data are _necessary_ AND _sufficient_ to enable _any_ validator node to start running the contract
+and execute instructions on it, knowing that any other validator node running the same contract will determine _exactly_
+the same state changes for every instruction it receives.
 
 ### The side-chain initialization period
 [side-chain initialization period]: #the-side-chain-initialization-period "The side-chain initialization period"
