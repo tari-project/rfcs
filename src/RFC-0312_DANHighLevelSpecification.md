@@ -511,8 +511,13 @@ Any changes to the [contract constitution] MUST happen at checkpoints. This also
 ### Contract abandonment
 [abandoned]: #contract-abandonment "Contract abandonment"
 
-If a contract misses one or more checkpoints, nodes can mark it as `abandoned`. This is not formally marked on the
+This is the state where VNC and the Asset Owner(s) have abandoned the contract.
+
+If a contract misses one or more checkpoints, nodes can mark it as `VNC abandoned`. This is not formally marked on the
 blockchain, (since something was NOT done on-chain), but nodes will be able to test for abandoned state.
+
+If a contract has not seen any new constitution amendment for a checkpoint period after it has been marked as `VNC abandoned`, 
+it is marked as `abandoned`. 
 
 The [contract constitution] SHOULD provide a set of emergency pubkeys that are able to
 
@@ -528,10 +533,11 @@ stay in `QUARANTINED` state for at least one month.
 
 The contract can leave the quarantined state in one of two ways:
 
-* The current VNC MAY reinstate the contract operation by publishing the missing checkpoints, and committing to any
+* The current VNC MAY reinstate the contract operation by publishing the missing checkpoint(s), and committing to any
   remedial actions as specified in the [contract constitution], e.g. paying a fine, etc.
 * The quarantine period lapses, at which point the emergency key holder(s) have full administrative power over the
-  contract. So they can unilaterally establish a brand new VNC, peg-out and shut down the contract, or whatever.
+  contract. This means that they have to issue a new constitution to assign a new VNC, peg-out and shut down the contract, or whatever.
+
 
 ## Contract dissolution
 [dissolution]: #contract-dissolution "Contract dissolution"
