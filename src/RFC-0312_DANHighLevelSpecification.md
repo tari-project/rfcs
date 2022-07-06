@@ -538,6 +538,8 @@ The contract can leave the quarantined state in one of two ways:
 * The quarantine period lapses, at which point the emergency key holder(s) have full administrative power over the
   contract. This means that they have to issue a new constitution to assign a new VNC, peg-out and shut down the contract, or whatever.
 
+  **OPEN QUESTION**:  Do we want to allow an additional fall back of everyone spend after years in `abandoned` state?
+
 
 ## Contract dissolution
 [dissolution]: #contract-dissolution "Contract dissolution"
