@@ -361,9 +361,6 @@ the following:
   constitution transaction, but it strictly is not necessary if VNs are able to access the contract specification in
   some other way.
 * It MUST include a list of public keys of the proposed [CC];
-* It MUST list constitution change rules:
-  * Quorum required by the [CC],
-  * Proposal period.
 * It MUST include a list of public keys of the proposed VNC;
 * It MUST include an expiry timestamp before which all VNs must sign and agree to these terms (the [acceptance period]);
 * It MAY include quorum conditions for acceptance of this proposal (default to 100% of VN signatures required);
@@ -379,6 +376,8 @@ the following:
 * It MAY include a `RequirementsForConstitutionChange` record. It omitted, the checkpoint parameters and side-chain
   metadata records are immutable via covenant.
     * How and when the Constitution UTXO can change.
+    * Quorum required by the [CC],
+    * Proposal period.
     * How and when the Checkpoint Parameters record can change.
     * How and when the side-chain metadata record can change.
 * It SHOULD include a list of emergency public keys that have signing power if the contract is [abandoned].
