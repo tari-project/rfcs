@@ -176,7 +176,7 @@ run, and defines the conditions under which the terms of the constitution can be
 [constitution committee]: #constitution_committee
 [CC]: #cc
 
-In the [asset issuer] will in the creation of the [contract constitution] nominate a key or set of keys to "own" the asset
+The [asset issuer] will in the creation of the [contract constitution] nominate a key or set of keys to "own" the asset
 and control all things related to _how_ the contract is run. They are known as the [constitution committee] (CC)
 
 The CC has the power to change everything inside of the [contract constitution]. In most cases this will simply by the [asset issuer]
