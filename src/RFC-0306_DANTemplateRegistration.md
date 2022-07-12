@@ -83,31 +83,30 @@ are running the same code as other members of the same committee.
 
 A base-layer template registration [UTXO] MUST have the `TEMPLATE_REGISTRATION` output flag set and contain the following data:
 
-| Name              | Type               | Description                                                                                                                           |
-|-------------------|--------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| author_public_key | ECC public key     | Public key of the author                                                                                                              |
-| author_signature  | Schnorr signature  | Signature that signs remaining fields                                                                                                 |
-| template_name     | String (255)       | A descriptive name for the template                                                                                                   |
-| template_version  | Varint             | Code version as a single number                                                                                                       |
-| build_info        | BuildInfo struct   | Information on the binary build                                                                                                       |                                                                                                                             |
-| binary_checksum   | SHA2 checksum      | A SHA2 checksum of the WASM binary.                                                                                                   |
-| binary_address    | [Multiaddr]        | A [multiaddr] pointing to the WASM module binary download. This may be an HTTP, ONION, p2p, or IPFS address. Maximum byte length: 255 |
+| Name              | Type              | Description                                                                                                                             |
+|-------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| author_public_key | ECC public key    | Public key of the author                                                                                                                |
+| author_signature  | Schnorr signature | Signature that signs remaining fields                                                                                                   |
+| template_id       | 256-bit hash      | Hash of `TEMPLATE_REGISTRATION` fields (see below)                                                                                      |
+| template_name     | String (255)      | A descriptive name for the template                                                                                                     |
+| template_version  | Varint            | Code version as a single number                                                                                                         |
+| build_info        | BuildInfo struct  | Information on the binary build                                                                                                         |
+| binary_checksum   | SHA2 checksum     | A SHA2 checksum of the WASM binary.                                                                                                     |
+| binary_address    | [Multiaddr]       | A [multiaddr] pointing to the WASM module binary download. This may be an HTTP, ONION, p2p, or IPFS address. Maximum byte length: 255   |
 
-The `author_signature` is a Schnorr proof that commits to the template fields contained in the [UTXO], namely
-`template_name`, `template_version`, `build_info`, `binary_checksum`, and `binary_address`.
+We define the `template_id` as a hash of `author_public_key`, `template_name`, `template_version`, `build_info`, `binary_checksum`, and `binary_address`.
+The `author_signature` is a Schnorr proof that commits to the `template_id`.
 
 The base node acts as a notary for this data, it is not responsible for the validity of the template fields. However, it must
 not allow malformed/invalid data to be committed to the blockchain.
 
 Therefore, some additional base-layer consensus rules are required for a `TEMPLATE_REGISTRATION` [UTXO]:
 * A base node MUST validate the `author_signature`; and
-* The [UTXO] MUST have a relative time-lock of 100 blocks.
-* The `binary_checksum` MUST be unique to the current [UTXO] set.
-    * This prevents copies of the same template from being added to the blockchain; and
-    * prevents ambiguity for [validator node]s when obtaining the binary.
+* the `template_id` MUST be unique within the unspent set.
 
-Alternatives:
-* no unique constraint on the `binary_checksum`, the [contract definition] includes a reference to the specific template registration [UTXO].
+To reference a template within a contract:
+* the contract includes a reference to the specific template registration `template_id`.
+* Alternative: the `TEMPLATE_REGISTRATION` information is copied into the contract definition [UTXO].
 
 A base node SHOULD NOT check that the `binary_address` points to a valid template binary.
 
@@ -161,7 +160,6 @@ Alternatives:
 ## Upgrading a Template
 
 If a [validator node] detects an update to the [contract definition] that includes a template update, the [validator node]
-
 * MUST fetch the new template(s) as per the previous procedure.
 
 [Tari Coin]: Glossary.md#tari-coin
