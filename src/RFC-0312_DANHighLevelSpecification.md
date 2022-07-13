@@ -508,7 +508,7 @@ to penalties and stake slashing if enabled within the contract specification.
 ### Changes to the constitution
 [contract constitution change]: #changes-to-the-constitution
 
-Any changes to the [contract constitution] can happen at any time. This also refers to any changes to the VNC. Only the [CC] may 
+Changes to the [contract constitution] can happen at any time through the [constitution amendment] process. This also applies to changes to the VNC. Only the [CC] may 
 make changes to the[contract constitution].
 
 * The rules over how members are added or removed are defined in the [contract constitution].
