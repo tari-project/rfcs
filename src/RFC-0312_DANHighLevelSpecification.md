@@ -180,7 +180,8 @@ The [asset issuer] will in the creation of the [contract constitution] nominate 
 and control all things related to _how_ the contract is run. They are known as the [constitution committee] (CC)
 
 The CC has the power to change anything inside of the [contract constitution]. In many cases, the CC will simply be the [asset issuer].
-but this can be any number of different cases from a DAO, nominated list of keys to a single specific key.
+However, allowing the CC to differ from the asset issuer enables a number of other use-cases 
+such as a DAO, a nominated list of keys, etc.
 
 ### The role of validator nodes
 [validator node]: #the-role-of-validator-nodes
