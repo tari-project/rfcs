@@ -516,7 +516,7 @@ make changes to the[contract constitution].
   changes take place over at least a 4-checkpoint time span.
 * If a VN leaves a committee their [side-chain deposit] MAY be refunded to them.
 * If a new VN joins the committee they must provide the [side-chain deposit] at their activation step.
-* In the proposal step, any authorised [CC] may make a change proposal, as defined in the [contract constitution]
+* In the proposal step, any authorised [CC] may make a change proposal, within the limits defined by the change rules in the [contract constitution]
 * Before activation all VNC members needs to submit an acceptance transaction again, or resign by default if none is submitted. This 
   gives them the opportunity to resign if they do not agree with the new rules as specified in the constitution.
 
