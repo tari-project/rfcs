@@ -517,8 +517,7 @@ make changes to the[contract constitution].
 * If a VN leaves a committee their [side-chain deposit] MAY be refunded to them.
 * If a new VN joins the committee they must provide the [side-chain deposit] at their activation step.
 * In the proposal step, any authorised [CC] may make a change proposal, within the limits defined by the change rules in the [contract constitution]
-* Before activation all VNC members needs to submit an acceptance transaction again, or resign by default if none is submitted. This 
-  gives them the opportunity to resign if they do not agree with the new rules as specified in the constitution.
+* Before activation, VNC members MAY submit an acceptance transaction that registers their willingness to validate the contract. If no acceptance is submitted within the `acceptance_period` the validator is assumed to be uninterested in running the contract and will not form part of the finalized contract committee. 
 
 ### Contract abandonment
 [abandoned]: #contract-abandonment "Contract abandonment"
