@@ -179,7 +179,7 @@ run, and defines the conditions under which the terms of the constitution can be
 The [asset issuer] will in the creation of the [contract constitution] nominate a key or set of keys to "own" the asset
 and control all things related to _how_ the contract is run. They are known as the [constitution committee] (CC)
 
-The CC has the power to change everything inside of the [contract constitution]. In most cases this will simply by the [asset issuer]
+The CC has the power to change anything inside of the [contract constitution]. In many cases, the CC will simply be the [asset issuer].
 but this can be any number of different cases from a DAO, nominated list of keys to a single specific key.
 
 ### The role of validator nodes
