@@ -76,7 +76,7 @@ Every [block] MUST:
   * have a maturity greater than the current block height
   * be in a canonical order (see [Transaction ordering])
 * each [transaction output] MUST:
-  * have a unique hash (`features || commitment || script`)
+  * have a unique hash (`version || features || commitment || script || covenant || encrypted_values`)
   * have a unique commitment in the current [UTXO] set
   * be in a canonical order (see [Transaction ordering])
   * have a valid [range proof]
