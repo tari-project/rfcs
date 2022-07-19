@@ -1,4 +1,4 @@
-# RFC-0241/XMR Atomic Swap
+# RFC-3xx/Submarine Swap
 
 ![status: draft](theme/images/status-draft.svg)
 
