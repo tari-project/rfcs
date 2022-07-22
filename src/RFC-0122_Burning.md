@@ -4,7 +4,7 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [S W van heerden](https://github.com/SWvheerden) 
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [stringhandler](https://github.com/stringhandler) and [SW van heerden](https://github.com/SWvheerden) 
 
 # Licence
 
