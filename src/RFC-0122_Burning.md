@@ -115,6 +115,27 @@ burned\_total = \sum_j\mathrm{C_{j}}  \\\\
 \tag{1}
 $$
 
+### Creation of burned output
+
+When creating the output, we need to be able to generate a Proof of Burn for the burned output. 
+In the header, we already commit to each and every [UTXO] ever created. There already is a proof of the existence
+for this burned output, but this proof is only to the complete output and not just the commitment. 
+
+To get around this, we enforce default values for most of the output except the version and commitment field. 
+
+And the output, when burned, MUST have the following field values
+* Empty script,
+* Empty covenant,
+* and empty encrypted_value.
+
+The OutputFeatures MUST be set to the following values:
+* output_type must be set to Burned,
+* maturity must be 0,
+* metadata must be empty
+* and sidechain_features must be empty.
+
+If any of these are not set correctly for a burned output, the output should be dropped as an invalid transaction. 
+
 ### Block propagation consensus rules changes
 
 When a block is received, a base node will typically check the following equation to ensure that the emission is correct:
@@ -180,6 +201,46 @@ $$
 $$
 
 When verifying total chain emission, equation (5) MUST hold.
+
+
+### Option 2 for Proof of burn
+
+If we don't want to look into the output MMR, we can include a second MMR root and size counter to the header to track the commitment. 
+
+```rust,ignore
+pub struct BlockHeader {
+    /// Version of the block
+    pub version: u16,
+    ...
+    /// Sum of kernel offsets for all kernels in this block.
+    pub total_kernel_offset: BlindingFactor,
+    /// Sum of script offsets for all kernels in this block.
+    pub total_script_offset: BlindingFactor,
+    /// Sum of all burned output commitments in this block.
+    pub burned_total: Commitment,
+    /// Merkle root of the burned MMR tree at this block height
+    pub burned_mr;
+    /// Size of the burned MMR tree at this height. 
+    pub burned_mmr_size;
+    /// Nonce increment used to mine this block.
+    pub nonce: u64,
+    /// Proof of work summary
+    pub pow: ProofOfWork,
+}
+```
+
+[burned_mr]: #burned_mr "Burned Merkle root"
+
+This is the Merkle root of the burned outputs.
+
+The kernel_mr MUST conform to the following:
+
+* Must be transmitted as an array of unsigned 8-bit integers (bytes) in little-endian format.
+* The hashing function used must be blake2b with a 256-bit digest.
+
+
+This will allow users to construct a proof of burn to any block height of a burned output.
+
 
 [block]: Glossary.md#block
 [block header]: Glossary.md#block-header

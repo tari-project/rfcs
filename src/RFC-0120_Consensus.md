@@ -233,7 +233,7 @@ The witness_mr MUST conform to the following:
 #### Kernel_mr
 [kernel_mr]: #kernel_mr "Kernel Merkle root"
 
-This is the Merkle root of the outputs.
+This is the Merkle root of the kernels.
 
 The kernel_mr MUST conform to the following:
 
