@@ -48,7 +48,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to describe the process of Burning UTXO's and tracking the amount burned. 
+The aim of this Request for Comment (RFC) is to describe the process of Burning UTXOs and to track the amount burned. 
 
 ## Related Requests for Comment
 
@@ -57,20 +57,20 @@ The aim of this Request for Comment (RFC) is to describe the process of Burning 
 
 ## Description
 
-Blockchains have used the burn method to destroy coins circulation and block their use forever. Most chains use an reclaimable address
-to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Tari can use this method as well, but this does not explicitly
-remove the coins from circulation. This RFC details a method to permanently remove coins from circulation.
+Blockchains have used the burn method to destroy coins in circulation and block their use forever. Most chains use a reclaimable address
+to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Tari can also use this method, but this does not explicitly
+remove the coins from circulation. This RFC details a method to remove coins from circulation permanently.
 
 
 ## Introduction
 
-In order to completely remove coins from circulation we need to mark outputs as burned, and we need to change the balance equation to
-allow pruned node and non pruned nodes to still verify the integrity and emission of Tari.
+To completely remove coins from circulation, we need to mark outputs as burned, and we need to change the balance equation to
+allow pruned nodes and non pruned nodes to still verify the integrity and emission of Tari.
 
 ### Transaction output changes
 
-Currently each transaction output, has a field called [OutputFeatures] thats tracks special properties of each output. 
-Inside of this field we track every possible type of output. We need to add another type here called burned. 
+Currently, each transaction output has a field called [OutputFeatures] that tracks the unique properties of each output. 
+Inside this field, we track every possible type of output. We need to add another type here called burned. 
 
 ```rust,ignore
 pub enum OutputType {
@@ -85,7 +85,7 @@ pub enum OutputType {
 
 ### Blockheader changes
 
-On the header of each block we need to add a field for tracking the sum of all burned outputs on that block
+On the header of each block, we need to add a field for tracking the sum of all burned outputs on that block.
 
 ```rust,ignore
 pub struct BlockHeader {
@@ -105,7 +105,7 @@ pub struct BlockHeader {
 }
 ```
 
-This field must contain the sum off all the commitments of all outputs, contained in the block that is marked as spent. 
+This field must contain the sum of all the commitments of all outputs in the block marked as spent. 
 
 $$
 \begin{align}
@@ -117,7 +117,7 @@ $$
 
 ### Block propagation consensus rules changes
 
-When a block is received, a base node will normally check the following equation to ensure that the emission is correct:
+When a block is received, a base node will typically check the following equation to ensure that the emission is correct:
 $$
 \begin{align}
 &\sum_i\mathrm{Cout_{i}} - \sum_j\mathrm{Cin_{j}} + \text{fees} \cdot H - \sum_k\mathrm{K_k} - \text{offset} \stackrel{?}{=}  V_l\cdot H\\\\
@@ -130,7 +130,7 @@ $$
 \tag{2}
 $$
 
-This equation need to be modified to allow checking the burned number as well so we change it to:
+This equation need to be modified to allow checking the burned number as well, so we change it to:
 $$
 \begin{align}
 &\sum_i\mathrm{Cout_{i}} + \sum_m\mathrm{Cburn_{m}} - \sum_j\mathrm{Cin_{j}} + \text{fees} \cdot H - \sum_k\mathrm{K_k} - \text{offset} \stackrel{?}{=}  V_l\cdot H\\\\
@@ -144,12 +144,12 @@ $$
 \tag{3}
 $$
 
-We make the following additions to the consensus rules that needs to be checked on block propagation.
+We make the following additions to the consensus rules that block propagation must be checked.
 
 When a node receives a block with the node:
-* MUST for each output that is marked as burned, flag that output as spent immediately upon inserting it as an unspent output. 
-* MUST check that the Equation (1) holds.
-* MUST check that the Equation (3) holds.
+* MUST for each output marked as burned, flag that output as spent immediately upon inserting it as an unspent output. 
+* MUST check that Equation (1) holds.
+* MUST check that Equation (3) holds.
 
 
 ### Chain balance equation changes 
@@ -189,3 +189,5 @@ When verifying total chain emission, equation (5) MUST hold.
 [metadata signature]: Glossary.md#metadata-signature
 [utxo]: Glossary.md#unspent-transaction-outputs
 [emission schedule]: Glossary.md#emission-schedule
+
+
