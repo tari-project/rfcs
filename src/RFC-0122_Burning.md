@@ -119,7 +119,7 @@ $$
 
 When creating the output, we need to be able to generate a Proof of Burn for the burned output. 
 In the header, we already commit to each and every [UTXO] ever created. There already is a proof of the existence
-for this burned output, but this proof is only to the complete output and not just the commitment. 
+for this burned output, but this proof is only for the complete output and not just the commitment. 
 
 To get around this, we enforce default values for most of the output except the version and commitment field. 
 
