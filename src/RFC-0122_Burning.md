@@ -151,7 +151,7 @@ $$
 \tag{2}
 $$
 
-This equation need to be modified to allow checking the burned number as well, so we change it to:
+This equation needs to be modified to allow checking the burned number as well, so we change it to:
 $$
 \begin{align}
 &\sum_i\mathrm{Cout_{i}} + \sum_m\mathrm{Cburn_{m}} - \sum_j\mathrm{Cin_{j}} + \text{fees} \cdot H - \sum_k\mathrm{K_k} - \text{offset} \stackrel{?}{=}  V_l\cdot H\\\\
@@ -168,7 +168,7 @@ $$
 We make the following additions to the consensus rules that block propagation must be checked.
 
 When a node receives a block with the node:
-* MUST for each output marked as burned, flag that output as spent immediately upon inserting it as an unspent output. 
+* MUST for each output marked as burned, flag that output as spent immediately upon inserting it as an output. 
 * MUST check that Equation (1) holds.
 * MUST check that Equation (3) holds.
 
