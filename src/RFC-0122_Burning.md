@@ -233,10 +233,8 @@ pub struct BlockHeader {
 
 This is the Merkle root of the burned outputs.
 
-The kernel_mr MUST conform to the following:
-
+The burned_mr MUST conform to the following:
 * Must be transmitted as an array of unsigned 8-bit integers (bytes) in little-endian format.
-* The hashing function used must be blake2b with a 256-bit digest.
 
 
 This will allow users to construct a proof of burn to any block height of a burned output.
