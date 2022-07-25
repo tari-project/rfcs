@@ -205,7 +205,7 @@ When verifying total chain emission, equation (5) MUST hold.
 
 ### Option 2 for Proof of burn
 
-If we don't want to look into the output MMR, we can include a second MMR root and size counter to the header to track the commitment. 
+If we don't want to look into the output MMR, we can add a second MMR root and size counter to the header to track the commitment. 
 
 ```rust,ignore
 pub struct BlockHeader {
