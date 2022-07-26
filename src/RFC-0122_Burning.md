@@ -61,6 +61,10 @@ Blockchains have used the burn method to destroy coins in circulation and block 
 to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Tari can also use this method, but this does not explicitly
 remove the coins from circulation. This RFC details a method to remove coins from circulation permanently.
 
+A very good example of using burned coins is for a [Perpetual One-way Peg](https://medium.com/@RubenSomsen/21-million-bitcoins-to-rule-all-sidechains-the-perpetual-one-way-peg-96cb2f8ac302) this allows users 
+create utility tokens on a sidechain or in Tari's case the Dan. By not allowing funds to be moved back, the sidechain gets a total utilitarian value
+and all value speculation will be removed as the sidechain will only ever be as valuable as the main coin.
+
 
 ## Introduction
 
@@ -69,7 +73,7 @@ allow pruned nodes and non pruned nodes to still verify the integrity and emissi
 
 ### Transaction output changes
 
-Currently, each transaction output has a field called [OutputFeatures] that tracks the unique properties of each output. 
+Currently, each transaction output has a field called [OutputFeatures](https://github.com/tari-project/tari/blob/f7f913c873c9f5d373f99149e52c26a0dd32f03f/base_layer/core/src/transactions/transaction_components/output_features.rs#L62) that tracks the unique properties of each output. 
 Inside this field, we track every possible type of output. We need to add another type here called burned. 
 
 ```rust,ignore
@@ -105,7 +109,7 @@ pub struct BlockHeader {
 }
 ```
 
-This field must contain the sum of all the commitments of all outputs in the block marked as spent. 
+This field must contain the sum of all the commitments of all outputs in the block marked as Burned. 
 
 $$
 \begin{align}
@@ -114,27 +118,6 @@ burned\_total = \sum_j\mathrm{C_{j}}  \\\\
 \end{align}
 \tag{1}
 $$
-
-### Creation of burned output
-
-When creating the output, we need to be able to generate a Proof of Burn for the burned output. 
-In the header, we already commit to each and every [UTXO] ever created. There already is a proof of the existence
-for this burned output, but this proof is only for the complete output and not just the commitment. 
-
-To get around this, we enforce default values for most of the output except the version and commitment field. 
-
-And the output, when burned, MUST have the following field values
-* Empty script,
-* Empty covenant,
-* and empty encrypted_value.
-
-The OutputFeatures MUST be set to the following values:
-* output_type must be set to Burned,
-* maturity must be 0,
-* metadata must be empty
-* and sidechain_features must be empty.
-
-If any of these are not set correctly for a burned output, the output should be dropped as an invalid transaction. 
 
 ### Block propagation consensus rules changes
 
