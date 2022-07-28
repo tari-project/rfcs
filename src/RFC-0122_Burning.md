@@ -61,9 +61,9 @@ Blockchains have used the burn method to destroy coins in circulation and block 
 to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Tari can also use this method, but this does not explicitly
 remove the coins from circulation. This RFC details a method to remove coins from circulation permanently.
 
-A very good example of using burned coins is for a [Perpetual One-way Peg](https://medium.com/@RubenSomsen/21-million-bitcoins-to-rule-all-sidechains-the-perpetual-one-way-peg-96cb2f8ac302) this allows users 
+An excellent example of using burned coins is for a [Perpetual One-way Peg](https://medium.com/@RubenSomsen/21-million-bitcoins-to-rule-all-sidechains-the-perpetual-one-way-peg-96cb2f8ac302) this allows users 
 create utility tokens on a sidechain or in Tari's case the Dan. By not allowing funds to be moved back, the sidechain gets a total utilitarian value
-and all value speculation will be removed as the sidechain will only ever be as valuable as the main coin.
+. All value speculation will be removed as the sidechain will only ever be as valuable as the main coin.
 
 
 ## Introduction
@@ -71,9 +71,13 @@ and all value speculation will be removed as the sidechain will only ever be as 
 To completely remove coins from circulation, we need to mark outputs as burned, and we need to change the balance equation to
 allow pruned nodes and non pruned nodes to still verify the integrity and emission of Tari.
 
+### TL;DR
+In order to get burns working, we flag each desired output as burned with a flag. To calculate the emission of the network, we need
+to store the commitment of the burned output in a kernel. This will allow any pruned node to verify the emission of the network and all burned outputs. 
+
 ### Transaction output changes
 
-Currently, each transaction output has a field called [OutputFeatures](https://github.com/tari-project/tari/blob/f7f913c873c9f5d373f99149e52c26a0dd32f03f/base_layer/core/src/transactions/transaction_components/output_features.rs#L62) that tracks the unique properties of each output. 
+Each transaction output has a field called [OutputFeatures](https://github.com/tari-project/tari/blob/f7f913c873c9f5d373f99149e52c26a0dd32f03f/base_layer/core/src/transactions/transaction_components/output_features.rs#L62) that tracks the unique properties of each output. 
 Inside this field, we track every possible type of output. We need to add another type here called burned. 
 
 ```rust,ignore
@@ -87,74 +91,53 @@ pub enum OutputType {
 }
 ```
 
-### Blockheader changes
+### Kernel changes
 
-On the header of each block, we need to add a field for tracking the sum of all burned outputs on that block.
+Currently, each transaction has to have one or more kernels, [TransactionKernel](https://github.com/tari-project/tari/blob/2ca06724f0ab7c63eb0b6caab563372f353f4348/base_layer/core/src/transactions/transaction_components/transaction_kernel.rs#L53). This tracks details such as the balance proof of each transaction as well as other information essential for the transaction consensus. Here we add an Optional field to track burned commitments.
+For each burned output, we need to have a kernel where the burned output's commitment is stored. 
 
 ```rust,ignore
-pub struct BlockHeader {
-    /// Version of the block
-    pub version: u16,
-    ...
-    /// Sum of kernel offsets for all kernels in this block.
-    pub total_kernel_offset: BlindingFactor,
-    /// Sum of script offsets for all kernels in this block.
-    pub total_script_offset: BlindingFactor,
-    /// Sum of all burned output commitments in this block.
-    pub burned_total: Commitment,
-    /// Nonce increment used to mine this block.
-    pub nonce: u64,
-    /// Proof of work summary
-    pub pow: ProofOfWork,
+pub struct TransactionKernel {
+    pub version: TransactionKernelVersion,
+    /// Options for a kernel's structure or use
+    pub features: KernelFeatures,
+    /// Fee originally included in the transaction this proof is for.
+    pub fee: MicroTari,
+    /// This kernel is not valid earlier than lock_height blocks
+    /// The max lock_height of all *inputs* to this transaction
+    pub lock_height: u64,
+    /// Remainder of the sum of all transaction commitments (minus an offset). If the transaction is well-formed,
+    /// amounts plus fee will sum to zero, and the excess is hence a valid public key.
+    pub excess: Commitment,
+    /// An aggregated signature of the metadata in this kernel, signed by the individual excess values and the offset
+    /// excess of the sender.
+    pub excess_sig: Signature,
+    /// This is an optional field that must be set if the transaction contains a burned output.
+    pub burn_commitment: Option<Commitment>,
+
 }
 ```
+Each kernel also has a field called [KernelFeatures](https://github.com/tari-project/tari/blob/2ca06724f0ab7c63eb0b6caab563372f353f4348/base_layer/core/src/transactions/transaction_components/kernel_features.rs#L36) that unique properties of the kernel. These fields need to be expanded to include a burn type.
+Inside this field, we track every possible type of output. We need to add another type here called `BURNED_KERNEL`. 
 
-This field must contain the sum of all the commitments of all outputs in the block marked as Burned. 
+```rust,ignore
+pub struct KernelFeatures: u8 {
+        /// Coinbase transaction
+        const COINBASE_KERNEL = 1u8;
+        /// Burned output
+        const BURNED_KERNEL = 2u8;
+    }
+```
 
-$$
-\begin{align}
-burned\_total = \sum_j\mathrm{C_{j}}  \\\\
-\text{for burned output}, i, \\\\
-\end{align}
-\tag{1}
-$$
+For each burned output in a transaction, there needs to be a kernel. This means that if a transaction has two burned outputs, it needs at least two kernels. 
+This stops a node from publishing an aggregated inflated commitment in the kernel. 
 
-### Block propagation consensus rules changes
 
-When a block is received, a base node will typically check the following equation to ensure that the emission is correct:
-$$
-\begin{align}
-&\sum_i\mathrm{Cout_{i}} - \sum_j\mathrm{Cin_{j}} + \text{fees} \cdot H - \sum_k\mathrm{K_k} - \text{offset} \stackrel{?}{=}  V_l\cdot H\\\\
-& \text{for each output}, i, \\\\
-& \text{for each input}, j, \\\\
-& \text{for each kernel excess}, k \\\\
-& \textit{offset }\text{is the total kernel offset} \\\\
-& \text{and }V_l \text{ is the block reward for block } l\\\\
-\end{align}
-\tag{2}
-$$
 
-This equation needs to be modified to allow checking the burned number as well, so we change it to:
-$$
-\begin{align}
-&\sum_i\mathrm{Cout_{i}} + \sum_m\mathrm{Cburn_{m}} - \sum_j\mathrm{Cin_{j}} + \text{fees} \cdot H - \sum_k\mathrm{K_k} - \text{offset} \stackrel{?}{=}  V_l\cdot H\\\\
-& \text{for each output}, i, \\\\
-& \text{for each burned output}, m, \\\\
-& \text{for each input}, j, \\\\
-& \text{for each kernel excess}, k \\\\
-& \textit{offset }\text{is the total kernel offset} \\\\
-& \text{and }V_l \text{ is the block reward for block } l\\\\
-\end{align}
-\tag{3}
-$$
+### Consensus rules changes
 
-We make the following additions to the consensus rules that block propagation must be checked.
-
-When a node receives a block with the node:
-* MUST for each output marked as burned, flag that output as spent immediately upon inserting it as an output. 
-* MUST check that Equation (1) holds.
-* MUST check that Equation (3) holds.
-
+When a block or transaction is received with a burned output, there:
+* MUST be a kernel containing a commitment matching exactly one and only one output that is flagged as burned.
 
 ### Chain balance equation changes 
 
@@ -167,7 +150,7 @@ $$
 & \textit{offset }\text{is the total kernel offset} \\\\
 & \text{and }E_l\text{ is total emission up to block } l\\\\
 \end{align}
-\tag{4}
+\tag{1}
 $$
 
 
@@ -180,47 +163,11 @@ $$
 & \textit{offset }\text{is the total kernel offset} \\\\
 & \text{and }E_l\text{ is total emission up to block } l\\\\
 \end{align}
-\tag{5}
+\tag{2}
 $$
 
-When verifying total chain emission, equation (5) MUST hold.
+When verifying total chain emission, equation (2) MUST hold.
 
-
-### Option 2 for Proof of burn
-
-If we don't want to look into the output MMR, we can add a second MMR root and size counter to the header to track the commitment. 
-
-```rust,ignore
-pub struct BlockHeader {
-    /// Version of the block
-    pub version: u16,
-    ...
-    /// Sum of kernel offsets for all kernels in this block.
-    pub total_kernel_offset: BlindingFactor,
-    /// Sum of script offsets for all kernels in this block.
-    pub total_script_offset: BlindingFactor,
-    /// Sum of all burned output commitments in this block.
-    pub burned_total: Commitment,
-    /// Merkle root of the burned MMR tree at this block height
-    pub burned_mr;
-    /// Size of the burned MMR tree at this height. 
-    pub burned_mmr_size;
-    /// Nonce increment used to mine this block.
-    pub nonce: u64,
-    /// Proof of work summary
-    pub pow: ProofOfWork,
-}
-```
-
-[burned_mr]: #burned_mr "Burned Merkle root"
-
-This is the Merkle root of the burned outputs.
-
-The burned_mr MUST conform to the following:
-* Must be transmitted as an array of unsigned 8-bit integers (bytes) in little-endian format.
-
-
-This will allow users to construct a proof of burn to any block height of a burned output.
 
 
 [block]: Glossary.md#block
@@ -231,5 +178,3 @@ This will allow users to construct a proof of burn to any block height of a burn
 [metadata signature]: Glossary.md#metadata-signature
 [utxo]: Glossary.md#unspent-transaction-outputs
 [emission schedule]: Glossary.md#emission-schedule
-
-
