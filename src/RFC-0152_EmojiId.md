@@ -2,7 +2,7 @@
 
 ## Emoji Id specification
 
-![Status: Outdated](theme/images/status-outofdate.svg)
+![status: draft](theme/images/status-draft.svg)
 
 **Maintainer(s)**:[Cayle Sharrock](https://github.com/CjS77)
 
@@ -10,7 +10,7 @@
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
-Copyright 2020. The Tari Development Community
+Copyright 2022. The Tari Development Community
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 following conditions are met:
@@ -75,13 +75,13 @@ For Tari, we propose encoding values, the node ID in particular, using emoji. Th
 ### The specification
 
 #### The emoji character map
-An emoji alphabet of 1,024 characters is selected. Each emoji is assigned a unique index from 0 to 1023 inclusive. This
+An emoji alphabet of 256 characters is selected. Each emoji is assigned a unique index from 0 to 255 inclusive. This
 list is the emoji map. For example,
 
 * 😀 => 0
 * 😘 => 1
 * ...
-* 🦊 => 1023
+* 🦊 => 255
 
 The emoji SHOULD be selected such that
 
@@ -91,82 +91,37 @@ The emoji SHOULD be selected such that
 
 #### Encoding
 
-The essential strategy in the encoding process is to map a sequence of 8-bit values onto a 10-bit alphabet. The general
-encoding procedure is as follows:
-
-Given a large integer value, represented as a _byte array_, `S`, in little-endian format (most significant digit last).
-Assume the string is addressable, i.e. `S[i]` is the `i`th byte in the array.
-* Set `CURSOR` to 0, Set `L` to a multiple of 10 that is `<= len(S)`.
-* Set `IDX` to `[]` (an empty array)
-* While `CURSOR < L`:
-  * Set `L <= S[CURSOR/8 + 1]`, the current low byte; if the index would overflow, set `L` to zero.
-  * Set `H <= S[CURSOR/8]`, the current high byte
-  * Set `n <= CURSOR % 8`, the position of the cursor in the current high byte
-  * Set `i <= ((H as u8) << n) << 2 + (L >> (6 - n))`, where the first shift left (`H as u8 <<n`) is on a one-byte width
-    (effectively losing the first n bits) and the second shift left is on a 8-byte width (u64).
-  * Push `i` onto `IDX`
-  * `CURSOR <= CURSOR + 10`
-* Return `IDX`
-
-The emoji string is created by mapping the `IDX` array to the emoji map.
+The selection of an alphabet with 256 symbols means there is a direct mapping between bytes and emoji. For each byte
+in the input data to be encoded, map the byte to the corresponding emoji using the emoji map. The resulting
+concatenation of emoji characters is the emoji string.
 
 #### Emoji ID definition
 
-The emoji ID is an emoji string of 12 characters. Each character encodes 10 bits according to the bitmap:
+The emoji ID is an emoji string of 33 symbols from the emoji alphabet. It uses this bitmap:
 
 ```text
-+---------------------+------------------+-------------------+
-|  Node Id (104 bits) | Version (6 bits) | Checksum (10 bits)|
-+---------------------+------------------+-------------------+
++-----------------------------+-------------------+
+|  Node public key (256 bits) | Checksum (8 bits) |
++-----------------------------+-------------------+
 ```
 
- The emoji ID is calculated from a 104-bit node id represented as 13 bytes (`B`) as follows:
+ The emoji ID is calculated from a node public key serialized as 32 bytes (`B`) as follows:
 
-* Take the current emoji ID version number, `v` and add `v << 2` as an additional byte to `B`. This "right-pads" the
-  version in the last byte. This is necessary since we have a 14 byte (112 bit) sequence, which is not divisible by 10.
-  This padding sets the last 2 bits, which will be discarded, to zero.
-* Encode B into an emoji string with `L` = 11.
-* Calculate a 12th emoji using the Luhn mod 1024 checksum algorithm.
+* Use the [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit
+checksum `C` from `B`.
+* Encode `B` into an emoji string.
+* Encode `C` into an emoji string.
+* Concatenate `B` and `C` as the emoji ID.
 
 #### Decoding
 
-One can extract the node id from an emoji ID as follows:
+One can extract the node public key from an emoji ID as follows:
 
-1. Calculate the checksum of the first 11 emoji using the Luhn mod 1024 algorithm. If it does not match the 12th emoji,
-   return with an error. if any emoji character is not in the emoji map, return an error.
-2. Extract the version number:
-   3. Do a reverse lookup of emoji`[10]` to find its index. Store this u64 value in `I`.
-   4. The Version number is `(I && 0x3F) >> 2`. This can be used to set the Emoji map accordingly (and may have to be
-      done iteratively, since the version is encoded into the emoji string).
-3. Set `CURSOR = 0`.
-4. Set `B = []`, and empty byte array
-5. While `CURSOR <= 11`:
-   4. Set `k <= CURSOR * 2`
-   5. Do a reverse lookup of the emoji`[CURSOR]` to find its index. Store this u64 value in `L`.
-   6. If `k > 0`, set `H` to the reverse lookup index of emoji`[CURSOR-1]` as u8 (first 2 bits are discarded), else
-      `H=0`.
-   7. Set `v = ((H as u8)  << (8-k)) + (L >> (2+k))`. Push v onto tho `B`.
-   9. Set `CURSOR <= CURSOR + 1`
-
-If the algorithm completes, `B` holds the node ID.
-
-#### Versioning
-
-The current emoji ID version number is 1. If the emoji alphabet changes, the version number MUST be incremented. This
-will usually cause incompatible versions of the emoji ID to be detected. However, this is not fail-safe.
-
-The last 6 bits of the 11th emoji encodes the version; this means that the first 4 bits are part of the node ID. On a
-reverse mapping, there is a chance that the reverse mapping would offer a valid, but incorrect version number if the new
-mapping are not chosen carefully.
-
-##### Example.
-
-In version 1, 😘 => `0b0000_000001` = 1 in the map. Seeing 😘 as the 11th emoji in a string would result in a version
-code of 1, which is consistent and expected.
-
-However, in unlucky version 13, if 😘 moves in the map to number 13 (`0b0000_001101`), the version decoding would also
-be valid and thus we wouldn't be able to unambiguously identify the version.
-
+* Assert that the emoji ID contains exactly 33 valid emoji characters from the emoji alphabet. If not, return an error.
+* Decode the emoji ID as an emoji string by mapping each emoji character to a byte value using the emoji map, producing
+33 bytes. Let `B` be the first 32 bytes, and `C` be the last byte.
+* Use the DammSum validation algorithm on `B` to assert that `C` is a valid checksum. If not, return an error.
+* Attempt to deserialize `B` as a public key. If this fails, return an error. If it succeeds, return the public key.
 
 
 [Communication Node]: Glossary.md#communication-node
