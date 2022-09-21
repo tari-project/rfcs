@@ -37,6 +37,7 @@
   - [Validator Nodes]()
     - [RFC-0322: Validator Node Registration](RFC-0322_VNRegistration.md)
     - [RFC-0340: Validator Node Consensus](RFC-0340_VNConsensusOverview.md)
+    - [RFC-0306: DAN Template Registration](RFC-0306_DANTemplateRegistration.md)
   - [RFC-0360: NFT sale using MimbleWimble Invoice](RFC-0360_NFTInvoices.md)
 
 - [Proposals]()
