@@ -62,7 +62,7 @@ DAN layer.
 
 ## Description
 
-This scheme is inspired by [Macaroons] in that it allows the bearer of a token to delegate a more restrictive token to
+This scheme is inspired by [Macaroons](https://www.ndss-symposium.org/ndss2014/programme/macaroons-cookies-contextual-caveats-decentralized-authorization-cloud/) in that it allows the bearer of a token to delegate a more restrictive token to
 another bearer. 
 
 
@@ -79,7 +79,7 @@ another bearer.
 | caveats | CaveatExpression[] | An ordered list of caveats |
 | based_on | Token (optional) | If this token is derived from another token, it should be present here |
 | issuer | PubKey | the issuer of this token |
-| issuer_sig | Signature | a signature of the challenge `Hash(base_id + granted_to + scopes + caveats + expires_at_height + based_on + issuer )` |
+| issuer_sig | Signature | a signature signed by `issuer` of the challenge `Hash(root_nonce + granted_to + scopes + caveats + expires_at_height + based_on + issuer )` |
 
 ### Caveat Expression
 
@@ -89,7 +89,7 @@ Caveat Expression = <Field> <operator> <Argument>
 
 Field: An arbitrary string that will be interpreted by the code
 Operator: OneOf("eq", "le", "lt","ge", "gt")
-Argument: A constant value, to be interpretted by the code
+Argument: A constant value, to be interpreted by the code
 
 Examples
 ```
@@ -135,7 +135,7 @@ fn transfer(amount: u64, from: PublicKey, to: PublicKey)
 ```
 
 Alice creates a token:
-```json
+```json5
 /* bob's token */
 {
    "scopes": ["transfer"],
@@ -151,16 +151,16 @@ Alice creates a token:
 > Note: The `root_nonce` and `expires_at_height` are missing here, but it would have been better for Alice to include these.
 > Also, this token allows Bob to spend up to 100 at a time, but does not restrict Bob from using this token again
 
-Bob can now create the instruction and submit it to the validator node. The validator node checks that the signature
+Bob can now create the instruction and submit it to the validator node. The validator node checks that the instruction signature
 matches the public key in `granted_to` and also checks that the `amount` parameter is less than or equal to 100. Finally, the
-validator node checks that the scope includes 'transfer' and that Alice's public key is set in `from`.
+validator node checks that the scope includes 'transfer', and Alice's public key (specified in `from`) matches the auth token's issuer signature.
 
 ### Example 2: Delegation
 Let's continue the example, but in this case Bob wants to allow Carol to spend the funds.
 
 In this case, Bob creates a token for Carol with the following:
 
-```json
+```json5
 /* carol's token */
 {
    "scopes": ["transfer"],
