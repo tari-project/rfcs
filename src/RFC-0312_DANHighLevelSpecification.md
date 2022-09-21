@@ -172,6 +172,17 @@ of the contract.
 The asset issuer will also draft and publish the [contract constitution]. The constitution defines _how_ a contract is
 run, and defines the conditions under which the terms of the constitution can be changed.
 
+### The Constitution Committee
+[constitution committee]: #constitution_committee
+[CC]: #cc
+
+The [asset issuer] will in the creation of the [contract constitution] nominate a key or set of keys to "own" the asset
+and control all things related to _how_ the contract is run. They are known as the [constitution committee] (CC)
+
+The CC has the power to change anything inside of the [contract constitution]. In many cases, the CC will simply be the [asset issuer].
+However, allowing the CC to differ from the asset issuer enables a number of other use-cases 
+such as a DAO, a nominated list of keys, etc.
+
 ### The role of validator nodes
 [validator node]: #the-role-of-validator-nodes
 
@@ -247,7 +258,7 @@ The lifecycle of a contract proceeds via these steps:
    mined on the base layer. However, this is not generally recommended.
 8. The VNC periodically publishes a [checkpoint] transaction.
 9. Failure to do so can lead to the contract being [abandoned].
-10. The VNC MAY shut the contract down by publishing a [dissolution] transaction.
+10. The CC MAY shut the contract down by publishing a [dissolution] transaction.
 
 The following sections will discuss each of these steps in more detail.
 
@@ -275,7 +286,7 @@ The contract definition transaction defines the "what" of the digital asset set 
 * Asset issuers MUST stake a small amount of Tari in order to publish a new contract.
 * Exactly ONE output MUST have a `ContractSpecification` output feature.
 * The contract specification UTXO MUST include a covenant that only permits it to be spent to a
-  new `ContractSpecification` UTXO (when transferring ownership of a contract), or as an unencumbered UTXO in
+  new `ContractSpecification` UTXO or as an unencumbered UTXO in
   a `ContractDeregistration` transaction.
 
 Note: The latter is desirable because it tidies up the UTXO set. But this transaction MUST NOT be published before
@@ -350,12 +361,11 @@ the following:
 * It MUST include the contract id. The contract definition transaction SHOULD be mined prior to publication of the
   constitution transaction, but it strictly is not necessary if VNs are able to access the contract specification in
   some other way.
+* It MUST include a list of public keys of the proposed [CC];
 * It MUST include a list of public keys of the proposed VNC;
 * It MUST include an expiry timestamp before which all VNs must sign and agree to these terms (the [acceptance period]);
 * It MAY include quorum conditions for acceptance of this proposal (default to 100% of VN signatures required);
 * If the conditions will unequivocally pass, the acceptance period MAY be shortcut.
-* There MAY be an initial reward that is paid to the VN committee when the UTXO is spent. This reward is simply included
-  in the value of the `ContractConstitution` UTXO.
 * The UTXO MUST only be spendable by a multisig of the quorum of VNs performing [side-chain] initialisation. (e.g. a 3
   of 5 threshold signature).
 * It MUST include the side-chain metadata record:
@@ -363,14 +373,17 @@ the following:
     * checkpoint quorum requirements
 * It MUST include the following Checkpoint Parameters Record
     * minimum checkpoint frequency,
-    * committee change rules. (e.g. asset issuer must sign, or a quorum of VNC members, or a whitelist of keys).
+    * minimum quarantine period.
 * It MAY include a `RequirementsForConstitutionChange` record. It omitted, the checkpoint parameters and side-chain
   metadata records are immutable via covenant.
+    * How and when the Constitution UTXO can change.
+    * Quorum required by the [CC],
+    * Proposal period.
     * How and when the Checkpoint Parameters record can change.
-    * How and when the side-chain metadata record can change
+    * How and when the side-chain metadata record can change.
 * It SHOULD include a list of emergency public keys that have signing power if the contract is [abandoned].
 
-If both the [acceptance period] and [side-chain initialization period] elapses without quorum, the asset owner MAY spend
+If both the [acceptance period] and [side-chain initialization period] elapses without quorum, the CC MAY spend
 the`ContractConstitution` UTXO back to himself to recover his funds.
 
 In this case, the asset issuer MAY try and publish a new contract constitution.
@@ -417,7 +430,7 @@ At this point, VNs that have accepted the contract must
 * allocate resources
 * Setup whatever is needed to run the contract
 * Set up consensus with their peer VNs (e.g. hotstuff)
-* Intialise the contract and run the constructors
+* Initialise the contract and run the constructors
 * Reach consensus on the initial state.
 * Prepare the [side-chain initialization] transaction.
 
@@ -439,9 +452,6 @@ Side-chains MUST be marked as initiated by virtue of a [side-chain initializatio
   contains the correct covenants and output flags.
 * There is a minimum [side-chain deposit] that MUST be included in the peg-in UTXO. A single aggregated UTXO containing
   at least $$ m D $$ Tari, where _m_ is the number of VNs and _D_ is the deposit required.
-* The initial reward, if any, MAY be spent to any number of unencumbered outputs. In practice the VNC will have
-  negotiated how to spend this, and so we can assume that consensus has been reached on how to spend the initial reward.
-  Therefore the base layer places no additional restrictions on those funds.
 * This transaction also acts as the zero-th checkpoint for the contract. As such, it requires all the checkpoint
   information.
 * The state commitment is the merklish root of the state after running the code initialisation using the [initial data]
@@ -498,15 +508,16 @@ to penalties and stake slashing if enabled within the contract specification.
 ### Changes to the constitution
 [contract constitution change]: #changes-to-the-constitution
 
-Any changes to the [contract constitution] MUST happen at checkpoints. This also refers to any changes to the VNC.
+Changes to the [contract constitution] can happen at any time through the [constitution amendment] process. This also applies to changes to the VNC. Only the [CC] may 
+make changes to the[contract constitution].
 
-* The rules over how members are added or removed are defined in the [contract constitution]. It may be that the VNC has
-  autonomy over these changes, or that the asset issuer must approve changes, or some other authorization mechanism.
+* The rules over how members are added or removed are defined in the [contract constitution].
 * At the minimum, there's a proposal step, a validation step, an acceptance step, and an activation step. Therefore
   changes take place over at least a 4-checkpoint time span.
 * If a VN leaves a committee their [side-chain deposit] MAY be refunded to them.
 * If a new VN joins the committee they must provide the [side-chain deposit] at their activation step.
-* In the proposal step, any authorised VNC change proposer, as defined in the [contract constitution]
+* In the proposal step, any authorised [CC] may make a change proposal, within the limits defined by the change rules in the [contract constitution]
+* Before activation, VNC members MAY submit an acceptance transaction that registers their willingness to validate the contract. If no acceptance is submitted within the `acceptance_period` the validator is assumed to be uninterested in running the contract and will not form part of the finalized contract committee. 
 
 ### Contract abandonment
 [abandoned]: #contract-abandonment "Contract abandonment"
