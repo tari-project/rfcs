@@ -147,8 +147,8 @@ These cases apply to spending the template registration [UTXO]:
 1. The author MAY spend into another template registration [UTXO]
 * This effectively withdraws (yanks) the previous version of the template.
 * The template name and author SHOULD be identical. This MAY be enforced by covenant.
-* The template version SHOULD be incremented.
-* Any live contracts SHOULD upgrade their definitions to run the new template.
+* The template version number MUST be incremented by one from the version number in the spent input.
+* It is RECOMMENDED that live contracts upgrade their definitions to run the new template.
 2. The author MAY spend to a "vanilla" [UTXO] to reclaim their deposit.
 * This effectively withdraws (yanks) the template.
 * The template MAY remain in use on existing contracts. In fact, anyone may now re-register the template.
