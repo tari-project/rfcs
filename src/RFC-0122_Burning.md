@@ -1,6 +1,6 @@
-# RFC-0122/Burning
+# RFC-0260/Burning
 
-## Base Layer Consensus
+## Consensus-level burn transactions
 
 ![status: draft](theme/images/status-draft.svg)
 
@@ -62,8 +62,8 @@ to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Ta
 remove the coins from circulation. This RFC details a method to remove coins from circulation permanently.
 
 An excellent example of using burned coins is for a [Perpetual One-way Peg](https://medium.com/@RubenSomsen/21-million-bitcoins-to-rule-all-sidechains-the-perpetual-one-way-peg-96cb2f8ac302) this allows users 
-create utility tokens on a sidechain or in Tari's case the Dan. By not allowing funds to be moved back, the sidechain gets a total utilitarian value
-. All value speculation will be removed as the sidechain will only ever be as valuable as the main coin.
+create utility tokens on a sidechain or in Tari's case the DAN. By not allowing funds to be moved back, the sidechain gains an auditable total utilitarian value
+. Value speculation is largely removed as the sidechain will only ever be as valuable as value of coins burnet in the peg.
 
 
 ## Introduction
@@ -117,7 +117,7 @@ pub struct TransactionKernel {
 
 }
 ```
-Each kernel also has a field called [KernelFeatures](https://github.com/tari-project/tari/blob/2ca06724f0ab7c63eb0b6caab563372f353f4348/base_layer/core/src/transactions/transaction_components/kernel_features.rs#L36) that unique properties of the kernel. These fields need to be expanded to include a burn type.
+Each kernel also has a field called [KernelFeatures](https://github.com/tari-project/tari/blob/2ca06724f0ab7c63eb0b6caab563372f353f4348/base_layer/core/src/transactions/transaction_components/kernel_features.rs#L36) that defines the properties of the kernel. The feature set needs to be expanded to include a burn type.
 Inside this field, we track every possible type of output. We need to add another type here called `BURNED_KERNEL`. 
 
 ```rust,ignore
@@ -137,11 +137,12 @@ This stops a node from publishing an aggregated inflated commitment in the kerne
 ### Consensus rules changes
 
 When a block or transaction is received with a burned output, there:
-* MUST be a kernel containing a commitment matching exactly one and only one output that is flagged as burned.
+* the number of `BURNED` outputs MUST equal the number of `BURNED_KERNEL` kernels exactly,
+* the commitment values of each burnt output MUST match the commitment value of each corresponding `BURNED_KERNEL` exactly.
 
 ### Chain balance equation changes 
 
-When checking the total chain emission, the following equation must hold:
+Currently, when checking the total chain emission, the following equation must hold:
 $$
 \begin{align}
 &\sum_i\mathrm{C_{i}} \stackrel{?}{=} E_l \cdot H + \sum_k\mathrm{K_k} + \text{offset}\\\\
@@ -153,7 +154,11 @@ $$
 \tag{1}
 $$
 
+To include burnt outputs in the balance, we can immediately mark burnt outputs as spent (and thus allow them to be pruned), and introduce the additional requirement of tracking the total sum of all burnt output commitments.
 
+This sum is easily verified by summing all `BURNED_KERNEL` commitments in the blockchain history. These are available to all nodes since the kernels are never pruned.
+
+The balance equation then becomes
 $$
 \begin{align}
 &\sum_i\mathrm{C_{i}} \stackrel{?}{=} E \cdot H + \sum_k\mathrm{K_k} + \text{offset} - \sum_m\mathrm{Cburn_{m}}\\\\
