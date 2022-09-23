@@ -248,7 +248,7 @@ client applications and are relayed by the DAN to the [validator node]s that are
 
 [mempool]: #mempool "A memory pool for unconfirmed transactions on the base layer"
 
-The mempool consists of the transaction pool, pending pool, orphan pool and reorg pool, and is responsible for managing
+The mempool consists of the unconfirmed pool and reorg pool, and is responsible for managing
 unconfirmed transactions that have not yet been included in the longest proof-of-work chain. Miners usually draw
 verified transactions from the mempool to build up transaction [block]s.
 
@@ -307,20 +307,7 @@ from the public identification key of a [communication node] or [communication c
 A Non-fungible token is a specific instance of a token issued as part of a [digital asset]. It is another name for a
 [digital asset token]. NFTs are contained within specially marked [UTXO]s on the Tari Base Layer.
 
-## Orphan Pool
-
-[orphan pool]: #orphan-pool "A pool in the Mempool for unconfirmed transactions that attempt to spend non-existent UTXOs"
-
-The orphan pool is part of the [mempool] and manages all [transaction]s that have been verified but attempt to spend
-[UTXO]s that do not exist or haven't been created yet.
-
-## Pending Pool
-
-[pending pool]: #pending-pool "A pool in the Mempool for unconfirmed transactions with time-lock restrictions"
-
-The pending pool is part of the [mempool] and manages all [transaction]s that have a time-lock restriction on when it
-can be processed or attempts to spend [UTXO]s with time-locks.
-
+## Pruning horizon
 
 [pruninghorizon]: #pruning-horizon "Block height at which pruning will commence"
 
