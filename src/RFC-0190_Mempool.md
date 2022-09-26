@@ -92,9 +92,7 @@ higher priority incoming transactions.
 
 The transaction priority metric has the following behavior:
  - Transactions with higher fee per gram SHOULD be prioritized over lower fee per gram transactions.
- - Transactions spending UTXOs with higher block height maturity SHOULD be prioritized over transactions spending UTXOs 
- with lower block height maturity. SHOULD WE RATHER USE TIME?
-
+ - Older transactions in the mempool SHOULD be prioritized over newer ones.
 ### Syncing and Updating of the Memory Pool State
 
 On the initial startup of the Mempool, the complete state of the of the Unconfirmed Pool, can be requested and downloaded 
