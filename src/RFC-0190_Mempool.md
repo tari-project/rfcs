@@ -4,7 +4,7 @@
 
 ![status: outdated](theme/images/status-outofdate.svg)
 
-**Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64)
+**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi), [SW van heerden](https://github.com/SWvheerden) and [Yuko Roodt](https://github.com/neonknight64),
 
 # License
 
@@ -48,8 +48,8 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This document will introduce the Tari [base layer] [Mempool] that consists of a [Transaction Pool], [Pending Pool], [Orphan Pool] and [Reorg Pool].
-The Mempool is used for storing and managing unconfirmed and time-lock restricted [transaction]s.
+This document will introduce the Tari [base layer] [Mempool] that consists of an [Unconfirmed Pool], and [Reorg Pool].
+The Mempool is used for storing and managing unconfirmed [transaction]s.
 
 ## Related RFCs
 
@@ -64,25 +64,18 @@ The Mempool is used for storing and managing unconfirmed and time-lock restricte
 ### Abstract
 
 The Mempool is responsible for managing, verifying and maintaining all unconfirmed transactions that have not yet 
-been included in a [block] and added to the Tari [blockchain]. It consists of a Transaction Pool, Pending Pool, 
-Orphan Pool and Reorg Pool to achieve these tasks. It is also responsible for propagating valid transactions and 
+been included in a [block] and added to the Tari [blockchain]. It is also responsible for propagating valid transactions and 
 sharing the Mempool state with connected peers. An overview of the required functionality for the Mempool and each 
 of its component pools will be provided.
 
 ### Overview
 
-Every base node maintains a Mempool that consists of four separate pools: the Transaction Pool, Pending Pool, 
-Orphan Pool and Reorg Pool. These four pools have different tasks and work together to form the Mempool used 
-for maintaining unconfirmed transactions. 
+Every base node maintains a Mempool that consists of two separate pools: the Unconfirmed Pool and Reorg Pool. 
+These two pools have different tasks and work together to form the Mempool used for maintaining unconfirmed transactions. 
 
 This is the role descriptions for each component pool:
-- Transaction Pool: contains all unconfirmed transactions that have been verified, have passed all checks, that 
+- Unconfirmed Pool: contains all unconfirmed transactions that have been verified, have passed all checks, that 
 only spend valid [UTXO]s and don't have any time-lock restrictions.
-- Pending Pool: contains unconfirmed transactions that have time-lock restrictions. The transactions in this pool 
-either attempt to spend UTXOs with time-locks or the transactions themselves have time-locks limiting them from 
-being included in new blocks until a specified future time or block height has been reached. 
-- Orphan Pool: out of order unconfirmed transactions are managed by this pool, these transactions attempt to spend 
-non-existent UTXOs.
 - Reorg Pool: stores a backup of all transactions that have recently been included into blocks, in case a blockchain 
 reorganization occurs and these transactions have to be restored to the Transaction Pool so that they can be included 
 in future blocks.
@@ -92,28 +85,26 @@ in future blocks.
 The maximum storage capacity used for storing unconfirmed transactions by the Mempool and each of its component pools 
 can be configured. If a new transaction is received and the storage capacity limits have been reached, then 
 transactions are prioritized according to the transaction priority metric. The transaction priority metric consist 
-of the fees and the maturity of the UTXOs being spent by the transaction and should be applied to determine the priority 
+of the fee per gram of the UTXOs being spent by the transaction and should be applied to determine the priority 
 of each transaction in the Mempool. As the allocated storage space of the Mempool becomes limited, the transactions 
 with the highest priority are kept in the pool. The lowest priority transactions are discarded to make room for 
 higher priority incoming transactions.
 
 The transaction priority metric has the following behavior:
- - Transactions spending UTXOs with higher block height maturity SHOULD be prioritized over transactions spending UTXOs 
- with lower block height maturity.
- - Transactions with higher fees per transaction message size SHOULD be prioritized over lower fee transactions.
-
+ - Transactions with higher fee per gram SHOULD be prioritized over lower fee per gram transactions.
+ - Older transactions in the mempool SHOULD be prioritized over newer ones.
 ### Syncing and Updating of the Memory Pool State
 
-On the initial startup of the Mempool, the complete state of the Mempool that consists of the Transaction Pool, Pending 
-Pool, Orphan Pool and Reorg Pool can be requested and downloaded from the connected peers. A memory pool typically 
-doesn't make use of persistent storage but could be configured to keep a backup of the last known state. If an existing 
-Mempool state is locally available then a more efficient update process can be performed by requesting only the 
-unconfirmed transactions missing from the current Mempool state. When no state is available then the entire Mempool 
-state must be downloaded from the connected peers. During downloading or updating of the Mempool state, the validity 
-of all transaction in the pool must be verified and the priority of each transaction must be calculated. 
+On the initial startup of the Mempool, the complete state of the of the Unconfirmed Pool, can be requested and downloaded 
+from the connected peers. A memory pool typically doesn't make use of persistent storage but could be configured to keep a 
+backup of the last known state. If an existing Mempool state is locally available then a more efficient update process can 
+be performed by requesting only the unconfirmed transactions missing from the current Mempool state. When no state is 
+available then the entire Mempool state must be downloaded from the connected peers. During downloading or updating of the 
+Mempool state, the validity of all transaction in the pool must be verified and the priority of each transaction must be calculated. 
+If the local base node undergoes a large re-org or sync, the mempool can sync again from peers to retrieve up-to-date state.
 
 Functional behavior required for sharing and updating of the Mempool state, and propagation of transactions between peers:
-- All verified transaction MUST be propagated to neighboring peers.
+- All verified transactions MUST be propagated to neighboring peers.
 - Duplicate transactions MUST NOT be propagated to peers.
 - Unvalidated or invalid transactions MUST NOT be propagated to peers.
 - Verified transactions that were discarded due to low priority levels MUST be propagated to peers.
@@ -127,7 +118,7 @@ pool.
     - to store the state of the Mempool using persistent storage to reduce communication bandwidth required when 
     reinitializing the Mempool after a restart.
 
-### Transaction Pool
+### Unconfirmed Pool
 
 The Transaction Pool consists of all unconfirmed transactions that have been received, verified and have passed 
 all checks. These unconfirmed transactions in the Transaction Pool are ready to be included and can be used to 
@@ -140,48 +131,14 @@ expired.
 - It MUST ensure that all time-locks of the UTXOs that will be spent by the transaction have expired.
 - Transactions that have been used to construct new blocks MUST be removed from the Transaction Pool and added to the Reorg Pool.
 
-### Pending Pool
-
-The Pending Pool contains all transactions that are restricted by time-locks. A transaction could have a time-lock 
-limiting it from being processed or it can attempt to spend UTXOs with time-locks. These transactions require 
-their time-locks or the time-locks of the input UTXOs to expire before they can be processed and included into new 
-blocks. All transactions in the Pending Pool have been verified and passed all checks except their own time-lock has 
-not yet expired or some of the UTXOs that will be spent have time-lock restrictions that are not yet valid. Once the 
-transactions time-lock or the time-locks on the UTXOs have expired then the Pending Pool transactions can be moved 
-to the Transaction Pool for inclusion in future blocks.  
-
-Functional behavior required of the Pending Pool:
-- Once the transaction time-lock or UTXO time-lock restricting the processing of a transaction has expired then the 
-pending transaction MUST be moved to the Transaction Pool.
-
-### Orphan Pool
-
-The Orphan Pool contains all the received transactions that have passed all the verification steps and checks, except 
-they attempt to spend UTXOs that don't exist. A possible reason these UTXOs do not yet exist is that they may not yet 
-have been created and might exist in the future. Typically, these orphaned transactions are from a series or bundle of 
-transactions that need to be processed in a specific order but
-- have been either received out of order,
-- or the order of processing the bundled transactions might not have been known or specified.
-
-As transactions are processed and the missing UTXOs have been created, then the orphaned transactions can be moved 
-to the Transaction Pool for possible inclusion in future blocks. Another possibility why the input UTXOs might not 
-be available is that the UTXOs were double spent by other transactions. In time, the double spent transactions will 
-be discarded from the Orphan Pool once they have reached the appropriate maturity threshold.
-
-Functional behavior required of the Orphan Pool:
-- Each newly received transaction MUST be verified and pass all checks except the UTXO validity check before it is 
-placed in the Orphan Pool.
-- Orphaned transactions must be upgraded and moved to the Transaction Pool once the previously unavailable UTXOs become 
-available.
-- Orphaned transactions that have surpassed the expiration time threshold MUST be removed from the Orphan Pool.
-
 ### Reorg Pool
 
 The Reorg Pool consists of all unconfirmed transaction that have recently been added to blocks, resulting in 
 their removal from the Transaction Pool. When a potential blockchain reorganization occurs that invalidates previously 
 assembled blocks, the transactions used to construct these discarded blocks can be recovered from the Reorg Pool and 
 can be added back into the Transaction Pool. This will ensure that high priority transactions are not lost during 
-blockchain reorganization but can be added into future blocks without retransmission of these transactions.
+blockchain reorganization but can be added into future blocks without retransmission of these transactions. The Reorg 
+pool is only for internal mempool use and cannot be access or queried from external services.
 
 Functional behavior required of the Reorg Pool:
 - Copies of the verified transactions removed from the Transaction pool that were placed in blocks MUST be stored in 
@@ -192,12 +149,11 @@ Transaction Pool.
 
 ### Mempool
 
-The Mempool manages the four component pools and interacts with peers to share and retrieve transactions and 
+The Mempool manages the two component pools and interacts with peers to share and retrieve transactions and 
 the Mempool state. During the operation of the Mempool it will distribute incoming transactions to the appropriate 
 component pools. When a new incoming transaction is received a number of checks and verification steps need to be performed 
-to determine if the transaction can be added to the Mempool and determine which of the component pools should be responsible 
-for that particular transaction. Only when the new transaction has passed these checks can it be added to the Mempool and 
-should it be propagated to the connected peers.
+to determine if the transaction can be added to the unconfirmed pool. Only when the new transaction has passed these checks 
+can it be added to the unconfirmed ool and should it be propagated to the connected peers. 
 
 Functional behavior required of the Mempool:
 - If a duplicate transaction is received, that already exist in the Mempool, then the duplicate copy MUST be discarded.
@@ -216,19 +172,14 @@ into a new block in a timely manner.
 
 Functional behavior required for distributing incoming transactions to the component pools:
 - Verified transactions that have passed all checks such as spending of valid UTXOs and expired time-locks MUST be 
-placed in the Transaction Pool
-- All transactions that attempt to spend UTXOs with valid time-locks MUST be added to the Pending Pool.
-- Incoming transactions with time-locks prohibiting them from being included into new blocks should be added to the 
-Pending Pool.
-- Newly received verified transaction attempting to spend a UTXO that does not yet exist MUST be added to the Orphan 
-pool.
+placed in the Unconfirmed Pool
+- Incoming transactions with time-locks prohibiting them from being included into new blocks should discarded.
+- Newly received verified transaction attempting to spend a UTXO that does not yet exist MUST be discarded.
 - Transactions that have been added to blocks and were removed from the Transaction Pool should be added to the Reorg Pool.
 
 [base layer]: Glossary.md#base-layer
 [mempool]: Glossary.md#mempool
-[transaction pool]: Glossary.md#transaction-pool
-[pending pool]: Glossary.md#pending-pool
-[orphan pool]: Glossary.md#orphan-pool
+[unconfirmed pool]: Glossary.md#transaction-pool
 [reorg pool]: Glossary.md#reorg-pool
 [transaction]: Glossary.md#transaction
 [base node]: Glossary.md#base-node
