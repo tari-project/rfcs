@@ -48,8 +48,8 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This Request for Comment (RFC) presents the implementation of Dual-Key Stealth Addresses in One-Sided payments to improve
-privacy for receivers of these payments on the Tari base layer.
+This Request for Comment (RFC) presents a design for a one-time (stealth) address protocol useful for one-sided payments
+to improve recipient privacy for payments on the Tari base layer.
 
 ## Related Requests for Comment
 
@@ -60,48 +60,50 @@ privacy for receivers of these payments on the Tari base layer.
 The Tari protocol extends the [Mimblewimble] protocol to include scripting in the form of [TariScript]. One of the 
 first features implemented using [TariScript] was [one-sided payments]. These are payments to a recipient that do not 
 require an interactive negotiation in the same way a standard [Mimblewimble] transaction does. One of the main downsides
-of the current implementation of [one-sided payments] is that the script key used is the Public Key of the recipient's 
+of the current implementation of [one-sided payments] is that the script key used is the public key of the recipient's 
 wallet. This public key is embedded in the [TariScript] of the [UTXO] created by the sender. The issue is that it becomes
 very easy for a third party to scan the blockchain to look for one-sided transaction outputs being sent to a given wallet. 
-In order to alleviate this privacy leak, this RFC proposes the use of Dual-Key Stealth Addresses to be used as the script
+In order to alleviate this privacy leak, this RFC proposes the use of one-time (stealth) addresses to be used as the script
 key when sending a one-sided payment.
 
-## Brief background on the development of Stealth Addresses
+## Background
 
-Stealth addresses were first proposed on the Bitcoin Talk forum by user [Bytecoin]. The concept was further refined in 
-the [Cryptonote] whitepaper and by [Peter Todd] which went on to be used in Monero. These formulations were very similar 
-to the [BIP-32] style of address generation. Later in 2014 a developer called rynomster/sdcoin proposed a further 
-improvement to the scheme that he called the Dual-Key Stealth Address Protocol (DKSAP) that allowed for a separate 
-scanning key and spending key. Since then there have been many variations of DKSAP proposed, but generally they only 
-offer performance optimizations for certain scenarios or add an application-specific feature. For our application, DKSAP 
-will do the job.
+Stealth addresses were first proposed on the Bitcoin Talk forum by user [Bytecoin]. The concept was further refined by
+[Peter Todd], using a design similar to the [BIP-32] style of address generation. In this approach, the sender can use an
+ephemerial public key (derived from a nonce) to perform a non-interactive Diffie-Hellman exchange with the recipient's
+public key, and use this to derive a one-time public key to which only the recipient can derive the corresponding private
+key. This reduces on-chain linkability (but, importantly, does not eliminate it).
 
-## Dual-key Stealth Addresses
+The approach was further extended in the [CryptoNote] whitepaper to support a dual-key design, whereby a separate scanning
+key is also used in the one-time address construction; this enables identification of outputs, but requires the spending
+key to derive the private key required to spend the output.
 
-The Dual-key Stealth Address Protocol (DKSAP) uses two key-pairs for the recipient of a [one-sided payment], 
-\\( A = a \cdot G \\) and \\( B = b \cdot G \\). Where \\( a \\) is called the scan key and \\( b \\) is the spend key.
-A recipient will distribute the public keys out of band to receive [one-sided payments].
+It is important to note that while one-time addresses are not algebraically linkable, it is possible to observe transactions
+that consume multiple such outputs and infer common ownership of them.
+
+For use in Tari, single-key one-time addresses are supported.
+
+## One-time (stealth) addresses
+
+Single-key one-time stealth addresses require only that a recipient possess a private key \\( a \\) and corresponding public
+key \\( A = a \cdot G \\), and distribute the public key out of band to receive [one-sided payments] in a non-interactive
+manner.
 
 The protocol that a sender will use to make a payment to the recipient is as follows:
-1. Sender generates a random nonce key-pair \\( R = r \cdot G \\).
-2. Sender calculates a ECDH shared secret \\(c = H( r \cdot a \cdot G ) = H( a \cdot R) = H( r \cdot A) \\), where
-\\( H( \cdot ) \\) is a cryptographic hash function.
-3. The sender will then use \\( K_S = c \cdot G + B \\) as the last public key in the [one-sided payment] script. 
-4. The sender includes  \\( R \\) for the receiver but dropping it as it is not required during script execution. 
+1. Generate a random nonce \\( r \\) and use it to produce an ephemeral public key \\( R = r \cdot G \\).
+2. Compute a Diffie-Hellman exchange to obtain the shared secret \\( c = H( r \cdot A ) \\), where \\( H \\) is a cryptographic
+hash function.
+3. Include \\( K_S = c \cdot G + A \\) as the last public key in a [one-sided payment] script in a transaction.
+4. Include \\( R \\) in the script for use by the recipient, but drop it so it is not used in script execution.
 This changes the script for a [one-sided payment] from `PushPubkey(K_S)` to `PushPubkey(R) Drop PushPubkey(K_S)`.
 
-The recipient will need to scan the blockchain for outputs that contain scripts of the [one-sided payment] form, and when
-one is found they will need to do the following:
-1. Extract the nonce \\( R \\) from the script.
-2. Use the public nonce to calculate the shared secret \\(c = H( a \cdot R) \\)
-3. Calculate \\( K_S \\) and check if it exists in the script.
-4. If it exists, the recipient can produce the script signature required using the private key calculated by \\( c + b \\). 
-This private key can only be computed by the recipient using \\( b \\).
-
-One of the benefits of the DKSAP is that the key used for scanning the blockchain, \\( a \\), does not enable one to
-calculate the private key required for spending the output. This means that a recipient can potentially outsource the
-scanning of the blockchain to a less trusted third-party by giving them just the scanning key \\( a \\) but retaining the
-secrecy of the spend key \\( b \\).
+To identify [one-sided payments], the recipient scans the blockchain for outputs containing a [one-sided payment] script. It
+then does the following to test for ownership:
+1. Extract the ephemeral public key \\( R \\) from the script.
+2. Compute a Diffie-Hellman exchange to obtain the shared secret \\( c = H( a \cdot R ) \\).
+3. Compute \\( K_S' = c \cdot G + A \\).
+If \\( K_S' = K_S \\) is included in the script, the recipient can produce the required script signature using the corresponding
+one-time private key \\( c + a \\).
 
 [tariscript]: ./Glossary.md#tariscript
 [mimblewimble]: ./Glossary.md#mimblewimble
