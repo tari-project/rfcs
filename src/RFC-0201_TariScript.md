@@ -306,7 +306,6 @@ The receiver can now calculate their portion of the aggregated Commitment Signat
 
 $$
 \begin{aligned}
-R_{MRi} &= r_{MRi_a} \cdot H + r_{MRi_b} \cdot G \\\\
 a_{MRi} &= r_{MRi_a} + e(v_{i}) \\\\
 b_{MRi} &= r_{MRi_b} + e(k_i)
 \end{aligned}
@@ -386,11 +385,14 @@ s_{Mi} &= (a_{Mi}, b_{Mi}, R_{Mi} ) \\\\
 $$
 
 Note that:
-- The UTXO has a positive value `v` like any normal UTXO.
+- The UTXO has a positive value \\( v \\) like any normal UTXO.
 - The script and the output features can no longer be changed by the miner or any other party. This includes the sender 
   and receiver; they would need to cooperate to enter into a new contract to change any metadata, otherwise the 
   metadata signature will be invalidated.
 - We provide the complete script on the output.
+
+_(See [Multi-party transaction output](#multi-party-transaction-output) for a discussion ot the multi-party version of a 
+transaction output.)_
 
 ### Transaction input changes
 
@@ -465,6 +467,9 @@ but obtained by executing the script with the provided input data. Because this 
 private key \\(k\_{Si}\\), it ensures that only the owner can provide the input data \\(\input_i\\) to the 
 TransactionInput. 
 
+_(See [Multi-party transaction input](#multi-party-transaction-input) for a discussion ot the multi-party version of a
+transaction output.)_
+
 ### Script Offset
 
 For every transaction an accompanying [script offset] \\( \so \\) needs to be provided. This is there to prove that every  
@@ -478,6 +483,9 @@ $$
 \end{aligned}
 \tag{16}
 $$
+
+_(See [Multi-party script offset](#multi-party-script-offset) for a discussion ot the multi-party version of the
+script offset.)_
 
 Verification of (16) will entail:
 
@@ -903,6 +911,112 @@ When spending the multi-party input:
 | sender offset&nbsp;public&nbsp;key | \\( K_{Os} \\)                          | As above, Alice and Bob each know part of the sender offset key.                                                                                                    |
 
 
+### Multi-party considerations
+
+Multi-party in this context refers to `n-of-n` parties creating a transaction output and `m-of-n` parties spending a 
+transaction input. We have three options to do this:
+- using the [m-of-n script] TariScript;
+- sharding the spending key;
+- combination of the [m-of-n script] TariScript and sharding the spending key;
+
+The multi-party impact on the transaction output, transaction input and script offset is discussed below.
+
+#### Multi-party transaction output
+
+If multiple senders and receiver parties need to create an aggregate `metadata_signature` for a single multi-party
+transaction output, there are two secrets that warrant our attention; the script offset private key \\( k\_{Oi} \\)
+controlled by the senders and the spending key \\( k_i \\) controlled by the receivers. Depending on the protocol
+design, one or both secrets may be sharded amongst all parties. The script offset private key \\( k\_{Oi} \\) will
+always be sharded amongst all parties, but the spending key \\( k_i \\) may or may not be sharded.
+
+The aggregate sender terms in (10) and (11) collected by the sender's dealer change to:
+
+$$
+\begin{aligned}
+R_{MSi} &= \sum_\omega (r_{{MSi_b}\_\omega} \cdot G) \\; \\; \\; \text{ for each sender party } \omega
+\end{aligned}
+\tag{10b}
+$$
+
+$$
+\begin{aligned}
+a_{MSi} &= 0 \\\\
+b_{MSi} &= \sum_\omega (r_{{MSi_b}\_\omega} + e(k\_{{Oi}_\omega})) \\; \\; \\; \text{ for each sender party } \omega
+\end{aligned}
+\tag{11b}
+$$
+
+If the spending key \\( k_i \\) is also sharded, the receiver's dealer needs to collect shards and combine them. The
+aggregate receiver terms in (3) and (5) collected by the receiver's dealer change to:
+
+$$
+\begin{aligned}
+R_{MRi} &= r_{MRi_a} \cdot H + \sum_\psi ( r_{{MRi_b}\_\psi} \cdot G ) \\; \\; \\; \text{ for each receiver party } \psi
+\end{aligned}
+\tag{3b}
+$$
+
+$$
+\begin{aligned}
+a_{MRi} &= r_{MRi_a} + e(v_{i}) \\\\
+b_{MRi} &= \sum_\psi ( r_{{MRi_b}\_\psi} + e \cdot k_{i\_\psi} ) \\; \\; \\; \text{ for each receiver party } \psi
+\end{aligned}
+\tag{5b}
+$$
+
+#### Multi-party transaction input
+
+If multiple senders need to create an aggregate `script_signature` for a multi-party transaction input, again, there are
+two secrets that warrant our attention, the script private key \\( k_{Si} \\) and the spending key \\( k_i \\).
+Depending on the protocol design, one or both secrets may be sharded amongst all parties. The script private key
+\\( k_{Si} \\) will always be sharded amongst all parties, but the spending key \\( k_i \\) may or may not be shared.
+
+If only the script private key \\( k_{Si} \\) will be sharded the aggregate terms in (14) collected by the sender's 
+dealer change to:
+
+$$
+\begin{aligned}
+R_{Si} &= r_{Si_a} \cdot H + \sum_\omega ( r_{{Si_b}\_\omega} \cdot G ) \\; \\; \\; \text{ for each sender party } \omega \\\\
+a_{Si}  &= r_{Si_a} +  e(v_{i}) \\\\
+b_{Si} &= \sum_\omega ( r_{{Si_b}\_\omega} + e \cdot k_{{Si}\_\omega} ) + e \cdot  k_i \\; \\; \\; \text{ for each sender party } \omega \\\\
+e &= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\\\
+\end{aligned}
+\tag{14b}
+$$
+
+If both the script private key \\( k_{Si} \\) and the spending key \\( k_i \\) will be sharded the aggregate terms
+in (14) collected by the sender's dealer change to:
+
+$$
+\begin{aligned}
+R_{Si} &= r_{Si_a} \cdot H + \sum_\omega ( r_{{Si_b}\_\omega} \cdot G ) \\; \\; \\; \text{ for each sender party } \omega \\\\
+a_{Si}  &= r_{Si_a} +  e(v_{i}) \\\\
+b_{Si} &= \sum_\omega ( r_{{Si_b}\_\omega} + e \cdot (k_{{Si}\_\omega} +  k_{i\_\omega}) ) \\; \\; \\; \text{ for each sender party } \omega \\\\
+e &= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\\\
+\end{aligned}
+\tag{14c}
+$$
+
+It is worth noting that `m-of-n` treatment of the script private key \\( k_{Si} \\) and the spending key \\( k_i \\)
+differs slightly. Only `m` of the original `n` parties need to create the script input, and the script will resolve to
+the correct \\( K_{Si} \\), but all `n` parties need to be present to recreate the original \\( k_i \\). This can be
+done with Pedersen Verifiable Secret Sharing (PVSS), similar to
+[**this example**](https://tlu.tarilabs.com/protocols/mimblewimble-mb-bp-utxo#mimblewimble--mtext-of-n--multiparty-bulletproof-utxo).
+The dealer will reconstruct the \\( k_{i\_j} \\) shards of the missing parties and add them to their shard before
+combining.
+
+#### Multi-party script offset
+
+For multiple senders, aggregate terms are collected by the sender's dealer and (16) become:
+
+$$
+\begin{aligned}
+\so = \sum_\omega \so_\omega = \sum_\omega \left( \sum_j\mathrm{k_{Sj}} - \sum_i\mathrm{k_{Oi}} \right) \_\omega \\; \text{for each input}, j,\\, \text{and each output}, i \\; \text{ for each sender party } \omega
+\end{aligned}
+\tag{16b}
+$$
+
+
 ### Preventing Cut-through with the Script Offset
 
 Earlier, we described that cut-through needed to be prevented. This is achieved by the script offset in the TariScript proposal. It mathematically links all inputs 
@@ -1082,4 +1196,5 @@ Thanks to David Burkett for proposing a method to prevent cut-through and willin
 [script public key]: Glossary.md#script-keypair
 [sender offset]: Glossary.md#sender-offset-keypair
 [script offset]: Glossary.md#script-offset
+[m-of-n script]: RFC-0202_TariScriptOpcodes.md#checkmultisigverifyaggregatepubkeym-n-public-keys-msg
 [Mimblewimble]: Glossary.md?#mimblewimble

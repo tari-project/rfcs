@@ -320,12 +320,12 @@ push 0.
 * Fails with `INVALID_INPUT` if the top stack element is not a PublicKey or Commitment
 * Fails with `INVALID_INPUT` if the second stack element is not a Signature
 
-##### CheckSigVerify(Msg),
+##### CheckSigVerify(Msg)
 
 Identical to [`CheckSig`](#checksigmsg), except that nothing is pushed to the stack if the signature is valid, and the
 operation fails with `VERIFY_FAILED` if the signature is invalid.
 
-##### CheckMultiSig(Msg)
+##### CheckMultiSig(m, n, public keys, Msg)
 
 Pop $m$ signatures from the stack. If $m$ signatures out of the provided $n$ public keys sign the 32-byte message,
 push 1 to the stack, otherwise push 0.
@@ -337,10 +337,17 @@ push 1 to the stack, otherwise push 0.
 * Fails with `STACK_UNDERFLOW` if the stack has fewer than $m$ items.
 * Fails with `INVALID_INPUT` if $m$ stack elements are not a `Signature`.
 
-##### CheckMultiSigVerify(Msg),
+##### CheckMultiSigVerify(m, n, public keys, Msg)
 
 Identical to [`CheckMultiSig`](#checkmultisigmsg), except that nothing is pushed to the stack if the signatures are valid, and the
 operation fails with `VERIFY_FAILED` if the signatures are invalid.
+
+
+
+##### CheckMultiSigVerifyAggregatePubKey(m, n, public keys, Msg)
+
+Pop m signatures from the stack. If m signatures out of the provided n public keys sign the 32-byte message,
+push the aggregate of the public keys to the stack, otherwise fails with VERIFY_FAILED.
 
 ##### ToRistrettoPoint,
 
