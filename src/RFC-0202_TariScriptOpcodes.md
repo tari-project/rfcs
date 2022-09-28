@@ -141,7 +141,7 @@ The same as [`CheckHeightVerify`](#checkheightverifyheight), except that the hei
   it to the current block height.
 
 * Fails with `INVALID_INPUT` if there is not a valid integer value on top of the stack.
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 * Fails with `VERIFY_FAILED` if the block height < `height`.
 
 
@@ -154,7 +154,7 @@ Pops the top of the stack as `height`, then pushes the value of (`height` - the 
 In other words, this opcode replaces the top of the stack with the difference between that value and the current height.
 
 * Fails with `INVALID_INPUT` if there is not a valid integer value on top of the stack.
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 
 ### Stack manipulation
 
@@ -201,20 +201,20 @@ Push the associated 32-byte value onto the stack. It will be interpreted as a pu
 
 Drops the top stack item.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 
 ##### Dup
 
 Duplicates the top stack item.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 * Fails with `STACK_OVERFLOW` if the stack would exceed the max stack height.
 
 ##### RevRot
 
 Reverse rotation. The top stack item moves into 3rd place, e.g. `abc => bca`.
 
-* Fails with `EMPTY_STACK` if the stack has fewer than three items.
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than three items.
 
 ### Math operations
 
@@ -222,42 +222,42 @@ Reverse rotation. The top stack item moves into 3rd place, e.g. `abc => bca`.
 
 Pops the top stack element as `val`. If `val` is greater than or equal to zero, push a 1 to the stack, otherwise push 0.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 * Fails with `INVALID_INPUT` if `val` is not an integer.
 
 #### GtZero
 
 Pops the top stack element as `val`. If `val` is strictly greater than zero, push a 1 to the stack, otherwise push 0.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 * Fails with `INVALID_INPUT` if the item is not an integer.
 
 #### LeZero
 
 Pops the top stack element as `val`. If `val` is less than or equal to zero, push a 1 to the stack, otherwise push 0.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 * Fails with `INVALID_INPUT` if the item is not an integer.
 
 #### LtZero
 
 Pops the top stack element as `val`. If `val` is strictly less than zero, push a 1 to the stack, otherwise push 0.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 * Fails with `INVALID_INPUT` if the items is not an integer.
 
 ##### Add
 
 Pop two items and push their sum
 
-* Fails with `EMPTY_STACK` if the stack has fewer than two items.
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than two items.
 * Fails with `INVALID_INPUT` if the items cannot be added to each other (e.g. an integer and public key).
 
 ##### Sub
 
 Pop two items and push the second minus the top
 
-* Fails with `EMPTY_STACK` if the stack has fewer than two items.
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than two items.
 * Fails with `INVALID_INPUT` if the items cannot be subtracted from each other (e.g. an integer and public key).
 
 ##### Equal
@@ -265,13 +265,13 @@ Pop two items and push the second minus the top
 Pops the top two items, and pushes 1 to the stack if the inputs are exactly equal, 0 otherwise. 0 is also pushed if the
 values cannot be compared (e.g. integer and pubkey).
 
-* Fails with `EMPTY_STACK` if the stack has fewer than two items.
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than two items.
 
 ##### EqualVerify
 
 Pops the top two items, and compares their values.
 
-* Fails with `EMPTY_STACK` if the stack has fewer than two items.
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than two items.
 * Fails with `VERIFY_FAILED` if the top two stack elements are not equal.
 
 ### Boolean logic
@@ -281,14 +281,14 @@ Pops the top two items, and compares their values.
 `n` + 1 items are popped from the stack. If the last item popped matches at least one of the first `n` items popped,
 push 1 onto the stack. Push 0 otherwise.
 
-* Fails with `EMPTY_STACK` if the stack has fewer than `n` + 1 items.
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than `n` + 1 items.
 
 #### OrVerify(n)
 
 `n` + 1 items are popped from the stack. If the last item popped matches at least one of the first `n` items popped,
 continue. Fail with `VERIFY_FAILED` otherwise.
 
-* Fails with `EMPTY_STACK` if the stack has fewer than `n` + 1 items.
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than `n` + 1 items.
 
 ### Cryptographic operations
 
@@ -296,19 +296,19 @@ continue. Fail with `VERIFY_FAILED` otherwise.
 
 Pop the top element, hash it with the Blake256 hash function and push the result to the stack.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 
 ##### HashSha256
 
 Pop the top element, hash it with the SHA256 hash function and push the result to the stack.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 
 ##### HashSha3
 
 Pop the top element, hash it with the SHA-3 hash function and push the result to the stack.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 
 ##### CheckSig(Msg)
 
@@ -316,7 +316,7 @@ Pop the public key and then the signature. If the signature signs the 32-byte me
 push 0.
 
 * Fails with `INVALID_SCRIPT_DATA` if the `Msg` is not a valid 32-byte value.
-* Fails with `EMPTY_STACK` if the stack has fewer than 2 items.
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than 2 items.
 * Fails with `INVALID_INPUT` if the top stack element is not a PublicKey or Commitment
 * Fails with `INVALID_INPUT` if the second stack element is not a Signature
 
@@ -325,11 +325,28 @@ push 0.
 Identical to [`CheckSig`](#checksigmsg), except that nothing is pushed to the stack if the signature is valid, and the
 operation fails with `VERIFY_FAILED` if the signature is invalid.
 
+##### CheckMultiSig(Msg)
+
+Pop $m$ signatures from the stack. If $m$ signatures out of the provided $n$ public keys sign the 32-byte message,
+push 1 to the stack, otherwise push 0.
+
+* Fails with `INVALID_SCRIPT_DATA` if the `Msg` is not a valid 32-byte value.
+* Fails with `INVALID_SCRIPT_DATA` if $m$ or $n$ are zero.
+* Fails with `INVALID_SCRIPT_DATA` if $m$ or $n$ are greater than `MAX_MULTISIG_LIMIT (32)`.
+* Fails with `INVALID_SCRIPT_DATA` if $m > n$ 
+* Fails with `STACK_UNDERFLOW` if the stack has fewer than $m$ items.
+* Fails with `INVALID_INPUT` if $m$ stack elements are not a `Signature`.
+
+##### CheckMultiSigVerify(Msg),
+
+Identical to [`CheckMultiSig`](#checkmultisigmsg), except that nothing is pushed to the stack if the signatures are valid, and the
+operation fails with `VERIFY_FAILED` if the signatures are invalid.
+
 ##### ToRistrettoPoint,
 
 Pops the top element which must be a valid Ristretto scalar, calculates the corresponding Ristretto point, and pushes this to the stack.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 * Fails with `INVALID_INPUT` if the top stack element is not a scalar.
 
 ### Miscellaneous
@@ -349,7 +366,7 @@ If `pred` is 0, instructions are popped until `ELSE` or `ENDIF` is encountered.
 If `ELSE` is encountered, instructions are executed until `ENDIF` is reached.
 `ENDIF` is a marker opcode and a no-op.
 
-* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `STACK_UNDERFLOW` if the stack is empty.
 * If `pred` is anything other than 0 or 1, the script fails with `INVALID_INPUT`.
 * If any instruction during execution of the clause causes a failure, the script fails with that failure code.
 
@@ -563,16 +580,20 @@ or Bob can spend the output.
 
 ### Error codes
 
-| Code                        | Description                                                                      |
-|:----------------------------|:---------------------------------------------------------------------------------|
-| `SCRIPT_TOO_LONG`           | The serialised script exceeds 1024 bytes.                                        |
-| `SCRIPT_INPUT_TOO_LONG`     | The serialised script input exceeds 1024 bytes.                                  |
-| `STACK_OVERFLOW`            | The stack exceeded 255 elements during script execution                          |
-| `EMPTY_STACK`               | There was an attempt to pop an item off an empty stack                           |
-| `INVALID_OPCODE`            | The script cannot be deserialised due to an invalid opcode                       |
-| `INVALID_SCRIPT_DATA`       | An opcode parameter is invalid or of the wrong type                              |
-| `INVALID_INPUT`             | Invalid or incompatible data was popped off the stack as input into an operation |
-| `VERIFY_FAILED` | A script condition (typically a `nnnVerify` opcode) failed                       |
+| Code                    | Description                                                                      |
+|:------------------------|:---------------------------------------------------------------------------------|
+| `RETURN`                | The serialised script exceeds 1024 bytes.                                        |
+| `STACK_OVERFLOW`        | The stack exceeded 255 elements during script execution                          |
+| `STACK_UNDERFLOW`       | Attempt to pop more items than remain on the stack during script execution       |
+| `NON_UNIT_LENGTH_STACK` | The stack did not exactly 1 element after script execution                       |
+| `INCOMPATIBLE_TYPES`    | An operand was applied to incompatible types                                     |
+| `VALUE_EXCEEDS_BOUNDS`  | A script opcode resulted in a value that exceeded the maximum or minimum value   |
+| `INVALID_OPCODE`        | The script cannot be deserialised due to an invalid opcode                       |
+| `MISSING_OPCODE`        | The script is missing closing opcodes (Else or EndIf)                            |
+| `INVALID_SIGNATURE`     | The script contained an invalid signature                                        |
+| `INVALID_INPUT`         | Invalid or incompatible data was popped off the stack as input into an operation |
+| `INVALID_SCRIPT_DATA`   | An opcode parameter is invalid or of the wrong type                              |
+| `VERIFY_FAILED`         | A script condition (typically a `nnnVerify` opcode) failed                       |
 
 ### Credits
 
