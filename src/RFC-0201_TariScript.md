@@ -172,7 +172,20 @@ The assumptions that broadly equate scripting with range proofs in the above arg
 - The scripts and their redeeming inputs must be stored on the block chain. In particular, the input data must not be
   malleable.
 
-The next section discusses the specific proposals for achieving these requirements.
+### Preventing Cut-through
+A major issue with many Mimblewimble extension schemes is that miners are able to cut-through UTXOs if an output is 
+spent in the same block it was created. This makes it so that the intervening UTXO never existed; along with any checks 
+and balances carried in that UTXO. It's also impossible to prove without additional information that cut-through even 
+occurred (though one may suspect, since the "one" transaction would contribute two kernels to the block).
+
+In particular, cut-through is devastating for an idea like TariScript which relies on conditions present in the UTXO 
+being enforced. For example, say there is a UTXO in the mempool that everyone knows the blinding factor to, but is 
+restricted to a single public key via the TariScript. A malicious user can spend the UTXO in a zero conf transaction, 
+and send the cut-through transaction to the mempool. Since the miner only sees the resulting aggregate transaction, it 
+cannot know that there was a TariScript on the removed UTXO. The solution to this problem is described later in this RFC.
+
+In contrast range proofs are still valid if they are cut-through, because the resulting UTXOs must have
+valid range proofs. 
 
 ## Protocol modifications
 
@@ -886,17 +899,9 @@ When spending the multi-party input:
 | sender offset&nbsp;public&nbsp;key | \\( K_{Os} \\)                          | As above, Alice and Bob each know part of the sender offset key.                                                                                                    |
 
 
-### Cut-through
+### Preventing Cut-through with the Script Offset
 
-A major issue with many Mimblewimble extension schemes is that miners are able to cut-through UTXOs if an output is 
-spent in the same block it was created. This makes it so that the intervening UTXO never existed; along with any checks 
-and balances carried in that UTXO. It's also impossible to prove without additional information that cut-through even 
-occurred (though one may suspect, since the "one" transaction would contribute two kernels to the block).
-
-In particular, cut-through is devastating for an idea like TariScript which relies on conditions present in the UTXO 
-being enforced.
-
-This is a reason for the presence of the script offset in the TariScript proposal. It mathematically links all inputs 
+Earlier, we described that cut-through needed to be prevented. This is achieved by the script offset in the TariScript proposal. It mathematically links all inputs 
 and outputs of all the transactions in a block and that tallied up to create the script offset. Providing the script 
 offset requires knowledge of keys that miners do not possess; thus they are unable to produce the necessary script 
 offset when attempting to perform cut-through on a pair of transactions.
