@@ -10,7 +10,7 @@
     - [RFC-0121: Consensus encoding](RFC-0121_ConsensusEncoding.md)
   - [RFC-0131: Mining](RFC-0131_Mining.md)
   - [RFC-0132: Merge Mining Monero](RFC-0132_Merge_Mining_Monero.md)
-  - [RFC-0140: Sync and Seeding](RFC-0140_Syncing_and_seeding.md)
+  - [RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes](RFC-0140_Syncing_and_seeding.md)
   - [RFC-0150: Wallets](RFC-0150_Wallets.md)
   - [RFC-0152: Emoji ID](RFC-0152_EmojiId.md)
   - [RFC-0153: Staged Wallet Security](RFC-0153_StagedWalletSecurity.md)
