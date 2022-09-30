@@ -192,7 +192,7 @@ At a high level, TariScript works as follows:
 - The _sender offset private keys_ \\((k\_{O})\\) and _script private keys_ \\((k\_{S})\\) are used in conjunction to 
   create a _script offset_ \\((\so)\\), which are used in the consensus balance to prevent a number of attacks.
 
-> NOTE: One can prove ownership of a UTXO by demonstrating knowledge  of both the commitment _blinding factor_ \\((k\\)), _and_ the _[script private key]_ \\((k_\{S})\\).
+> NOTE: One can prove ownership of a UTXO by demonstrating knowledge of both the commitment _blinding factor_ \\((k\\)), _and_ the _[script private key]_ \\((k_\{S})\\).
 
 ### UTXO data commitments
 
