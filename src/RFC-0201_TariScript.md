@@ -188,7 +188,7 @@ At a high level, TariScript works as follows:
 - After the _script_ \\((\script)\\) is executed, the execution stack must contain exactly one value that will be 
   interpreted as the _[script public key]_ \\((K\_{S})\\). 
 - The _[script public key]_ and commitment must match the _script signature_ on the input, which prevents malleability of the data in the input.
-- To prevent a script from being removed from a UTXO, a new field  _[sender offset] public key_ \\((K\_{O})\\) as been added.
+- To prevent a script from being removed from a UTXO, a new field  _[sender offset] public key_ \\((K\_{O})\\) has been added.
 - The _sender offset private keys_ \\((k\_{O})\\) and _script private keys_ \\((k\_{S})\\) are used in conjunction to 
   create a _script offset_ \\((\so)\\), which are used in the consensus balance to prevent a number of attacks.
 
