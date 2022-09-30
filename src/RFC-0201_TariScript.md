@@ -76,9 +76,8 @@ It should also be fairly clear that vanilla Mimblewimble does not have the featu
 - Multiparty side-chain peg outs and peg-ins
 - Generalised smart contracts
 
-Extensions to Mimblewimble have been proposed for most of these features, for example, David Burkett's one-sided payment
-proposal for LiteCoin ([LIP-004]), this project's [HTLC RFC](RFC-0230_HTLC.md) and the pegging proposals for the
-Clacks side-chain.
+Extensions to [Mimblewimble] have been proposed for most of these features, for example, David Burkett's one-sided payment
+proposal for LiteCoin ([LIP-004]) and this project's [HTLC RFC](RFC-0230_HTLC.md).
 
 Some smart contract features are possible, or partly possible in vanilla [Mimblewimble] using [Scriptless script], such as
 
@@ -1074,3 +1073,4 @@ Thanks to David Burkett for proposing a method to prevent cut-through and willin
 [script public key]: Glossary.md#script-keypair
 [sender offset]: Glossary.md#sender-offset-keypair
 [script offset]: Glossary.md#script-offset
+[Mimblewimble]: Glossary.md?#mimblewimble
