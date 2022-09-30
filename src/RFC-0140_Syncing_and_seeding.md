@@ -1,6 +1,6 @@
 # RFC-0140/SyncAndSeeding
 
-## Syncing Strategies and Objectives
+## Synchronizing the Blockchain: Archival and Pruned Modes
 
 ![status: draft](theme/images/status-draft.svg)
 
