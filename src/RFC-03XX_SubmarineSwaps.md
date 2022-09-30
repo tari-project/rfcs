@@ -46,8 +46,8 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This Request for Comment (RFC) aims to describe how an Atomic swap between Tari and Wari will be created.
-> Note: Name is still pending going with Wrapped Tari aka Wari for this document till a proper name has been decided apon. 
+This Request for Comment (RFC) aims to describe how an Atomic swap between Tari and Thaum will be created.
+> Note: Name is still pending going with Wrapped Tari aka Thaum for this document till a proper name has been decided apon. 
 
 ## Related Requests for Comment
 
@@ -74,57 +74,57 @@ Any comments, changes or questions to this PR can be made in one of the followin
 
 ## Description
 
-To be able to exchange Tari and Wari without the use of some centralized exhange service, we need to do Submarine swaps or Atomic swaps between the two.
-We want to keep Wari as bare bones as possible with if possible just a commitment and perhaps a rangeproof, this means that we will not have access to
+To be able to exchange Tari and Thaum without the use of some centralized exhange service, we need to do Submarine swaps or Atomic swaps between the two.
+We want to keep Thaum as bare bones as possible with if possible just a commitment and perhaps a rangeproof, this means that we will not have access to
 smart contract features typically required for doing submarine swaps. This does not mean it is not possible to do atomic swaps with non smart contract coins,
 look at [RFC-0241: AtomicSwap XMR](RFC-0241_AtomicSwapXMR.md) to see how this is done with Tari and Monero.
 
 ## Method
 
-The primary, happy path outline of a Tari - Wari submarine swap is described here, and more detail will follow. We assume
-that Alice wants to trade her Tari for Bob's Wari.
+The primary, happy path outline of a Tari - Thaum submarine swap is described here, and more detail will follow. We assume
+that Alice wants to trade her Tari for Bob's Thaum.
 
-* Negotiation - Both parties negotiate the value and other details of the Tari and Wari commitment's.
+* Negotiation - Both parties negotiate the value and other details of the Tari and Thaum commitment's.
 * Commitment - Both parties commit to the keys, nonces, inputs, and outputs to use for the transaction.
 * Tari payment - Alice makes the Tari payment to a UTXO containing a "special" script described below.
-* Wari Payment - The Wari payment is made to a multiparty [scriptless script](https://tlu.tarilabs.com/cryptography/introduction-to-scriptless-scripts) commitment.
-* Claim Tari - Bob redeems the Tari, and in doing so, reveals the Wari private key to Alice only.
-* Claim Wari - Alice may claim the Wari using the revealed key.
+* Thaum Payment - The Thaum payment is made to a multiparty [scriptless script](https://tlu.tarilabs.com/cryptography/introduction-to-scriptless-scripts) commitment.
+* Claim Tari - Bob redeems the Tari, and in doing so, reveals the Thaum private key to Alice only.
+* Claim Thaum - Alice may claim the Thaum using the revealed key.
 
 Please take note of the notation used in [TariScript] and specifically notation used on the signatures on the [transaction inputs](RFC-0201_TariScript.md#transaction-input-changes) and on the signatures on the [transaction outputs](RFC-0201_TariScript.md#transaction-output-changes).
 We will note other notations in the [Notation](#notation) section.
 
 ## TL;DR
 
-The scheme revolves around Alice, who wants to exchange her Tari for Bob's Wari. Because they don't trust each other, 
+The scheme revolves around Alice, who wants to exchange her Tari for Bob's Thaum. Because they don't trust each other, 
 they have to commit some information to do the exchange. And if something goes wrong here, we want to ensure that we can 
-refund both parties either in Wari or Tari.
+refund both parties either in Thaum or Tari.
 
-How this works is that Alice and Bob create a shared output on both chains. The Wari output is a simple aggregate key 
-to unlock the commitment, while multiple keys are needed to unlock the Tari UTXO. An aggregate key locks this Wari commitment
+How this works is that Alice and Bob create a shared output on both chains. The Thaum output is a simple aggregate key 
+to unlock the commitment, while multiple keys are needed to unlock the Tari UTXO. An aggregate key locks this Thaum commitment
 that neither Alice nor Bob knows, but they both know half of the key. The current Tari block height determines the unlocking 
 key for the Tari UTXO.
 
 The process is started by Alice and Bob exchanging and committing to some information. Alice is the first to publish a 
 transaction, which creates the Tari UTXO. If Bob is happy that the Tari UTXO has been mined and verifies all the 
-information, he will publish a transaction to create the Wari commitment.
+information, he will publish a transaction to create the Thaum commitment.
 
-The TariScript script on the UTXO ensures that they will have to reveal their portion of the Wari key when either 
-Alice or Bob spends this. This disclosure allows the other party to claim the Wari by being the only one to own the 
-complete Wari aggregate key.
+The TariScript script on the UTXO ensures that they will have to reveal their portion of the Thaum key when either 
+Alice or Bob spends this. This disclosure allows the other party to claim the Thaum by being the only one to own the 
+complete Thaum aggregate key.
 
 The script will ensure that at any point in time, at least someone can claim the Tari UTXO, and if that person does so, 
-the other party can claim the Wari commitment by looking at the spending data. It has two lock heights, determining who can 
+the other party can claim the Thaum commitment by looking at the spending data. It has two lock heights, determining who can 
 claim the Tari UTXO if the happy path fails. Before the first lock height, only Bob can claim the Tari; we call this the 
 swap transaction.
 
 If Bob disappears after Alice has posted the Tari UTXO, Alice can claim the Tari after the first lock height and before 
 the second lock height; we call this the refund transaction. It ensures that Alice can reclaim her Tari if Bob 
-disappears, and if Bob reappears, he can reclaim his Wari.
+disappears, and if Bob reappears, he can reclaim his Thaum.
 
-That leaves us with the scenario where Alice disappears after Bob posts the Wari transaction, in which case we need to 
+That leaves us with the scenario where Alice disappears after Bob posts the Thaum transaction, in which case we need to 
 protect Bob. After the second lock height, only Bob can claim the Tari; we call this the lapse transaction. The lapse 
-transaction will reveal Bob's Wari key so that if Alice reappears, she can claim the Wari.
+transaction will reveal Bob's Thaum key so that if Alice reappears, she can claim the Thaum.
 
 ## Heights, Security, and other considerations
 
@@ -168,7 +168,7 @@ $$
 
 ## Key security
 
-The risk of publicly exposing part of the Wari private key is still secure because of how [ECC](https://cryptobook.nakov.com/asymmetric-key-ciphers/elliptic-curve-cryptography-ecc#private-key-public-key-and-the-generator-point-in-ecc) works. We can
+The risk of publicly exposing part of the Thaum private key is still secure because of how [ECC](https://cryptobook.nakov.com/asymmetric-key-ciphers/elliptic-curve-cryptography-ecc#private-key-public-key-and-the-generator-point-in-ecc) works. We can
 add two secret keys together and share the public version of both. And at the same time, we know that no one can calculate
 the secret key with just one part.
 
@@ -200,13 +200,13 @@ hardware. Thus this is still secure even though we leaked part of the secret key
 
 ### Detail
 
-We rely purely on TariScript to enforce the exposure of the private Wari aggregate keys. Based on [Point Time Lock Contracts](https://suredbits.com/payment-points-part-1/), 
-the script forces the spending party to supply their Wari private key part as input data to the script, evaluated via the operation `ToRistrettoPoint`. This TariScript 
-operation will publicly reveal part of the aggregated Wari private key, but this is still secure: see [Key security](#key-security).
+We rely purely on TariScript to enforce the exposure of the private Thaum aggregate keys. Based on [Point Time Lock Contracts](https://suredbits.com/payment-points-part-1/), 
+the script forces the spending party to supply their Thaum private key part as input data to the script, evaluated via the operation `ToRistrettoPoint`. This TariScript 
+operation will publicly reveal part of the aggregated Thaum private key, but this is still secure: see [Key security](#key-security).
 
 The simplicity of this method lies therein that the spending party creates all transactions on their 
 own. Bob requires a pre-image from Alice to complete the swap transaction; Alice needs to verify that Bob published the 
-Wari transaction and that everything is complete as they have agreed. If she is happy, she will provide Bob with the 
+Thaum transaction and that everything is complete as they have agreed. If she is happy, she will provide Bob with the 
 pre-image to claim the Tari UTXO.
 
 
@@ -240,17 +240,17 @@ The Script used for the Tari UTXO is as follows:
    ENDIF
 ```
 
-Before `height_1`, Bob can claim the Tari UTXO by supplying `pre_image` and his private Wari key part `x_b`. After 
-`height_1` but before `height_2`, Alice can claim the Tari UTXO by supplying her private Wari key part `x_a`. After 
-`height_2`, Bob can claim the Tari UTXO by providing his private Wari key part `x_b`.
+Before `height_1`, Bob can claim the Tari UTXO by supplying `pre_image` and his private Thaum key part `x_b`. After 
+`height_1` but before `height_2`, Alice can claim the Tari UTXO by supplying her private Thaum key part `x_a`. After 
+`height_2`, Bob can claim the Tari UTXO by providing his private Thaum key part `x_b`.
 
 ### Negotiation
 
 Alice and Bob have to negotiate the exchange rate and the amount exchanged in the atomic swap. They also need to decide 
 how the two UTXO's will look on the blockchain. To accomplish this, the following needs to be finalized:
 
-* Amount of Tari to swap for the amount of Wari
-* Wari public key parts \\(X_a\\), \\(X_b\\) ,and its aggregate form \\(X\\)
+* Amount of Tari to swap for the amount of Thaum
+* Thaum public key parts \\(X_a\\), \\(X_b\\) ,and its aggregate form \\(X\\)
 * Tari [script key] parts \\(K_{Sa}\\), \\(K_{Sb}\\) 
 * The [TariScript] to be used in the Tari UTXO
 * The blinding factor \\(k_i\\) for the Tari UTXO, which can be a Diffie-Hellman between their Tari addresses.
@@ -258,8 +258,8 @@ how the two UTXO's will look on the blockchain. To accomplish this, the followin
 
 ### Key selection
 
-Using (1), we create the Wari keys as they are multi-party aggregate keys.
-The Wari key parts for Alice and Bob is constructed as follows:
+Using (1), we create the Thaum keys as they are multi-party aggregate keys.
+The Thaum key parts for Alice and Bob is constructed as follows:
 
 
 $$
@@ -290,12 +290,12 @@ This phase allows Alice and Bob to commit to using their keys.
 Alice needs to provide Bob with the following:
 
 * Script public key: \\( K_{Sa}\\)
-* Wari public key \\( X_a'\\)
+* Thaum public key \\( X_a'\\)
 
 Bob needs to provide Alice with the following:
 
 * Script public key: \\( K_{Sb}\\)
-* Wari public key \\( X_b'\\)
+* Thaum public key \\( X_b'\\)
 
 Using the above equations in (7), Alice and Bob can calculate \\(X\\), \\(X_a\\), \\(X_b\\)
 
@@ -307,39 +307,39 @@ Alice will construct the Tari UTXO with the correct [script](#tariscript) and pu
 blockchain, knowing that she can reclaim her Tari if Bob vanishes or tries to break the agreement. This is done with 
 standard Mimblewimble rules and signatures.
 
-### Wari payment
+### Thaum payment
 
 When Bob sees that the Tari UTXO that Alice created is mined on the Tari blockchain with the correct script, Bob can
-publish the Wari transaction containing the Wari commitment with the aggregate key \\(X = X_a + X_b + k_i \cdot G \\).
+publish the Thaum transaction containing the Thaum commitment with the aggregate key \\(X = X_a + X_b + k_i \cdot G \\).
 
 ### Claim Tari 
 
-When Alice sees that the Wari commitment that Bob created is confirmed on the second layer containing the correct aggregate 
+When Alice sees that the Thaum commitment that Bob created is confirmed on the second layer containing the correct aggregate 
 key \\(X\\), she can provide Bob with the required `pre_image` to spend the Tari UTXO. She does not have the 
-missing key \\(x_b \\) to claim the Wari yet, but it will be revealed when Bob claims the Tari. 
+missing key \\(x_b \\) to claim the Thaum yet, but it will be revealed when Bob claims the Tari. 
 
 Bob can now supply the `pre_image` and his Monero private key as transaction input to unlock the script.
 
-### Claim Wari
+### Claim Thaum
 
 Alice can now see that Bob spent the Tari UTXO, and by examining the `input_data` required to satisfy the script, she 
-can learn Bob's secret Wari key. Although this private key \\( x_b \\) is now public knowledge, her part of the Wari spend key 
-is still private, and thus only she knows the complete Wari spend key. She can use this knowledge to claim the Wari commitment.
+can learn Bob's secret Thaum key. Although this private key \\( x_b \\) is now public knowledge, her part of the Thaum spend key 
+is still private, and thus only she knows the complete Thaum spend key. She can use this knowledge to claim the Thaum commitment.
 
 ### The refund
 
-If something goes wrong and Bob never publishes the Wari or disappears, Alice needs to wait for the lock height
-`height_1` to pass. This will allow her to reclaim her Tari, but in doing so, she needs to publish her Wari secret key 
+If something goes wrong and Bob never publishes the Thaum or disappears, Alice needs to wait for the lock height
+`height_1` to pass. This will allow her to reclaim her Tari, but in doing so, she needs to publish her Thaum secret key 
 as input to the script to unlock the Tari. When Bob comes back online, he can use this public knowledge to reclaim his 
-Wari, as only he knows both parts of the Wari commitment spend key.
+Thaum, as only he knows both parts of the Thaum commitment spend key.
 
 
 ### The lapse transaction
 
 If something goes wrong and Alice never gives Bob the required `pre_image`, Bob needs to wait for the lock height
 `height_2` to pass. This will allow him to claim the Tari he wanted all along, but in doing so, he needs to publish
-his Wari secret key as input to the script to unlock the Tari. When Alice comes back online, she can use this public 
-knowledge to claim the Wari she wanted all along as only she now knows both parts of the Wari commitment spend key.
+his Thaum secret key as input to the script to unlock the Tari. When Alice comes back online, she can use this public 
+knowledge to claim the Thaum she wanted all along as only she now knows both parts of the Thaum commitment spend key.
 
 
 ## Notation
@@ -355,9 +355,9 @@ assigned greek lowercase letters in most cases. Some terms used here are noted d
 | subscript l                 | \\( _l \\)            | The lapse transaction |
 | subscript a                 | \\( _a \\)            | Belongs to Alice |
 | subscript b                 | \\( _b \\)            | Belongs to Bob |
-| Wari key                    | \\( X \\)             | Aggregate Wari public key |
-| Alice's Wari key            | \\( X_a \\)           | Alice's partial Wari public key |
-| Bob's Wari key              | \\( X_b \\)           | Bob's partial Wari public key  |
+| Thaum key                    | \\( X \\)             | Aggregate Thaum public key |
+| Alice's Thaum key            | \\( X_a \\)           | Alice's partial Thaum public key |
+| Bob's Thaum key              | \\( X_b \\)           | Bob's partial Thaum public key  |
 | Script key                  | \\( K_s \\)           | The [script key] of the utxo |
 | Alice's Script key          | \\( K_sa \\)          | Alice's partial [script key]  |
 | Bob's Script key            | \\( K_sb \\)          | Bob's partial [script key]  |
