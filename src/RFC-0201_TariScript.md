@@ -76,7 +76,7 @@ It should also be fairly clear that vanilla Mimblewimble does not have the featu
 - Multiparty side-chain peg outs and peg-ins
 - Generalised smart contracts
 
-Extensions to Mimblewimble have been proposed for most of these features, for example, David Burkett's one-sided payment
+Extensions to [Mimblewimble] have been proposed for most of these features, for example, David Burkett's one-sided payment
 proposal for LiteCoin ([LIP-004]) and this project's [HTLC RFC](RFC-0230_HTLC.md).
 
 Some smart contract features are possible, or partly possible in vanilla [Mimblewimble] using [Scriptless script], such as
