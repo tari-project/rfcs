@@ -181,7 +181,7 @@ Please refer to [Notation](#notation), which provides important pre-knowledge fo
 At a high level, TariScript works as follows:
 
 - The spending _script_ \\((\script)\\) is recorded in the transaction UTXO.
-- Although scripts included on the UTXO, they are only executed when the UTXO is **spent**, and in most cases will require additional
+- Although scripts are included on the UTXO, they are only executed when the UTXO is **spent**, and in most cases, will require additional
  input data to be provided at this time. 
 - The _script input data_ is recorded in the transaction inputs.
 - When validating a transaction, the _script_ is executed using the _script input data_.
