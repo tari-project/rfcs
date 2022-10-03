@@ -1,4 +1,4 @@
-# RFC-3xx/Submarine Swap
+# RFC-310/Submarine Swap
 
 ![status: draft](theme/images/status-draft.svg)
 
