@@ -77,6 +77,14 @@ is required to serve parts of a transaction.
 Validator Nodes will register themselves on the base layer to prevent Sybil attacks. This registration will also provide the address key for the VN.
 To determine the liveness of a VN, we will require the vn to register itself after a period.
 
+### Templates.
+A template is what Tari defines as a smart contract. These templates are registered on the base layer and mined. VNs will reference the base layer for valid contracts. 
+
+### Transactions
+Every transaction will be divided into shards for processing by VNCs. A VNC will be created for each shard contained in each transaction. Each VNC is responsible 
+for validating its own shard. The VNCs communicate with the other VNCs over three rounds to determine if each VNC has a valid shard from the transaction. The VNCs will sign
+and broadcast this over BFT consensus to each other and within, see [Emergent Cerberus](https://www.radixdlt.com/post/cerberus-infographic-series-chapter-vi).
+Each transaction should contain all the metadata(signatures etc.) to validate the transaction.
 
 [base layer]: Glossary.md#base-layer
 [validator node]: Glossary.md#validator-node
