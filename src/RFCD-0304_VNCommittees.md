@@ -53,9 +53,9 @@ select the committee of [Validator Node]s
 (VNs) that will serve a given [Digital Asset] (DA).
 
 ## Related Requests for Comment
-* [RFC-0311: Digital Asset Templates](RFC-0311_AssetTemplates.md)
-* [RFC-0302: Validator Nodes](RFCD-0302_ValidatorNodes.md)
-* [RFC-0341: Asset Registration](RFC-0341D_AssetRegistration.md)
+* [RFCD-0311: Digital Asset Templates](RFCD-0311_AssetTemplates.md)
+* [RFCD-0302: Validator Nodes](RFCD-0302_ValidatorNodes.md)
+* [RFCD-0341: Asset Registration](RFCD-0341_AssetRegistration.md)
 
 ## Description
 

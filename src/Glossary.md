@@ -476,6 +476,14 @@ UTXO values are hidden by their [commitment]s. Only the owner of the UTXO and (p
 Validator nodes (VNs) make up the Tari second layer, or [Digital Asset Network]. VNs are responsible for creating and
 updating [digital asset]s living on the Tari network.
 
+
+## Validator Node committee
+
+[validator node committee]: #validator-node-committee "A bunch of second-layer nodes that form a BFT consensus to validates digital asset state transitions"
+
+Validator nodes (VNs) will group together to form BFT consensus committees or Validator Node Committees (VNCs) and run all asset, or [Digital Asset Network]. VNCs are responsible for creating and
+updating [digital asset]s living on the Tari network.
+
 ## Wallet
 
 [wallet]: #wallet "A Wallet for Tari coins"

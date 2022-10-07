@@ -2,7 +2,7 @@
 
 ## Namespace Registration on Base Layer
 
-![status: outdated](../../book/theme/images/status-outofdate.svg)
+![status: deprecated](theme/images/status-deprecated.svg)
 
 **Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal)
 
@@ -55,8 +55,8 @@ specified domain name with a [digital asset] on the Digital Assets Network ([DAN
 
 ## Related Requests for Comment
 
-- [RFC-0341/AssetRegistration](RFC-0341D_AssetRegistration.md)
-- [RFC-0310/AssetTemplates](RFC-0311_AssetTemplates.md)
+- [RFCD-0341/AssetRegistration](RFCD-0341D_AssetRegistration.md)
+- [RFCD-0310/AssetTemplates](RFCD-0311_AssetTemplates.md)
 
 <br>
 

@@ -2,7 +2,7 @@
 
 ## High level Digital Asset Network Specification
 
-![status: draft](theme/images/status-draft.svg)
+![status: deprecated](theme/images/status-deprecated.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
@@ -67,16 +67,16 @@ specifications can be built.
 
 This RFC supersedes and deprecates several older RFCs:
 
-- [RFC-0300: Digital Assets Network](RFCD-0300_DAN.md)
-- [RFC-0301: Namespace Registration](RFC-0301_NamespaceRegistration.md)
-- [RFC-0302: Validator Nodes](RFCD-0302_ValidatorNodes.md)
-- [RFC-0304: Validator Node committee selection](RFCD-0304_VNCommittees.md)
-- [RFC-0345: Asset Life cycle](RFC-0345_AssetLifeCycle.md)
+- [RFCD-0300: Digital Assets Network](RFCD-0300_DAN.md)
+- [RFCD-0301: Namespace Registration](RFCD-0301_NamespaceRegistration.md)
+- [RFCD-0302: Validator Nodes](RFCD-0302_ValidatorNodes.md)
+- [RFCD-0304: Validator Node committee selection](RFCD-0304_VNCommittees.md)
+- [RFCD-0345: Asset Life cycle](RFCD-0345_AssetLifeCycle.md)
 
 Several RFC documents are in the process of being revised in order to fit into this proposed framework:
 
-* [RFC-0300: The Digital Assets Network](RFCD-0300_DAN.md)
-* [RFC-0340: Validator Node Consensus](RFC-0340_VNConsensusOverview.md)
+* [RFCD-0300: The Digital Assets Network](RFCD-0300_DAN.md)
+* [RFCD-0340: Validator Node Consensus](RFCD-0340_VNConsensusOverview.md)
 
 ## Motivation
 
