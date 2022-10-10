@@ -86,6 +86,17 @@ for validating its own shard. The VNCs communicate with the other VNCs over thre
 and broadcast this over BFT consensus to each other and within, see [Emergent Cerberus](https://www.radixdlt.com/post/cerberus-infographic-series-chapter-vi).
 Each transaction should contain all the metadata(signatures etc.) to validate the transaction.
 
+### Network view
+Because the base layer is a decentralized network, we can never be 100% certain about the view of the network from each individual node. 
+We must also ensure that re-orgs cannot influence the second layer. 
+To circumvent these two problems, we need the network of the second layer to lag by the base_layer_lag, and all height decisions must be used with the height_grace period. 
+
+The base_layer_lag is defined as the number of base_layer blocks that must pass before the block is used on the second layer. If we go by a day delay, we must use 720 as the base_layer_lag. This means that if, for example, a VN publishes a registration transaction that is mined at height 1000, the VN will only be seen as being registered at height 1720.
+
+The height_grace period is defined as the height +- the height_grace when consensus rules are implemented. The base layer has 2-minute block intervals, this gives enough time for a block to reach the entire network so that the network is at the same height when a new block comes in, and they can make decisions on the height. With the second layer, the delay times are much less and near instantiations. And every VN determines its own view of the base_layer via its connected base_node. Going with the previous VN registration example: if a VN registers on height 1000, and it is now height 1720, it can now participate in a VNC. But if the other VN in the network's base_node is only at height 1719, it will refuse to connect in a VNC with the new VN because the base_layer_lag has not been passed yet. To circumvent this problem, we add the height_grace. If we define this as two blocks, the VN will determine consensus rules with this in mind. So with the previous example, the VN will allow the new VNC to participate because it is within the height_grace. This principle is very similar to the [FTL] in the header timestamp.
+
+
 [base layer]: Glossary.md#base-layer
 [validator node]: Glossary.md#validator-node
 [validator node comittee]: Glossary.md#validator-node-committee
+[FTL]: RFC-0120_Consensus.md#FTL
