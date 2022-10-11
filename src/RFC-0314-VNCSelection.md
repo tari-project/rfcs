@@ -85,4 +85,11 @@ $$
 
 This will give a sortable list we use to order the VNs for leader selection.
 
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 11 Oct 2022 | First outline       | SWvHeerden|
+
+
 [base node]: Glossary.md#base-node
