@@ -96,6 +96,12 @@ The base_layer_lag is defined as the number of base_layer blocks that must pass 
 The height_grace period is defined as the height +- the height_grace when consensus rules are implemented. The base layer has 2-minute block intervals, this gives enough time for a block to reach the entire network so that the network is at the same height when a new block comes in, and they can make decisions on the height. With the second layer, the delay times are much less and near instantiations. And every VN determines its own view of the base_layer via its connected base_node. Going with the previous VN registration example: if a VN registers on height 1000, and it is now height 1720, it can now participate in a VNC. But if the other VN in the network's base_node is only at height 1719, it will refuse to connect in a VNC with the new VN because the base_layer_lag has not been passed yet. To circumvent this problem, we add the height_grace. If we define this as two blocks, the VN will determine consensus rules with this in mind. So with the previous example, the VN will allow the new VNC to participate because it is within the height_grace. This principle is very similar to the [FTL] in the header timestamp.
 
 
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 11 Oct 2022 | First outline       | SWvHeerden|
+
 [base layer]: Glossary.md#base-layer
 [validator node]: Glossary.md#validator-node
 [validator node comittee]: Glossary.md#validator-node-committee
