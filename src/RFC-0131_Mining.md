@@ -92,15 +92,14 @@ With this in mind, we should only choose one GPU/ASIC algorithm and one for CPUs
 An excellent technical choice would be merge mining with Monero using RandomX as a CPU-only algorithm and SHA3, also known as Keccak
 , for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm means there is 
 a low likelihood of unforeseen optimizations that will give a single miner a considerable advantage. It also means that it stands a 
-good chance of being "commoditized" when ASICs are eventually manufactured. This means that SHA3 ASICs will be widely available 
-and not available from only a single supplier.
+good chance of being "commoditized" when ASICs are eventually manufactured. This would mean that SHA3 ASICs are widely available from multiple suppliers.
 
 ### The block distribution
 
-As discussed earlier, close to a 50/50 distribution is needed to reduce the chance of hash rate attacks. However,
+A 50/50 split in hash rate among algorithms minimises the chance of hash rate attacks. However,
 sufficient buy-in is required, especially with regard to merge mining RandomX with Monero. To make it worthwhile for a
-Monero pool operator to merge mine Tari, but still, guard against hash rate attacks and to be inclusive of independent
-Tari supporters and enthusiasts, a 60/40 split is proposed in favor of merge mining RandomX with Monero. The
+Monero pool operator to merge mine Tari, but still guard against hash rate attacks and to be inclusive of independent
+Tari supporters and enthusiasts, a 60/40 split is proposed in favour of merge mining RandomX with Monero. The
 approaching [Monero tail emission](https://web.getmonero.org/resources/moneropedia/tail-emission.html) at the end of May
 2022 should also make this a worthwhile proposal for Monero pool operators.
 
@@ -117,8 +116,8 @@ difficulty adjustment algorithm has also been
 
 The final proposal is summarized below:
 
-- 2x mining algorithms, with an average combined target block time of 120 s, to match Monero's block interval
-- LWMA version 2018-11-27 difficulty algorithm adjustment for both with difficulty algorithim window of 90 blocks
+- Two mining algorithms, with an average combined target block time of 120 s, to match Monero's block interval.
+- A log-weighted moving average difficulty adjustment algorithm using a window of 90 blocks.
 
 ### Tari mining hash
 
@@ -138,8 +137,7 @@ The hash MUST be constructed with the following encoded with [consensus encoding
 
 #### RandomX
 
-This will be merge mined with Monero and MUST follow all Monero consensus rules with the following for Tari. 
-The Monero coinbase transaction MUST contain the Tari mining hash in the extra field.
+Monero blocks that are merge-mining Tari MUST include the Tari mining hash in the extra field of the Monero coinbase transaction.
 
 Tari also imposes the following consensus rules:
 - The `seed_hash` MUST only be used for 3000 blocks, after which a block MUST be discarded if it's used again.
@@ -166,4 +164,5 @@ For the Sha3 difficulty, the Sha3 mining hash is hashed with Sha3-256.
 Tari imposes the following consensus rules:
 - The Big endian difficulty MUST be equal or greater than the target for that block as determined by the LWMA for Tari.
 - MUST set the header field PoW:pow_algo as 1 for a Sha block.
+- The PoW:pow_data field is empty
 - The LWMA MUST use a target time of 300 seconds.
