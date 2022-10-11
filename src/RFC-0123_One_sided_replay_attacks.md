@@ -113,6 +113,11 @@ This method has the following disadvantages:
 * Syncing pruned nodes need to provide extra info to ensure that the downloaded list of commitments is correct
   * Without requiring extra information in the header, pruned nodes need to download the entire TXO set and compare this to the output_mmr root.
 
+# Change Log
+
+| Date        | Change        | Author     |
+|:------------|:--------------|:-----------|
+| 10 Oct 2022 | First outline | SWvheerden |
 
 
 
