@@ -49,15 +49,20 @@ technological merits of the potential system outlined herein.
 The goal of this RFC is to describe the process for allocating Validator Nodes (VNs) to Validator Node Committees (VNCs)
 
 ## Intro
-Validator nodes will have to group themselves into Validator Node Committees for transactions/shard processing. Committees will be formed for each new transaction/shard processing. This committee needs to be determined randomly, and we use the VN_Key as this changes periodically and is random. Each VN will be allocated a unique and individual shard space to serve in as a VNC member. 
+Validator nodes will have to group themselves into Validator Node Committees for transactions/shard processing. Committees will be formed for each new transaction/shard processing. This committee needs to be determined pseudorandomly, and we use the VN_Key as this changes periodically and is pseudorandom. Each VN will be allocated a unique and individual shard space to serve in as a VNC member. 
 
 ## Committee Creation
 Because we have the base layer where each VN needs to publish a registration transaction, we can get base_node and miners to keep track of all active VNs. We represent all VNs in a (balanced) Merkle tree with the VN_keys as leaves. We declare a constant `COMMITTEE_SIZE` which can be changed in the consensus constants.
-When a transaction is proposed, the shards for each substate determine the VN committee from the Merkle tree by finding the `COMMITTEE_SIZE / 2` VN_keys to the 
-left and `COMMITTEE_SIZE / 2` VN_Keys to the right in the Merkle tree.
+For the sake of simplicity, `COMMITTEE_SIZE` MUST be an even positive integer.
+
+As per the Cerberus algorithm, validator nodes are responsible for managing _sub-states_, rather than contract semantics. 
+A given instruction may involve dozens of sub-states, meaning that there are potentially dozens of non-overlapping committees that are required to reach a braided consensus.
+Each committee is determined independently. For each sub-state, a committee is formed by taking the first  `COMMITTEE_SIZE / 2` VN_keys to the left and `COMMITTEE_SIZE / 2` VN_Keys to the right of the sub-state's shard address in the merkle tree.
 
 This makes it very easy to determine what shard space a VN needs to serve, which states the VN needs to sync from peers, and who has them. Because the
 second layer has a delayed view of the network. VNs can also know beforehand and prep to ensure they are ready when new block heights appear. 
+
+An important edge case here that is implied but not listed, is that if the whole network is less or equal to the `COMMITTEE_SIZE`, then the whole network participates in the VNC.
 
 ## Committee proofs
 We construct the balanced Merkle tree from all active VN registration transactions and prune away all inactive ones. Because the [base node]s have to keep track
@@ -74,7 +79,7 @@ block the VN registration was mined in. Hence the reason for the Merkle root lag
 randomness, such as the `utxo_merkle_root`, then we don't have to do the lag by 1, and it can all be calculated in the single block.
 
 ## Leader selection
-The VNC leader should not be decided beforehand and must be chosen randomly only when a tx is published. We also need to select an order of leaders
+The VNC leader should not be decided beforehand and must be chosen pseudorandomly only when a tx is published. We also need to select an order of leaders
 in the case, the first leader is offline/and or not responsive.
 
 $$
