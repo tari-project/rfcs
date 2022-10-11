@@ -82,3 +82,10 @@ This RFC is expand on all terms used the Dan RFCs, that means RFC-03xx.
 | AccessRules | TBD                       | Access rules that limit operations on components and resources.                                                                                                                                                                           |
 | Badge       | TBD, <ResourceAddress, n> | A resource used with AccessRules and to generate bearer tokens                                                                                                                                                                            |
 | BearerToken | nonce                     | A delegated, partially stateless proof providing limited and scoped access to a particular resource or component                                                                                                                          |
+
+
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 11 Oct 2022 | First outline       | SWvHeerden|
