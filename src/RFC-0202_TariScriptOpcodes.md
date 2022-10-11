@@ -600,4 +600,14 @@ or Bob can spend the output.
 Thanks to [@philipr-za](https://github.com/philipr-za) and [@SWvheerden](https://github.com/SWvheerden) for their input
 and contributions to this RFC.
 
+
+# Change Log
+
+| Date         | Change                                 | Author    |
+|:-------------|:---------------------------------------|:----------|
+| 17 Aug 2020  | First draft                            | CjS77     |
+| 8 Mar 2021   | Minor update                           | philip-za |
+| 28 Sep 2022  | Minor update to reflect implementation | sdbondi   |
+
+
 [TariScript]: Glossary.md#tariscript
