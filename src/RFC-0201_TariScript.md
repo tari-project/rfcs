@@ -194,14 +194,18 @@ Please refer to [Notation](#notation), which provides important pre-knowledge fo
 At a high level, TariScript works as follows:
 
 - The spending _script_ \\((\script)\\) is recorded in the transaction UTXO.
-- UTXOs also define a new, _[sender offset] public key_ \\((K\_{O})\\).
+- Although scripts are included on the UTXO, they are only executed when the UTXO is **spent**, and in most cases, will require additional
+ input data to be provided at this time. 
+- The _script input data_ is recorded in the transaction inputs.
+- When validating a transaction, the _script_ is executed using the _script input data_.
 - After the _script_ \\((\script)\\) is executed, the execution stack must contain exactly one value that will be 
-  interpreted as the _[script public key]_ \\((K\_{S})\\). One can prove ownership of a UTXO by demonstrating knowledge 
-  of both the commitment _blinding factor_ \\((k\\)), _and_ the _[script private key]_ \\((k_\{S})\\).
-- The _script private key_ \\((k_\{S})\\), commitment _blinding factor_ \\((k)\\) and commitment _value_ \\((v)\\) signs 
-  the _script input data_ \\((\input)\\).
+  interpreted as the _[script public key]_ \\((K\_{S})\\). 
+- The _[script public key]_ and commitment must match the _script signature_ on the input, which prevents malleability of the data in the input.
+- To prevent a script from being removed from a UTXO, a new field  _[sender offset] public key_ \\((K\_{O})\\) has been added.
 - The _sender offset private keys_ \\((k\_{O})\\) and _script private keys_ \\((k\_{S})\\) are used in conjunction to 
   create a _script offset_ \\((\so)\\), which are used in the consensus balance to prevent a number of attacks.
+
+> NOTE: One can prove ownership of a UTXO by demonstrating knowledge of both the commitment _blinding factor_ \\((k\\)), _and_ the _[script private key]_ \\((k_\{S})\\).
 
 ### UTXO data commitments
 
