@@ -68,6 +68,10 @@ This Merkle root in the header always lags by one block, meaning that the Merkle
 When a VN registers, that new VN key will only appear inside the Merkle tree in the next block. The reason for this is that header_hash is used in the
 the calculation process of the VN_key. 
 
+### Option 2 for Committee proofs
+The VN_key needs some random entropy that's not minable to ensure that a VN cannot choose its VN_key. This random entropy is currently the block hash of the
+block the VN registration was mined in. Hence the reason for the Merkle root lagging by one block. If we change this entropy value be another source of 
+randomness, such as the `utxo_merkle_root`, then we don't have to do the lag by 1, and it can all be calculated in the single block.
 
 ## Leader selection
 The VNC leader should not be decided beforehand and must be chosen randomly only when a tx is published. We also need to select an order of leaders
