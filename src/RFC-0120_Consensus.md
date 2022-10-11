@@ -2,9 +2,9 @@
 
 ## Base Layer Consensus
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [S W van heerden](https://github.com/SWvheerden) and [Stanley Bondi](https://github.com/sdbondi)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Stanley Bondi](https://github.com/sdbondi) and [SW van heerden](https://github.com/SWvheerden)
 
 # Licence
 
