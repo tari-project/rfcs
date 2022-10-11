@@ -362,6 +362,13 @@ done by the whole network, and verification of sorting is exceptionally cheap.
 Transaction outputs are sorted lexicographically by the byte representation of their Pedersen commitment i.e. `\\(k \cdot G + v \cdot H\\)`.
 Transaction inputs are sorted lexicographically by the [hash of the output](RFC-0121_ConsensusEncoding.md#transaction-output) that is spent by the input.
 
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 11 Oct 2022 | First stable        | SWvHeerden|
+
+
 
 [block]: Glossary.md#block
 [block header]: Glossary.md#block-header
