@@ -2,7 +2,7 @@
 
 ## Stealth addresses
 
-![status: draft](theme/images/status-draft.svg)
+![status: testing](theme/images/status-testing.svg)
 
 **Maintainer(s)**: [Philip Robinson](https://github.com/philipr-za)
 
@@ -114,3 +114,9 @@ one-time private key \\( c + a \\).
 [Cryptonote]: https://cryptonote.org/whitepaper.pdf
 [Peter Todd]: https://www.mail-archive.com/bitcoin-development@lists.sourceforge.net/msg03613.html
 [BIP-32]: https://en.bitcoin.it/wiki/BIP_0032
+
+# Change Log
+
+| Date        | Change                                 | Author    |
+|:------------|:---------------------------------------|:----------|
+| 01 Dec 2022 | First draft                            | philip-za |
