@@ -166,3 +166,9 @@ Tari imposes the following consensus rules:
 - MUST set the header field PoW:pow_algo as 1 for a Sha block.
 - The PoW:pow_data field is empty
 - The LWMA MUST use a target time of 300 seconds.
+
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 11 Oct 2022 | First outline       | SWvHeerden|
