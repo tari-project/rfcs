@@ -2,9 +2,9 @@
 
 ## Message Serialization
 
-![status: outdated](theme/images/status-outofdate.svg)
+![status: active](theme/images/status-active.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) [Stanley Bondi](https://github.com/sdbondi)
 
 # Licence
 
@@ -59,10 +59,10 @@ The aim of this Request for Comment (RFC) is to describe the message serializati
 One way of interpreting the Tari network is that it is a large peer-to-peer messaging application. The entities chatting
 on the network include:
 
-* Users
 * Wallets
 * Base nodes
 * Validator nodes
+* Other client applications (e.g. chat)
 
 The types of messages that these entities send might include:
 
@@ -87,7 +87,7 @@ For successful communication to occur, the following needs to happen:
   * decryption;
   * verifying signatures;
   * extracting the payload;
-  * passing the serialized payload to modules that are interesting in that particular message type.
+  * passing the serialized payload to modules that are interested in that particular message type.
 * The message is deserialized into the correct data structure for use by the receiving software
 
 This document only covers the first and last steps, i.e. serializing data from in-memory objects to a format that can
@@ -104,7 +104,6 @@ this include:
 When sending a message from a human to the network, the following happens:
 
 * The message is deserialized into the native structure.
-* The deserialization acts as an automatic validation step.
 * Additional validation can be performed.
 * The usual machine-to-machine process is followed, as described above.
 
@@ -118,33 +117,61 @@ The ideal properties for binary serialization formats are:
 
 Several candidates fulfill these properties to some degree.
 
-#### [ASN.1](http://www.itu.int/ITU-T/asn1/index.html)
+#### [bincode](https://docs.rs/bincode/latest/bincode/)
 
 * Pros:
-  * Very mature (was developed in the 1980s)
-  * Large number of implementations
-  * Dovetails nicely into ZMQ 
+  * Fast and compact
+  * Serde support
 * Cons:
-  * Limited Rust/Serde support
-  * Requires schema (additional coding overhead if no automated tools for this exist)
-
+  * (Almost) any type changes result in incompatibilities
+  * language support outside of rust is limited
 
 #### [Message Pack](http://msgpack.org/)
 
 * Pros:
-  * Very compact
+  * Compact
   * Fast
   * Multiple language support
   * Good Rust/Serde support
-  * Dovetails nicely into ZMQ 
+  * Native byte encoding (compared to JSON)
 * Cons:
   * No metadata support
+  * Self-describing overhead
+  
+MessagePack has almost the exact same characteristics as JSON, without the syntactical overhead.
+It is also self-describing, which can be a pro and a con. Like JSON, field names are encoded as strings 
+which adds significant overhead over p2p comms. However, when used in conjunction with [msgpack-schemas](https://github.com/Idein/msgpack-schema)
+this overhead is removed and binary representations become characteristically similar to protobuf.
 
 #### [Protobuf](https://code.google.com/p/protobuf/)
+[protobuf]: #protobuf "Protobuf"
 
-Similar to Message Pack, but also requires schemas to be written and compiled. Serialization 
-performance and size
-are similar to Message Pack. It Can work with ZMQ, but is better designed to be used with gRPC.
+Protobuf is a widely-used binary serialization format that was developed by Google and has excellent Rust support. 
+The Protobuf byte format encodes tag numbers as varints that map to a known schema fields. 
+
+* Pros:
+  * Compact
+  * Fast
+  * Multiple language support
+  * Good Rust/Serde support
+  * Some schema changes are backward compatible
+* Cons
+  * Schema must be defined for each message type
+  * Does not fit into the serde ecosystem, meaning it is hard to swap out later.
+
+In the latest protoV3 spec, all fields are optional. 
+which forces the implementation to check for the presence of required data
+and allows for. This means that you can change your schema significantly and there is a 
+
+It's fairly easy to reason about backwards-compatibility for schema changes once you understand [protobuf encoding]. 
+Essentially, since all fields in protov3 are optional, a message will usually be able to successfully decode even if
+message tags are added/changed/removed. It therefore depends on the application whether changes are backward-compatible.
+
+Generally, the following rules apply:
+- you should not change existing field types to a non-compatible type. For example, changing a `uint32` to a `uint64` is fine, but changing a `uint32` to a `string` is not.
+- you should not change existing tag numbers should not be changed, field names may change as needed since they are not included in the byte format.
+- you may delete optional or repeated fields
+- you may add new optional or repeated fields as long as you use a new field number 
 
 #### [Cap'n Proto](http://kentonv.github.io/capnproto/)
 
@@ -156,25 +183,29 @@ Similar to Protobuf, but claims to be much faster. Rust is supported.
 bulk messaging. While Pieter usually offers sage advice, I'm going to argue against using custom serializers at this
 stage for the following reasons:
 
-* We're unlikely to improve hugely over MessagePack.
-* Since Serde does 95% of our work for us with MessagePack, there's a significant development overhead (and new bugs)
+* We're unlikely to improve hugely over existing serialization formats.
+* Since Serde does 95% of our work for us, there's a significant development overhead (and new bugs)
   involved with a hand-rolled solution.
-* We'd have to write de/serializers for every language that wants Tari bindings; whereas every major language has a
-  MessagePack implementation.
+* We'd have to write de/serializers for every language that wants Tari bindings; whereas every major language has
+  a protobuf implementation.
 
-### Serialization in Tari
+### Tari message formats
 
-Deciding between these protocols is largely a matter of preference, since there isn't that much difference between them.
-Given that ZMQ is used in other places in the Tari network, MessagePack looks to be a good fit while offering a compact
-data structure and highly performant de/serialization. In Rust, in particular, there's first-class support for MessagePack
-in Serde.
+#### Wire message format 
+
+The decision was taken to use [Protobuf](#protobufhttpscodegooglecompprotobuf) encoding for messages on the Tari peer-to-peer wire protocol, as it ticks these boxes:
+- it is possible to modify message schemas in future versions without breaking network communication with previous versions of node software,
+- de/encoding is compact and fast, and
+- it has great Rust support through the [prost] crate.
+
+#### Other serialization formats
 
 For human-readable formats, it makes little sense to deviate from JSON. For copy-paste semantics, the extra compression
 that Base64 offers over raw hex or Base58 makes it attractive.
 
-Many Tari data types' binary representation will be the straightforward MessagePack version of each field in the related
-`struct`. In these cases, a straightforward `#[derive(Deserialize, Serialize)]` is all that is required to enable the data
-structure to be sent over the wire.
+The standard binary representation used in databases (e.g. blockchain storage, wallets) will make use of `bincode`. 
+In these cases, a straightforward `#[derive(Deserialize, Serialize)]` is all that is required to implement de/encoding 
+for the data structure. 
 
 However, other structures might need fine-tuning, or hand-written serialization procedures. To capture both use cases,
 it is proposed that a `MessageFormat` trait be defined:
@@ -194,3 +225,15 @@ pub trait MessageFormat: Sized {
 This trait will have default implementations to cover most use cases (e.g. a simple call through to `serde_json`). Serde
 also offers significant ability to tweak how a given struct will be serialized through the use of
 [attributes](https://serde.rs/attributes.html).
+
+[msgpack schema]: https://github.com/Idein/msgpack-schema
+[protobuf encoding]: https://developers.google.com/protocol-buffers/docs/encoding
+[prost]: https://github.com/tokio-rs/prost
+
+# Change Log
+
+| Date        | Change            | Author  |
+|:------------|:------------------|:--------|
+| 29 Mar 2019 | First draft       | CjS77   |
+| 24 Jul 2019 | Technical editing | anselld |
+| 13 Oct 2022 | Update            | sdbondi |
