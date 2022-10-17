@@ -406,9 +406,6 @@ Note that:
   metadata signature will be invalidated.
 - We provide the complete script on the output.
 
-_(See [Multi-party transaction output](#multi-party-transaction-output) for a discussion ot the multi-party version of a 
-transaction output.)_
-
 ### Transaction input changes
 
 The current definition of an input is
@@ -486,9 +483,6 @@ but obtained by executing the script with the provided input data. Because this 
 private key \\(k\_{Si}\\), it ensures that only the owner can provide the input data \\(\input_i\\) to the 
 TransactionInput. 
 
-_(See [Multi-party transaction input](#multi-party-transaction-input) for a discussion ot the multi-party version of a
-transaction output.)_
-
 ### Script Offset
 
 For every transaction an accompanying [script offset] \\( \so \\) needs to be provided. This is there to prove that every  
@@ -502,9 +496,6 @@ $$
 \end{aligned}
 \tag{16}
 $$
-
-_(See [Multi-party script offset](#multi-party-script-offset) for a discussion ot the multi-party version of the
-script offset.)_
 
 Verification of (16) will entail:
 
