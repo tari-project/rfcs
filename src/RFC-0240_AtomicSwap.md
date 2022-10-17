@@ -168,6 +168,12 @@ assigned greek lowercase letters in most cases. Some terms used here are noted d
 | 
 
 
+## Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 17 Oct 2022 | First outline       | SWvHeerden|
+
 [HTLC]: Glossary.md#hashed-time-locked-contract
 [Mempool]: Glossary.md#mempool
 [Mimblewimble]: Glossary.md#mimblewimble
