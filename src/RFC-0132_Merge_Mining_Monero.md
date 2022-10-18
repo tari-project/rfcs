@@ -76,7 +76,7 @@ the `get_coinbase` gRPC function.
 
 Next, the coinbase transaction is added to the new block template and passed back to the base node for the new MMR roots to be calculated.
 Furthermore, the base node constructs a _Blake256_ hash of _some_ of the Tari header fields. We'll call this hash the merge mining hash \\( h_m \\) that commits to 
-the following header fields in order: `version`, `height`,`prev_hash`,`timestamp`,`output_mr`,`range_proof_mr`,`output_mmr_size`,`kernel_mr`,
+the following header fields in order: `version`, `height`,`prev_hash`,`timestamp`,`input_mr`, `output_mr`,`output_mmr_size`,`kernel_mr`,
 `kernel_mmr_size`,`total_kernel_offset`,`total_script_offset`. Note, this hash does not include the `pow` and `nonce` fields, as these fields are set as part of mining.
 
 To have the chance of mining a Monero block as well as a Tari block, we must obtain a new valid monero block template, by calling [get_block_template].
@@ -113,7 +113,7 @@ pub struct MoneroPowData {
     /// transaction count
     transaction_count: u16,
     /// transaction root
-    transaction_root: Hash,
+    merkle_root: MoneroHash,
     /// Coinbase merkle proof hashes
     coinbase_merkle_proof: MerkleProof,
     /// Coinbase tx from Monero
@@ -126,7 +126,7 @@ _fig 2. Monero PoW data struct serialized in Tari blocks_
 pub struct MerkleProof {
    branch: Vec<Hash>,
    depth: u16,
-   path: u32,
+   path_bitmap: u32,
 }
 ```
 _fig 3. Merkle proof struct_
