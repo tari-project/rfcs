@@ -266,13 +266,16 @@ $$
 
 The [metadata signature] is an aggregated Commitment Signature signed with a combination of the homomorphic 
 commitment private values \\( (v\_i \\, , \\, k\_i )\\), with the spending key only known by the receiver, and sender 
-offset private key \\(k\_{Oi}\\), only known by the sender. The signature challenge consists of all the transaction 
-output metadata, effectively forming a contract between the sender and receiver, making all those values non-malleable 
-and ensuring only the sender and receiver can enter into this contract. (See [Signature on Commitment values] by F. 
-Zhang et. al. and [Commitment Signature] by G. Yu. for details about this signature.)
+offset private key \\(k\_{Oi}\\), only known by the sender. (_Note that \\( k\_{Oi} \\) should be treated as a nonce._) 
+The signature challenge consists of all the transaction output metadata, effectively forming a contract between the 
+sender and receiver, making all those values non-malleable and ensuring only the sender and receiver can enter into 
+this contract. (See [Signature on Commitment values] by F. Zhang et. al. and [Commitment Signature] by G. Yu. for 
+details about this signature.)
 
 Note that the [Commitment Signature] is an aggregated signature between the sender and receiver, which is 
 constructed as follows.
+
+<u>Sender:</u>
 
 The sender portion of the public nonce is:
 
@@ -284,7 +287,11 @@ R_{MSi} &= r_{MSi_a} \cdot H + r_{MSi_b} \cdot G
 $$
 
 The sender sends \\(K\_{Oi}, R_{MSi}\\) to the receiver, who now has all the required information to calculate the final 
-challenge. The receiver portion of the public nonce is:
+challenge. 
+
+<u>Receiver:</u>
+
+The receiver portion of the public nonce is:
 
 $$
 \begin{aligned}
@@ -306,7 +313,6 @@ The receiver can now calculate their portion of the aggregated Commitment Signat
 
 $$
 \begin{aligned}
-R_{MRi} &= r_{MRi_a} \cdot H + r_{MRi_b} \cdot G \\\\
 a_{MRi} &= r_{MRi_a} + e(v_{i}) \\\\
 b_{MRi} &= r_{MRi_b} + e(k_i)
 \end{aligned}
@@ -314,7 +320,11 @@ b_{MRi} &= r_{MRi_b} + e(k_i)
 $$
 
 The receiver sends \\( s_{MRi} = (a_{MRi}, b_{MRi}, R_{MRi} ) \\) along with the other partial transaction information to 
-the sender. The sender starts by calculating the final challenge (16) and then completes their part of the aggregated 
+the sender.
+
+<u>Sender:</u>
+
+The sender starts by calculating the final challenge (16) and then completes their part of the aggregated 
 Commitment Signature.
 
 $$
@@ -339,6 +349,8 @@ s_{Mi} &= (a_{Mi}, b_{Mi}, R_{Mi} ) \\\\
 \tag{7}
 $$
 
+<u>Verifier:</u>
+
 This is verified by the following:
 
 $$
@@ -347,6 +359,8 @@ a_{Mi} \cdot H + b_{Mi} \cdot G = R_{Mi} + (C_i + K_{Oi})e
 \end{aligned}
 \tag{8}
 $$
+
+**Prevent leaking sender nonces**
 
 However, when evaluating (8) it is evident that the receiver can calculate \\( r_{MSi_a} \\) as follows:
 
@@ -386,7 +400,7 @@ s_{Mi} &= (a_{Mi}, b_{Mi}, R_{Mi} ) \\\\
 $$
 
 Note that:
-- The UTXO has a positive value `v` like any normal UTXO.
+- The UTXO has a positive value \\( v \\) like any normal UTXO.
 - The script and the output features can no longer be changed by the miner or any other party. This includes the sender 
   and receiver; they would need to cooperate to enter into a new contract to change any metadata, otherwise the 
   metadata signature will be invalidated.
@@ -439,6 +453,8 @@ s_{Si} = (a_{Si}, b_{Si}, R_{Si} )
 \tag{13}
 $$
 
+<u>Sender:</u>
+
 Where
 
 $$
@@ -450,6 +466,8 @@ e &= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\\\
 \end{aligned}
 \tag{14}
 $$
+
+<u>Verifier:</u>
 
 This is verified by the following:
 
@@ -903,6 +921,172 @@ When spending the multi-party input:
 | sender offset&nbsp;public&nbsp;key | \\( K_{Os} \\)                          | As above, Alice and Bob each know part of the sender offset key.                                                                                                    |
 
 
+### Multi-party considerations
+
+Multi-party in this context refers to `n-of-n` parties creating a single combined transaction output and `m-of-n` 
+parties spending a single combined transaction input. We have some options to do this:
+- using the [m-of-n script] TariScript without sharding the spending key;
+- combination of the [m-of-n script] TariScript and sharding the spending key;
+- sharding the spending key combined with the [NoOp script] TariScript;
+
+If the spending key \\( k_i \\) is sharded for any of these options the commitment definition changes to:
+
+$$
+\begin{aligned}
+C_i = v_i \cdot H  + \sum_\psi (k_{i\_\psi} \cdot G) \\; \\; \\; \text{ for each receiver party } \psi
+\end{aligned}
+\tag{1b}
+$$
+
+The sender-receiver interaction can be categorized as follows, however, for simplicity we can assume that each
+multi-party side will have a single party acting as the dealer:
+- Multi-party senders can create the single output and send it to a single receiver.
+- A single sender can create the single output and send it to multi-party receivers.
+- Multi-party senders can create the single output and send it to multi-party receivers.
+
+The multi-party impact on the transaction output, transaction input and script offset is discussed below.
+
+#### Multi-party transaction output
+
+If multiple senders and receiver parties need to create an aggregate `metadata_signature` for a single multi-party
+transaction output, there are two secrets that warrant our attention; the script offset private key \\( k\_{Oi} \\)
+controlled by the senders and the spending key \\( k_i \\) controlled by the receivers. Depending on the protocol
+design, one or both secrets may be sharded amongst all parties. 
+
+<u>Sharding the script offset private key:</u>
+
+If the script offset private key \\( k\_{Oi} \\) is sharded, the aggregate sender terms in (10) and (11) collected by 
+the sender's dealer change to:
+
+$$
+\begin{aligned}
+R_{MSi} &= \sum_\omega (r_{{MSi_b}\_\omega} \cdot G) \\; \\; \\; \text{ for each sender party } \omega
+\end{aligned}
+\tag{10b}
+$$
+
+$$
+\begin{aligned}
+a_{MSi} &= 0 \\\\
+b_{MSi} &= \sum_\omega (r_{{MSi_b}\_\omega} + e \cdot k\_{{Oi}_\omega}) \\; \\; \\; \text{ for each sender party } \omega
+\end{aligned}
+\tag{11b}
+$$
+
+<u>Sharding the spending key:</u>
+
+If the spending key \\( k_i \\) is sharded, the receiver's dealer needs to collect shards and combine them. The
+aggregate receiver terms in (3) and (5) collected by the receiver's dealer change to:
+
+$$
+\begin{aligned}
+R_{MRi} &= r_{MRi_a} \cdot H + \sum_\psi ( r_{{MRi_b}\_\psi} \cdot G ) \\; \\; \\; \text{ for each receiver party } \psi
+\end{aligned}
+\tag{3b}
+$$
+
+$$
+\begin{aligned}
+a_{MRi} &= r_{MRi_a} + e(v_{i}) \\\\
+b_{MRi} &= \sum_\psi ( r_{{MRi_b}\_\psi} + e \cdot k_{i\_\psi} ) \\; \\; \\; \text{ for each receiver party } \psi
+\end{aligned}
+\tag{5b}
+$$
+
+#### Multi-party transaction input
+
+If multiple senders need to create an aggregate `script_signature` for a multi-party transaction input, again, there are
+two secrets that warrant our attention, the script private key \\( k_{Si} \\) and the spending key \\( k_i \\).
+Depending on the protocol design, one or both secrets may be sharded amongst all parties, with some limitations:
+- Sharding the script private key will always be applicable for an [m-of-n script] TariScript.
+- Sharding the script private key will never be applicable for a [NoOp script] TariScript.
+
+<u>Sharding only the script private key:</u>
+
+If only the script private key \\( k_{Si} \\) will be sharded the aggregate terms in (14) collected by the sender's 
+dealer change to:
+
+$$
+\begin{aligned}
+R_{Si} &= r_{Si_a} \cdot H + \sum_\omega ( r_{{Si_b}\_\omega} \cdot G ) \\; \\; \\; \text{ for each sender party } \omega \\\\
+a_{Si}  &= r_{Si_a} +  e(v_{i}) \\\\
+b_{Si} &= \sum_\omega ( r_{{Si_b}\_\omega} + e \cdot k_{{Si}\_\omega} ) + e \cdot  k_i \\; \\; \\; \text{ for each sender party } \omega \\\\
+e &= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\\\
+\end{aligned}
+\tag{14b}
+$$
+
+<u>Sharding the script private key and the spending key:</u>
+
+If both the script private key \\( k_{Si} \\) and the spending key \\( k_i \\) will be sharded the aggregate terms
+in (14) collected by the sender's dealer change to:
+
+$$
+\begin{aligned}
+R_{Si} &= r_{Si_a} \cdot H + \sum_\omega ( r_{{Si_b}\_\omega} \cdot G ) \\; \\; \\; \text{ for each sender party } \omega \\\\
+a_{Si}  &= r_{Si_a} +  e(v_{i}) \\\\
+b_{Si} &= \sum_\omega ( r_{{Si_b}\_\omega} + e \cdot (k_{{Si}\_\omega} +  k_{i\_\omega}) ) \\; \\; \\; \text{ for each sender party } \omega \\\\
+e &= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\\\
+\end{aligned}
+\tag{14c}
+$$
+
+It is worth noting that `m-of-n` treatment of the script private key \\( k_{Si} \\) and the spending key \\( k_i \\)
+differs slightly. Only `m` of the original `n` parties need to create the script input, and the script will resolve to
+the correct \\( K_{Si} \\), but all `n` parties need to be present to recreate the original \\( k_i \\). This can be
+done with Pedersen Verifiable Secret Sharing (PVSS), similar to
+[**this example**](https://tlu.tarilabs.com/protocols/mimblewimble-mb-bp-utxo#mimblewimble--mtext-of-n--multiparty-bulletproof-utxo).
+The dealer will reconstruct the \\( k_{i\_j} \\) shards of the missing parties and add them to their shard before
+combining.
+
+<u>Sharding only the spending key:</u>
+
+If only the spending key \\( k_i \\) will be sharded the aggregate terms in (14) collected by the sender's dealer 
+change to:
+
+$$
+\begin{aligned}
+R_{Si} &= r_{Si_a} \cdot H + \sum_\omega ( r_{{Si_b}\_\omega} \cdot G ) \\; \\; \\; \text{ for each sender party } \omega \\\\
+a_{Si}  &= r_{Si_a} +  e(v_{i}) \\\\
+b_{Si} &= \sum_\omega ( r_{{Si_b}\_\omega} + e \cdot  k_{i\_\omega} ) + e \cdot k_{Si} \\; \\; \\; \text{ for each sender party } \omega \\\\
+e &= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\\\
+\end{aligned}
+\tag{14d}
+$$
+
+
+#### Multi-party script offset
+
+For multiple senders, aggregate terms are collected by the sender's dealer and (16) changes according to which of the
+secrets have been sharded:
+
+<u>Sharding only the script private key:</u>
+
+$$
+\begin{aligned}
+\so = \sum_\omega \left( \sum_j\mathrm{k_{Sj}} \right) \_\omega - \sum_i\mathrm{k_{Oi}} \\; \\; \text{for each input}, j,\\, \text{and each output}, i \\; \text{ for each sender party } \omega
+\end{aligned}
+\tag{16b}
+$$
+
+<u>Sharding only the script offset private key:</u>
+
+$$
+\begin{aligned}
+\so = \sum_j\mathrm{k_{Sj}} - \sum_\omega \left( \sum_i\mathrm{k_{Oi}} \right) \_\omega \\; \\; \text{for each input}, j,\\, \text{and each output}, i \\; \text{ for each sender party } \omega
+\end{aligned}
+\tag{16c}
+$$
+
+<u>Sharding the script private key and the script offset private key:</u>
+
+$$
+\begin{aligned}
+\so = \sum_\omega \left( \sum_j\mathrm{k_{Sj}} - \sum_i\mathrm{k_{Oi}} \right) \_\omega \\; \\; \text{for each input}, j,\\, \text{and each output}, i \\; \text{ for each sender party } \omega
+\end{aligned}
+\tag{16d}
+$$
+
 ### Preventing Cut-through with the Script Offset
 
 Earlier, we described that cut-through needed to be prevented. This is achieved by the script offset in the TariScript proposal. It mathematically links all inputs 
@@ -1022,21 +1206,20 @@ script.
 
 Where possible, the "usual" notation is used to denote terms commonly found in cryptocurrency literature. Lower case 
 characters are used as private keys, while uppercase characters are used as public keys. New terms introduced by 
-TariScript are assigned greek lowercase letters in most cases. The capital letter subscripts, _R_ and _S_ refer to a 
-UTXO _receiver_ and _script_ respectively.
+TariScript are assigned greek lowercase letters in most cases. 
 
-| Symbol                    | Definition                                                                                                                         |
-|---------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| \\( \script_i \\)         | An output script for output _i_, serialised to binary.                                                                             |
-| \\( F_i \\)               | Output features for UTXO _i_.                                                                                                      |
-| \\( f_t \\)               | Transaction fee for transaction _t_.                                                                                               |
-| \\( (k_{Oi}\, K_{Oi}) \\) | The private - public keypair for the UTXO sender offset key.                                                                       |
-| \\( (k_{Si}\, K_{Si}) \\) | The private - public keypair for the script key. The script, \\( \script_i \\) resolves to \\( K_S \\) after completing execution. |
-| \\( \so_t \\)             | The script offset for transaction _t_, see (16)                                                                                    |
-| \\( C_i \\)               | A Pedersen commitment to a value \\( v_i \\), see (1)                                                                              |
-| \\( \input_i \\)          | The serialised input for script \\( \script_i \\)                                                                                  |
-| \\( s_{Si} \\)            | A script signature for output \\( i \\), see (13 - 15)                                                                             |
-| \\( s_{Mi} \\)            | A metadata signature for output \\( i \\), see (2 - 12)                                                                            |
+| Symbol                    | Definition                                                                                                                                                 |
+|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| \\( \script_i \\)         | An output script for output _i_, serialised to binary.                                                                                                     |
+| \\( F_i \\)               | Output features for UTXO _i_.                                                                                                                              |
+| \\( f_t \\)               | Transaction fee for transaction _t_.                                                                                                                       |
+| \\( (k_{Oi}\, K_{Oi}) \\) | The private - public keypair for the UTXO sender offset key. Note that \\( k_{Oi} \\) should be treated as a nonce.                                        |
+| \\( (k_{Si}\, K_{Si}) \\) | The private - public keypair for the script key. The script, \\( \script_i \\) resolves to \\( K_S \\) after completing execution.                         |
+| \\( \so_t \\)             | The script offset for transaction _t_, see (16)                                                                                                            |
+| \\( C_i \\)               | A Pedersen commitment to a value \\( v_i \\), see (1)                                                                                                      |
+| \\( \input_i \\)          | The serialised input for script \\( \script_i \\)                                                                                                          |
+| \\( s_{Si} \\)            | A script signature for output \\( i \\), see (13 - 15)                                                                                                     |
+| \\( s_{Mi} \\)            | A metadata signature for output \\( i \\), see (2 - 12) - the capital letter subscripts, _R_ and _S_ refer to a UTXO _receiver_ and _sender_ respectively. |
 
 ## Extensions
 
@@ -1066,6 +1249,19 @@ validation.
 
 Thanks to David Burkett for proposing a method to prevent cut-through and willingness to discuss ideas.
 
+# Change Log
+
+| Date        | Change                                       | Author                        |
+|:------------|:---------------------------------------------|:------------------------------|
+| 17 Aug 2020 | First draft                                  | CjS77                         |
+| 11 Feb 2021 | Major update                                 | CjS77, SWvheerden, philipr-za |
+| 26 Apr 2021 | Clarify one sided payment rules              | SWvheerden                    |
+| 31 May 2021 | Including full script in transaction outputs | philipr-za                    |
+| 04 Jun 2021 | Remove beta range-proof calculation          | SWvheerden                    |
+| 22 Jun 2021 | Change script_signature type to ComSig       | hansieodendaal                |
+| 30 Jun 2021 | Clarify Tari Script nomenclature             | hansieodendaal                |
+| 06 Oct 2022 | Minor improvemnts in legibility              | stringhandler                 |
+
 [data commitments]: https://phyro.github.io/grinvestigation/data_commitments.html
 [LIP-004]: https://github.com/DavidBurkett/lips/blob/master/lip-0004.mediawiki
 [Scriptless script]: https://tlu.tarilabs.com/cryptography/scriptless-scripts/introduction-to-scriptless-scripts.html
@@ -1082,4 +1278,6 @@ Thanks to David Burkett for proposing a method to prevent cut-through and willin
 [script public key]: Glossary.md#script-keypair
 [sender offset]: Glossary.md#sender-offset-keypair
 [script offset]: Glossary.md#script-offset
+[m-of-n script]: RFC-0202_TariScriptOpcodes.md#checkmultisigverifyaggregatepubkeym-n-public-keys-msg
+[NoOp script]: RFC-0202_TariScriptOpcodes.md#noop
 [Mimblewimble]: Glossary.md?#mimblewimble
