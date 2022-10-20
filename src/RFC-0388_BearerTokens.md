@@ -83,7 +83,7 @@ another bearer.
 
 ### Caveat Expression
 
-``` 
+```text 
 Caveat Expression = <Field> <operator> <Argument>
 ```
 
@@ -92,7 +92,7 @@ Operator: OneOf("eq", "le", "lt","ge", "gt")
 Argument: A constant value, to be interpreted by the code
 
 Examples
-```
+```text
 amount lt 1000
 token_id eq 4759
 ```
@@ -126,11 +126,11 @@ In this example, Alice wants to allow Bob to spend 100 of a fungible asset calle
 Let's assume the transfer function looks like this:
 
 
-```
+```nocompile
 fn transfer(amount: u64, from: PublicKey, to: PublicKey) 
 {
    requires_scope("transfer", from);
-   ...
+   // ...
 }
 ```
 
