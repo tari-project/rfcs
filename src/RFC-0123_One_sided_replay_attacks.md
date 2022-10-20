@@ -89,12 +89,12 @@ If we require as part of the [script signature] challenge that we sign the mined
 Bob provided on the Input to spend the output, as each duplicate commitment will have its own block height. This is ensured as we currently have a limit that a commitment
 must be unique in the unspent set. 
 
-#### advantages
-This method has the following advantages:
+#### Advantages
+
 * Does not require any more on-chain information
 
-#### disadvantages
-This method has the following disadvantages:
+#### Disadvantages
+
 * Reorged transactions cannot be put back in if the inputs are now spent at different heights
 
 
@@ -104,20 +104,19 @@ Alice cannot send the same one-sided UTXO to Bob if we require the commitment to
 to track the spent TXO set's commitment and the UTXO set.
 
 #### advantages
-This method has the following advantages:
 * Safely reorg transactions
 
 #### disadvantages
-This method has the following disadvantages:
 * Pruned node needs to save extra data about the spent set.
 * Syncing pruned nodes need to provide extra info to ensure that the downloaded list of commitments is correct
   * Without requiring extra information in the header, pruned nodes need to download the entire TXO set and compare this to the output_mmr root.
 
 # Change Log
 
-| Date        | Change        | Author     |
-|:------------|:--------------|:-----------|
-| 10 Oct 2022 | First outline | SWvheerden |
+| Date       | Change                  | Author     |
+|:-----------|:------------------------|:-----------|
+| 2022-10-19 | Minor editorial changes | CjS77      |
+| 2022-10-10 | First outline           | SWvheerden |
 
 
 
