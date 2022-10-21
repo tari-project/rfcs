@@ -173,6 +173,12 @@ so that the miner submits the found block at either chain's difficulty. The Tari
 The miner submits a solved Monero block (at a difficulty of `min(monero_difficulty, tari_difficulty)`) to the proxy. The cached
 Tari block is retrieved, enriched with the `MoneroPowData` struct and submitted to the Tari base node.
 
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 21 Oct 2022 | Update fields       | Cifko     |
+
 [Monero's tree hash]: https://github.com/monero-project/monero/blob/1c8e598172bd2eddba2607cae0804db2e685813b/src/crypto/tree-hash.c
 [merge mining subfield]: https://docs.rs/monero/0.13.0/monero/blockdata/transaction/enum.SubField.html#variant.MergeMining
 [Tari merge mining proxy]: https://github.com/tari-project/tari/blob/development/applications/tari_merge_mining_proxy
