@@ -53,6 +53,7 @@ The aim of this Request for Comment (RFC) is to describe the fields that a block
 ## Related Requests for Comment
 
 * [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
+* [RFC-0122: Burn outputs](RFC-0122_Burning.md)
 * [RFC-0130: Mining](RFCD-0130_Mining.md)
 * [RFC-0140: SyncAndSeeding](RFC-0140_Syncing_and_seeding.md)
 
@@ -81,10 +82,12 @@ Every [block] MUST:
   * be in a canonical order (see [Transaction ordering])
   * have a valid [range proof]
   * have a valid [metadata signature]
-  * have a valid script offset (\\gamma), as per [RFC-0201_TariScript](./RFC-0201_TariScript.md).
+  * have a valid script offset (\\gamma), see [script-offset].
 * each [transaction kernel] MUST 
   * have a valid kernel signature
   * have a unique excess
+* the number of `BURNED` outputs MUST equal the number of `BURNED_KERNEL` kernels exactly,
+* the commitment values of each burnt output MUST match the commitment value of each corresponding `BURNED_KERNEL` exactly.
 * the transaction commitments and kernels MUST balance, as follows:
 
   $$
@@ -384,3 +387,4 @@ Transaction inputs are sorted lexicographically by the [hash of the output](RFC-
 [Ristretto]: https://docs.rs/curve25519-dalek/3.1.0/curve25519_dalek/ristretto/index.html
 [FTL]: RFC-0120_Consensus.md#FTL
 [MTP]: RFC-0120_Consensus.md#MTP
+[script-offset]: Glossary.md#script-offset
