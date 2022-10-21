@@ -2,7 +2,7 @@
 
 ## Tari protocol for Merge Mining with Monero
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
