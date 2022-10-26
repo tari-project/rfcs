@@ -2,7 +2,7 @@
 
 ## Full-node Mining on Tari Base Layer
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal), [Philip Robinson](https://github.com/philipr-za)
 
@@ -99,30 +99,29 @@ good chance of being "commoditized" when ASICs are eventually manufactured. This
 A 50/50 split in hash rate among algorithms minimises the chance of hash rate attacks. However,
 sufficient buy-in is required, especially with regard to merge mining RandomX with Monero. To make it worthwhile for a
 Monero pool operator to merge mine Tari, but still guard against hash rate attacks and to be inclusive of independent
-Tari supporters and enthusiasts, a 60/40 split is proposed in favour of merge mining RandomX with Monero. The
-approaching [Monero tail emission](https://web.getmonero.org/resources/moneropedia/tail-emission.html) at the end of May
-2022 should also make this a worthwhile proposal for Monero pool operators.
+Tari supporters and enthusiasts, a 60/40 split is employed in favour of merge mining RandomX with Monero.
 
 ### The difficulty adjustment strategy
 
 The choice of difficulty adjustment algorithm is important. In typical hybrid mining strategies, each algorithm operates
-completely independently with a scaled-up target block time and is the most likely approach that any blockchain will
-take. Tari testnet has been running very successfully on Linear Weighted Moving Average (LWMA) from Bitcoin & Zcash
+completely independently with a scaled target block time. 
+Tari testnet has been running very successfully using the  Linear Weighted Moving Average (LWMA) from Bitcoin & Zcash
 Clones [version 2018-11-27](https://github.com/zawy12/difficulty-algorithms/issues/3#issuecomment-442129791). This LWMA
 difficulty adjustment algorithm has also been
-[tested in simulations](https://github.com/tari-labs/modelling/tree/master/scenarios/multi_pow_01), and it proved to be a good choice in the multi-PoW scene as well.
+[tested in simulations](https://github.com/tari-labs/modelling/tree/master/scenarios/multi_pow_01), 
+and it proved to be a good choice in the multi-PoW scene as well.
 
 ### Final proposal, hybrid mining details
 
-The final proposal is summarized below:
+Tari's proof-of-work mining algorithm is summarized below:
 
 - Two mining algorithms, with an average combined target block time of 120 s, to match Monero's block interval.
 - A log-weighted moving average difficulty adjustment algorithm using a window of 90 blocks.
 
 ### Tari mining hash
 
-Tari will use a mining hash that is hashed with a 256bit Blake2b hash constructed from the Tari blockheader. 
-The hash MUST be constructed with the following encoded with [consensus encoding](RFC-0121_ConsensusEncoding), in order:
+First, the block header is hashed with the 256-bit Blake2b hashing algorithm based using the approach described in
+[consensus encoding](RFC-0121_ConsensusEncoding). The fields are hashed in the order:
 - version
 - previous header hash
 - timestamp
@@ -134,6 +133,9 @@ The hash MUST be constructed with the following encoded with [consensus encoding
 - kernel Merkle mountain range size
 - total kernel offset
 - total script offset
+
+This hash is used in both the SHA-3 and RandomX proof-of-work algorithms. The header version for the Tari Genesis 
+block is 1.
 
 #### RandomX
 
@@ -152,23 +154,48 @@ Tari also imposes the following consensus rules:
   - Monero coinbase merkle proof and,
   - Monero coinbase transaction
 
-#### Sha3
+#### Sha-3x
 
-The Sha3 mining hash is constructed as a Sha3-256 with the following fields:
- - Nonce
- - Tari mining hash
- - Pow data
+Tari's independent proof-of-work algorithm is very straightforward.
 
-For the Sha3 difficulty, the Sha3 mining hash is hashed with Sha3-256. 
+Calculate the _triple hash_ of the following input data:
+ - Nonce (8 bytes)
+ - Tari mining hash (32 bytes)
+ - PoW record (for Sha-3x, this is always a single byte of value 1)
+
+That is, the nonce in little-endian format, mining hash and the PoW record are chained together and hashed by the 
+Keccak Sha3-256 algorithm. The result is hashed again, and this result is hashed a third time. The result of the third 
+hash is compared to the target value of the current block difficulty. 
+
+If the entire 64-bit nonce space is exhausted without finding a valid block, the mining algorithm must request a new 
+Tari mining hash from the Tari base node. The simplest way to do this is to update the timestamp field in the block 
+header, keeping everything else constant.
 
 Tari imposes the following consensus rules:
-- The Big endian difficulty MUST be equal or greater than the target for that block as determined by the LWMA for Tari.
+- The Big endian difficulty MUST be equal or greater than the target difficulty for that block as determined by the 
+  LWMA for Tari. The difficulty and target are related by the equation `difficulty = (2^256 - 1) / target`.
 - MUST set the header field PoW:pow_algo as 1 for a Sha block.
 - The PoW:pow_data field is empty
 - The LWMA MUST use a target time of 300 seconds.
 
+A triple hash is selected to keep the requirements on hardware miners (FPGAs, ASICs) fairly low. But we also want to 
+avoid making the proof-of-work immediately "NiceHashable". There are several coins that already use a single or 
+double SHA3 hash, and we'd like to avoid having that hashrate immediately deployable against Tari.
+
+Historical note: In general, little-endian representations for integers are used in Tari. There are a few places 
+where big-endian representations are used, in the PoW hash and in some merge-mined fields in particular. The 
+latter is required to be compatible with the Monero specification. But we also use the big-endian representation for 
+the block hash due to a historical convention. The Bitcoin white paper describes the block hash target as 
+containing "a certain number of leading zeros" (paraphrased). This is obviously a big-endian representation. If we 
+used little-endian, our block hashes would have trailing zeroes. So we use the big-endian form to satisfy the 
+expected in block explorers and such that block hashes should always start with a series of zeroes.    
+
+# Stabilisation note
+
+This RFC is stable as of PR#
 # Change Log
 
-| Date        | Change              | Author    |
-|:------------|:--------------------|:----------|
-| 11 Oct 2022 | First outline       | SWvHeerden|
+| Date         | Change                   | Author     |
+|:-------------|:-------------------------|:-----------|
+| 2022-11-26   | Finalise SHA-3 algorithm | CjS77      |
+| 2022-10-11   | First outline            | SWvHeerden |
