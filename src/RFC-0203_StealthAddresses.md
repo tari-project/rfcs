@@ -2,7 +2,7 @@
 
 ## Stealth addresses
 
-![status: testing](theme/images/status-testing.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Philip Robinson](https://github.com/philipr-za)
 
@@ -70,7 +70,7 @@ key when sending a one-sided payment.
 
 Stealth addresses were first proposed on the Bitcoin Talk forum by user [Bytecoin]. The concept was further refined by
 [Peter Todd], using a design similar to the [BIP-32] style of address generation. In this approach, the sender can use an
-ephemerial public key (derived from a nonce) to perform a non-interactive Diffie-Hellman exchange with the recipient's
+ephemeral public key (derived from a nonce) to perform a non-interactive Diffie-Hellman exchange with the recipient's
 public key, and use this to derive a one-time public key to which only the recipient can derive the corresponding private
 key. This reduces on-chain linkability (but, importantly, does not eliminate it).
 
@@ -94,7 +94,7 @@ The protocol that a sender will use to make a payment to the recipient is as fol
 2. Compute a Diffie-Hellman exchange to obtain the shared secret \\( c = H( r \cdot A ) \\), where \\( H \\) is a cryptographic
 hash function.
 3. Include \\( K_S = c \cdot G + A \\) as the last public key in a [one-sided payment] script in a transaction.
-4. Include \\( R \\) in the script for use by the recipient, but drop it so it is not used in script execution.
+4. Include \\( R \\) in the script for use by the recipient, but `DROP` it so that it is not used in script execution.
 This changes the script for a [one-sided payment] from `PushPubkey(K_S)` to `PushPubkey(R) Drop PushPubkey(K_S)`.
 
 To identify [one-sided payments], the recipient scans the blockchain for outputs containing a [one-sided payment] script. It
@@ -104,6 +104,11 @@ then does the following to test for ownership:
 3. Compute \\( K_S' = c \cdot G + A \\).
 If \\( K_S' = K_S \\) is included in the script, the recipient can produce the required script signature using the corresponding
 one-time private key \\( c + a \\).
+
+## Implementation notes
+
+* Stealth addresses were included in the Tari Console Wallet as of version v0.35.0 (2022-08-11).
+* The FFI (used in Aurora) uses stealth addresses by default as of libwallet-v0.35.0 (2022-08-11).
 
 [tariscript]: ./Glossary.md#tariscript
 [mimblewimble]: ./Glossary.md#mimblewimble
@@ -117,6 +122,7 @@ one-time private key \\( c + a \\).
 
 # Change Log
 
-| Date        | Change                                 | Author    |
-|:------------|:---------------------------------------|:----------|
-| 01 Dec 2022 | First draft                            | philip-za |
+| Date        | Change                       | Author    |
+|:------------|:-----------------------------|:----------|
+| 26 Oct 2022 | Stabilise RFC                | CjS77     |
+| 01 Jun 2022 | First draft                  | philip-za |
