@@ -2,7 +2,7 @@
 
 ## Versioning
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Philip Robinson](https://github.com/philipr-za)
 
@@ -74,7 +74,7 @@ In the Bitcoin P2P protocol messages are preceded by 4
 delimit when a new message starts in a byte stream and also are used to indicate which of the Bitcoin networks the node 
 is speaking on, such as TestNet or Mainnet.
 
-Tari message packets are encapsulated using the Noise protocol so we do not need the delimiting functionality of these 
+Tari message packets are encapsulated using the Noise protocol, so we do not need the delimiting functionality of these 
 bytes but Tari will include a single WireMode byte at the beginning of every connection session. This byte will indicate 
 which network a node is communicating on, so that if the counterparty is on a different network it can reject this 
 connection cheaply without having to perform any further operations, like completing the Noise protocol handshake.
@@ -113,8 +113,9 @@ transactions and blocks.
 
 The consensus version will be used by a node to determine if it can interact with another node successfully or not. A 
 list of fork versions will be maintained within the code. When a connection is started with a new node the two nodes 
-will exchange `Version` messages detailing the consensus version they are each running and the blockheight at which they
-are currently operating. Both nodes will need to reply with a `Version Acknowledge` message to confirm that they are 
+will exchange `Version` messages detailing the consensus version they are each running and the block height at which 
+they are currently operating. 
+Both nodes will need to reply with a `Version Acknowledge` message to confirm that they are 
 compatible with the counterparty's version. It is possible for a newer node to downgrade its protocol to speak to an 
 older node so this must be decided during this handshake process. Only once the acknowledgments have been exchanged can 
 further messages be exchanged by the parties. This is the method currently employed on the 
@@ -131,3 +132,9 @@ used in the construction and validation of this block. Consensus rules versions 
 and as such will be represented with a single incremented integer. This coupled with the internal list of fork versions,
 that includes the height at which they came into effect, will be used to validate whether the consensus rules specified 
 in the header are valid for that block's height.
+
+# Change Log
+
+| Date        | Change        | Author |
+|:------------|:--------------|:-------|
+| 26 Oct 2022 | Stabilise RFC | CjS77  |
