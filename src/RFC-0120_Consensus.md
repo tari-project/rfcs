@@ -82,7 +82,7 @@ Every [block] MUST:
   * be in a canonical order (see [Transaction ordering])
   * have a valid [range proof]
   * have a valid [metadata signature]
-  * have a valid script offset (\\gamma), see [script-offset].
+  * have a valid script offset, \\( \gamma \\), see [script-offset].
 * each [transaction kernel] MUST 
   * have a valid kernel signature
   * have a unique excess
