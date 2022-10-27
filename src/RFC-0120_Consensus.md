@@ -84,7 +84,7 @@ Every [block] MUST:
   * have a valid [metadata signature]
   * have a valid script offset, \\( \gamma \\), see [script-offset].
 * each [transaction kernel] MUST 
-  * have a valid kernel signature
+  * have a valid kernel excess signature
   * have a unique excess
 * the number of `BURNED` outputs MUST equal the number of `BURNED_KERNEL` kernels exactly,
 * the commitment values of each burnt output MUST match the commitment value of each corresponding `BURNED_KERNEL` exactly.
@@ -377,6 +377,7 @@ Transaction inputs are sorted lexicographically by the [hash of the output](RFC-
 [block header]: Glossary.md#block-header
 [transaction input]: Glossary.md#transaction
 [transaction output]: Glossary.md#unspent-transaction-outputs
+[transaction kernel]: Glossary.md#transaction-kernel
 [transaction weight]: Glossary.md#transaction-weight
 [metadata signature]: Glossary.md#metadata-signature
 [utxo]: Glossary.md#unspent-transaction-outputs

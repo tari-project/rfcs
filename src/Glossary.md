@@ -469,6 +469,13 @@ UTXOs represents all the Tari currently in circulation. In addition, the sum of 
 UTXO values are hidden by their [commitment]s. Only the owner of the UTXO and (presumably) the creator of the UTXO
 (either a [Coinbase transaction] or previous spender) know the value of the UTXO.
 
+## Transaction Kernel
+
+[transaction kernel]: #transaction-kernel
+
+A piece of data that is always kept as part of the blockchain and never pruned away. This contains the excess signature and
+serves as proof that the parties transacting know the blinding factors of their [commitment]s used in the transaction.
+
 ## Validator Node
 
 [validator node]: #validator-node "A second-layer node that manages and validates digital asset state transitions"
