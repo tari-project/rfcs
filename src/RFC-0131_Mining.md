@@ -192,7 +192,7 @@ expected in block explorers and such that block hashes should always start with 
 
 # Stabilisation note
 
-This RFC is stable as of PR#
+This RFC is stable as of PR#4862
 # Change Log
 
 | Date         | Change                   | Author     |
