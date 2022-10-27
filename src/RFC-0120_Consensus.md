@@ -362,7 +362,7 @@ final Merkle root. Input, output, and kernel ordering within a block is, therefo
 The block MUST be transmitted in canonical ordering. The advantage of this approach is that sorting does not need to be 
 done by the whole network, and verification of sorting is exceptionally cheap.
 
-Transaction outputs are sorted lexicographically by the byte representation of their Pedersen commitment i.e. `\\(k \cdot G + v \cdot H\\)`.
+Transaction outputs are sorted lexicographically by the byte representation of their Pedersen commitment i.e. ( \\(k \cdot G + v \cdot H\\) ).
 Transaction inputs are sorted lexicographically by the [hash of the output](RFC-0121_ConsensusEncoding.md#transaction-output) that is spent by the input.
 
 # Change Log
