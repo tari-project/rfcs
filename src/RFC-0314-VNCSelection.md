@@ -49,7 +49,27 @@ technological merits of the potential system outlined herein.
 The goal of this RFC is to describe the process for allocating Validator Nodes (VNs) to Validator Node Committees (VNCs)
 
 ## Intro
-Validator nodes will have to group themselves into Validator Node Committees for transactions/shard processing. Committees will be formed for each new transaction/shard processing. This committee needs to be determined pseudorandomly, and we use the VN_Key as this changes periodically and is pseudorandom. Each VN will be allocated a unique and individual shard space to serve in as a VNC member. 
+Validator nodes will have to group themselves into Validator Node Committees (VNC) for transactions/shard processing. Committees will be formed for each new transaction/shard processing. This committee needs to be determined pseudorandomly, and we use the VN_Key as this changes periodically and is pseudorandom. Each VN will be allocated a unique and individual shard space to serve in as a VNC member. 
+
+## Requirements
+In order to ensure that VNCs are selected securely and can operate successfully, we pin down the following requirements:
+1. A percentage of the nodes must change to a new shard space every epoch (e.g.  exactly 25%)
+2. A VN must not be able to determine its own shard space location ahead of time.
+ - the VN only knows it's new location once the block with the new epoch is mined.
+3. It must be easy (e.g. order log_n) to calculate the VN set. (You should have to replay all shuffles to calculate the current VN set).
+4. A VN must be able to run inside of a committee for a certain amount of time before syncing to avoid syncing.
+5. Open Question: Should there be a limit (e.g. 10%) in the number of nodes that can join per epoch
+
+## VN-key expiry
+Each new VN will get a [VN-key] on registration. This key will expire on some pseudorandom height. This is calculated as follows:
+$$
+\begin{aligned}
+\text{Expire height} = \text{(Current block height)} +  \text{(min expire height)} + \text{new VN-pubkey } MOD \text{ (max expire height)}
+\end{aligned}
+$$
+
+Every time a new VN-Key is assigned a new expiry date is calculated. Because the [miner]s calculate the VN-key, they also calculate the new VN-key every time
+it expires.
 
 ## Committee Creation
 Because we have the base layer where each VN needs to publish a registration transaction, we can get base_node and miners to keep track of all active VNs. We represent all VNs in a (balanced) Merkle tree with the VN_keys as leaves. We declare a constant `COMMITTEE_SIZE` which can be changed in the consensus constants.
@@ -98,3 +118,4 @@ This will give a sortable list we use to order the VNs for leader selection.
 
 
 [base node]: Glossary.md#base-node
+[VN-key]: RFC-0313_VNRegistration.md#XXXX
