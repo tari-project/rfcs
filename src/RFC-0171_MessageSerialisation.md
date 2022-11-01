@@ -2,7 +2,7 @@
 
 ## Message Serialization
 
-![status: stable](theme/images/status-stable.svg)
+![status: active](theme/images/status-active.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) [Stanley Bondi](https://github.com/sdbondi)
 
@@ -232,9 +232,8 @@ also offers significant ability to tweak how a given struct will be serialized t
 
 # Change Log
 
-| Date        | Change               | Author  |
-|:------------|:---------------------|:--------|
-| 29 Mar 2019 | First draft          | CjS77   |
-| 24 Jul 2019 | Technical editing    | anselld |
-| 13 Oct 2022 | Update               | sdbondi |
-| 26 Oct 2022 | Stabilise RFC        | CjS77   |
+| Date        | Change            | Author  |
+|:------------|:------------------|:--------|
+| 29 Mar 2019 | First draft       | CjS77   |
+| 24 Jul 2019 | Technical editing | anselld |
+| 13 Oct 2022 | Update            | sdbondi |

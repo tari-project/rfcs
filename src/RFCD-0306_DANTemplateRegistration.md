@@ -2,7 +2,7 @@
 
 ## Digital Asset Network (DAN) Template Registration
 
-![status: draft](theme/images/status-draft.svg)
+![status: deprecated](theme/images/status-deprecated.svg)
 
 **Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
@@ -63,7 +63,7 @@ This registration scheme seeks to enable template indexing services and possibly
 
 ## Related Requests for Comment
 
-* [RFC-0302: Validator Nodes](RFC-0302_ValidatorNodes.md)
+* [RFCD-0302: Validator Nodes](RFCD-0302_ValidatorNodes.md)
 
 ## Description
 
