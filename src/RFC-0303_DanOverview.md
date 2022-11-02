@@ -152,6 +152,7 @@ This layer only cares that:
 In particular, the consensus layer has _no idea_ whether an instruction's output is correct. If two-thirds (plus one)
 of the committee say that the results are correct, then consensus has been reached and the consensus layer is happy.
 
+For example, if consensus decides that 2 + 2 = 5, then for the purposes of this contract, that is the case. 
 ### The Tari Virtual Machine
 
 The TVM is a WASM-based virtual machine designed to run Tari contracts.
