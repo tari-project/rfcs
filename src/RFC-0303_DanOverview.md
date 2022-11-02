@@ -146,11 +146,11 @@ semantics of DAN smart contracts.
 
 This layer only cares that:
 * _only_ VNs that have registered on the base layer are participating in consensus.
-* VNs are self-organising into VN committees and are carrying out the rules of Cerberus and emergent HotStuff 
+* VNs are self-organising into VN committees and are carrying out the rules of Cerberus
   correctly.
 
 In particular, the consensus layer has _no idea_ whether an instruction's output is correct. If two-thirds (plus one)
-of the committee say that the results are correct, then consensus has been reached and the consensus layer is happy.
+of the committee agree on the results, then consensus has been reached and the consensus layer is happy.
 
 ### The Tari Virtual Machine
 
@@ -171,7 +171,7 @@ engine. Thaums are created with a one-way perpetual peg as described in [RFC-032
 Thaums, which are used to pay for the execution of instructions on the DAN. A portion of instruction fees are burnt 
 with every instruction to provide a constant source of demand for Thaums in the DAN.
 
-There is no peg out back to the base layer for Thaums. Thaum holders wishing to convert back to Tari will be able to 
+There is no peg out back to the base layer for Thaums. The reason for this is explained in [RFC-0320]. Thaum holders wishing to convert back to Tari will be able to 
 perform a submarine swap with a Tari seller. We also anticipate that exchanges will list the Thaum-Tari pair to 
 enable easy conversion of Thaums back to Tari.
 
