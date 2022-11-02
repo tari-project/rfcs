@@ -2,7 +2,7 @@
 
 ## Versioning
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Philip Robinson](https://github.com/philipr-za)
 
@@ -74,22 +74,35 @@ In the Bitcoin P2P protocol messages are preceded by 4
 delimit when a new message starts in a byte stream and also are used to indicate which of the Bitcoin networks the node 
 is speaking on, such as TestNet or Mainnet.
 
-Tari message packets are encapsulated using the Noise protocol so we do not need the delimiting functionality of these 
-bytes but Tari will include a single WireMode byte at the beginning of every connection session. This byte will indicate 
+Tari message packets are encapsulated using the Noise protocol, so we do not need the delimiting functionality of these 
+bytes.
+Once we have a Noise socket we are able to send/receive bytes as with any other socket, but those bytes are
+encrypted over the wire. Using that socket we send 
+[yamux packets](https://github.com/hashicorp/yamux/blob/master/spec.md) and messaging/rpc messages are 
+[length-delimited](https://docs.rs/tokio-util/latest/tokio_util/codec/length_delimited/).
+
+Tari includes a single WireMode byte at the beginning of every connection session. This byte indicates 
 which network a node is communicating on, so that if the counterparty is on a different network it can reject this 
 connection cheaply without having to perform any further operations, like completing the Noise protocol handshake.
 
-The following is a proposed mapping of the WireMode byte. Space is left between Mainnet, Stagenet and Testnet bytes for
-future use. 
+The following is the current mapping of the WireMode byte:
+
 ```rust,ignore
-   #[repr(u8)]
-   enum Network {
-      Mainnet = 0x00,
-      Stagenet1 = 0x51,
-      Testnet1 = 0xa1,
-      Testnet2 = 0xa2
-   }
+   pub enum Network {
+    MainNet = 0x00,
+    LocalNet = 0x10,
+    Ridcully = 0x21,
+    Stibbons = 0x22,
+    Weatherwax = 0xa3,
+    Igor = 0x24,
+    Dibbler = 0x25,
+    Esmeralda = 0x26,
+}
+
+// As well as the special wiremode for local liveness checks
+const LIVENESS_WIRE_MODE: u8 = 0xa6;
 ```
+
 ### P2P message version
 Peer to Peer messages on the Tari network are encapsulated into message envelopes. The body of message envelopes are 
 defined, serialized and deserialized using Protobuf. These messages will only be updated by adding new fields to the 
@@ -113,8 +126,9 @@ transactions and blocks.
 
 The consensus version will be used by a node to determine if it can interact with another node successfully or not. A 
 list of fork versions will be maintained within the code. When a connection is started with a new node the two nodes 
-will exchange `Version` messages detailing the consensus version they are each running and the blockheight at which they
-are currently operating. Both nodes will need to reply with a `Version Acknowledge` message to confirm that they are 
+will exchange `Version` messages detailing the consensus version they are each running and the block height at which 
+they are currently operating. 
+Both nodes will need to reply with a `Version Acknowledge` message to confirm that they are 
 compatible with the counterparty's version. It is possible for a newer node to downgrade its protocol to speak to an 
 older node so this must be decided during this handshake process. Only once the acknowledgments have been exchanged can 
 further messages be exchanged by the parties. This is the method currently employed on the 
@@ -131,3 +145,9 @@ used in the construction and validation of this block. Consensus rules versions 
 and as such will be represented with a single incremented integer. This coupled with the internal list of fork versions,
 that includes the height at which they came into effect, will be used to validate whether the consensus rules specified 
 in the header are valid for that block's height.
+
+# Change Log
+
+| Date        | Change        | Author |
+|:------------|:--------------|:-------|
+| 26 Oct 2022 | Stabilise RFC | CjS77  |
