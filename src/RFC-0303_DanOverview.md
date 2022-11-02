@@ -57,7 +57,9 @@ Digital Assets Network (DAN).
 
 ## Description
 
-The Tari DAN utilises a sharded BFT consensus mechanism called [Cerberus](https://arxiv.org/abs/2008.04450). 
+The Tari DAN is based on a sharded BFT consensus mechanism called [Cerberus](https://arxiv.org/abs/2008.04450). 
+
+One particular note is that Tari has chosen Hotstuff as the base BFT consensus algorithm over pBFT mentioned in the paper.
 
 The core idea of Cerberus is that instead of dividing work up between validator nodes according to the contracts 
 they are managing (as per Tari DANv1, Polkadot, Avalanche, etc.), Cerberus distributes nodes evenly over a set of 
