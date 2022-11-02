@@ -75,21 +75,34 @@ delimit when a new message starts in a byte stream and also are used to indicate
 is speaking on, such as TestNet or Mainnet.
 
 Tari message packets are encapsulated using the Noise protocol, so we do not need the delimiting functionality of these 
-bytes but Tari will include a single WireMode byte at the beginning of every connection session. This byte will indicate 
+bytes.
+Once we have a Noise socket we are able to send/receive bytes as with any other socket, but those bytes are
+encrypted over the wire. Using that socket we send 
+[yamux packets](https://github.com/hashicorp/yamux/blob/master/spec.md) and messaging/rpc messages are 
+[length-delimited](https://docs.rs/tokio-util/latest/tokio_util/codec/length_delimited/).
+
+Tari includes a single WireMode byte at the beginning of every connection session. This byte indicates 
 which network a node is communicating on, so that if the counterparty is on a different network it can reject this 
 connection cheaply without having to perform any further operations, like completing the Noise protocol handshake.
 
-The following is a proposed mapping of the WireMode byte. Space is left between Mainnet, Stagenet and Testnet bytes for
-future use. 
+The following is the current mapping of the WireMode byte:
+
 ```rust,ignore
-   #[repr(u8)]
-   enum Network {
-      Mainnet = 0x00,
-      Stagenet1 = 0x51,
-      Testnet1 = 0xa1,
-      Testnet2 = 0xa2
-   }
+   pub enum Network {
+    MainNet = 0x00,
+    LocalNet = 0x10,
+    Ridcully = 0x21,
+    Stibbons = 0x22,
+    Weatherwax = 0xa3,
+    Igor = 0x24,
+    Dibbler = 0x25,
+    Esmeralda = 0x26,
+}
+
+// As well as the special wiremode for local liveness checks
+const LIVENESS_WIRE_MODE: u8 = 0xa6;
 ```
+
 ### P2P message version
 Peer to Peer messages on the Tari network are encapsulated into message envelopes. The body of message envelopes are 
 defined, serialized and deserialized using Protobuf. These messages will only be updated by adding new fields to the 
