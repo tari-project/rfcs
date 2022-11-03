@@ -124,5 +124,5 @@ one-time private key \\( c + a \\).
 
 | Date        | Change                       | Author    |
 |:------------|:-----------------------------|:----------|
-| 26 Oct 2022 | Stabilise RFC                | CjS77     |
 | 01 Jun 2022 | First draft                  | philip-za |
+| 26 Oct 2022 | Stabilise RFC                | CjS77     |
