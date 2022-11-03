@@ -59,7 +59,7 @@ signature challenges used in base-layer consensus.
 ## Description
 
 A Tari base node must validate each block containing a [block header] as well as set of transaction inputs, transaction outputs and transaction kernels,
-each containing a number of fields pertinent to their function within the [base layer]. The data contained within these structures needs to be consistently encoded
+each containing a number of fields pertinent to their function within the [base layer](RFC-0100_BaseLayer.md). The data contained within these structures needs to be consistently encoded
 (represented as bytes) across platforms and implementations so that the network can agree on a single correct state.
 
 This RFC defines the low-level specification for how these data types MUST be encoded to construct a valid hash and signature on the Tari network.
@@ -108,10 +108,10 @@ to indicate that the value is provided followed by the encoding of the value.
 
 #### Ristretto Keys
 
-`RistrettoPublicKey` and `RistrettoPrivateKey` types defined in the `tari_crypto` crate both have 32-byte canonical formats
+[RistrettoPublicKey](https://github.com/tari-project/tari-crypto/blob/main/src/ristretto/ristretto_keys.rs#L241) and [RistrettoPrivateKey](https://github.com/tari-project/tari-crypto/blob/main/src/ristretto/ristretto_keys.rs#L55) types defined in the [tari_crypto](https://github.com/tari-project/tari-crypto) crate both have 32-byte canonical formats
 and are encoded as a 32-byte fixed array.
 
-The [`tari_crypto`](https://github.com/tari-project/tari-crypto) Rust crate provides an FFI interface that allows
+The [tari_crypto](https://github.com/tari-project/tari-crypto) Rust crate provides an FFI interface that allows
 generating of the canonical byte formats in any language that supports FFI.
 
 #### Commitment
@@ -122,7 +122,7 @@ A commitment is a [RistrettoPublicKey] and so has identical encoding.
 
 See the [TLU on Schnorr Signatures](https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures)
 
-A Schnorr signature tuple is `<R, s>` where `R` is a [RistrettoPublicKey] and `s` is a the signature scalar wrapped in [RistrettoPrivateKey].
+A Schnorr signature tuple is `<R, s>` where `R` is a [RistrettoPublicKey] and `s` is the signature scalar wrapped in [RistrettoPrivateKey].
 
 The encoding is fixed at 64-bytes:
 
@@ -155,7 +155,7 @@ The encoding is fixed at 96-bytes:
 
 Given the following data and types:
 
-```javascript
+```javascript,ignore
 {
   // Type: Fixed array of 5 bytes
   short_id: [1,2,3,4,5],
@@ -189,27 +189,27 @@ produce the same encoding as non-null `dob`.
 The block hash pre-image is constructed by first constructing the merge mining hash. Each encoding is concatenated in order as follows:
 
 1. `version` - 1 byte
-1. `height` - varint
-1. `prev_hash` - fixed 32-bytes 
-1. `timestamp` - varint
-1. `input_mr` - fixed 32-bytes
-1. `output_mr` - fixed 32-bytes
-1. `output_mmr_size` - varint
-1. `witness_mr` - fixed 32-bytes
-1. `kernel_mr` - fixed 32-bytes
-1. `kernel_mmr_size` - `varint
-1. `total_kernel_offset` - 32-byte Scalar, see [RistrettoPrivateKey]
-1. `total_script_offset` - 32-byte Scalar, see [RistrettoPrivateKey]
+2. `height` - varint
+3. `prev_hash` - fixed 32-bytes 
+4. `timestamp` - varint
+5. `input_mr` - fixed 32-bytes
+6. `output_mr` - fixed 32-bytes
+7. `output_mmr_size` - varint
+8. `witness_mr` - fixed 32-bytes
+9. `kernel_mr` - fixed 32-bytes
+10. `kernel_mmr_size` - `varint
+11. `total_kernel_offset` - 32-byte Scalar, see [RistrettoPrivateKey]
+12. `total_script_offset` - 32-byte Scalar, see [RistrettoPrivateKey]
 
 This pre-image is hashed and block hash is constructed, in order, as follows:
 
 1. `merge_mining_hash` - As above
-1. `pow_algo` - enumeration of types of PoW as a single unsigned byte, where `Monero = 0x00` and `Sha3 = 0x01`
-1. `pow_data` - raw variable bytes (no length varint)
-1. `nonce` - the PoW nonce, `u64` converted to a fixed 8-byte array (little endian)
+2. `pow_algo` - enumeration of types of PoW as a single unsigned byte, where `Monero = 0x00` and `Sha3 = 0x01`
+3. `pow_data` - raw variable bytes (no length varint)
+4. `nonce` - the PoW nonce, `u64` converted to a fixed 8-byte array (little endian)
 
 #### Output Features 
-[Output Features]: #output-metadata-and-features "Output Features"
+[Output Features]: #output-features "Output Features"
 
 ```rust,ignore
 pub struct OutputFeatures {
@@ -225,33 +225,33 @@ pub struct OutputFeatures {
 }
 ```
 
-Output features consensus encoding is defined as follows (in order):
+[Output features](https://github.com/tari-project/tari/blob/development/base_layer/core/src/transactions/transaction_components/output_features.rs#L52) consensus encoding is defined as follows (in order):
 
 1. `version` - 1 unsigned byte. This should always be `0x00` but is reserved for future proofing.
-1. `maturity` - [varint]
-1. `flags` - 1 unsigned byte
-1. `metadata` - [dynamic vector]
-1. `unique_id` - [nullable] + [dynamic vector]
-1. `parent_public_key` - [nullable] + 32-byte compressed public key 
-1. `asset` - [nullable] + [AssetOutputFeatures](#assetoutputfeatures)
-1. `mint_non_fungible` - [nullable] + [MintNonFungibleFeatures](#mintnonfungiblefeatures)
-1. `sidechain_checkpoint` - [nullable] + [SideChainCheckpointFeatures](#sidechaincheckpointfeatures)
+2. `maturity` - [varint]
+3. `flags` - 1 unsigned byte
+4. `metadata` - [dynamic vector]
+5. `unique_id` - [nullable] + [dynamic vector]
+6. `parent_public_key` - [nullable] + 32-byte compressed public key 
+7. `asset` - [nullable] + [AssetOutputFeatures](#assetoutputfeatures)
+8. `mint_non_fungible` - [nullable] + [MintNonFungibleFeatures](#mintnonfungiblefeatures)
+9. `sidechain_checkpoint` - [nullable] + [SideChainCheckpointFeatures](#sidechaincheckpointfeatures)
 
 ##### AssetOutputFeatures
 
-- `public_key` - [RistrettoPublicKey] 
-- `template_ids` - [dynamic vector] + [varint]
-- `template_parameters` - [dynamic vector]
+1. `public_key` - [RistrettoPublicKey] 
+2. `template_ids` - [dynamic vector] + [varint]
+3. `template_parameters` - [dynamic vector]
 
 ##### MintNonFungibleFeatures
 
-- `asset_public_key` - [RistrettoPublicKey] 
-- `asset_owner_commitment` - [RistrettoPublicKey] 
+1. `asset_public_key` - [RistrettoPublicKey] 
+2. `asset_owner_commitment` - [RistrettoPublicKey] 
 
 ##### SideChainCheckpointFeatures
 
-- `merkle_root` - [fixed sized array]
-- `committee` - [dynamic vector] + [RistrettoPublicKey]
+1. `merkle_root` - [fixed sized array]
+2. `committee` - [dynamic vector] + [RistrettoPublicKey]
 
 #### Transaction Output
 [Transaction Output]: #transaction-output "Transaction Output"
@@ -274,29 +274,29 @@ and the input spending that output i.e. `output_hash = Hash(version | features |
 
 The encoding is defined as follows:
 
-- `version` - 1 byte
-- `features` - [OutputFeatures]
-- `commitment` - [RistrettoPublicKey]
-- `script` - byte length as [varint] + [TariScript]
-- `covenant` - byte length as [varint] + [Covenant]
+1. `version` - 1 byte
+2. `features` - [OutputFeatures]
+3. `commitment` - [RistrettoPublicKey]
+4. `script` - byte length as [varint] + [TariScript]
+5. `covenant` - byte length as [varint] + [Covenant]
 
 ##### Witness hash
 
 The witness hash is appended to the witness Merkle tree.
 
-- `proof` - Raw proof bytes encoded using [dynamic vector] encoding
-- `metadata_signature` - [CommitmentSignature]
+1. `proof` - Raw proof bytes encoded using [dynamic vector] encoding
+2. `metadata_signature` - [CommitmentSignature]
 
 ##### Metadata signature challenge
 
 See [Metadata Signature](./Glossary.md#metadata-signature) for details.
 
-- `public_commitment_nonce` - [RistrettoPublicKey]
-- `script` - byte length as [varint] + [TariScript]
-- `features` - [OutputFeatures]
-- `sender_offset_public_key` - [RistrettoPublicKey]
-- `commitment` - [RistrettoPublicKey]
-- `covenant`- byte length as [varint] + [Covenant]
+1. `public_commitment_nonce` - [RistrettoPublicKey]
+2. `script` - byte length as [varint] + [TariScript]
+3. `features` - [OutputFeatures]
+4. `sender_offset_public_key` - [RistrettoPublicKey]
+5. `commitment` - [RistrettoPublicKey]
+6. `covenant`- byte length as [varint] + [Covenant]
 
 ### Transaction Input
 
@@ -319,11 +319,11 @@ pub struct TransactionInput {
 
 The transaction input canonical hash pre-image is constructed as follows:
 
-- `input_version` - 1 byte
-- `output_hash` - See [TransactionOutput]
-- `sender_offset_public_key` - [RistrettoPublicKey]
-- `input_data` - [TariScript Stack]
-- `script_signature` - [CommitmentSignature]
+1. `input_version` - 1 byte
+2. `output_hash` - See [TransactionOutput]
+3. `sender_offset_public_key` - [RistrettoPublicKey]
+4. `input_data` - [TariScript Stack]
+5. `script_signature` - [CommitmentSignature]
 
 ### Transaction Kernel
 
@@ -343,12 +343,12 @@ pub struct TransactionKernel {
 
 The transaction kernel is encoded as follows:
 
-- `input_version` - 1 byte
-- `features` - [OutputFeatures]
-- `fee` - [RistrettoPublicKey]
-- `lock_height` - [TariScript Stack]
-- `excess` - [Commitment]
-- `excess_sig` - [Signature]
+1. `input_version` - 1 byte
+2. `features` - [OutputFeatures]
+3. `fee` - [RistrettoPublicKey]
+4. `lock_height` - [TariScript Stack]
+5. `excess` - [Commitment]
+6. `excess_sig` - [Signature]
 
 The canonical hash pre-image is constructed from this encoding.
 
@@ -358,11 +358,11 @@ For details see [RFC-0201_TariScript.md](./RFC-0201_TariScript.md).
 
 The script challenge is constructed as follows:
 
-- `nonce_commitment` - [Commitment]
-- `script` - [TariScript]
-- `input_data` - [TariScript Stack]
-- `script_public_key` - [RistrettoPublicKey]
-- `commitment` - [Commitment]
+1. `nonce_commitment` - [Commitment]
+2. `script` - [TariScript]
+3. `input_data` - [TariScript Stack]
+4. `script_public_key` - [RistrettoPublicKey]
+5. `commitment` - [Commitment]
 
 [varint]: #unsigned-integer-encoding
 [Covenant]: RFC-0250_Covenants.md
@@ -377,3 +377,4 @@ The script challenge is constructed as follows:
 [Commitment]: #commitment
 [fixed sized array]: #fixed-size-arrays
 [block header]: Glossary.md#block-header
+
