@@ -51,7 +51,7 @@ technological merits of the potential system outlined herein.
 ## Related Requests for Comment
 
 * [RFC-0001: Overview](RFC-0001_overview.md)
-* [RFC-0300: The Tari Digital Assets Network](RFCD-0300_DAN.md)
+* [RFCD-0300: The Tari Digital Assets Network](RFCD-0300_DAN.md)
 
 ## Description
 

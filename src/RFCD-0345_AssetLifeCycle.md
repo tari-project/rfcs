@@ -51,10 +51,10 @@ technological merits of the potential system outlined herein.
 ## Related Requests for Comment
 
 
-* [RFC-0300: The Digital Assets Network](RFCD-0300_DAN.md)
-* [RFC-0301: Namespace Registration](RFC-0301_NamespaceRegistration.md)
-* [RFC-0311 Asset templates](RFC-0311_AssetTemplates.md)
-* [RFC-0340: Validator Node Consensus](RFC-0340_VNConsensusOverview.md)
+* [RFCD-0300: The Digital Assets Network](RFCD-0300_DAN.md)
+* [RFCD-0301: Namespace Registration](RFCD-0301_NamespaceRegistration.md)
+* [RFCD-0311 Asset templates](RFCD-0311_AssetTemplates.md)
+* [RFCD-0340: Validator Node Consensus](RFCD-0340_VNConsensusOverview.md)
 
 ## Description
 

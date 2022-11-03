@@ -2,7 +2,7 @@
 
 ## Digital Asset Templates
 
-![status: draft](theme/images/status-draft.svg)
+![status: deprecated](theme/images/status-deprecated.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
@@ -57,10 +57,10 @@ contracts are not Turing complete, such as those executed by the Ethereum Virtua
 
 ## Related Requests for Comment
 
-* [RFC-0300: The Digital Assets Network](RFCD-0300_DAN.md)
-* [RFC-0301: Namespace Registration](RFC-0301_NamespaceRegistration.md)
-* [RFC-0340: Validator Node Consensus](RFC-0340_VNConsensusOverview.md)
-* [RFC-0345: Asset Life cycle](RFC-0345_AssetLifeCycle.md)
+* [RFCD-0300: The Digital Assets Network](RFCD-0300_DAN.md)
+* [RFCD-0301: Namespace Registration](RFCD-0301_NamespaceRegistration.md)
+* [RFCD-0340: Validator Node Consensus](RFCD-0340_VNConsensusOverview.md)
+* [RFCD-0345: Asset Life cycle](RFCD-0345_AssetLifeCycle.md)
 
 ## Description
 

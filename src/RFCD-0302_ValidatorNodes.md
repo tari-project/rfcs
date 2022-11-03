@@ -52,9 +52,9 @@ The aim of this Request for Comment (RFC) is to describe the responsibilities of
 Asset Network (DAN).
 
 ## Related Requests for Comment
-* [RFC-0322: Validator Node Registration](RFC-0322_VNRegistration.md)
-* [RFC-0304: Validator Node Committee Selection](RFCD-0304_VNCommittees.md)
-* [RFC-0340: VN Consensus Overview](RFC-0340_VNConsensusOverview.md)
+* [RFCD-0322: Validator Node Registration](RFCD-0322_VNRegistration.md)
+* [RFCD-0304: Validator Node Committee Selection](RFCD-0304_VNCommittees.md)
+* [RFCD-0340: VN Consensus Overview](RFCD-0340_VNConsensusOverview.md)
 
 ## Description
 ### Abstract

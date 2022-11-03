@@ -51,10 +51,9 @@ The aim of this Request for Comment (RFC) is to  describe the process in which a
 register a [Digital Asset] (DA) and commence its operation on the [Digital Asset Network] (DAN).
 
 ## Related Requests for Comment
-* [RFC-0311: Digital Asset Templates](RFC-0311_AssetTemplates.md)
-* [RFC-0302: Validator Nodes](RFCD-0302_ValidatorNodes.md)
-* [RFC-0304: Validator Node Committee Selection](RFC-0304_VNCommittees.md)
-* [RFC-0220: Asset Checkpoints](RFC-0220_AssetCheckpoints.md)
+* [RFCD-0311: Digital Asset Templates](RFCD-0311_AssetTemplates.md)
+* [RFCD-0302: Validator Nodes](RFCD-0302_ValidatorNodes.md)
+* [RFCD-0304: Validator Node Committee Selection](RFCD-0304_VNCommittees.md)
 
 ## Description
 
