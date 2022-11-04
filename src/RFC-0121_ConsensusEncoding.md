@@ -274,7 +274,7 @@ and the input spending that output i.e. `output_hash = Hash(version | features |
 
 The encoding is defined as follows:
 
-1. `version` - [varint] 1 byte
+1. `version` - 1 byte
 2. `features` - [OutputFeatures]
 3. `commitment` - [RistrettoPublicKey]
 4. `script` - byte length as [varint] + [TariScript]
