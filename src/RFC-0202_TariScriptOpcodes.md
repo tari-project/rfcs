@@ -466,7 +466,7 @@ Is `PKH` equal to the hash of Bob's public key?
 
 The script has completed without errors, and Bob's public key remains on the stack.
 
-###  Time-locked contract
+###  Multiparty Time-locked contract
 
 Alice sends some Tari to Bob. If he doesn't spend it within a certain timeframe (up till block 4000), then she is also
 able to spend it back to herself.
