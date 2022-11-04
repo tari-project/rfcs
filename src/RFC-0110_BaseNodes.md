@@ -2,7 +2,7 @@
 
 ## Base Layer Full Nodes (Base Nodes)
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [S W van heerden](https://github.com/SWvheerden) and  [Stanley Bondi](https://github.com/sdbondi)
 
@@ -78,7 +78,8 @@ Tari Base Nodes MUST carry out the following tasks:
 * provide historical block information to peers that are syncing.
 
 Once the Digital Assets Network (DAN) goes live, Base Nodes will also need to support the tasks described in
-[RFC-0300_DAN](RFCD-0300_DAN.md). These requirements are omitted for the moment.
+[RFC-0300_DAN](RFCD-0300_DAN.md). These requirements may involve but are not limited to:
+* maintain an index of validator node registrations;
 
 To carry out these tasks effectively, Base Nodes SHOULD:
 
@@ -126,7 +127,7 @@ The transaction is validated as follows:
 * The [Tari script] of each input must execute successfully and return the public key that signs the script signature. 
 * The script offset \\( \so\\) is calculated and verified as per [RFC-0201_TariScript].
 
-Rejected transactions are dropped silently.
+Rejected transactions are dropped without service interruption and noted in log files.
 
 Timelocked transactions are rejected by the mempool. The onus is on the client to submit transactions once they are 
 able to be spent.
@@ -219,6 +220,11 @@ In addition, when a block has been validated and added to the blockchain:
 * The mempool MUST also remove all transactions that are present in the newly validated block.
 * The UTXO set MUST be updated by removing all inputs in the block, and adding all the new outputs into it.
 
+### Peer Validation and Propagation
+
+When a peer attempts to connect or is shared by a trusted peer the base node will perform a peer validation. Ensuring
+the peer has a valid id, signature, and peer address before adding or propagating the peer back to the network.
+
 ### Synchronizing and Pruning of the Chain
 
 Syncing, pruning and cut-through are discussed in detail in [RFC-0140](RFC-0140_Syncing_and_seeding.md).
@@ -236,9 +242,16 @@ beyond the pruning horizon and still validate the integrity of the blockchain i.
 beyond what is allowed by consensus rules. A sufficient number of blocks back from the tip should be configured because 
 reorgs are no longer possible beyond that horizon. These nodes can sync from any other base node (archival and pruned).
 
+# Change Log
+
+| Date        | Change              | Author |
+|:------------|:--------------------|:-------|
+| 18 Dec 2019 | First draft         | CjS77  |
+| 19 Oct 2022 | Stabilizing updates | brianp |
 
 
 [archival nodes]: Glossary.md#archive-node
+[pruned nodes]: Glossary.md#pruned-node
 [tari coin]: Glossary.md#tari-coin
 [blockchain]: Glossary.md#blockchain
 [transaction]: Glossary.md#transaction
