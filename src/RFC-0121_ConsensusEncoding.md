@@ -188,16 +188,16 @@ produce the same encoding as non-null `dob`.
 
 The block hash pre-image is constructed by first constructing the merge mining hash. Each encoding is concatenated in order as follows:
 
-1. `version` - 1 byte
-2. `height` - varint
-3. `prev_hash` - fixed 32-bytes 
-4. `timestamp` - varint
-5. `input_mr` - fixed 32-bytes
-6. `output_mr` - fixed 32-bytes
-7. `output_mmr_size` - varint
-8. `witness_mr` - fixed 32-bytes
-9. `kernel_mr` - fixed 32-bytes
-10. `kernel_mmr_size` - `varint
+1. `version` - [varint] 
+2. `height` - [varint] 
+3. `prev_hash` - [fixed sized array] 32 bytes 
+4. `timestamp` - [varint] 
+5. `input_mr` - [fixed sized array] 32 bytes
+6. `output_mr` - [fixed sized array] 32 bytes
+7. `output_mmr_size` - [varint] 
+8. `witness_mr` - [fixed sized array] 32 bytes
+9. `kernel_mr` - [fixed sized array] 32 bytes
+10. `kernel_mmr_size` -  [varint]
 11. `total_kernel_offset` - 32-byte Scalar, see [RistrettoPrivateKey]
 12. `total_script_offset` - 32-byte Scalar, see [RistrettoPrivateKey]
 
@@ -274,7 +274,7 @@ and the input spending that output i.e. `output_hash = Hash(version | features |
 
 The encoding is defined as follows:
 
-1. `version` - 1 byte
+1. `version` - [varint] 1 byte
 2. `features` - [OutputFeatures]
 3. `commitment` - [RistrettoPublicKey]
 4. `script` - byte length as [varint] + [TariScript]
@@ -319,7 +319,7 @@ pub struct TransactionInput {
 
 The transaction input canonical hash pre-image is constructed as follows:
 
-1. `input_version` - 1 byte
+1. `input_version` - [varint] 1 byte
 2. `output_hash` - See [TransactionOutput]
 3. `sender_offset_public_key` - [RistrettoPublicKey]
 4. `input_data` - [TariScript Stack]
@@ -343,7 +343,7 @@ pub struct TransactionKernel {
 
 The transaction kernel is encoded as follows:
 
-1. `input_version` - 1 byte
+1. `input_version` - [varint] 1 byte
 2. `features` - [OutputFeatures]
 3. `fee` - [RistrettoPublicKey]
 4. `lock_height` - [TariScript Stack]
@@ -371,10 +371,12 @@ The script challenge is constructed as follows:
 [RistrettoPublicKey]: #ristretto-keys
 [RistrettoPrivateKey]: #ristretto-keys
 [Ristretto]: https://docs.rs/curve25519-dalek/3.1.0/curve25519_dalek/ristretto/index.html
-[TariScript]: https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/op_codes.rs#L101
+[TariScript]: RFC-0201_TariScript.md
+[TariScriptCode]: https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/op_codes.rs#L101
 [TariScript Stack]: https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/stack.rs#L51
 [OutputFeatures]: #output-features
 [Commitment]: #commitment
 [fixed sized array]: #fixed-size-arrays
 [block header]: Glossary.md#block-header
-
+[TransactionOutput]: Glossary.md#unspent-transaction-outputs
+[CommitmentSignature]: #commitment-signature
