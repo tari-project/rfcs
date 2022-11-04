@@ -319,7 +319,7 @@ pub struct TransactionInput {
 
 The transaction input canonical hash pre-image is constructed as follows:
 
-1. `input_version` - [varint] 1 byte
+1. `version` - 1 byte
 2. `output_hash` - See [TransactionOutput]
 3. `sender_offset_public_key` - [RistrettoPublicKey]
 4. `input_data` - [TariScript Stack]
