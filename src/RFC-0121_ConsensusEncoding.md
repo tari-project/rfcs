@@ -205,7 +205,7 @@ This pre-image is hashed and block hash is constructed, in order, as follows:
 
 1. `merge_mining_hash` - As above
 2. `pow_algo` - enumeration of types of PoW as a single unsigned byte, where `Monero = 0x00` and `Sha3 = 0x01`
-3. `pow_data` - raw variable bytes (no length varint)
+3. `pow_data` - raw variable bytes prepended with the length encoded as varint
 4. `nonce` - the PoW nonce, `u64` converted to a fixed 8-byte array (little endian)
 
 #### Output Features 
