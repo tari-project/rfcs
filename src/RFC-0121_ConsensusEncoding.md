@@ -343,7 +343,7 @@ pub struct TransactionKernel {
 
 The transaction kernel is encoded as follows:
 
-1. `input_version` - [varint] 1 byte
+1. `version` - 1 byte
 2. `features` - [OutputFeatures]
 3. `fee` - [RistrettoPublicKey]
 4. `lock_height` - [TariScript Stack]
