@@ -2,7 +2,7 @@
 
 ## Time-related Transactions
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [S W van Heerden](https://github.com/SWvheerden) and [Philip Robinson](https://github.com/philipr-za)
 
@@ -115,7 +115,10 @@ ENDIF
 
 A more detailed analysis of the execution of this kind of script can be found at [Time-locked Contact](RFC-0202_TariScriptOpcodes.md#time-locked-contract)
 
-
+| Date        | Change        | Author     |
+|:------------|:--------------|:-----------|
+| 01 Feb 2019 | First draft   | SWvheerden |
+| 31 Oct 2022 | Stable update | brianp     |
 
 [HTLC]: Glossary.md#hashed-time-locked-contract
 [Mempool]: Glossary.md#mempool
