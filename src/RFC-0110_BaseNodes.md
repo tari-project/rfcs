@@ -89,7 +89,7 @@ To carry out these tasks effectively, Base Nodes SHOULD:
 * manage a list of Base Node peers present on the network.
 
 Tari Base Nodes MAY implement chain pruning strategies that are features of Mimblewimble, including transaction
-[cut-through and block compaction techniques](https://tlu.tarilabs.com/protocols/grin-protocol-overview/MainReport.html#mimblewimble-protocol-overview).
+[block compaction techniques](https://tlu.tarilabs.com/protocols/grin-protocol-overview/MainReport.html#mimblewimble-protocol-overview).
 
 Tari Base Nodes MAY also implement the following services via an Application Programming Interface (API) to clients:
 
@@ -198,8 +198,7 @@ When a new block is received, it is passed to the block validation service. The 
 * That all kernel excess values are unique for that block and the entire chain.
 * Check if a block contains already spent outputs, reject that block.
 * The [Tari script] of every input must execute successfully and return the public key that signs the script signature.
-* The script offset \\( \so\\) is calculated and verified as per [RFC-0201_TariScript]. This prevents [cut-through] from 
-  being applied.
+* The script offset \\( \so\\) is calculated and verified as per [RFC-0201_TariScript].
 
 
 Because Mimblewimble blocks can simply be seen as large transactions with multiple inputs and outputs, the block 
@@ -227,7 +226,7 @@ the peer has a valid id, signature, and peer address before adding or propagatin
 
 ### Synchronizing and Pruning of the Chain
 
-Syncing, pruning and cut-through are discussed in detail in [RFC-0140](RFC-0140_Syncing_and_seeding.md).
+Syncing and pruning are discussed in detail in [RFC-0140](RFC-0140_Syncing_and_seeding.md).
 
 ### Archival Nodes
 
