@@ -212,7 +212,7 @@ Base Nodes are not obliged to accept connections from any peer node on the netwo
 
 Validated blocks are
 * added to the [blockchain];
-* forwarded to peers using the block [BroadcastStrategy].
+* forwarded to every connected base node peer using the block flood [BroadcastStrategy].
 
 In addition, when a block has been validated and added to the blockchain:
 * The mempool MUST also remove all transactions that are present in the newly validated block.
