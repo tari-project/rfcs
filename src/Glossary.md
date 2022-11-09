@@ -261,6 +261,15 @@ signed with a combination of the homomorphic commitment private values \\( (v\_i
 known only to the receiver, and sender offset private key \\(k\_{Oi}\\) known only to the sender. This prevents
 malleability of the UTXO metadata.
 
+## Script Signature
+
+[script signature]: #script-signature
+
+The script signature is an aggregated Commitment Signature ("ComSig") signature, attached to a transaction input and
+signed with a combination of the homomorphic commitment private values \\( (v\_i \\, , \\, k\_i )\\), the spending key
+known only to the sender, and script private key \\(k\_{Si}\\) known only to the sender. This ensures that the script is valid
+and that the input data has not changed.
+
 ## Mimblewimble
 
 [mimblewimble]: #mimblewimble "a privacy-centric cryptocurrency protocol"
@@ -423,6 +432,13 @@ The base layer token. Tari coins are released according to the [emission schedul
 Tari uses a scripting system for transactions, not unlike [Bitcoin's scripting system](https://en.bitcoin.it/wiki/Script),
 called TariScript. It is also simple, stack-based, processed from left to right, not Turing-complete, with no loops. It
 is a list of instructions linked in a non&nbsp;malleable way to each output, specifying its conditions of spending.
+
+## Total Accumulated difficulty
+
+[total-accumulated-difficulty]: #total-accumulated-difficulty "The accumulated difficulty of a chain tip"
+
+The Accumulated difficulty of the chain is used to compare chain tips. Every block has a total accumulated difficulty that is calculated as 
+the sum of all achieved difficulties of Sha3 blocks multiplied by he sum of all achieved difficulties of RandomX blocks. This is represented as an u128.
 
 ## Transaction
 

@@ -73,19 +73,23 @@ Every [block] MUST:
 * have a total [transaction weight] less than the consensus maximum
 * be able to calculate matching Merkle roots ([kernel_mr], [output_mr], [witness_mr], and [input_mr]) 
 * each [transaction input] MUST: 
-  * spend an existing valid [UTXO] 
-  * have a maturity greater than the current block height
+  * be of an allowed [transaction input] version
+  * spend an existing valid [UTXO] with a maturity less than the current block height
+  * satisfy the [covenant] attached to the [UTXO]
+  * have a valid [script signature]
   * be in a canonical order (see [Transaction ordering])
 * each [transaction output] MUST:
-  * have a unique hash (`version || features || commitment || script || covenant || encrypted_values`)
+  * be of an allowed [transaction output] version
+  * have a unique domain separated hash (`version || features || commitment || script || covenant || encrypted_values`) with the domain (`transaction_output`)
   * have a unique commitment in the current [UTXO] set
   * be in a canonical order (see [Transaction ordering])
   * have a valid [range proof]
   * have a valid [metadata signature]
-  * have a valid script offset, \\( \gamma \\), see [script-offset].
+  * contain only allowed opcodes in the script
 * each [transaction kernel] MUST 
   * have a valid kernel excess signature
   * have a unique excess
+* have a valid total script offset, \\( \gamma \\), see [script-offset].
 * the number of `BURNED` outputs MUST equal the number of `BURNED_KERNEL` kernels exactly,
 * the commitment values of each burnt output MUST match the commitment value of each corresponding `BURNED_KERNEL` exactly.
 * the transaction commitments and kernels MUST balance, as follows:
@@ -139,7 +143,7 @@ Every [block header] MUST contain the following fields:
 The [block header] MUST conform to the following:
 
 * The nonce and [PoW](#pow) must be valid for the [block header].
-  * The achieved difficulty MUST be greater than or equal to the [target difficulty].
+  * The [achieved difficulty] MUST be greater than or equal to the [target difficulty].
 * The [FTL] and [MTP] rules, detailed below.
   
 The Merkle roots are validated as part of the full block validation, detailed in [Blocks].
@@ -154,7 +158,7 @@ This is the version currently running on the chain.
 The version MUST conform to the following:
 
 * It is represented as an unsigned 16-bit integer.
-* Version numbers MUST be incremented whenever there is a change in the blockchain schema starting from 1.
+* Version numbers MUST be incremented whenever there is a change in the blockchain schema starting from 0.
 
 #### Height
 
@@ -173,7 +177,7 @@ This is the hash of the previous block's header.
 The prev_hash MUST conform to the following:
 
 * represented as an array of unsigned 8-bit integers (bytes) in little-endian format.
-* MUST be a hash of the entire contents of the previous block's header.
+* MUST be a hash of the entire contents of the previous block's header using the domain (`block_header`).
 
 #### Timestamp
 
@@ -267,16 +271,6 @@ The total_script_offset MUST conform to the following:
 
 * Must be transmitted as an array of unsigned 8-bit integers (bytes) in little-endian format
 
-#### Total_difficulty
-
-This is the total accumulated difficulty of the mined chained.
-
-The total_difficulty MUST conform to the following:
-
-* Must be transmitted as an unsigned 64-bit integer.
-* MUST be larger than the previous block's `total_difficulty`.
-* meet the difficulty target for the block as determined by the consensus difficulty algorithm.
-
 #### Nonce
 
 This is the nonce used in solving the Proof of Work.
@@ -330,7 +324,7 @@ It is important to note that the two proof of work algorithms are calculated _in
 ### FTL
 [FTL]: #ftl "Future Time Limit"
 
-The Future Time Limit. This is how far into the future a time is accepted as a valid time. Any time that is more than the FTL is rejected until such a time that it is not less than the FTL.
+The Future Time Limit. This is how far into the future a time is accepted as a valid time. Any time that is more than the FTL is rejected until such a time that it is not more than the FTL.
 The FTL is calculated as (T*N)/20 with T and N defined as:
 T: Target time - This is the ideal time that should pass between blocks that have been mined.
 N: Block window - This is the number of blocks used when calculating difficulty adjustments.
@@ -380,6 +374,7 @@ Transaction inputs are sorted lexicographically by the [hash of the output](RFC-
 [transaction kernel]: Glossary.md#transaction-kernel
 [transaction weight]: Glossary.md#transaction-weight
 [metadata signature]: Glossary.md#metadata-signature
+[script signature]: Glossary.md#script-signature
 [utxo]: Glossary.md#unspent-transaction-outputs
 [range proof]: Glossary.md#range-proof
 [cut-through]: Glossary.md#cut-through
@@ -389,3 +384,4 @@ Transaction inputs are sorted lexicographically by the [hash of the output](RFC-
 [FTL]: RFC-0120_Consensus.md#FTL
 [MTP]: RFC-0120_Consensus.md#MTP
 [script-offset]: Glossary.md#script-offset
+[covenant]: RFC-0250_Covenants.md
