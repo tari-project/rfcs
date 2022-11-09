@@ -62,7 +62,7 @@ registration UTXO will de-register the VN to reclaim the amount.
 
 Because we cannot force VNs who have published registration UTXOs to be active and participate in the DAN layer, we can incentivize them by allowing them to reclaim their registration UTXOs as a form of 
 de-registration. We cannot stop stale UTXOs, but we can ignore them by enforcing VNs to re-register every `VN re-registration` period of blocks. If [base node]s via consensus
-remove VNs whose registration UTXOs are older than the `VN re-registration` period, we can limit this. 
+exclude VNs from the `VN Merkle tree` whose registration UTXOs are older than the `VN re-registration` period, we can limit this. 
 
 > NOTE: An aggressive approach may be to force an anyone can spend script on the UTXO if the UTXO goes stale.
 
