@@ -73,8 +73,8 @@ The main properties of [TariScript] are
 * After the script completes, it is successful if and only if it has not aborted, and there is exactly a single element
   on the stack. The script fails if the stack is empty, or contains more than one element, or aborts early.
 * It is not Turing complete, so there are no loops or timing functions.
-* The opcodes enforce type safety. e.g. A public key cannot be added to an integer scalar. Errors of this kind MUST cause
-  the script to fail. The Rust implementation of [TariScript] automatically applies the type safety rules.
+* The opcodes enforce type safety. e.g. A public key cannot be added to an integer scalar. Errors of this kind MUST 
+  cause the script to fail. The Rust implementation of [TariScript] automatically applies the type safety rules.
 
 ### Failure modes
 
@@ -85,11 +85,10 @@ a non-standard Bitcoin transaction, one has to submit it directly to a miner tha
 
 It's interesting to note that only 0.02% of transactions
 mined in Bitcoin before block 550,000 were non-standard, and it appears that the vast majority of these were in fact
-unintentional, leading to loss of funds [(1)].
+unintentional, leading to loss of funds (see [Non-standard transaction]).
 
 [Standard transactions]: https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html
 [Non-standard transaction]: https://www.frontiersin.org/articles/10.3389/fbloc.2019.00007/full
-[(1)]: https://www.frontiersin.org/articles/10.3389/fbloc.2019.00007/full
 
 The present RFC proposes that TariScript not identify a subset of transactions as "standard". However, some transactions
 might be invalid in and of- themselves (e.g. invalid signature, invalid script), while others may be invalid because of
@@ -124,21 +123,19 @@ validation, the next earliest block height) against a given value.
 
 Compare the current block height to `height`.
 
-Fails with `VERIFY_FAILED` if the block height < `height`.
+* Fails with `VERIFY_FAILED` if the block height < `height`.
 
 ##### CheckHeight(height)
 
-Pushes the value of (the current height - `height`) to the stack. In other words,
-the top of the stack will hold the height difference between `height` and the current height. If the chain has
-progressed beyond height, the value is positive; and negative if the chain has yet to reach `height`.
+Pushes the value of (the current tip height - `height`) to the stack. In other words, the top of the stack will
+hold the height difference between `height` and the current height. If the chain has progressed beyond
+`height`, the value is positive; and negative if the chain has yet to reach `height`.
 
-Fails with `STACK_OVERFLOW` if the stack would exceed the max stack height.
+* Fails with `STACK_OVERFLOW` if the stack would exceed the max stack height.
 
 ##### CompareHeightVerify
 
-The same as [`CheckHeightVerify`](#checkheightverifyheight), except that the height to compare against the block height
-  is popped off the stack instead of being hardcoded in the script. Pops the top of the stack as `height` and compares
-  it to the current block height.
+Pops the top of the stack as `height` and compares it to the current block height.
 
 * Fails with `INVALID_INPUT` if there is not a valid integer value on top of the stack.
 * Fails with `STACK_UNDERFLOW` if the stack is empty.
@@ -147,11 +144,9 @@ The same as [`CheckHeightVerify`](#checkheightverifyheight), except that the hei
 
 ##### CompareHeight
 
-The same as [`CheckHeight`](#checkheightheight) except that the height to compare against the block height
-  is popped off the stack instead of being hardcoded in the script.
-
-Pops the top of the stack as `height`, then pushes the value of (`height` - the current height) to the stack.
-In other words, this opcode replaces the top of the stack with the difference between that value and the current height.
+Pops the top of the stack as `height`, then pushes the value of (`height` - the current height) to the stack. In
+other words, this opcode replaces the top of the stack with the difference between that value and the current
+height.
 
 * Fails with `INVALID_INPUT` if there is not a valid integer value on top of the stack.
 * Fails with `STACK_UNDERFLOW` if the stack is empty.
@@ -164,15 +159,17 @@ Does nothing. Never fails.
 
 ##### PushZero
 
-Pushes a zero onto the stack. This is a very common opcode and has the same effect as `PushInt(0)` but is more compact.
-`PushZero` can also be interpreted as `PushFalse` (although no such opcode exists).
+Pushes a zero onto the stack. This is a very common opcode and has the same effect as `PushInt(0)` but is more
+compact.
+_`PushZero` can also be interpreted as `PushFalse` (although no such opcode exists)_.
 
 * Fails with `STACK_OVERFLOW` if the stack would exceed the max stack height.
 
 ##### PushOne
 
-Pushes a one onto the stack. This is a very common opcode and has the same effect as `PushInt(1)` but is more compact.
-`PushOne` can also be interpreted as `PushTrue`, although no such opcode exists.
+Pushes a one onto the stack. This is a very common opcode and has the same effect as `PushInt(1)` but is more
+compact.
+_`PushOne` can also be interpreted as `PushTrue`, although no such opcode exists._
 
 * Fails with `STACK_OVERFLOW` if the stack would exceed the max stack height.
 
@@ -220,75 +217,78 @@ Reverse rotation. The top stack item moves into 3rd place, e.g. `abc => bca`.
 
 #### GeZero
 
-Pops the top stack element as `val`. If `val` is greater than or equal to zero, push a 1 to the stack, otherwise push 0.
+Pops the top stack element as `val`. If `val` is greater than or equal to zero, push a $1$ to the stack, otherwise
+push $0$.
 
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
+* Fails with `EMPTY_STACK` if the stack is empty.
 * Fails with `INVALID_INPUT` if `val` is not an integer.
 
 #### GtZero
 
-Pops the top stack element as `val`. If `val` is strictly greater than zero, push a 1 to the stack, otherwise push 0.
+Pops the top stack element as `val`. If `val` is strictly greater than zero, push a $1$ to the stack, otherwise push
+$0$.
 
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
+* Fails with `EMPTY_STACK` if the stack is empty.
 * Fails with `INVALID_INPUT` if the item is not an integer.
 
 #### LeZero
 
-Pops the top stack element as `val`. If `val` is less than or equal to zero, push a 1 to the stack, otherwise push 0.
+Pops the top stack element as `val`. If `val` is less than or equal to zero, push a $1$ to the stack, otherwise push
+$0$.
 
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
+* Fails with `EMPTY_STACK` if the stack is empty.
 * Fails with `INVALID_INPUT` if the item is not an integer.
 
 #### LtZero
 
-Pops the top stack element as `val`. If `val` is strictly less than zero, push a 1 to the stack, otherwise push 0.
+Pops the top stack element as `val`. If `val` is strictly less than zero, push a $1$ to the stack, otherwise push $0$.
 
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
+* Fails with `EMPTY_STACK` if the stack is empty.
 * Fails with `INVALID_INPUT` if the items is not an integer.
 
 ##### Add
 
-Pop two items and push their sum
+Pop two items and push their sum.
 
-* Fails with `STACK_UNDERFLOW` if the stack has fewer than two items.
+* Fails with `EMPTY_STACK` if the stack has fewer than two items.
 * Fails with `INVALID_INPUT` if the items cannot be added to each other (e.g. an integer and public key).
 
 ##### Sub
 
-Pop two items and push the second minus the top
+Pop two items and push the second minus the top.
 
-* Fails with `STACK_UNDERFLOW` if the stack has fewer than two items.
+* Fails with `EMPTY_STACK` if the stack has fewer than two items.
 * Fails with `INVALID_INPUT` if the items cannot be subtracted from each other (e.g. an integer and public key).
 
 ##### Equal
 
-Pops the top two items, and pushes 1 to the stack if the inputs are exactly equal, 0 otherwise. 0 is also pushed if the
-values cannot be compared (e.g. integer and pubkey).
+Pops the top two items, and pushes $1$ to the stack if the inputs are exactly equal, $0$ otherwise. A $0$ is also
+pushed if the values cannot be compared (e.g. integer and pubkey).
 
-* Fails with `STACK_UNDERFLOW` if the stack has fewer than two items.
+* Fails with `EMPTY_STACK` if the stack has fewer than two items.
 
 ##### EqualVerify
 
 Pops the top two items, and compares their values.
 
-* Fails with `STACK_UNDERFLOW` if the stack has fewer than two items.
+* Fails with `EMPTY_STACK` if the stack has fewer than two items.
 * Fails with `VERIFY_FAILED` if the top two stack elements are not equal.
 
 ### Boolean logic
 
 #### Or(n)
 
-`n` + 1 items are popped from the stack. If the last item popped matches at least one of the first `n` items popped,
-push 1 onto the stack. Push 0 otherwise.
+`n` + $1$ items are popped from the stack. If the last item popped matches at least one of the first `n` items
+popped, push $1$ onto the stack. Push 0 otherwise.
 
-* Fails with `STACK_UNDERFLOW` if the stack has fewer than `n` + 1 items.
+* Fails with `EMPTY_STACK` if the stack has fewer than `n` + $1$ items.
 
 #### OrVerify(n)
 
-`n` + 1 items are popped from the stack. If the last item popped matches at least one of the first `n` items popped,
-continue. Fail with `VERIFY_FAILED` otherwise.
+`n` + $1$ items are popped from the stack. If the last item popped matches at least one of the first `n` items
+popped, continue. Fail with `VERIFY_FAILED` otherwise.
 
-* Fails with `STACK_UNDERFLOW` if the stack has fewer than `n` + 1 items.
+* Fails with `EMPTY_STACK` if the stack has fewer than `n` + $1$ items.
 
 ### Cryptographic operations
 
@@ -296,86 +296,93 @@ continue. Fail with `VERIFY_FAILED` otherwise.
 
 Pop the top element, hash it with the Blake256 hash function and push the result to the stack.
 
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
+* Fails with `EMPTY_STACK` if the stack is empty.
 
 ##### HashSha256
 
 Pop the top element, hash it with the SHA256 hash function and push the result to the stack.
 
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
+* Fails with `EMPTY_STACK` if the stack is empty.
 
 ##### HashSha3
 
 Pop the top element, hash it with the SHA-3 hash function and push the result to the stack.
 
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
+* Fails with `EMPTY_STACK` if the stack is empty.
 
 ##### CheckSig(Msg)
 
-Pop the public key and then the signature. If the signature signs the 32-byte message, push 1 to the stack, otherwise
-push 0.
+Pop the public key and then the signature. If the signature signs the 32-byte message, push $1$ to the stack,
+otherwise push $0$.
 
 * Fails with `INVALID_SCRIPT_DATA` if the `Msg` is not a valid 32-byte value.
-* Fails with `STACK_UNDERFLOW` if the stack has fewer than 2 items.
+* Fails with `EMPTY_STACK` if the stack has fewer than 2 items.
 * Fails with `INVALID_INPUT` if the top stack element is not a PublicKey or Commitment
 * Fails with `INVALID_INPUT` if the second stack element is not a Signature
 
 ##### CheckSigVerify(Msg)
 
-Identical to [`CheckSig`](#checksigmsg), except that nothing is pushed to the stack if the signature is valid, and the
-operation fails with `VERIFY_FAILED` if the signature is invalid.
+Identical to [`CheckSig`](#checksigmsg), except that nothing is pushed to the stack if the signature is valid.
+
+* Fails with `VERIFY_FAILED` if the signature is invalid.
 
 ##### CheckMultiSig(m, n, public keys, Msg)
 
-Pop $m$ signatures from the stack. If $m$ signatures out of the provided $n$ public keys sign the 32-byte message,
-push 1 to the stack, otherwise push 0.
+Pop exactly $m$ signatures from the stack. This will fail if a public key is used more than once or if there are
+more than $m$ signatures. If all $m$ signatures out of the provided $n$ public keys sign the 32-byte message,
+pushes $1$ to the stack, otherwise pushes $0$.
 
 * Fails with `INVALID_SCRIPT_DATA` if the `Msg` is not a valid 32-byte value.
 * Fails with `INVALID_SCRIPT_DATA` if $m$ or $n$ are zero.
 * Fails with `INVALID_SCRIPT_DATA` if $m$ or $n$ are greater than `MAX_MULTISIG_LIMIT (32)`.
-* Fails with `INVALID_SCRIPT_DATA` if $m > n$ 
+* Fails with `INVALID_SCRIPT_DATA` if $m > n$
 * Fails with `STACK_UNDERFLOW` if the stack has fewer than $m$ items.
 * Fails with `INVALID_INPUT` if $m$ stack elements are not a `Signature`.
 
 ##### CheckMultiSigVerify(m, n, public keys, Msg)
 
-Identical to [`CheckMultiSig`](#checkmultisigmsg), except that nothing is pushed to the stack if the signatures are valid, and the
-operation fails with `VERIFY_FAILED` if the signatures are invalid.
+Identical to [`CheckMultiSig`](#checkmultisigm-n-public-keys-msg), except that:
+- nothing is pushed to the stack if all $m$ signatures out of the provided $n$ public keys sign the 32-byte message;
+- it fails if the signatures are invalid.
 
-
+In addition to the failures mentioned:
+* Fails with `VERIFY_FAILED` if the signatures are invalid.
 
 ##### CheckMultiSigVerifyAggregatePubKey(m, n, public keys, Msg)
 
-Pop m signatures from the stack. If m signatures out of the provided n public keys sign the 32-byte message,
-push the aggregate of the public keys to the stack, otherwise fails with VERIFY_FAILED.
+Identical to [`CheckMultiSig`](#checkmultisigm-n-public-keys-msg), except that:
+- the aggregate of the public keys is pushed to the stack if all $m$ signatures out of the provided $n$ public keys
+  sign the 32-byte message;
+- it fails if the signatures are invalid.
+
+In addition to the failures mentioned:
+* Fails with `VERIFY_FAILED` if the signatures are invalid.
 
 ##### ToRistrettoPoint,
 
-Pops the top element which must be a valid Ristretto scalar, calculates the corresponding Ristretto point, and pushes this to the stack.
+Pop the top element which must be a valid 32-byte scalar or hash and calculates the corresponding Ristretto
+point, and pushes the result to the stack.
 
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
+* Fails with `EMPTY_STACK` if the stack is empty.
 * Fails with `INVALID_INPUT` if the top stack element is not a scalar.
 
 ### Miscellaneous
 
 ##### Return
 
-Always fails with `VERIFY_FAILED`.
+This opcode does nothing except that it always fails.
+
+* Fails with `VERIFY_FAILED`.
 
 ##### If-then-else
 
-The if-then-else clause is marked with the `IFTHEN` opcode.
-When the `IFTHEN` opcode is reached, the top element of the stack is popped into `pred`.
-If `pred` is 1, the instructions between `IFTHEN` and `ELSE` are executed. The instructions from `ELSE` to `ENDIF` are
-then popped without being executed.
+Pop the top element of the stack into `pred`. If `pred` is $1$, the instructions between `IFTHEN` and `ELSE` are
+executed. If `pred` is $0$, instructions are popped until `ELSE` or `ENDIF` is encountered. If `ELSE` is encountered,
+instructions are executed until `ENDIF` is reached. `ENDIF` is a marker opcode and a no-op.
 
-If `pred` is 0, instructions are popped until `ELSE` or `ENDIF` is encountered.
-If `ELSE` is encountered, instructions are executed until `ENDIF` is reached.
-`ENDIF` is a marker opcode and a no-op.
-
-* Fails with `STACK_UNDERFLOW` if the stack is empty.
-* If `pred` is anything other than 0 or 1, the script fails with `INVALID_INPUT`.
-* If any instruction during execution of the clause causes a failure, the script fails with that failure code.
+* Fails with `EMPTY_STACK` if the stack is empty.
+* Fails with `INVALID_INPUT` if `pred` is anything other than $0$ or $1$.
+* Fails with the corresponding failure code if any instruction during execution of the clause causes a failure.
 
 ## Serialisation
 
@@ -386,27 +393,27 @@ e.g. `PushHash` then it is equally known how many bytes following the opcode wil
 The script input data is serialised in an analogous manner. The first byte in a stream indicates the type of data in the
 bytes that follow. The length of each type is fixed and known _a priori_. The next _n_ bytes read represent the data type.
 
-As input data elements are read in, they are pushed onto the stack. This means that the _last_ input element will typically
-be operated on _first_!
+As input data elements are read in, they are pushed onto the stack. This means that the _last_ input element will 
+typically be operated on _first_!
 
 The types of input parameters that are accepted are:
 
-| Type            | Range / Value                                                          |
-|:----------------|:-----------------------------------------------------------------------|
-| Integer         | 64-bit signed integer                                                  |
-| Hash            | 32-byte hash value                                                     |
-| PublicKey       | 32-byte Ristretto public key                                           |
-| Signature       | 32-byte nonce + 32-byte signature                                     |
-| Data            | single byte, n, indicating length of data, followed by n bytes of data |
-| RistrettoScalar | 32-byte Ristretto secret key                                           |
+| Type       | Range / Value                                                           |
+|:-----------|:------------------------------------------------------------------------|
+| Number     | 64-bit signed integer                                                   |
+| Hash       | 32-byte hash value                                                      |
+| Scalar     | 32-byte scalar value                                                    |
+| Commitment | 32-byte homomorphic commitment (Pedersen commitment )                   |
+| PublicKey  | 32-byte Ristretto public key                                            |
+| Signature  | 64-byte Ristretto Schnorr signature (32-byte nonce + 32-byte signature) |
 
 ## Example scripts
 
 ### Anyone can spend
 
-The simplest script is an empty script, or a script with a single `NoOp` opcode. When faced with this script, the spender
-can supply any pubkey in her script input for which she knows the private key. The script will execute, leaving that
-public key as the result, and the transaction script validation will pass.
+The simplest script is an empty script, or a script with a single `NoOp` opcode. When faced with this script, the 
+spender can supply any pubkey in her script input for which she knows the private key. The script will execute, leaving 
+that public key as the result, and the transaction script validation will pass.
 
 ### One-sided transactions
 
@@ -575,8 +582,8 @@ The top of the stack is 1, so `IFTHEN` executes the first branch, `PushPubkey(P_
 | Alice or Bob's pubkey |
 | Alice or Bob's pubkey |
 
-`OrVerify(2)` compares the 3rd element, Alice's pubkey, with the 2 top items that were popped. There is a match, so the script
-continues.
+`OrVerify(2)` compares the 3rd element, Alice's pubkey, with the 2 top items that were popped. There is a match, so the 
+script continues.
 
 | Stack                 |
 |:----------------------|
@@ -587,34 +594,40 @@ or Bob can spend the output.
 
 ### Error codes
 
-| Code                    | Description                                                                      |
-|:------------------------|:---------------------------------------------------------------------------------|
-| `RETURN`                | The serialised script exceeds 1024 bytes.                                        |
-| `STACK_OVERFLOW`        | The stack exceeded 255 elements during script execution                          |
-| `STACK_UNDERFLOW`       | Attempt to pop more items than remain on the stack during script execution       |
-| `NON_UNIT_LENGTH_STACK` | The stack did not exactly 1 element after script execution                       |
-| `INCOMPATIBLE_TYPES`    | An operand was applied to incompatible types                                     |
-| `VALUE_EXCEEDS_BOUNDS`  | A script opcode resulted in a value that exceeded the maximum or minimum value   |
-| `INVALID_OPCODE`        | The script cannot be deserialised due to an invalid opcode                       |
-| `MISSING_OPCODE`        | The script is missing closing opcodes (Else or EndIf)                            |
-| `INVALID_SIGNATURE`     | The script contained an invalid signature                                        |
-| `INVALID_INPUT`         | Invalid or incompatible data was popped off the stack as input into an operation |
-| `INVALID_SCRIPT_DATA`   | An opcode parameter is invalid or of the wrong type                              |
-| `VERIFY_FAILED`         | A script condition (typically a `nnnVerify` opcode) failed                       |
+| Code                    | Description                                                                    |
+|:------------------------|:-------------------------------------------------------------------------------|
+| `RETURN`                | The script failed with an explicit Return                                      |
+| `STACK_OVERFLOW`        | The stack exceeded 255 elements during script execution                        |
+| `STACK_UNDERFLOW`       | Tried to pop an element off an empty stack                                     |
+| `NON_UNIT_LENGTH_STACK` | The script completed execution with a stack size other than one                |
+| `INCOMPATIBLE_TYPES`    | An operand was applied to incompatible types                                   |
+| `VALUE_EXCEEDS_BOUNDS`  | A script opcode resulted in a value that exceeded the maximum or minimum value |
+| `INVALID_OPCODE`        | The script encountered an invalid opcode                                       |
+| `MISSING_OPCODE`        | The script is missing closing opcodes (Else or EndIf)                          |
+| `INVALID_SIGNATURE`     | The script contained an invalid signature                                      |
+| `INVALID_INPUT`         | The serialised stack contained invalid input                                   |
+| `INVALID_DATA`          | The script contained invalid data                                              |
+| `VERIFY_FAILED`         | A verification opcode failed, aborting the script immediately                  |
+| `INVALID_DIGEST`        | `as_hash` requires a Digest function that returns at least 32 bytes            |
 
 ### Credits
 
 Thanks to [@philipr-za](https://github.com/philipr-za) and [@SWvheerden](https://github.com/SWvheerden) for their input
 and contributions to this RFC.
 
-
 # Change Log
 
-| Date         | Change                                 | Author    |
-|:-------------|:---------------------------------------|:----------|
-| 17 Aug 2020  | First draft                            | CjS77     |
-| 8 Mar 2021   | Minor update                           | philip-za |
-| 28 Sep 2022  | Minor update to reflect implementation | sdbondi   |
-
+| Date         | Change                                                     | Author         |
+|:-------------|:-----------------------------------------------------------|:---------------|
+| 17 Aug 2020  | First draft                                                | CjS77          |
+| 11 Feb 2021  | Tari script proposal v3                                    | CjS77          |
+| 16 Feb 2021  | Update TariScript OpCodes                                  | CjS77          |
+| 08 Mar 2021  | Update RFC docs                                            | delta1         |
+| 12 Nov 2021  | Add CheckMultiSig/Verify                                   | delta1         |
+| 30 Jun 2021  | Add missing OP_CHECKMULTISIG/VERIFY and update error codes | sdbondi        |
+| 11 Jan 2022  | Add ToRistrettoPoint opcode to TariScript                  | SWvheerden     |
+| 27 Sep 2022  | Add aggregate signatures to transaction inputs and outputs | hansieodendaal |
+| 28 Sep 2022  | Minor update to reflect implementation                     | sdbondi        |
+| 11 Nov 2022  | Update for code review/audit                               | hansieodendaal |
 
 [TariScript]: Glossary.md#tariscript
