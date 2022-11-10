@@ -2,13 +2,13 @@
 
 ## Deep links structure convention.
 
-![status: raw](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Adrian Truszczyński](https://github.com/TruszczynskiA)
 
 # Licence
 
-[ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
+[The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
 Copyright 2022 The Tari Development Community
 
@@ -83,7 +83,7 @@ The data component is an optional string of key-value pairs used by the parser/d
 ### The Structure
 Combining all three components, they will form a deep link with a structure presented below:
 ```ignore
-{scheme}://{command}?{data}
+{scheme}://{network_name}/{command}?{data}
 ```
 #### Examples:
 ```ignore
@@ -94,7 +94,7 @@ tari://testnet/payments/send?amount=1.23&pubKey=01234556789abcde
 
 ### Deeplinks in use:
 
-* `/transactions/send`
+* `{network_name}/transactions/send`
    
 The data contains transaction information used in the send tokens process.
 
@@ -104,7 +104,7 @@ The data contains transaction information used in the send tokens process.
 | amount     | UInt64?    | The amount in micro Tari     |
 | note       | String?    | Note passed with transaction |
 
-* `/base_nodes/add`
+* `{network_name}/base_nodes/add`
 
 The data contains a custom base node configuration. This deep link adds a new base node configuration to the pool and switches to the added base node. 
 

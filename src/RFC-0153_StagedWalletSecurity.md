@@ -2,7 +2,7 @@
 
 ## Staged Wallet Security
 
-![status: draft](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
 
@@ -165,6 +165,8 @@ transaction.
 When migrating from Stage 1 to Stage 2, the Stage 1b backups SHOULD be deleted.
 
 #### Stage 3 - Sweep to cold wallet
+
+**Pending hardware wallet support**
 
 Above a given limit -- user-defined, or the default `MAX_HOT_WALLET_BALANCE`, the user should be prompted to transfer
 funds into a cold wallet. The amount to sweep can be calculated as `MAX_HOT_WALLET_BALANCE` - `SAFE_HOT_WALLET_BALANCE`.
