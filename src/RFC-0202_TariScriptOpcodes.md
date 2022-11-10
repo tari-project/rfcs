@@ -2,7 +2,7 @@
 
 ## TariScript Opcodes
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
