@@ -2,7 +2,7 @@
 
 ## Covenants
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
@@ -10,7 +10,7 @@
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
-Copyright 2021 The Tari Development Community
+Copyright 2022 The Tari Development Community
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 following conditions are met:
@@ -65,11 +65,11 @@ use-cases, such as
 ## Introduction
 
 The Tari protocol already provides programmable consensus, through [TariScript], that restricts whether a [UTXO]
-may be included as an input to a transaction (a.k.a spent). The scope of information [TariScript] is inherently limited,
+may be included as an input to a transaction (a.k.a spent). The scope of information within [TariScript] is inherently limited,
 by the [TariScript Opcodes] and the input data provided by a spender. Once the requirements of the script are met,
 a spender may generate [UTXO]s of their choosing, within the constraints of [MimbleWimble].
 
-This RFC aims to expand the capabilities of Tari protocol by adding _additional requirements_, called covenants
+This RFC expands the capabilities of Tari protocol by adding _additional requirements_, called covenants
 that allow the owner(s) of a [UTXO] to control the composition of a _subsequent_ transaction.
 
 Covenants are not a new idea and have been proposed and implemented in various forms by others.
@@ -94,7 +94,7 @@ outputs from other boxes as long as balance is maintained.
 This results in an interesting dilemma: how do we allow rules that dictate how future outputs look only armed with
 the knowledge that the rule must apply to one or more outputs?
 
-In this RFC, we propose a covenant scheme that allows the [UTXO] originator to express a _filter_ that must be
+In this RFC, we datail a covenant scheme that allows the [UTXO] originator to express a _filter_ that must be
 satisfied for a subsequent spending transaction to be considered valid.
 
 ## Assumptions
@@ -438,6 +438,13 @@ xor(
 - `filter_script_match(<pattern>)`
 - `filter_covenant_match(<pattern>)`
 
+# Change Log
+
+| Date        | Change        | Author |
+|:------------|:--------------|:-------|
+| 17 Oct 2021 | First draft   | sbondi |
+| 08 Oct 2022 | Stable update | brianp |
+
 [commitment]: ./Glossary.md#commitment
 [tari codebase]: https://github.com/tari-project/tari
 [handshake]: https://handshake.org/files/handshake.txt
@@ -450,3 +457,4 @@ xor(
 [vaults]: https://hackingdistributed.com/2016/02/26/how-to-implement-secure-bitcoin-vaults/
 [tariscript]: ./Glossary.md#tariscript
 [mimblewimble]: ./Glossary.md#mimblewimble
+[TariScript Opcodes]: ./RFC-0202_TariScriptOpcodes.md
