@@ -160,23 +160,26 @@ enum CovenantArg {
     // data size: 32 bytes
     Commitment(PedersonCommitment),
     // byte code: 0x04
-    // data size: 64 bytes
-    Signature(Signature),
+    // data size: variable
+    TariScript(TariScript),
     // byte code: 0x05
-    // data size: variable
-    Script(TariScript),
-    // byte code: 0x06
-    // data size: variable
+    // data size: <= 4096 bytes
     Covenant(Covenant),
-    // byte code: 0x07
+    // byte cide: 0x06
     // data size: variable
-    VarInt(VarInt),
-    // byte code: 0x08
-    // data size: 1 byte
-    Field(FieldKey),
-    // byte code: 0x09
+    Uint(u64),
+    // byte cide: 0x07
     // data size: variable
-    Fields(Vec<FieldKey>),
+    OutputField(OutputField),
+    // byte cide: 0x08
+    // data size: variable
+    OutputFields(OutputFields),
+    // byte cide: 0x09
+    // data size: variable
+    Bytes(Vec<u8>),
+    // byte cide: 0x0a
+    // data size: 1 bytes
+    OutputType(OutputType),
 }
 ```
 
@@ -185,18 +188,17 @@ enum CovenantArg {
 Fields from each output in the output set may be brought into a covenant filter.
 The available fields are defined as follows:
 
-| Tag Name                            | Byte Code | Returns                           |
-| ----------------------------------- | --------- | --------------------------------- |
-| `field::commitment`                 | 0x00      | output.commitment                 |
-| `field::script`                     | 0x01      | output.script                     |
-| `field::sender_offset_public_key`   | 0x02      | output.sender_offset_public_key   |
-| `field::covenant`                   | 0x03      | output.covenant                   |
-| `field::features`                   | 0x04      | output.features                   |
-| `field::features_flags`             | 0x05      | output.features.flags             |
-| `field::features_maturity`          | 0x06      | output.features.maturity          |
-| `field::features_unique_id`         | 0x07      | output.features.unique_id         |
-| `field::features_parent_public_key` | 0x08      | output.features.parent_public_key |
-| `field::features_metadata`          | 0x09      | output.features.metadata          |
+| Tag Name                             | Byte Code | Returns                            |
+|--------------------------------------|-----------|------------------------------------|
+| `field::commitment`                  | 0x00      | output.commitment                  |
+| `field::script`                      | 0x01      | output.script                      |
+| `field::sender_offset_public_key`    | 0x02      | output.sender_offset_public_key    |
+| `field::covenant`                    | 0x03      | output.covenant                    |
+| `field::features`                    | 0x04      | output.features                    |
+| `field::features_output_type`        | 0x05      | output.features.output_type        |
+| `field::features_maturity`           | 0x06      | output.features.maturity           |
+| `field::features_metadata`           | 0x07      | output.features.metadata           |
+| `field::features_sidechain_features` | 0x08      | output.features.sidechain_features |
 
 Each field tag returns a consensus encoded byte representation of the value contained in the field.
 How those bytes are interpreted depends on the covenant. For instance, `filter_fields_hashed_eq` will
