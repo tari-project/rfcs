@@ -94,7 +94,7 @@ outputs from other boxes as long as balance is maintained.
 This results in an interesting dilemma: how do we allow rules that dictate how future outputs look only armed with
 the knowledge that the rule must apply to one or more outputs?
 
-In this RFC, we datail a covenant scheme that allows the [UTXO] originator to express a _filter_ that must be
+In this RFC, we detail a covenant scheme that allows the [UTXO] originator to express a _filter_ that must be
 satisfied for a subsequent spending transaction to be considered valid.
 
 ## Assumptions
