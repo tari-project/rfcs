@@ -2,7 +2,7 @@
 
 ## Emoji Id specification
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**:[Cayle Sharrock](https://github.com/CjS77)
 
@@ -48,8 +48,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This document describes the specification for Emoji Ids. Emoji Ids are encoded node ids used for humans to easily verify
-peer node addresses.
+This document describes the specification for Emoji Ids. Emoji Ids are encoded node ids used for humans to verify peer node addresses easily.
 
 ## Related Requests for Comment
 
@@ -60,21 +59,20 @@ None
 Tari [Communication Node]s are identified on the network via their [Node ID]; which in turn are derived from the node's
 public key. Both the node id and public key are simple large integer numbers.
 
-The most common practice for human beings to copy large numbers in cryptocurrency software is to scan a QR code or copy
-and paste a value from one application to another. These numbers are typically encoded using hexadecimal or Base58
+The most common practice for human beings to copy large numbers in cryptocurrency software is scanning a QR code or copying and pasting a value from one application to another. These numbers are typically encoded using hexadecimal or Base58
 encoding. The user will then typically scan (parts) of the string by eye to ensure that the value was transferred
 correctly.
 
-For Tari, we propose encoding values, the node ID in particular, using emoji. The advantages of this approach are:
+For Tari, we propose encoding values, the node ID and network identifier in particular, for Tari, using emojis. The advantages of this approach are:
 
-* Emoji are more easily identifiable; and if selected carefully, less prone to identification errors (e.g. mistaking an
+* Emoji are more easily identifiable; and, if selected carefully, less prone to identification errors (e.g., mistaking an
   O for a 0).
 * The alphabet can be considerably larger than hexadecimal (16) or Base58 (58), resulting in shorter character sequences
   in the encoding.
+* Should be be able to detect if the address used belongs to the correct network. 
+## The specification
 
-### The specification
-
-#### The emoji character map
+### The emoji character map
 An emoji alphabet of 256 characters is selected. Each emoji is assigned a unique index from 0 to 255 inclusive. This
 list is the emoji map. For example,
 
@@ -83,46 +81,63 @@ list is the emoji map. For example,
 * ...
 * 🦊 => 255
 
-The emoji SHOULD be selected such that
-
-* Similar looking emoji are excluded from the map. e.g. Neither 😁 or 😄 should be included. Similarly the Irish and
-  Côte d'Ivoirean flags look very similar, and both should be excluded.
+The emoji SHOULD be selected such that:
+* Similar-looking emoji are excluded from the map. e.g. Neither 😁 or 😄 should be included. Similarly, the Irish and
+  Côte d'Ivoire flags look very similar, and both should be excluded.
 * Modified emoji (skin tones, gender modifiers) are excluded. Only the "base" emoji is considered.
 
-#### Encoding
+### Encoding
 
 The selection of an alphabet with 256 symbols means there is a direct mapping between bytes and emoji. For each byte
 in the input data to be encoded, map the byte to the corresponding emoji using the emoji map. The resulting
 concatenation of emoji characters is the emoji string.
 
-#### Emoji ID definition
+### Emoji ID definition
 
-The emoji ID is an emoji string of 33 symbols from the emoji alphabet. It uses this bitmap:
+The emoji ID is a string of 33 symbols from the emoji alphabet. It uses this bitmap:
 
 ```text
-+-----------------------------+-------------------+
-|  Node public key (256 bits) | Checksum (8 bits) |
-+-----------------------------+-------------------+
++-----------------------------+--------------------------+
+|  Node public key (256 bits) | MaskedChecksum (8 bits)  |
++-----------------------------+--------------------------+
 ```
 
  The emoji ID is calculated from a node public key serialized as 32 bytes (`B`) as follows:
 
 * Use the [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit
-checksum `C` from `B`.
+masked checksum `'C` from `B` and network `N`.
 * Encode `B` into an emoji string.
-* Encode `C` into an emoji string.
-* Concatenate `B` and `C` as the emoji ID.
+* Encode `'C` into an emoji string.
+* Concatenate `B` and `'C` as the emoji ID.
 
-#### Decoding
+#### Checksum effectiveness
+It is important to note that by masking the checksum we technically reduce the effectiveness of the checksum. These emoji ids wont
+however, be sent over the wire in raw form and its far more likely that they will just be copied thus it's important to verify the
+network of the wallet.
+
+### Checksum 
+
+For the MaskedChecksum we use the [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit
+Checksum `C` from the public key `B`.
+To assert that the network that the public key comes from is the expected network, we mask the checksum with the network. 
+We calculate the MaskedChecksum `'C` as `C XOR N` where `N` is the network defined as 8-bits.
+
+### Decoding
 
 One can extract the node public key from an emoji ID as follows:
 
 * Assert that the emoji ID contains exactly 33 valid emoji characters from the emoji alphabet. If not, return an error.
 * Decode the emoji ID as an emoji string by mapping each emoji character to a byte value using the emoji map, producing
-33 bytes. Let `B` be the first 32 bytes, and `C` be the last byte.
+33 bytes. Let `B` be the first 32 bytes and `'C` be the last byte.
+* Calculate `C` by `'C XOR N`.
 * Use the DammSum validation algorithm on `B` to assert that `C` is a valid checksum. If not, return an error.
 * Attempt to deserialize `B` as a public key. If this fails, return an error. If it succeeds, return the public key.
 
+## Change Log
+
+| Date         | Change                   | Author     |
+|:-------------|:-------------------------|:-----------|
+| 2022-11-10   | Initial stable           | SWvHeerden |
 
 [Communication Node]: Glossary.md#communication-node
 [Node ID]: Glossary.md#node-id
