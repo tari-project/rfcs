@@ -100,22 +100,15 @@ and spans all blocks from the start of the epoch up to but excluding the start o
 |:------------------------|:------------|:------------|
 | `VNConfirmationPeriod`  | 1000 Blocks |             |
 
-TODO: explain how `VNConfirmationPeriod` could be changed:
-- Changes to `VNConfirmationPeriod` should never be needed, but
-- should be based on epoch 
-- if more than current, we pause the scanning until the new value is reached
-- if less than current we may skip epochs 
-
 ## Validator Registration
 
 A validator node operator wishing to participate in [DAN] consensus MUST generate a [Ristretto] keypair `<VN_Public_Key, VN_Secret_Key>` that serves as a stable [DAN] identity and a signing key for L2 consensus messages.
 The `VN_Public_Key` MUST be registered on the base layer by submitting a `ValidatorNodeRegistration` [UTXO] which allows the validator to participate in [DAN] consensus for `VNRegistrationValidityPeriod`.
 
 The published `ValidatorNodeRegistration` [UTXO] has these requirements:
-1. MUST contain a valid [Schnorr signature] that proves knowledge of the `VN_Secret_Key` 
-    * The signature challenge is defined as $e = H(R \mathbin\Vert P \mathbin\Vert m)$
+1. MUST contain a valid [Schnorr signature] that simply proves knowledge of the `VN_Secret_Key` 
+    * The signature challenge is defined as $e = H(P \mathbin\Vert R)$
     * $R$ is a public nonce, $P$ is the public `VN_Public_Key` 
-    * $m$ is TODO (previous shard key?, nothing?)
 1. the [UTXO]'s `minimum_value` must be at least `VNRegDepositAmount` to mitigate spam/[Sybil] attacks,
 1. the [UTXO] lock-height must be set to `VNRegLockHeight`.
 1. A script which burns the validator node registration funds if the validator does not reclaim it for a long period after the lock height expires.
@@ -272,24 +265,6 @@ V_n - Validator Node Registration UTXO n
    * $\text{get_vn_set}(\epsilon_13) -> [V_2, V_4, V_5, V_6]$
 
 
-TODO Potential issues:
-- a shuffled shard key is always known at least `VNConfirmationPeriod` before it applies to the validator. Can this be avoided? Does it matter?
-- many nodes leaving, joining and shuffling the network may cause data loss and/or liveness failures. Possible to throttle the rate of change?
-- Other ideas:
-    - Cycle epochs (perhaps in groups of ~10 epochs) between three phases:
-      1. accept/instate - new validators may enter
-      2. prune/deregister - validators may leave
-      3. shuffle - % of validator keys are shuffled
-      4. locked - no changes
-    - Base amount of shuffle on number of new / leaving validators, `num_shuffle - num_new - new_leaving`
-    - Validators are registered until they submit a deregister
-      - pro: makes state monitoring easier, vn funds are locked up so incentivised to "politely" reclaim it rather than just leaving their registration there
-      - con: if a validator just leaves without posting a deregistration, there has to be some way to exclude them.
-      - Must force a validator node registration to be spent into a time-locked (> `VNConfirmationPeriod`) deregistration or another registration
-    - Shuffle a percentage of the validator set, e.g. 5% every epoch
-      - select $X$ random numbers from $[0; 5% of N)$ where $N$ is the cardinality of the VN set. The RNG is seeded from the prev_block_hash.
-      - The validators at the indexes of $X$ are selected for shuffle.
-
 ### Shard Key and Shuffling
 
 The `VN_Shard_Key` is a deterministic 256-bit random number that is assigned to a validator node by the base layer for a given epoch, and
@@ -318,6 +293,10 @@ fn derive_shard_key(prev_shard_key: Option<ShardId>, vn_key: U256, epoch: u64, i
    }
 }
 ```
+
+Only a random fraction of validators will be re-assigned shard keys per epoch and that fraction will not be shuffled again
+for `VNShardShuffleInterval` epochs. Although the exact number of validators that shuffle per epoch varies, on average 
+the `VNShardShuffleInterval` should aim to shuffle around 5% or less of the network per epoch. 
 
 The `prev_shard_key` is the last `VN_Shard_Key` that was assigned to the validator node within the `VNRegistrationValidityPeriod`.
 Should `VNRegistrationValidityPeriod` elapse without a renewed registration, a new `VN_Shard_Key` is assigned. 
