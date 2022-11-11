@@ -92,7 +92,7 @@ and spans all blocks from the start of the epoch up to but excluding the start o
 | `VNRegDepositAmount`           | TBD Tari           | The minimum amount that must be spent to create a valid `ValidatorNodeRegistration` [UTXO] |
 | `VNRegLockHeight`              | 10 Epochs          | The lock height that must be set on every `ValidatorNodeRegistration` [UTXO]               |
 | `VNShardShuffleInterval`       | 100 Epochs         | The interval that a validator node shard key is shuffled                                   |
-| `VNRegInstateDelay`            | 2 Epochs           | The number of epochs to delay for before instating a new VN                                |
+| `VNRegActivationDelay`         | 2 Epochs           | The number of epochs to delay for before activating a new VN                               |
 
 *Validator node consensus constants:*
 
@@ -100,6 +100,11 @@ and spans all blocks from the start of the epoch up to but excluding the start o
 |:------------------------|:------------|:------------|
 | `VNConfirmationPeriod`  | 1000 Blocks |             |
 
+TODO: explain how `VNConfirmationPeriod` could be changed:
+- Changes to `VNConfirmationPeriod` should never be needed, but
+- should be based on epoch 
+- if more than current, we pause the scanning until the new value is reached
+- if less than current we may skip epochs 
 
 ## Validator Registration
 
@@ -117,7 +122,7 @@ The published `ValidatorNodeRegistration` [UTXO] has these requirements:
 
 ```text
 OP_PUSH_INT(N) OP_COMPARE_HEIGHT OP_LTE_ZERO OP_IF_THEN 
-    OP_PUSH_PUBKEY(VN_Public_Key)
+    NOP
 OP_ELSE
     OP_RETURN
 OP_END_IF
@@ -128,8 +133,6 @@ By submitting this [UTXO] the validator node operator is committing to providing
 A validator node operator MAY re-register their `VN_Public_Key` before the `VNRegistrationValidityPeriod` epoch is reached, OPTIONALLY 
 spending the previous `ValidatorNodeRegistration` [UTXO]. If the previous `ValidatorNodeRegistration` [UTXO] has not expired and
 a new `ValidatorNodeRegistration` [UTXO] is submitted, the new `ValidatorNodeRegistration` [UTXO] supersedes the previous one.
-
-This allows a validator to re-register earlier than the lock-height as long as they are willing to commit 
 
 > The validator node may implement auto re-registration to ensure that the validator node continues 
 > to be included in the current VN set without constant manual intervention.
@@ -188,13 +191,12 @@ time for all validators to become aware of the [base layer] state for the epoch.
 To illustrate, consider the following view of a [base layer] chain. We mark 3 views of the chain.
 
 ```text
-                                      (a) (b) (c)  (d)              
-                                       |   |   |    |                                    {noisy}
------- | --x----*------- | --x----*------- | --x----*------- | --x----*------- | --- .... ------> tip
+                                      (a) (b) (c)                
+                                       |   |   |                                         {noisy}
+------ | --x------------ | --x------------ | --x------------ | --x------------ | --- .... ------> tip
   |  ϵ10       |   |    ϵ11       |      ϵ12       |       ϵ13               ϵ14
  V_1          V_2 V_3   V_4      V_5              V_6                      
 Key:
-* - Epoch mid-point
 x - Epoch transition point
 ϵn - Epoch n
 V_n - Validator registrations 
@@ -212,13 +214,8 @@ Point (b) - the start of epoch 12:
 
 Point (c) - the transition point for epoch 12:
 - the active epoch is now 12
-- the validator MUST accept instructions from 11.
-- it is assumed at this point that almost all ($3f + 1$) nodes are now on epoch 12
-
-Point (d) - the epoch mid-point:
-- the active epoch is 12.
-- the validator MUST reject instructions from epoch 11.
-- the validator MUST accept instructions from epoch 12.
+- the validator MUST reject instructions from 11.
+- it is assumed at this point that almost all (at least $2f + 1$) nodes are now on epoch 12
 
 #### Validator Node Set Definition
 
@@ -251,7 +248,7 @@ The index entry is removed whenever the `ValidatorNodeRegistration` [UTXO] is sp
 The index replaces the previous `ValidatorNodeRegistration` [UTXO] if the validator creates a new one.
 
 For this example, we say that there have been no registrations prior to `V_1`; we define 
-`VNRegistrationValidityPeriod = 2 epochs` and `VNRegInstateDelay = 0 epochs`.
+`VNRegistrationValidityPeriod = 2 epochs` and `VNRegActivationDelay = 0 epochs`.
 
 ```text
                                     (a)            (b)            (c)
