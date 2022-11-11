@@ -63,13 +63,13 @@ The most common practice for human beings to copy large numbers in cryptocurrenc
 encoding. The user will then typically scan (parts) of the string by eye to ensure that the value was transferred
 correctly.
 
-For Tari, we propose encoding values, the node ID in particular, for Tari, using emojis. The advantages of this approach are:
+For Tari, we propose encoding values, the node ID and network identifier in particular, for Tari, using emojis. The advantages of this approach are:
 
 * Emoji are more easily identifiable; and, if selected carefully, less prone to identification errors (e.g., mistaking an
   O for a 0).
 * The alphabet can be considerably larger than hexadecimal (16) or Base58 (58), resulting in shorter character sequences
   in the encoding.
-
+* Should be be able to detect if the address used belongs to the correct network. 
 ## The specification
 
 ### The emoji character map
@@ -81,8 +81,7 @@ list is the emoji map. For example,
 * ...
 * 🦊 => 255
 
-The emoji SHOULD be selected such that.
-
+The emoji SHOULD be selected such that:
 * Similar-looking emoji are excluded from the map. e.g. Neither 😁 or 😄 should be included. Similarly, the Irish and
   Côte d'Ivoire flags look very similar, and both should be excluded.
 * Modified emoji (skin tones, gender modifiers) are excluded. Only the "base" emoji is considered.
@@ -99,24 +98,29 @@ The emoji ID is a string of 33 symbols from the emoji alphabet. It uses this bit
 
 ```text
 +-----------------------------+--------------------------+
-|  Node public key (256 bits) | EncodedChecksum (8 bits) |
+|  Node public key (256 bits) | MaskedChecksum (8 bits)  |
 +-----------------------------+--------------------------+
 ```
 
  The emoji ID is calculated from a node public key serialized as 32 bytes (`B`) as follows:
 
 * Use the [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit
-encoded checksum `eC` from `B`.
+masked checksum `'C` from `B` and network `N`.
 * Encode `B` into an emoji string.
-* Encode `eC` into an emoji string.
-* Concatenate `B` and `eC` as the emoji ID.
+* Encode `'C` into an emoji string.
+* Concatenate `B` and `'C` as the emoji ID.
+
+#### Checksum effectiveness
+It is important to note that by masking the checksum we technically reduce the effectiveness of the checksum. These emoji ids wont
+however be sent over the wire in raw form abd its far more likely that they wil just be copied and thus its important to verify the
+network of the wallet.
 
 ### Checksum 
 
-For the checksum we use the [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit
-encoded checksum `C` from the public key `B`.
-To verify that the network that the public key comes from is the same one, we encode the checksum with the network. 
-We calculate the encoded checksum `eC` as `C XOR N` where `N` is the network defined as 8-bits.
+For the MaskedChecksum we use the [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit
+Checksum `C` from the public key `B`.
+To assert that the network that the public key comes from is the expected network, we mask the checksum with the network. 
+We calculate the MaskedChecksum `'C` as `C XOR N` where `N` is the network defined as 8-bits.
 
 ### Decoding
 
@@ -124,8 +128,8 @@ One can extract the node public key from an emoji ID as follows:
 
 * Assert that the emoji ID contains exactly 33 valid emoji characters from the emoji alphabet. If not, return an error.
 * Decode the emoji ID as an emoji string by mapping each emoji character to a byte value using the emoji map, producing
-33 bytes. Let `B` be the first 32 bytes and `eC` be the last byte.
-* Calculate `C` by `C XOR N`.
+33 bytes. Let `B` be the first 32 bytes and `'C` be the last byte.
+* Calculate `C` by `'C XOR N`.
 * Use the DammSum validation algorithm on `B` to assert that `C` is a valid checksum. If not, return an error.
 * Attempt to deserialize `B` as a public key. If this fails, return an error. If it succeeds, return the public key.
 
@@ -133,8 +137,7 @@ One can extract the node public key from an emoji ID as follows:
 
 | Date         | Change                   | Author     |
 |:-------------|:-------------------------|:-----------|
-| 2022-11-10   | Finalise SHA-3 algorithm | SWvHeerden |
+| 2022-11-10   | Initial stable           | SWvHeerden |
 
 [Communication Node]: Glossary.md#communication-node
 [Node ID]: Glossary.md#node-id
-
