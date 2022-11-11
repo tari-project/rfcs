@@ -2,7 +2,7 @@
 
 ## Synchronizing the Blockchain: Archival and Pruned Modes
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [S W van Heerden](https://github.com/SWvheerden), [Philip Robinson](https://github.com/philipr-za)
 
@@ -10,7 +10,7 @@
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
-Copyright 2018 The Tari Development Community
+Copyright 2022 The Tari Development Community
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 following conditions are met:
@@ -48,7 +48,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to describe the syncing, seeding and pruning process.
+This Request for Comment (RFC) describes the syncing and pruning process.
 
 ## Related Requests for Comment
 
@@ -65,7 +65,16 @@ communicates with an archive node to get the complete history of every single bl
 involves the node getting every block from its [pruning horizon] to [current head], as well as every block header 
 up to the genesis block. 
 
-To determine if the node needs to synchronise the node will monitor the broadcast chain_metadata provided by its neighbours.
+To determine if the node needs to synchronise, the node will monitor the broadcasted `chain_metadata` messages provided by its neighbours. The fields in the `chain_metadata` messages MUST be:
+
+| Field | Description |
+| --- | --- |
+| height_of_longest_chain | 64-bit unsigned |
+| best_block | hash of the tip block (32-bit) |
+| pruning_horizon | 64-bit unsigned |
+| pruned_height | 64-bit unsigned |
+| accumulated_difficulty | 128-bit unsigned |
+| timestamp | 64-bit unsigned |
 
 #### Complete Sync
 
@@ -106,7 +115,7 @@ The horizon sync process MUST be done in the following steps:
 5. Validate kernel MMR root against headers.
 6. Download all [utxo]'s from the current network tip back to this node's [pruning horizon].
 7. Validate outputs and [utxo] MMR.
-8. Validate the chain balances with the expect total emission that the final sync height.  
+8. Validate the chain balances with the expected total emission that the final sync height.  
 9. Once all kernels and [utxo]s have been downloaded from the network tip back to this node's [pruning horizon] set 
    the [SynchronizationState] to `block_sync`. This hands over further syncing to the standard sync protocol which 
    should return to the `listening` state if no further data has been received from peers.
@@ -117,12 +126,10 @@ arrive.
 #### Keeping in Sync
 
 The node that is in the `listening` state SHOULD periodically test a subset of its peers with ping messages to ensure 
-that they are alive. When a node sends a ping message, it MUST include the height of the current longest chain, current 
-accumulated PoW difficulty, hash of the [current head], it's pruning horizon and it's current pruned height. The 
-receiving node MUST reply with a pong message, which should include it's version of the information contained within the
-ping message.
+that they are alive. When a node sends a ping message, it MUST include the all the `chain_metadata` fields. The 
+receiving node MUST reply with a pong message, which should also include its version of the `chain_metadata` information.
 
-When a node receives pong replies from the current ping round, or the timeout expires, the collected chain_metadata
+When a node receives pong replies from the current ping round, or the timeout expires, the collected `chain_metadata`
 replies will be examined to determine what the current best chain is, i.e. the chain with the most accumulated work.
 If the best chain is longer than out chain data the node will set [SynchronizationState] to `header_sync` and catch up
 with the network.
