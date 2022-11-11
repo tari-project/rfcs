@@ -2,7 +2,7 @@
 
 ## The Tari Communication Network and Network Communication Protocol
 
-![status: Outdated](theme/images/status-outofdate.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64)
 
@@ -269,6 +269,12 @@ The CN can decide how the peer connections should be selected from the routing t
 - As the CC becomes aware of other CNs and CCs on the communication network, the CC SHOULD extend its local routing table by including the newly discovered CCs or CNs contact information.
 - Peers from the CCs routing table that have been unreachable for a number of attempts SHOULD be removed from the its routing table.
 - A CC MUST calculate the similarity between different node IDs by calculating the Hamming distance between the bits of the two node ID numbers.
+
+# Change Log
+
+| Date        | Change                                          | Author        |
+|:------------|:------------------------------------------------|:--------------|
+| 11 Nov 2022 | Update, removed registration of Validator Nodes | Stringhandler |
 
 [communication node]: Glossary.md#communication-node
 [communication client]: Glossary.md#communication-client
