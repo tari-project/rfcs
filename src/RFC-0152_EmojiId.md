@@ -48,7 +48,8 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This document describes the specification for Emoji Ids. Emoji Ids are encoded node ids used for humans to verify peer node addresses easily.
+This document describes the specification for Emoji Ids. Emoji Ids are encoded node ids used for humans to verify peer node addresses easily
+and for machines to verify that the address is being used in the correct context.
 
 ## Related Requests for Comment
 
@@ -63,7 +64,7 @@ The most common practice for human beings to copy large numbers in cryptocurrenc
 encoding. The user will then typically scan (parts) of the string by eye to ensure that the value was transferred
 correctly.
 
-For Tari, we propose encoding values, the node ID and network identifier in particular, for Tari, using emojis. The advantages of this approach are:
+For Tari, we propose encoding values, the node ID in particular and masking the network identifier, for Tari, using emojis. The advantages of this approach are:
 
 * Emoji are more easily identifiable; and, if selected carefully, less prone to identification errors (e.g., mistaking an
   O for a 0).
@@ -73,15 +74,30 @@ For Tari, we propose encoding values, the node ID and network identifier in part
 ## The specification
 
 ### The emoji character map
-An emoji alphabet of 256 characters is selected. Each emoji is assigned a unique index from 0 to 255 inclusive. This
-list is the emoji map. For example,
+An emoji alphabet of 256 characters is selected. Each emoji is assigned a unique index from 0 to 255 inclusive. The
+list of selected emojis are:
 
-* 😀 => 0
-* 😘 => 1
-* ...
-* 🦊 => 255
+| | | | | | | | | | | | | | | | |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|🌀|🌂|🌈|🌊|🌋|🌍|🌙|🌝|🌞|🌟|🌠|🌰|🌴|🌵|🌷|🌸|
+|🌹|🌻|🌽|🍀|🍁|🍄|🍅|🍆|🍇|🍈|🍉|🍊|🍋|🍌|🍍|🍎|
+|🍐|🍑|🍒|🍓|🍔|🍕|🍗|🍚|🍞|🍟|🍠|🍣|🍦|🍩|🍪|🍫|
+|🍬|🍭|🍯|🍰|🍳|🍴|🍵|🍶|🍷|🍸|🍹|🍺|🍼|🎀|🎁|🎂|
+|🎃|🎄|🎈|🎉|🎒|🎓|🎠|🎡|🎢|🎣|🎤|🎥|🎧|🎨|🎩|🎪|
+|🎬|🎭|🎮|🎰|🎱|🎲|🎳|🎵|🎷|🎸|🎹|🎺|🎻|🎼|🎽|🎾|
+|🎿|🏀|🏁|🏆|🏈|🏉|🏠|🏥|🏦|🏭|🏰|🐀|🐉|🐊|🐌|🐍|
+|🐎|🐐|🐑|🐓|🐖|🐗|🐘|🐙|🐚|🐛|🐜|🐝|🐞|🐢|🐣|🐨|
+|🐩|🐪|🐬|🐭|🐮|🐯|🐰|🐲|🐳|🐴|🐵|🐶|🐷|🐸|🐺|🐻|
+|🐼|🐽|🐾|👀|👅|👑|👒|👓|👔|👕|👖|👗|👘|👙|👚|👛|
+|👞|👟|👠|👡|👢|👣|👹|👻|👽|👾|👿|💀|💄|💈|💉|💊|
+|💋|💌|💍|💎|💐|💔|💕|💘|💡|💣|💤|💦|💨|💩|💭|💯|
+|💰|💳|💸|💺|💻|💼|📈|📉|📌|📎|📚|📝|📡|📣|📱|📷|
+|🔋|🔌|🔎|🔑|🔔|🔥|🔦|🔧|🔨|🔩|🔪|🔫|🔬|🔭|🔮|🔱|
+|🗽|😂|😇|😈|😉|😍|😎|😱|😷|😹|😻|😿|🚀|🚁|🚂|🚌|
+|🚑|🚒|🚓|🚕|🚗|🚜|🚢|🚦|🚧|🚨|🚪|🚫|🚲|🚽|🚿|🛁|
 
-The emoji SHOULD be selected such that:
+
+The emoji have been selected such that:
 * Similar-looking emoji are excluded from the map. e.g. Neither 😁 or 😄 should be included. Similarly, the Irish and
   Côte d'Ivoire flags look very similar, and both should be excluded.
 * Modified emoji (skin tones, gender modifiers) are excluded. Only the "base" emoji is considered.
@@ -114,6 +130,15 @@ masked checksum `'C` from `B` and network `N`.
 It is important to note that by masking the checksum we technically reduce the effectiveness of the checksum. These emoji ids wont
 however, be sent over the wire in raw form and its far more likely that they will just be copied thus it's important to verify the
 network of the wallet.
+The chance of this is:
+
+$$
+\begin{aligned}
+\text{mistake chance} =  n/256
+\end{aligned}
+\tag{1}
+$$
+Where \(n\) is the number of networks we have.
 
 ### Checksum 
 
