@@ -2,15 +2,15 @@
 
 ## Base Node Architecture
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za, [Jorge Antonio](https://github.com/jorgeantonio21))
 
-# Licence
+# License
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
-Copyright 2021 The Tari Development Community
+Copyright 2022 The Tari Development Community
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 following conditions are met:
@@ -71,15 +71,15 @@ The P2P message types this service subscribes to are:
 * **NewBlock:** A newly mined block is being propagated over the network. If the node has not seen the block before, the
   node will validate it. Its action depends on the validation outcome:
   * _Invalid block_ - drop the block.
-  * _Valid block appending to the longest chain_ - add the block to the local state; propagate the block to peers.
-  * _Valid block forking off main chain_ - add the block to the local state; propagate the block to peers.
+  * _Valid block appending to the longest chain_ - add the block to the local state and propagate the block to peers.
+  * _Valid block forking off main chain_ - add the block to the local state and propagate the block to peers.
   * _Valid block building off unknown block_ - add the orphan block to the local state.
 
 * **BaseNodeServiceRequest:** A collection of requests for chain data from the node.
 
 ### Base Node State Machine Service
 
-This service is essentially a finite state machine that synchronises its blockchain state with its peers. When the state 
+This service is essentially a finite state machine that synchronizes its blockchain state with its peers. When the state 
 machine decides it needs to synchronize its chain state with a peer it uses the Base Node Sync RPC service to do so. The
 RPC service allows for streaming of headers and blocks in a far more efficient manner than using the P2P messaging.
 
@@ -124,7 +124,6 @@ Peer discovery is a key service that blockchain nodes provide so that the peer m
 nodes making up the network.
 
 In Tari, the peer-to-peer network is not only used by full nodes (Base Nodes), but also by Validator Nodes, and
-
 Tari and Digital Assets Network (DAN) clients.
 
 For this reason, peer management is handled internally by the Comms layer. If a Base Node wants to propagate a message, 
@@ -148,7 +147,7 @@ be thread-safe.
 ### P2P communications
 The Tari Peer to Peer messaging protocol is defined in [RFC-0172]. It is a fire-and-forget style protocol. Messages can 
 be sent directly to a known peer, sent indirectly to an offline or unknown peer and broadcast to a set of peers. When
-a message is sent to specific peer it is propagated to the peers local neighbourhood and stored by those peers until it
+a message is sent to specific peer it is propagated to the peers local neighborhood and stored by those peers until it
 comes online to receive the message. Messages that are broadcast will be propagated around the network until the whole
 network has received them, they are not stored.
 
@@ -193,7 +192,7 @@ A non-exhaustive list of methods the base node module API will expose includes:
   * Returning a list of transaction ranked by some criterion (of interest to miners)
   * The current size of the mempool (in transaction weight)
 * Block and transaction validation calls
-* Block synchronisation calls
+* Block synchronization calls
 
 # Change Log
 
@@ -201,7 +200,8 @@ A non-exhaustive list of methods the base node module API will expose includes:
 |:------------|:--------------------|:----------|
 | 2 Jul 2019  | First outline       | CjS77     |
 | 11 Aug 2019 | Updates             | CjS77     |
-| 15 Jun 2021 | Significant updates | SimianZa |
+| 15 Jun 2021 | Significant updates | SimianZa  |
+| 11 Sep 2022 | Minor update        | JorgeAnt  |
 
 [gRPC]: https://grpc.io/
 [RFC-0190]: RFC-0190_Mempool.md
