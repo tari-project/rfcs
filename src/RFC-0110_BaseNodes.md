@@ -2,7 +2,7 @@
 
 ## Base Layer Full Nodes (Base Nodes)
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [S W van heerden](https://github.com/SWvheerden) and  [Stanley Bondi](https://github.com/sdbondi)
 
@@ -78,7 +78,8 @@ Tari Base Nodes MUST carry out the following tasks:
 * provide historical block information to peers that are syncing.
 
 Once the Digital Assets Network (DAN) goes live, Base Nodes will also need to support the tasks described in
-[RFC-0300_DAN](RFCD-0300_DAN.md). These requirements are omitted for the moment.
+[RFC-0303_DAN](RFC-0303_DanOverview.md). These requirements may involve but are not limited to:
+* maintain an index of validator node registrations;
 
 To carry out these tasks effectively, Base Nodes SHOULD:
 
@@ -88,7 +89,7 @@ To carry out these tasks effectively, Base Nodes SHOULD:
 * manage a list of Base Node peers present on the network.
 
 Tari Base Nodes MAY implement chain pruning strategies that are features of Mimblewimble, including transaction
-[cut-through and block compaction techniques](https://tlu.tarilabs.com/protocols/grin-protocol-overview/MainReport.html#mimblewimble-protocol-overview).
+[block compaction techniques](https://tlu.tarilabs.com/protocols/grin-protocol-overview/MainReport.html#mimblewimble-protocol-overview).
 
 Tari Base Nodes MAY also implement the following services via an Application Programming Interface (API) to clients:
 
@@ -126,7 +127,7 @@ The transaction is validated as follows:
 * The [Tari script] of each input must execute successfully and return the public key that signs the script signature. 
 * The script offset \\( \so\\) is calculated and verified as per [RFC-0201_TariScript].
 
-Rejected transactions are dropped silently.
+Rejected transactions are dropped without service interruption and noted in log files.
 
 Timelocked transactions are rejected by the mempool. The onus is on the client to submit transactions once they are 
 able to be spent.
@@ -145,21 +146,20 @@ The weight of a transaction / block measured in "grams". Input, output and kerne
 storage and computation cost. Transaction fees are typically proportional to a transaction body's total weight, creating 
 incentive to reduce the size of the UTXO set.
 
-Given the target block size of `S` and the choice for 1 gram to represent `N` bytes, we end up with
+With a target block size of `S` and 1 gram to represent `N` bytes, we have 
 a maximum block weight of `S/N` grams. 
 
-To illustrate (these values should not be considered authoritative), with an `S` of 1MiB and `N` of 16, the block and 
-transaction body weights are as follows:
+With an `S` of 1MiB and `N` of 16, the block and transaction body weights are as follows:
 
 
-|                   	| Byte size 	| Natural Weight         	| Adjust 	| Final                  	|
-|-------------------	|-----------	|------------------------	|--------	|------------------------	|
-| Output            	|           	|                        	|        	|                        	|
-| - Per output      	| 832       	| 52                     	| 0      	| 52                     	|
-| - Tari Script     	| variable  	| size_of(script) / 16   	| 0      	| size_of(script) / 16   	|
-| - Output Features 	| variable  	| size_of(features) / 16 	| 0      	| size_of(features) / 16 	|
-| Input             	|       169 	|                     11 	|     -2 	|                      9 	|
-| Kernel size       	|       113 	|                      8 	|      2 	|                     10 	|
+|                   | Byte size | Natural Weight         | Adjust | Final                  |
+|-------------------|-----------|------------------------|--------|------------------------|
+| Output            |           |                        |        |                        |
+| - Per output      | 832       | 52                     | 0      | 52                     |
+| - Tari Script     | variable  | size_of(script) / 16   | 0      | size_of(script) / 16   |
+| - Output Features | variable  | size_of(features) / 16 | 0      | size_of(features) / 16 |
+| Input             | 169       | 11                     | -2     | 9                      |
+| Kernel size       | 113       | 8                      | 2      | 10                     |
 
 Pseudocode: 
 
@@ -197,8 +197,7 @@ When a new block is received, it is passed to the block validation service. The 
 * That all kernel excess values are unique for that block and the entire chain.
 * Check if a block contains already spent outputs, reject that block.
 * The [Tari script] of every input must execute successfully and return the public key that signs the script signature.
-* The script offset \\( \so\\) is calculated and verified as per [RFC-0201_TariScript]. This prevents [cut-through] from 
-  being applied.
+* The script offset \\( \so\\) is calculated and verified as per [RFC-0201_TariScript].
 
 
 Because Mimblewimble blocks can simply be seen as large transactions with multiple inputs and outputs, the block 
@@ -213,15 +212,20 @@ Base Nodes are not obliged to accept connections from any peer node on the netwo
 
 Validated blocks are
 * added to the [blockchain];
-* forwarded to peers using the block [BroadcastStrategy].
+* forwarded to every connected base node peer using the block flood [BroadcastStrategy].
 
 In addition, when a block has been validated and added to the blockchain:
 * The mempool MUST also remove all transactions that are present in the newly validated block.
 * The UTXO set MUST be updated by removing all inputs in the block, and adding all the new outputs into it.
 
+### Peer Validation and Propagation
+
+When a peer attempts to connect or is shared by a trusted peer the base node will perform a peer validation. Ensuring
+the peer has a valid id, signature, and peer address before adding or propagating the peer back to the network.
+
 ### Synchronizing and Pruning of the Chain
 
-Syncing, pruning and cut-through are discussed in detail in [RFC-0140](RFC-0140_Syncing_and_seeding.md).
+Syncing and pruning are discussed in detail in [RFC-0140](RFC-0140_Syncing_and_seeding.md).
 
 ### Archival Nodes
 
@@ -236,9 +240,16 @@ beyond the pruning horizon and still validate the integrity of the blockchain i.
 beyond what is allowed by consensus rules. A sufficient number of blocks back from the tip should be configured because 
 reorgs are no longer possible beyond that horizon. These nodes can sync from any other base node (archival and pruned).
 
+# Change Log
+
+| Date        | Change              | Author |
+|:------------|:--------------------|:-------|
+| 18 Dec 2019 | First draft         | CjS77  |
+| 19 Oct 2022 | Stabilizing updates | brianp |
 
 
 [archival nodes]: Glossary.md#archive-node
+[pruned nodes]: Glossary.md#pruned-node
 [tari coin]: Glossary.md#tari-coin
 [blockchain]: Glossary.md#blockchain
 [transaction]: Glossary.md#transaction

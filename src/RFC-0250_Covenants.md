@@ -2,7 +2,7 @@
 
 ## Covenants
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
@@ -10,7 +10,7 @@
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
-Copyright 2021 The Tari Development Community
+Copyright 2022 The Tari Development Community
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 following conditions are met:
@@ -65,11 +65,11 @@ use-cases, such as
 ## Introduction
 
 The Tari protocol already provides programmable consensus, through [TariScript], that restricts whether a [UTXO]
-may be included as an input to a transaction (a.k.a spent). The scope of information [TariScript] is inherently limited,
+may be included as an input to a transaction (a.k.a spent). The scope of information within [TariScript] is inherently limited,
 by the [TariScript Opcodes] and the input data provided by a spender. Once the requirements of the script are met,
 a spender may generate [UTXO]s of their choosing, within the constraints of [MimbleWimble].
 
-This RFC aims to expand the capabilities of Tari protocol by adding _additional requirements_, called covenants
+This RFC expands the capabilities of Tari protocol by adding _additional requirements_, called covenants
 that allow the owner(s) of a [UTXO] to control the composition of a _subsequent_ transaction.
 
 Covenants are not a new idea and have been proposed and implemented in various forms by others.
@@ -94,7 +94,7 @@ outputs from other boxes as long as balance is maintained.
 This results in an interesting dilemma: how do we allow rules that dictate how future outputs look only armed with
 the knowledge that the rule must apply to one or more outputs?
 
-In this RFC, we propose a covenant scheme that allows the [UTXO] originator to express a _filter_ that must be
+In this RFC, we detail a covenant scheme that allows the [UTXO] originator to express a _filter_ that must be
 satisfied for a subsequent spending transaction to be considered valid.
 
 ## Assumptions
@@ -160,23 +160,26 @@ enum CovenantArg {
     // data size: 32 bytes
     Commitment(PedersonCommitment),
     // byte code: 0x04
-    // data size: 64 bytes
-    Signature(Signature),
+    // data size: variable
+    TariScript(TariScript),
     // byte code: 0x05
-    // data size: variable
-    Script(TariScript),
-    // byte code: 0x06
-    // data size: variable
+    // data size: <= 4096 bytes
     Covenant(Covenant),
-    // byte code: 0x07
+    // byte cide: 0x06
     // data size: variable
-    VarInt(VarInt),
-    // byte code: 0x08
-    // data size: 1 byte
-    Field(FieldKey),
-    // byte code: 0x09
+    Uint(u64),
+    // byte cide: 0x07
     // data size: variable
-    Fields(Vec<FieldKey>),
+    OutputField(OutputField),
+    // byte cide: 0x08
+    // data size: variable
+    OutputFields(OutputFields),
+    // byte cide: 0x09
+    // data size: variable
+    Bytes(Vec<u8>),
+    // byte cide: 0x0a
+    // data size: 1 bytes
+    OutputType(OutputType),
 }
 ```
 
@@ -185,22 +188,21 @@ enum CovenantArg {
 Fields from each output in the output set may be brought into a covenant filter.
 The available fields are defined as follows:
 
-| Tag Name                            | Byte Code | Returns                           |
-| ----------------------------------- | --------- | --------------------------------- |
-| `field::commitment`                 | 0x00      | output.commitment                 |
-| `field::script`                     | 0x01      | output.script                     |
-| `field::sender_offset_public_key`   | 0x02      | output.sender_offset_public_key   |
-| `field::covenant`                   | 0x03      | output.covenant                   |
-| `field::features`                   | 0x04      | output.features                   |
-| `field::features_flags`             | 0x05      | output.features.flags             |
-| `field::features_maturity`          | 0x06      | output.features.maturity          |
-| `field::features_unique_id`         | 0x07      | output.features.unique_id         |
-| `field::features_parent_public_key` | 0x08      | output.features.parent_public_key |
-| `field::features_metadata`          | 0x09      | output.features.metadata          |
+| Tag Name                             | Byte Code | Returns                            |
+|--------------------------------------|-----------|------------------------------------|
+| `field::commitment`                  | 0x00      | output.commitment                  |
+| `field::script`                      | 0x01      | output.script                      |
+| `field::sender_offset_public_key`    | 0x02      | output.sender_offset_public_key    |
+| `field::covenant`                    | 0x03      | output.covenant                    |
+| `field::features`                    | 0x04      | output.features                    |
+| `field::features_output_type`        | 0x05      | output.features.output_type        |
+| `field::features_maturity`           | 0x06      | output.features.maturity           |
+| `field::features_metadata`           | 0x07      | output.features.metadata           |
+| `field::features_sidechain_features` | 0x08      | output.features.sidechain_features |
 
 Each field tag returns a consensus encoded byte representation of the value contained in the field.
 How those bytes are interpreted depends on the covenant. For instance, `filter_fields_hashed_eq` will
-concatenate the bytes and hash the result whereas `filter_field_int_eq` will interpret the bytes as a
+concatenate the bytes and hash the result whereas `filter_field_eq` will interpret the bytes as a
 little-endian 64-bit unsigned integer.
 
 #### Set operations
@@ -242,14 +244,6 @@ resultant output set.
 op_byte: 0x24<br>
 args: [Covenant]
 
-##### empty()
-
-Returns an empty set. This will always fail and, if used alone, prevents the UTXO from ever being spent.
-A more useful reason to use `empty` is in conjunction a conditional e.g. `if_else(Condition(older_rel(10)), A, empty)`
-
-op_byte: 0x25<br>
-args: []
-
 #### Filters
 
 ##### filter_output_hash_eq(hash)
@@ -266,23 +260,24 @@ Filter for outputs where all given fields in the input are preserved in the outp
 op_byte: 0x31<br>
 args: [Fields]
 
-##### filter_field_int_eq(field, int)
+##### filter_fields_hashed_eq(fields, hash)
+
+op_byte: 0x32<br>
+args: [Fields, VarInt]
+
+##### filter_field_eq(field, int)
 
 Filters for outputs whose field value matches the given integer value. If the given field cannot be cast
 to an unsigned 64-bit integer, the transaction/block is rejected.
 
-op_byte: 0x32<br>
+op_byte: 0x33<br>
 args: [Field, VarInt]
 
-##### filter_fields_hashed_eq(fields, hash)
 
-op_byte: 0x33<br>
-args: [Fields, VarInt]
+##### filter_absolute_height(height)
 
-##### filter_relative_height(height)
-
-Checks the block height that the current [UTXO] (i.e. the current input) was mined plus `height` is greater than or
-equal to the current block height. If so, the `identity()` is returned, otherwise `empty()`.
+Checks the block height that the current [UTXO] (i.e. the current input) is greater than or
+equal to the `HEIGHT` block height. If so, the `identity()` is returned.
 
 op_byte: 0x34<br>
 args: [VarInt]
@@ -310,10 +305,10 @@ Let's unpack that as follows:
 01 // 32-byte hash
 a8b3f48e39449e89f7ff699b3eb2b080a2479b09a600a19d8ba48d765fe5d47d // data
 // end filter_output_hash_eq
-35 // 2nd covenant - filter_relative_height
+35 // 2nd covenant - filter_absolute_height
 07 // varint
 0A // 10
-// end varint, filter_relative_height, xor
+// end varint, filter_absolute_height, xor
 ```
 
 Some functions can take any number of arguments, such as `filter_fields_hashed_eq` which defines the `Fields` type.
@@ -367,38 +362,29 @@ one or more outputs.
 
 ### Now or never
 
-Spend within 10 blocks or burn
+Spend by block 10 or burn
 
 ```ignore
-not(filter_relative_height(10))
+not(filter_absolute_height(10))
 ```
 
 Note, this covenant may be valid when submitted to the mempool, but invalid by the time it is put in a block for
 the miner.
 
-### NFT transfer
-
-Output features as detailed in [RFC-310-AssetImplementation] (early draft stages, still to be finalised) contain the
-NFT details. This covenant preserves both the covenant protecting the token, and the token itself.
-
-```ignore
-filter_fields_preserved([field::features, field::covenant])
-```
-
 ### Side-chain checkpointing
 
 ```ignore
 and(
-   filter_field_int_eq(field::feature_flags, 16) // SIDECHAIN CHECKPOINT = 16
+   filter_field_eq(field::feature_flags, 16) // SIDECHAIN CHECKPOINT = 16
    filter_fields_preserved([field::features, field::covenant, field::script])
 )
 ```
 
-### Restrict spending to a particular commitment if not spent within 100 blocks
+### Restrict spending to a particular commitment if not spent by block 100
 
 ```ignore
 or(
-   not(filter_relative_height(100)),
+   not(filter_absolute_height(100)),
    filter_fields_hashed_eq([field::commmitment], Hash(xxxx))
 )
 ```
@@ -409,7 +395,7 @@ or(
 xor(
     filter_fields_preserved([field::features, field::covenant, field::script]),
     and(
-        filter_field_int_eq(field::features_flags, 128), // FLAG_BURN = 128
+        filter_field_eq(field::features_flags, 128), // FLAG_BURN = 128
         filter_fields_hashed_eq([field::commitment, field::script], Hash(...)),
     ),
 )
@@ -438,11 +424,17 @@ xor(
 - `filter_script_match(<pattern>)`
 - `filter_covenant_match(<pattern>)`
 
+# Change Log
+
+| Date        | Change        | Author |
+|:------------|:--------------|:-------|
+| 17 Oct 2021 | First draft   | sbondi |
+| 08 Oct 2022 | Stable update | brianp |
+
 [commitment]: ./Glossary.md#commitment
 [tari codebase]: https://github.com/tari-project/tari
 [handshake]: https://handshake.org/files/handshake.txt
 [cut-through]: https://tlu.tarilabs.com/protocols/grin-protocol-overview/MainReport.html#cut-through
-[rfc-0310_assetimplementation]: https://github.com/tari-project/tari/pull/3340
 [bitcoin-ng covenants]: https://maltemoeser.de/paper/covenants.pdf
 [utxo]: ./Glossary.md#unspent-transaction-outputs
 [miniscript]: https://medium.com/blockstream/miniscript-bitcoin-scripting-3aeff3853620
@@ -450,3 +442,4 @@ xor(
 [vaults]: https://hackingdistributed.com/2016/02/26/how-to-implement-secure-bitcoin-vaults/
 [tariscript]: ./Glossary.md#tariscript
 [mimblewimble]: ./Glossary.md#mimblewimble
+[TariScript Opcodes]: ./RFC-0202_TariScriptOpcodes.md
