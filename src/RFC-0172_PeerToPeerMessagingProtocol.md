@@ -4,7 +4,7 @@
 
 ![status: outdated](theme/images/status-outofdate.svg)
 
-**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi), [Cayle Sharrock](https://github.com/CjS77) and [Yuko Roodt](https://github.com/neonknight64)
+**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi), [Cayle Sharrock](https://github.com/CjS77), [Yuko Roodt](https://github.com/neonknight64), [Stringhandler](https://github.com/stringhandler)
 
 # Licence
 
@@ -60,8 +60,6 @@ and [communication client]s on the Tari network.
 
 ### Assumptions
 
-- Either every [communication node] or [communication client] has access to a Tor/I2P proxy, or a native Tor/I2P implementation
-  exists, which allows communication across the Tor network.
 - All messages are de/serialized as per [RFC-0171: Message Serialisation].
 
 ### Broad Requirements
@@ -70,15 +68,16 @@ Tari network peer communication must facilitate secure, private and efficient co
 between peers. Broadly, a [communication node] or [communication client] MUST be capable of:
 
 - bidirectional communication between multiple connected peers;
-- private and secure over-the-wire communication;
+- encrypted, authenticated over-the-wire communication;
 - understanding and constructing Tari messages;
-- encrypting and decrypting message payloads;
 - gracefully reestablishing dropped connections; and (optionally)
-- communicating to a SOCKS5 proxy (for connections over Tor and I2P).
+- either: 
+  - communicating to a SOCKS5 proxy (for connections over Tor).
+  - or have a static public IPv4 address.
 
 Additionally, communication nodes MUST be capable of performing the following tasks:
 
-- opening a control port for establishing secure peer channels;
+- opening a proxy control port for establishing secure peer channels;
 - maintaining a list of known peers in the form of a routing table;
 - forwarding directed messages to neighbouring peers; and
 - broadcasting messages to neighbouring peers.
@@ -87,41 +86,6 @@ Additionally, communication nodes MUST be capable of performing the following ta
 
 The Tari communication layer has a modular design to allow for the various communicating nodes and clients to
 use the same infrastructure code.
-
-The design is influenced by an open-source library called [ZeroMQ] and the ZeroMQ C bindings are a dependency of
-the project. ZeroMQ's over-the-wire protocol is relatively simple, and replicating ZeroMQ framing in a custom
-implementation should not be prohibitively difficult. However, ZeroMQ offers many valuable features, which would be a 
-significantly larger undertaking to reproduce. Fortunately, bindings or native ports are available in numerous languages.
-
-To learn more about ZeroMQ, read [the guide](http://zguide.zeromq.org/page:all). It's an enjoyable and worthwhile read.
-
-A quick overview of what ZeroMQ provides:
-
-- A simple socket Application Programming Interface (API).
-- Some well-defined patterns to connect sockets together.
-- Sockets that are tiny asynchronous message queues, which:
-  - abstract away complexity around the underlying socket;
-  - are transport agnostic, meaning you can choose between Transmission Control Protocol (TCP), Pragmatic General 
-  Multicast (PGM), Inter-process Communication (IPC) and in-process (inproc) transports with little or no changes to code; 
-  and
-  - transparently reconnect when connections are dropped.
-- The `inproc` transport for message passing between threads without mutex locks.
-- Built-in protocol for asymmetric encryption over the wire using Curve25519.
-- Ability to send and receive multipart messages using a simple framing scheme. More info [here](http://zguide.zeromq.org/php:chapter2#toc11).
-- Support for Secure Socket (SOCKS) proxies.
-
-This document will refer to several [ZeroMQ socket]s. These are referred to by prepending `ZMQ_` and the name
-of the socket in capitals. For example, `ZMQ_ROUTER`.
-
-**Note about ZeroMQ frames and multipart messages:**
-
-ZeroMQ frames are length-specified blocks of binary data and can be strung together to make multipart messages.
-
-```text
-|5|H|E|L|L|O|*|0|*|3|F|O|O|+|
-* = more flag
-+ = no more flag
-```
 
 _A multipart message consisting of three frames "HELLO", a zero-length frame and "FOO"_
 
@@ -140,12 +104,9 @@ Incoming messages are validated, deserialized and handled as appropriate.
 
 #### Encryption
 
-Two forms of encryption are used:
+The [MessageEnvelopeBody] is encrypted so that it can only be decrypted by the destination recipient using DHKE and Chacha20Poly1305. 
 
-- Over-the-wire encryption, in which traffic between nodes is encrypted using ZMQ's [CURVE](http://curvezmq.org/page:read-the-docs)
-  implementation.
-- Payload encryption, in which the [MessageEnvelopeBody] is encrypted in such a way that it can only be decrypted by the 
-destination recipient.
+If the messages are transported over Tor, they will also be encrypted according to Tor's protocol. If they are transported over TCP/IP, only the message envelope body will be encrypted.
 
 ### Components
 
@@ -160,7 +121,7 @@ CM[ConnectionManager]
 BCS[BroadcastStrategy]
 OMS[OutboundMessageService] 
 PC[PeerConnection] 
-NA[NetAddress]
+MA[Multaddr]
 STR[Storage]
 PEER[Peer]
 RT[RoutingTable]
@@ -175,27 +136,11 @@ PM --> RT
 PM --> STR
 CM --> PC
 PC -->|has one| PEER
-PEER -->|has many| NA
+PEER -->|has many| MA
 </div>
 
-#### NetAddress
-
-Represents:
-
-- IP address;
-- Onion address; or
-- I2P address.
-
-```rust,compile_fail
-#[derive(Clone, PartialEq, Eq, Debug)]
-/// Represents an address which can be used to reach a node on the network
-pub enum NetAddress {
-    /// IPv4 and IPv6
-    IP(SocketAddress),
-    Tor(OnionAddress),
-    I2P(I2PAddress),
-}
-```
+#### Multiaddr
+[Multiaddr](https://multiformats.io/multiaddr/) is a self-describing network address. Currently, only IP4 and Onion addresses are supported.
 
 #### Messaging Structure
 
@@ -692,6 +637,13 @@ If the HWM is hit:
   the connection is bound, a dedicated "secure connection negotiation socket" would be needed.
 - Details of distributed message storage.
 - Which [NetAddress] to use if a peer has many.
+
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 13 Jun 2022 | Moved from tari repo       | sdbondi|
+| 9 Nov 2022 | Removed I2P and ZeroMQ | stringhandler|
 
 [basenode]: Glossary.md#base-node
 [broadcaststrategy]: #outboundmessageservice
