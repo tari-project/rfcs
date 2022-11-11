@@ -39,8 +39,8 @@ p {
 :target::before {
     content: '';
     display: block;
-    height:      100px;
-    margin-top: -100px;
+    height:      300px;
+    margin-top: -300px;
 }
 
 :target::after {
@@ -81,6 +81,16 @@ a.header:target h4:before {
     content: "»";
     margin-left: -30px;
     width: 30px;
+}
+h2 .header:after,
+h3 .header:after,
+h4 .header:after {
+    content: '';
+    display: block;
+    height:      3px;
+    margin-top: 10px;
+    background-color: rgba(232, 232, 211, 0.086);
+    background-blend-mode: darken;
 }
 .tlu{
     border-bottom: 1px solid #eee;
