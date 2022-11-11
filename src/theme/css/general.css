@@ -43,6 +43,7 @@ p {
     margin-top: -300px;
 }
 
+/*
 :target::after {
     content: '';
     display: block;
@@ -50,6 +51,7 @@ p {
     margin-top: 10px;
     background-color: var(--fg);
 }
+ */
 
 .math {
     box-shadow: rgba(15, 101, 192, 0.82) 0px 0px 0.35em !important;
