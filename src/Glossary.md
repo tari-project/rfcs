@@ -307,7 +307,32 @@ from the public identification key of a [communication node] or [communication c
 A Non-fungible token is a specific instance of a token issued as part of a [digital asset]. It is another name for a
 [digital asset token]. NFTs are contained within specially marked [UTXO]s on the Tari Base Layer.
 
-## Pruning horizon
+## Orphan Pool
+
+[orphan pool]: #orphan-pool "A pool in the Mempool for unconfirmed transactions that attempt to spend non-existent UTXOs"
+
+The orphan pool is part of the [mempool] and manages all [transaction]s that have been verified but attempt to spend
+[UTXO]s that do not exist or haven't been created yet.
+
+## Pending Pool
+
+[pending pool]: #pending-pool "A pool in the Mempool for unconfirmed transactions with time-lock restrictions"
+
+The pending pool is part of the [mempool] and manages all [transaction]s that have a time-lock restriction on when it
+can be processed or attempts to spend [UTXO]s with time-locks.
+
+## Pruned Node
+
+[pruned node]: #pruned-node "A node pruned of spent transactions and transactions beyond the pruning horizon"
+
+This is a pruned history [base node]. It uses cryptography of [mimblewimble] to allow the removal of spent inputs and
+outputs beyond the [pruninghorizon].
+
+It can still validate the integrity of the blockchain i.e. no coins were destroyed or created beyond what is allowed by
+consensus rules. A sufficient number of blocks back from the tip should be configured because reorgs are no longer
+possible beyond that horizon.
+
+## Pruning Horizon
 
 [pruninghorizon]: #pruning-horizon "Block height at which pruning will commence"
 
