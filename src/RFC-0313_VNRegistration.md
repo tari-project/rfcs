@@ -283,9 +283,12 @@ TODO Potential issues:
       4. locked - no changes
     - Base amount of shuffle on number of new / leaving validators, `num_shuffle - num_new - new_leaving`
     - Validators are registered until they submit a deregister
-      - pro: makes state monitoring easier, vn funds are locked up so incentivised to reclaim it
+      - pro: makes state monitoring easier, vn funds are locked up so incentivised to "politely" reclaim it rather than just leaving their registration there
       - con: if a validator just leaves without posting a deregistration, there has to be some way to exclude them.
-      - Must force a validator node registration to be spent into a time-locked (> `VNConfirmationPeriod`) deregistration
+      - Must force a validator node registration to be spent into a time-locked (> `VNConfirmationPeriod`) deregistration or another registration
+    - Shuffle a percentage of the validator set, e.g. 5% every epoch
+      - select $X$ random numbers from $[0; 5% of N)$ where $N$ is the cardinality of the VN set. The RNG is seeded from the prev_block_hash.
+      - The validators at the indexes of $X$ are selected for shuffle.
 
 ### Shard Key and Shuffling
 
