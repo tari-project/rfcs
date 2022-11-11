@@ -112,7 +112,7 @@ masked checksum `'C` from `B` and network `N`.
 
 #### Checksum effectiveness
 It is important to note that by masking the checksum we technically reduce the effectiveness of the checksum. These emoji ids wont
-however be sent over the wire in raw form abd its far more likely that they wil just be copied and thus its important to verify the
+however, be sent over the wire in raw form and its far more likely that they will just be copied thus it's important to verify the
 network of the wallet.
 
 ### Checksum 
