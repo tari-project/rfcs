@@ -101,7 +101,7 @@ This is the role descriptions for each component pool:
 
 The maximum storage capacity used for storing unconfirmed transactions by the Mempool and each of its component pools
 can be configured. When a new transaction is received and the storage capacity limit is reached, then
-transactions are prioritized by their respective lifetime and the sum of fees of all UTXOs contained.
+transactions are prioritized by ordering their total `fee per gram` of all UTXOs used and transaction age, in that order.
 The transactions of the least priority are discarded to make room for higher priority transactions.
 
 The transaction priority metric has the following behavior:
@@ -161,15 +161,8 @@ Functional behavior required of the Reorg Pool:
 
 ### Mempool
 
-The Mempool manages the two component pools and interacts with peers to share and retrieve transactions and
-the Mempool state. During the operation of the Mempool it will distribute incoming transactions to the appropriate
-component pools. When a new incoming transaction is received a number of checks and verification steps need to be performed
-to determine if the transaction can be added to the unconfirmed pool. Only when the new transaction has passed these checks
-can it be added to the unconfirmed ool and should it be propagated to the connected peers.
-
-
 The Mempool is responsible for the internal transaction management and synchronization with the peers. New transactions
-must pass all verification steps to get it into the Unconfirmed Pool and further propagated to the peers.
+must pass all verification steps to make it into the Unconfirmed Pool and further be propagated to peers.
 
 Functional behavior required of the Mempool:
 - If the received transaction already exists in the Mempool, then it **MUST** be discarded.

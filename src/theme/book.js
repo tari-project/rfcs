@@ -340,23 +340,6 @@ function playpen_text(playpen) {
         }
     });
 
-    // Toggle sidebar
-    html.addEventListener('keypress', function sidebarKeyToggle(ev) {
-        if (ev.key === "q") {
-            if (html.classList.contains("sidebar-hidden")) {
-                showSidebar();
-            } else if (html.classList.contains("sidebar-visible")) {
-                hideSidebar();
-            } else {
-                if (getComputedStyle(sidebar)['transform'] === 'none') {
-                    hideSidebar();
-                } else {
-                    showSidebar();
-                }
-            }
-        }
-    });
-
     document.addEventListener('touchstart', function (e) {
         firstContact = {
             x: e.touches[0].clientX,

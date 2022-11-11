@@ -1,10 +1,9 @@
 /* Base styles and content styles */
 
 @import 'variables.css';
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Inconsolata:wght@400;500&display=swap');
 
 html {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: "Open Sans", sans-serif;
     color: var(--fg);
     background-color: var(--bg);
     text-size-adjust: none;
@@ -14,47 +13,12 @@ body {
     margin: 0;
     font-size: 1rem;
     overflow-x: hidden;
+    background: #f9f9f9;
 }
 
 code {
     font-family: "Source Code Pro", Consolas, "Ubuntu Mono", Menlo, "DejaVu Sans Mono", monospace, monospace;
-    font-size: 1.1rem;
-    box-shadow: none !important;
-}
-
-p {
-    display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-}
-
-:target .header {
-    box-shadow: rgb(255 128 128) 0px 0px 0.35em !important;
-    background-color: rgba(255, 128, 128, 0.8) !important;
-    color: rgb(0, 0, 0) !important;
-}
-
-:target::before {
-    content: '';
-    display: block;
-    height:      100px;
-    margin-top: -100px;
-}
-
-:target::after {
-    content: '';
-    display: block;
-    height:      3px;
-    margin-top: 10px;
-    background-color: var(--fg);
-}
-
-.math {
-    box-shadow: rgba(15, 101, 192, 0.82) 0px 0px 0.35em !important;
-    background-color: rgb(29, 79, 156) !important;
-    color: rgb(255, 255, 255) !important;
+    font-size: 0.875em; /* please adjust the ace font size accordingly in editor.js */
 }
 
 .left { float: left; }
@@ -70,9 +34,7 @@ h4, h5 { margin-top: 2em; }
 .header + .header h5 {
     margin-top: 1em;
 }
-a {
-    color: #579597 !important;
-}
+
 a.header:target h1:before,
 a.header:target h2:before,
 a.header:target h3:before,
@@ -98,11 +60,7 @@ a.header:target h4:before {
 .js .page-wrapper {
     transition: margin-left 0.3s ease, transform 0.3s ease; /* Animation: slide away */
 }
-.content p {
-    word-wrap: break-word;
-    margin-top: 1rem;
-    margin-bottom: 0;
-}
+
 .content {
     overflow-y: auto;
     padding: 0 15px;
@@ -124,6 +82,7 @@ a.header:target h4:before {
 .content .header:visited:hover {
     text-decoration: none;
 }
+
 table {
     border-collapse: collapse;
 }

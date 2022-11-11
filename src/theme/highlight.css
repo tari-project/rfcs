@@ -52,19 +52,12 @@
   color: #b854d4;
 }
 
-:not(pre) > code.hljs {
-  box-shadow: rgba(15, 101, 192, 0.82) 0px 0px 0.35em !important;
-  background-color: rgb(29, 79, 156) !important;
-  color: rgb(255, 255, 255) !important;
-}
-
 .hljs {
   display: block;
   overflow-x: auto;
-  /*background: #f1f1f1;*/
-  /*color: #6e6b5e;*/
+  background: #f1f1f1;
+  color: #6e6b5e;
   padding: 2.0em;
-  box-shadow: rgba(15, 101, 192, 0.82) 0px 0px 0.35em !important;
 }
 
 .hljs-emphasis {
