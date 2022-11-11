@@ -253,12 +253,11 @@ For this example, we say that there have been no registrations prior to `V_1`; w
 ```text
                                     (a)            (b)            (c)
                                      |              |              |                      {noisy}
------- | --x----*------- | --x----*------- | --x----*------- | --x----*------- | --- .... ------> tip
+------ | --x------------ | --x------------ | --x------------ | --x------------ | --- .... ------> tip
   |   ϵ10       |   |    ϵ11       |      ϵ12  |    |       ϵ13               ϵ14
  V_1           V_2 V_3  V_4       V_5         V_2  V_6         
  
 Key:
-* - Epoch Half point
 x - Epoch transition point
 ϵn - Epoch n
 V_n - Validator Node Registration UTXO n
