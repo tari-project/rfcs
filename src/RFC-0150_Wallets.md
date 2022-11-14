@@ -81,8 +81,8 @@ and derived cryptographic keypairs that can be used for Base Layer addresses and
 
 A detailed description of the required functionality of the Tari software wallet is provided in three parts:
 * basic transaction functionality,
-* key management features
-* and the different methods for recovering the wallet state of the Tari software wallet.
+* key management features, and
+* the different methods for recovering the wallet state of the Tari software wallet.
 
 #### Basic Transaction Functionality
 
