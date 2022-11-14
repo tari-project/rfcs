@@ -106,9 +106,10 @@ A validator node operator wishing to participate in [DAN] consensus MUST generat
 The `VN_Public_Key` MUST be registered on the base layer by submitting a `ValidatorNodeRegistration` [UTXO] which allows the validator to participate in [DAN] consensus for `VNRegistrationValidityPeriod`.
 
 The published `ValidatorNodeRegistration` [UTXO] has these requirements:
-1. MUST contain a valid [Schnorr signature] that simply proves knowledge of the `VN_Secret_Key` 
-    * The signature challenge is defined as $e = H(P \mathbin\Vert R)$
+1. MUST contain a valid [Schnorr signature] that proves knowledge of the `VN_Secret_Key` 
+    * The signature challenge is defined as $e = H(P \mathbin\Vert R \mathbin\Vert m)$
     * $R$ is a public nonce, $P$ is the public `VN_Public_Key` 
+    * $m$ is the [UTXO] commitment
 1. the [UTXO]'s `minimum_value` must be at least `VNRegDepositAmount` to mitigate spam/[Sybil] attacks,
 1. the [UTXO] lock-height must be set to `VNRegLockHeight`.
 1. A script which burns the validator node registration funds if the validator does not reclaim it for a long period after the lock height expires.
@@ -140,7 +141,7 @@ The base layer performs the following additional validations for `ValidatorNodeR
 1. The `VN_Registration_Signature` MUST be valid for the given `VN_Public_Key` and challenge
 1. The `minimum_value` field MUST be at least `VNRegDepositAmount`. The existing `minumum_value` validation ensures the committed value is correct.
 
-Additionally, we introduce a new [block header] field `validator_node_mr` that contains a [Merkle root] committing to all validator 
+Additionally, we introduce a new [block header] field `validator_node_mr` that contains a Merkle root committing to all validator 
 `Vn_Shard_Key`s in the current epoch.
 The `validator_node_mr` needs to be recalculated at every `EpochSize` blocks to account for departing and arriving nodes.
 The `validator_node_mr` MUST remain unchanged for blocks between epochs, that is, blocks that are not multiples of `EpochSize`.
@@ -201,14 +202,15 @@ Point (a)
 - the validator MUST reject instructions for epoch 12.
 
 Point (b) - the start of epoch 12: 
-- the validator nodeset is final for epoch 12.
-- the active epoch remains at 11.
-- the validator MUST accept instructions from epoch 11 and 12.
+- the validator node set is final for epoch 12.
+- the active epoch remains at 11. This is because validators may not have reached epoch 12/point (b) and therefore will only accept epoch 11.
+- a validator MUST accept instructions from epoch 11 and 12.
+- a validator may receive a leader proposal for epoch 11 and 12, however a well-behaved validator MUST only vote for one of these proposals.
 
 Point (c) - the transition point for epoch 12:
 - the active epoch is now 12
 - the validator MUST reject instructions from 11.
-- it is assumed at this point that almost all (at least $2f + 1$) nodes are now on epoch 12
+- it is assumed at this point that almost all (at least $2f + 1$) nodes will accept epoch 12
 
 #### Validator Node Set Definition
 
@@ -264,7 +266,6 @@ V_n - Validator Node Registration UTXO n
    * In: $[V_6]$, out: $[]$
    * $\text{get_vn_set}(\epsilon_13) -> [V_2, V_4, V_5, V_6]$
 
-
 ### Shard Key and Shuffling
 
 The `VN_Shard_Key` is a deterministic 256-bit random number that is assigned to a validator node by the base layer for a given epoch, and
@@ -272,6 +273,9 @@ maps onto the 256-bit [shard space].
 
 The [DAN] network needs to agree on and maintain a mapping between each participant's `VN_Public_Key` and the corresponding `VN_Shard_Key` for the 
 current epoch. 
+
+Over time, an adversary may gain excessive control over a particular shard space. To mitigate this, we introduce a shuffling mechanism that
+periodically and randomly reassigns `VN_Shard_Key`s within the network.
 
 We define the function $\text{generate_shard_key}(P_n, \eta) \rightarrow S$ that generates the `VN_Shard_Key` from the inputs.
 $S = H(P_n \mathbin\Vert \eta)$ where $H$ is a domain-separated [Blake256] hash function, $P_n$ is the public `VN_Public_Key` and $\eta$ is some entropy.
@@ -296,7 +300,9 @@ fn derive_shard_key(prev_shard_key: Option<ShardId>, vn_key: U256, epoch: u64, i
 
 Only a random fraction of validators will be re-assigned shard keys per epoch and that fraction will not be shuffled again
 for `VNShardShuffleInterval` epochs. Although the exact number of validators that shuffle per epoch varies, on average 
-the `VNShardShuffleInterval` should aim to shuffle around 5% or less of the network per epoch. 
+the `VNShardShuffleInterval` should aim to shuffle around 5% of the network at every epoch. This is to ensure that the
+number of shuffling validators is far from $\frac{1}{3}$ of the validator set, as this could break liveness and safety 
+guarantees. 
 
 The `prev_shard_key` is the last `VN_Shard_Key` that was assigned to the validator node within the `VNRegistrationValidityPeriod`.
 Should `VNRegistrationValidityPeriod` elapse without a renewed registration, a new `VN_Shard_Key` is assigned. 
@@ -319,4 +325,3 @@ to re-sync their state and spend time not participating in the network, losing o
 [scnorr signature]: https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures
 [utxo]: Glossary.md#unspent-transaction-outputs
 [shard space]: RFC-0304-DanGlossarymd#Consensus-level
-[delayed view]:RFC-0303_DanOverview.md#Network-view
