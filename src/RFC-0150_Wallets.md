@@ -1,10 +1,11 @@
 # RFC-0150/Wallets
-![status: draft](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-draft.svg)
+![status: stable](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-stable.svg)
 **Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
 
 ## Base Layer Wallet Module
 
 <!-- TOC -->
+* [Changelog](#change-log)
 * [Licence](#licence)
 * [Language](#language)
 * [Disclaimer](#disclaimer)
@@ -133,3 +134,10 @@ transactions, using keys derived from the master key.
 [mimblewimble]: Glossary.md#mimblewimble
 [blockchain]: Glossary.md#blockchain
 [base node]: Glossary.md#base-node
+
+### Change Log
+
+| Date        | Change                                              | Author   |
+|:------------|:----------------------------------------------------|:---------|
+| 26 Oct 2022 | Stabilized RFC                                      | CjS77    |
+| 14 Nov 2022 | Added Table of Contents and a few minor adjustments | agubarev |
