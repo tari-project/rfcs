@@ -118,7 +118,7 @@ keypair generation.
 reconstruction at a later stage.
 - Wallet **MAY** provide the ability to export the master seed key or the wallet state as a printable paper wallet, using coded markers.
 
-#### Tari Software Wallet: State Recovery Methods
+#### State Recovery
 
 - Wallet **MUST** be able to reconstruct the wallet state from a manually entered master seed key. 
 - Wallet **MUST** have a mechanism to systematically scan through the Tari blockchain and [mempool](RFC-0190_Mempool.md) for `Unspent` and `Unconfirmed` 
