@@ -2,7 +2,7 @@
 
 ## Consensus Encoding
 
-![status: draft](theme/images/status-draft.svg)
+![status: deprecated](theme/images/status-draft.svg)
 
 **Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
