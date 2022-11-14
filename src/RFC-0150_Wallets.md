@@ -5,6 +5,7 @@
 ## Base Layer Wallet Module
 
 <!-- TOC -->
+* [Changelog](#change-log)
 * [Licence](#licence)
 * [Language](#language)
 * [Disclaimer](#disclaimer)
@@ -133,3 +134,10 @@ transactions, using keys derived from the master key.
 [mimblewimble]: Glossary.md#mimblewimble
 [blockchain]: Glossary.md#blockchain
 [base node]: Glossary.md#base-node
+
+### Change Log
+
+| Date        | Change                                              | Author   |
+|:------------|:----------------------------------------------------|:---------|
+| 26 Oct 2022 | Stabilized RFC                                      | CjS77    |
+| 14 Nov 2022 | Added Table of Contents and a few minor adjustments | agubarev |
