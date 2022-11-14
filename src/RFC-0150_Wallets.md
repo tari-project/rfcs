@@ -77,7 +77,7 @@ The wallet software is responsible for constructing and negotiating [transaction
 [Tari coins][Tari coin] on the [base layer][Base Layer]. It should also provide functionality to generate, store and recover a master seed key 
 and derived cryptographic keypairs that can be used for Base Layer addresses and signing of transactions.
 
-### Functionality Details 
+### Functional Details 
 
 A detailed description of the required functionality of the Tari software wallet is provided in three parts:
 * basic transaction functionality,
