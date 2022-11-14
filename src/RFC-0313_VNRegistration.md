@@ -301,7 +301,7 @@ fn derive_shard_key(prev_shard_key: Option<ShardId>, vn_key: U256, epoch: u64, i
 Only a random fraction of validators will be re-assigned shard keys per epoch and that fraction will not be shuffled again
 for `VNShardShuffleInterval` epochs. Although the exact number of validators that shuffle per epoch varies, on average 
 the `VNShardShuffleInterval` should aim to shuffle around 5% of the network at every epoch. This is to ensure that the
-number of shuffling validators is far from $\frac{1}{3}$ of the validator set, as this could break liveness and safety 
+number of shuffling validators is much less than $\frac{1}{3}$ of the validator set, as this could break liveness and safety 
 guarantees. 
 
 The `prev_shard_key` is the last `VN_Shard_Key` that was assigned to the validator node within the `VNRegistrationValidityPeriod`.
