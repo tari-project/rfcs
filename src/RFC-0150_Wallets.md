@@ -87,7 +87,7 @@ A detailed description of the required functionality of the Tari software wallet
 #### Basic Transaction Functionality
 
 - Wallet **MUST** be able to send and receive Tari coins using [Mimblewimble] transactions.
-- Wallet **SHOULD** be able to establish connection with other user wallets to interactively negotiate:
+- Wallet **SHOULD** be able to establish a connection with other user wallets to interactively negotiate:
   - construction of the transaction,
   - signing of multi-signature transactions.
 - Wallet **SHOULD** be implemented as a library or Application Programming Interface (API) so that Graphical
