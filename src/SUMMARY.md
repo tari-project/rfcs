@@ -3,7 +3,7 @@
 [About the Tari RFC documents](about.md)
 
 - [RFC-0001: An overview of the Tari network](RFC-0001_overview.md)
-- [RFC-0100: The Tari Base Layer](RFC-0100_BaseLayer.md)
+- [The Tari Base Layer](base_layer.md)
   - [RFC-0110: Base nodes](RFC-0110_BaseNodes.md)
   - [RFC-0111: Base node architecture](RFC-0111_BaseNodeArchitecture.md)
   - [RFC-0120: Consensus rules](RFC-0120_Consensus.md)
@@ -47,6 +47,7 @@
 - [Deprecated RFCs](deprecated.md)
 
   - [RFC-0010: Tari code structure and organization](RFCD-0010_CodeStructure.md)
+  - [RFC-0100: Tari base layer](RFCD-0100_BaseLayer.md)
   - [RFC-0130: Mining](RFCD-0130_Mining.md)
   - [RFC-0300: The Digital Assets Network](RFCD-0300_DAN.md)
   - [RFC-0301: Namespace Registration](RFCD-0301_NamespaceRegistration.md)

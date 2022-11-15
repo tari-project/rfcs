@@ -53,7 +53,7 @@ the primary functionality required of the Mining Server and Mining Worker.
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
+* [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
 * [RFC-0110: Base Nodes](RFC-0110_BaseNodes.md)
 
 ## Description
