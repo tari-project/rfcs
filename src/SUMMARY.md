@@ -27,6 +27,7 @@
     - [RFC-0203: Stealth Addresses](RFC-0203_StealthAddresses.md)
     - [RFC-0250: Covenants](RFC-0250_Covenants.md)
 - [RFC-0303: The Tari Digital Assets Network](RFC-0303_DanOverview.md)
+    - [RFC-0313: Validator Node Registration](RFC-0313_VNRegistration.md)
     - [RFC-0320: The turbine model](RFC-0320_TurbineModel.md)
 
 
