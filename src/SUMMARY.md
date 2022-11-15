@@ -37,6 +37,7 @@
   - [RFC-0230: Hash time locked contracts](RFC-0230_HTLC.md)
   - [RFC-0240: Atomic swap](RFC-0240_AtomicSwap.md)
   - [RFC-0241: XMR Atomic swap](RFC-0241_AtomicSwapXMR.md)
+  - [RFC-0310: Submarine swaps](RFC-0310_SubmarineSwaps.md)
   - [RFC-0388: Bearer tokens](RFC-0388_BearerTokens.md)
   - [RFC-8001: Multi-party transactions](RFC-8001_MultiPartyTransactions.md)
   - [RFC-8002: Transaction protocol](RFC-8002_TransactionProtocol.md)
