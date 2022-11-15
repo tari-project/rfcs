@@ -157,6 +157,14 @@ If the Base Node is running in archive mode, it MUST NOT prune.
 When running in pruning mode, [Base Node]s MUST remove all spent outputs that are older than the 
 [pruning horizon] in their current stored [UTXO] set when a new block is received from another [Base Node].
 
+# Change Log
+
+| Date | Change | Author |
+| --- | --- | --- |
+| 07 Feb 2019 | First draft | SWvheerden |
+| 13 Jul 2021 | Update to better reflect the current implementation | philipr-za |
+| 30 Sep 2022 | Rename title for clarity | stringhandler |
+| 10 Nov 2022 | Minor update to reflect implementation | mrnaveira |
 
 [archivenode]: Glossary.md#archive-node
 [blockchainstate]: Glossary.md#blockchain-state
