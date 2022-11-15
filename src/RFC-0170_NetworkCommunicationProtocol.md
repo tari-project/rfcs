@@ -2,7 +2,7 @@
 
 ## The Tari Communication Network and Network Communication Protocol
 
-![status: Outdated](theme/images/status-outofdate.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64)
 
@@ -54,14 +54,13 @@ This document will introduce the Tari communication network and the communicatio
 ## Related RFCs
 
 * [RFC-0100: The Tari Base Layer](RFC-0100_BaseLayer.md)
-* [RFC-0300: Digital asset network](RFCD-0300_DAN.md)
+* [RFC-0303: DAN Overview](RFCD-0303_DanOverview.md)
 
 ## Description
 
 ### Assumptions
 
 - A communication channel can be established between two peers once their online communication addresses are known to each other.
-- A [Validator Node] is able to derive a [node ID] from the Validator Node registration transaction on the Base Layer.
 
 ### Abstract
 
@@ -79,27 +78,28 @@ The majority of the communication required on the [Base Layer] and [Digital Asse
 Alternatively, the Tari communication network can be used for broadcasting joining requests, discovery requests and propagating data messages such as completed blocks, transactions and data messages that are of interest to a large part of the Tari communication network. 
 
 The Tari communication network consists of a number of different entities that need to communicate in a distributed and ad-hoc manner. 
-The primary entities that need to communicate are Validator Nodes (VN), [Base Node]s (BN), [Wallet]s (W) and [Token Wallet]s (TW).
+The primary entities that need to communicate are Validator Nodes (VN), [Base Node]s (BN), and [Wallet]s (W).
 Here are some examples of different communication tasks that need to be performed by these entities on the Tari Communication network:
 - Base Nodes on the Base Layer need to propagate completed blocks and transactions to other Base Nodes using Gossip protocol based broadcasting.
-- Validator Nodes need to efficiently discover other Validator Nodes in the process of forming Validator Node committees. 
 - Wallets need to communicate and negotiate with other Wallets to create transactions. They also need the ability to submit transactions to the [mempool] of Base Nodes.
-- Token Wallets need to communicate with Validator Node [committee]s and other Token Wallets to construct and send DAN instructions.
+- Validator Nodes need to communicate with other Validator Nodes to perform consensus. Note that in future, the Validator Nodes may run on a different network.
+
+
 
 Here is an overview communication matrix that show which source entities SHOULD initiate communication with destination entities on the Tari Communication network:
 
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\Destination<br>Source | Validator Node | Base Node | Wallet | Token Wallet |
-|---                     |---             |---        |---     |---           |
-| Validator Node         | Yes            | Yes       | Yes    | Yes          |
-| Base Node              | No             | Yes       | No     | No           |
-| Wallet                 | No             | Yes       | Yes    | No           |
-| Token Wallet           | Yes            | No        | Yes    | Yes          |
+| Destination (across) <br>Source (down) | Validator Node | Base Node | Wallet |
+|----------------------------------------|---             |-----------|--------|
+| Validator Node                         | Yes            | No        | No     |
+| Base Node                              | No             | Yes       | No     |
+| Wallet                                 | No             | Yes       | Yes    |
 
 #### Communication Nodes and Communication Clients
 
 To simplify the description of the Tari communication network, the different entities with similar behaviour were grouped into two groups: Communication Nodes and Communication Clients.
-Validator Nodes and Base Nodes are Communication Nodes (CN).
-Wallets and Token Wallets are Communication Clients (CC).
+* Validator Nodes and Base Nodes are Communication Nodes (CN).
+* Wallets are Communication Clients (CC).
+
 CNs form the core communication infrastructure of the Tari communication network and are responsible for maintaining the Tari communication network by receiving, forwarding and distributing joining requests, discovery requests, data messages and routing information.
 CCs are different from CNs in that they do not maintain the network and they are not responsible for propagating any joining requests, discovery requests, data messages and routing information.
 They do make use of the network to submit their own joining requests and perform discovery request of other specific CNs and CCs when they need to communicate with them.
@@ -113,18 +113,12 @@ The different entity types MUST be grouped into the different communication node
 | Validator Node | Communication Node      |
 | Base Node      | Communication Node      |
 | Wallet         | Communication Client    |
-| Token Wallet   | Communication Client    |
 
 #### Unique identification of Communication Nodes and Communication Clients 
 
 In the Tari communication network, each CN or CC makes use of a node ID to determine their position in the network.
-This node ID is either assigned based on registration on the Base Layer or can be derived from the CNs or CCs identification public key.
+This node ID can be derived from the CNs or CCs identification public key.
 The method used to obtain a node ID will either enhance or limit the trustworthiness of that entity when propagating messages through them on the Tari communication network.
-When performing the broadcasting of data messages or propagating discovery requests, nodes with registration assigned node IDs are considered more trustworthy compared to nodes with derived node IDs. 
-
-Obtaining a node ID from registration on the Base Layer is important as it will limit the potential of some parties performing [Eclipse attacks](https://eprint.iacr.org/2015/263.pdf) on the network.
-Registration makes it more difficult for [Bad Actor]s to position themselves in ideal patterns on the network to perform disruptive operations and actions. 
-In sensitive situations or situations where the Kademlia-style directed propagation of messages are vulnerable, gossip protocol-based broadcasting of messages can be performed as a less efficient, but safer alternative to ensure that the message will successfully reach the rest of the network.
 
 The similarity or distance between different node IDs can be calculated by performing the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) between the bits of the two node ID numbers.
 The Hamming distance can be implemented as an Exclusive OR (XOR) between the bits of the numbers and the summation of the resulting true bits.
@@ -134,43 +128,30 @@ A thresholding scheme can be applied to the Hamming distance to ensure that only
 As an example, only routing table information that contains similar node IDs to the requesting CCs or CNs node ID should be shared with them.
 Limiting the sharing of routing table information makes it more difficult to map the entire Tari communication network.
 
-The recommended method of node ID assignment for each Tari communication network entity type MUST be implemented as follows:
-
-| Entity Type    | Communication Node Type | Node ID Assignment |
-|---             |---                      |---                 |
-| Validator Node | Communication Node      | Registration       |
-| Base Node      | Communication Node      | Derived            |
-| Wallet         | Communication Client    | Derived            |
-| Token Wallet   | Communication Client    | Derived            |
-
-Note that [Mining Server]s and [Mining Worker]s are excluded from the Tari communication network.
-A Mining Worker will have a local or remote P2P connection with a Mining Server.
-A Mining Server will have a local or remote P2P connection with a Base Node.
+Note that [Mining Worker]s are excluded from the Tari communication network.
+A Mining Server will have a local or remote connection with a Base Node.
 They do not need to make use of the communication network and they are not responsible for propagating any messages on the network.
 The parent Base Node will perform any communication tasks on the Tari communication network on their behalf.
 
 #### Online Communication Address, Peer Address and Routing Table
 
 Each CC and CN on the Tari communication network will have identification cryptographic keys, a node ID and an online communication address.
-The online communication address SHOULD be either an IPv4, IPv6, URL, Tor (Base32) or I2P (Base32) address and can be stored using the network address type as follows:
+The online communication address SHOULD be either an IPv4, IPv6, Or Tor (Base32) address and can be stored using the network address type as follows:
 
 | Description  | Data type  | Comments                                            |
 |:-------------|:-----------|:----------------------------------------------------|
-| address type | uint4      | Specify if IPv4/IPv6/Url/Tor/I2P                    |
-| address      | char array | IPv4, IPv6, URL, Tor (Base32), I2P (Base32) address |
+| address type | uint4      | Specify if IPv4/IPv6/Tor|
+| address      | char array | IPv4, IPv6, Tor (Base32) address |
 | port         | uint16     | port number                                         |
 
-The address type is used to determine how to interpret the address characters. An I2P address can be interpreted as "{52
-address characters}.b32.i2p". The Tor address should be interpreted as "http://{16_or_52_address_chars}.onion/". The
-IPv4 and IPv6 address can be stored in the address field without modification. URL addresses can be used for nodes with
-dynamic IP addresses.
+Tari uses the [Multiaddr] format for addresses. 
 
-A Tor or I2P address can be used when anonymity is important for a CC or CN.
-The IPv4, IPv6 and URL address types do not provide any privacy features but do provide increased bandwidth. 
+A Tor address can be used when anonymity is important for a CC or CN.
+The IPv4 and IPv6 address types do not provide any privacy features but do provide increased bandwidth. 
 
-Each CC or CN has a local routing table that contains the online communication addresses of all CCs and CNs on the Tari communication network known to that CC or CN.
+Each CC or CN has a local lookup table that contains the online communication addresses of all CCs and CNs on the Tari communication network known to that CC or CN.
 When a CC or CN wants to join the Tari communication network, the online communication address of at least one other CN that is part of the network needs to be known.
-The online communication address of the initial CN can either be manually provided or a bootstrapped list of "reliable" and persistent CNs can be provided with the Validator Node, Base Node, Wallet or Token Wallet software.
+The online communication address of the initial CN can either be manually provided or a bootstrapped list of "reliable" and persistent CNs can be provided with the Validator Node, Base Node or Wallet software.
 The new CC or CN can then request additional peer contact information of other CNs from the initial peers to extend their own routing table.
 
 The routing table consists of a list of peer addresses that link node IDs, public identification keys and online communication addresses of each known CC and CN.
@@ -245,9 +226,6 @@ CNs consisting of VNs and BNs typically attempt to maintain communication channe
 The distribution of peers (VNs vs BNs) that a single CN keeps communication channels open with can change depending on the type of node.
 A CN that is also a BN should maintain more peer connections with other BNs, but should also have some connections with other VNs.
 
-Having some connections with VNs are important as BNs have derived node IDs and not registered node IDs such as VNs, making it possible for the CN to be separated from the main network and become victim to an [Eclipse attack](https://www.radixdlt.com/post/what-is-an-eclipse-attack).
-Having some connections with VNs will make it more difficult to separate the CN from the network and will ensure successful propagation of transactions and completed blocks from that CN. 
-
 A CN that is also a VN should maintain more peer connections with other VNs, but also have some connections with BNs.
 CNs that are part of Validator Node committees should attempt to maintain permanent connections with the other members of the committee to ensure that quick consensus can be achieved.
 
@@ -258,24 +236,14 @@ The CN can decide how the peer connections should be selected from the routing t
  - automatically selecting a random subset or
  - selecting a subset of neighbouring nodes with similar node IDs. 
 
-Maintaining communication channels is important and the following process can be followed in an attempt to keep peer connections alive:
-For an existing peer connection.
-When more than 30 minutes have passed since the last communication with that peer, then a heartbeat message should be sent to the peer in an attempt to keep the connection with the peer alive.
-If the peer connection was not established for a specific purpose, such as with the connections between committee members, then a new replacement peer can be selected from the local routing table.
-A new connection can then be established and maintained between the current node and the newly selected node.
-If that specific connection is important, such as with the connections between committee members, then the current CN or CC must wait and attempt to create a new connection with that same peer.
-If more than 90 minutes have passed since the last successful communication with the peer node, a new discovery request can be sent on the Tari communication network in an attempt to locate that peer again.
-Losing of a peer might happen in cases where the CN or CC went temporarily offline and their dynamic communication address changed, requiring the discovery process to be performed again before a direct P2P communication channel can be established.
-
 #### Functionality Required of Communication Nodes
 
 - It MUST select a cryptographic key pair used for identification on the Tari Communication network.
 - A CN MAY request the peer addresses of CNs with similar node IDs from other CNs to extend their local routing table. 
-- If a CN is a VN, then a node ID MUST be obtained by registering on the Base layer.
 - If a CN is a BN, then a node ID MUST be derived from the nodes identification public key.
 - A new CN MUST submit a joining request to the Tari communication network so that the nodes peer address can be added to the routing table of neighbouring peers in the network.
 - If a CN receives a new joining request with a similar node ID (within a network selected threshold), then the peer address specified in the joining request MUST be added to its local routing table.
-- When a CN receives an encrypted message, the node MUST attempt to open the message.
+- When a CN receives an encrypted message, the node MUST attempt to open the message. It MUST authenticate the encryption before trying to decrypt it.
 - When a CN receives an encrypted message that the node is unable to open, and the destination node ID is known then the CN MUST forward it to all connected peers that have node IDs that are closer to the destination.
 - When a CN receives an encrypted message that the node is unable to open and the destination node is unknown then the CN MUST forward the message to all connected peers.
 - A CN MUST have the ability to verify the content of unencrypted messages to limit the propagation of spam messages.
@@ -302,6 +270,12 @@ Losing of a peer might happen in cases where the CN or CC went temporarily offli
 - Peers from the CCs routing table that have been unreachable for a number of attempts SHOULD be removed from the its routing table.
 - A CC MUST calculate the similarity between different node IDs by calculating the Hamming distance between the bits of the two node ID numbers.
 
+# Change Log
+
+| Date        | Change                                          | Author        |
+|:------------|:------------------------------------------------|:--------------|
+| 11 Nov 2022 | Update, removed registration of Validator Nodes | Stringhandler |
+
 [communication node]: Glossary.md#communication-node
 [communication client]: Glossary.md#communication-client
 [validator node]: Glossary.md#validator-node
@@ -316,5 +290,5 @@ Losing of a peer might happen in cases where the CN or CC went temporarily offli
 [mempool]: Glossary.md#mempool
 [committee]: Glossary.md#committee
 [Bad Actor]: Glossary.md#bad-actor
-[mining server]: Glossary.md#mining-server
 [mining worker]: Glossary.md#mining-worker
+[Multiaddr]: https://multiformats.io/multiaddr/
