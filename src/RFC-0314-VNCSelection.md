@@ -70,9 +70,16 @@ $$
 
 Every time a new VN-Key is assigned a new expiry date is calculated. Because the [miner]s calculate the VN-key, they also calculate the new VN-key every time
 it expires.
+# Process of choosing committees when an instruction needs to be processed
+
+For each instruction, the substates involved in this instruction **MUST** be known before they can be processed. 
+For each involved substate, the address of the substate is mapped to a shard (which is a specific point in the shard space). For each shard, the VN committee is constructed from `COMMITTEE_SIZE/2` VNs to the left and right of the shard, in the [VNKey Merkle tree]. 
+
+Thus, a single instruction will have a maximum N * `COMMITTEE_SIZE` validator nodes processing it, when N is the number of involved substates.
 
 ## Committee Creation
 Because we have the base layer where each VN needs to publish a registration transaction, we can get base_node and miners to keep track of all active VNs. We represent all VNs in a (balanced) Merkle tree with the VN_keys as leaves. We declare a constant `COMMITTEE_SIZE` which can be changed in the consensus constants.
+For the sake of simplicity, `COMMITTEE_SIZE` MUST be an even positive integer.
 For the sake of simplicity, `COMMITTEE_SIZE` MUST be an even positive integer.
 
 As per the Cerberus algorithm, validator nodes are responsible for managing _sub-states_, rather than contract semantics. 
