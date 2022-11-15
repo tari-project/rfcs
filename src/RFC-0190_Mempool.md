@@ -70,7 +70,7 @@ The Mempool is used for storing and managing unconfirmed [transactions][transact
 
 ## Related RFCs
 
-* [RFC-0100: The Tari Base Layer](RFC-0100_BaseLayer.md)
+* [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
 
 ## Description
 

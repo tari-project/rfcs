@@ -53,7 +53,6 @@ Digital Assets Network (DAN)
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
 * [RFC-0311: Digital Assets](RFC-0311_AssetTemplates.md)
 * [RFCD-0340: VN Consensus Overview](RFCD-0340_VNConsensusOverview.md)
 * [RFCD-0302: Validator Nodes](RFCDD-0302_ValidatorNodes.md)

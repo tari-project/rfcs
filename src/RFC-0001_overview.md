@@ -52,7 +52,6 @@ The aim of this proposal is to provide a very high-level perspective of the movi
 
 ## Related Requests for Comment
 
-- [RFC-0100: Base layer](RFC-0100_BaseLayer.md)
 - [RFC-0303: Digital asset network](RFC-0303_DanOverview.md)
 - [RFC-0131: Tari mining][RFC-131]
 - [RFC-0201: TariScript][RFC-201]
