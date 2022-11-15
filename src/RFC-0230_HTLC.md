@@ -115,10 +115,13 @@ ENDIF
 
 A more detailed analysis of the execution of this kind of script can be found at [Time-locked Contact](RFC-0202_TariScriptOpcodes.md#time-locked-contract)
 
-| Date        | Change        | Author     |
-|:------------|:--------------|:-----------|
-| 01 Feb 2019 | First draft   | SWvheerden |
-| 31 Oct 2022 | Stable update | brianp     |
+# Change Log
+
+| Date        | Change             | Author     |
+|:------------|:-------------------|:-----------|
+| 14 Apr 2019 | First draft        | SWvheerden |
+| 19 Dec 2021 | TariScript updates | philipr    |
+| 31 Oct 2022 | Stable update      | brianp     |
 
 [HTLC]: Glossary.md#hashed-time-locked-contract
 [Mempool]: Glossary.md#mempool
