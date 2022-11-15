@@ -2,7 +2,7 @@
 
 ## The Tari Base Layer
 
-![status: draft](theme/images/status-draft.svg)
+![status: deprecated](theme/images/status-deprecated.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 

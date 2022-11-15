@@ -52,7 +52,6 @@ This document describes the final proof-of-work strategy proposal for Tari main 
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
 * [RFC-0110: Base Nodes](RFC-0110_BaseNodes.md)
 
 This RFC replaces and deprecates [RFC-0130: Mining](RFCD-0130_Mining.md)

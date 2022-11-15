@@ -53,7 +53,7 @@ This document will introduce the Tari communication network and the communicatio
 
 ## Related RFCs
 
-* [RFC-0100: The Tari Base Layer](RFC-0100_BaseLayer.md)
+* [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
 * [RFC-0303: DAN Overview](RFCD-0303_DanOverview.md)
 
 ## Description

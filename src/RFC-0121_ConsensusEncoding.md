@@ -53,7 +53,6 @@ signature challenges used in base-layer consensus.
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
 * [RFC-0120: Consensus](RFC-0120_Consensus.md)
 
 ## Description

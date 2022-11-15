@@ -55,7 +55,7 @@ This RFC describes the motivation and mechanism of the Tari to Dan peg-in mechan
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
+* [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
 * [RFC-0303: Digital Assets Network](RFC-0303_DanOverview.md)
 
 ## Description
