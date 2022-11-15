@@ -263,13 +263,12 @@ C_i = v_i \cdot H  + k_i \cdot G
 \tag{1}
 $$
 
-The [metadata signature] is a combined commitment and public key signature signed with the private values of the commitment \\( (v\_i \\, , \\, k\_i )\\)
+The [metadata signature] is a [commitment and public key signature] signed with the private values of the commitment \\( (v\_i \\, , \\, k\_i )\\)
 known by the receiver, and sender 
 offset private key \\(k\_{Oi}\\), only known by the sender.
 The signature challenge consists of all the transaction output metadata, effectively forming a contract between the 
 sender and receiver, making all those values non-malleable and ensuring only the sender and receiver can enter into 
-this contract. (See [this PR](https://github.com/tari-project/tari-crypto/pull/131) for more details on this representation
-proof.)
+this contract.
 
 Note that:
 - The UTXO has a positive value \\( v \\) like any normal UTXO.
@@ -314,7 +313,7 @@ pub struct TransactionInput {
 }
 ```
 
-The `script_signature` is signed with a [commitment and public key representation proof](https://github.com/tari-project/tari-crypto/pull/131) using a combination of the output commitment 
+The `script_signature` is a [commitment and public key signature] using a combination of the output commitment 
 private values \\( (v\_i \\, , \\, k\_i )\\) and [script private key] \\(k\_{Si}\\) to prove ownership thereof. It 
 signs the script, the script input, [script public key] and the commitment.
 
@@ -597,18 +596,17 @@ Thanks to David Burkett for proposing a method to prevent cut-through and willin
 [data commitments]: https://phyro.github.io/grinvestigation/data_commitments.html
 [LIP-004]: https://github.com/DavidBurkett/lips/blob/master/lip-0004.mediawiki
 [Scriptless script]: https://tlu.tarilabs.com/cryptography/scriptless-scripts/introduction-to-scriptless-scripts.html
-[Signature on Commitment values]: https://documents.uow.edu.au/~wsusilo/ZCMS_IJNS08.pdf
-[Commitment Signature]: https://eprint.iacr.org/2020/061.pdf
 [cut-through]: https://tlu.tarilabs.com/protocols/grin-protocol-overview/MainReport.html#cut-through
 [standard Mimblewimble protocol]: https://tlu.tarilabs.com/protocols/mimblewimble-1/MainReport.html
 [bitcoin transaction]: https://en.bitcoin.it/wiki/Transaction
 
 [TariScript]: Glossary.md#tariscript
 [metadata signature]: Glossary.md#metadata-signature
+[commitment and public key signature]: Glossary.md#commitment-and-public-key-signature
 [script private key]: Glossary.md#script-keypair
 [script public key]: Glossary.md#script-keypair
 [sender offset]: Glossary.md#sender-offset-keypair
 [script offset]: Glossary.md#script-offset
 [m-of-n script]: RFC-0202_TariScriptOpcodes.md#checkmultisigverifyaggregatepubkeym-n-public-keys-msg
 [NoOp script]: RFC-0202_TariScriptOpcodes.md#noop
-[Mimblewimble]: Glossary.md?#mimblewimble
+[Mimblewimble]: Glossary.md#mimblewimble

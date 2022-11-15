@@ -1,13 +1,17 @@
-# RFC
+# RFCs
 
-RFC documents for the Tari protocol
+This repository contains requests for comment (RFCs) for Tari protocols.
 
-These documents are in the form of an mdbook. The rendered version of these docs can be found at https://rfc.tari.com
+These documents are in the form of an [`mdbook`](https://rust-lang.github.io/mdBook/). The rendered version of the main branch of the repository is deployed to https://rfc.tari.com.
 
-## View local rendered version
+## Building
 
-- run `cargo install mdbook`
+You can build and serve the RFCs locally while working on them, and navigate the resulting `mdbook` site as if it were deployed.
 
-- in the `/RFC` folder run `mdbook serve`
+To do so:
+- Navigate to the repository directory in a terminal
+- Install the `mdbook` tool: `cargo install mdbook`
+- Serve the site: `mdbook serve`
+- View the rendered versions in a browser using the link provided in your terminal: `http://localhost:3000`
 
-- in a browser navigate to [`localhost:3000`](http://localhost:3000)
+The server will detect changes you make to files and rebuild automatically, but you will need to manually refresh pages in your browser to see the updates.

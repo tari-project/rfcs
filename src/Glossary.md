@@ -148,6 +148,16 @@ A commitment is a cryptographic primitive that allows one to commit to a chosen 
 others, with the ability to reveal the committed value later. Commitments are designed so that one cannot change the
 value or statement after they have committed to it.
 
+## Commitment and Public Key Signature
+
+[commitment and public key signature]: #commitment-and-public-key-signature
+
+A mathematical assertion of knowledge of the opening of a [commitment] and the private key corresponding to a public key, and
+which is bound to a message to produce a signature. In the context of Tari protocols, it is used to construct a
+[metadata signature] and script signature for transactions.
+
+Specifically, it is a Schnorr-type conjunction proof that uses the Fiat-Shamir technique for message binding.
+
 ## Communication Node
 
 [communication node]: #communication-node "A communication node that is responsible for maintaining the Tari
@@ -256,7 +266,7 @@ verified transactions from the mempool to build up transaction [block]s.
 
 [metadata signature]: #metadata-signature
 
-The metadata signature is an aggregated Commitment Signature ("ComSig") signature, attached to a transaction output and
+The metadata signature is a [commitment and public key signature], attached to a transaction output and
 signed with a combination of the homomorphic commitment private values \\( (v\_i \\, , \\, k\_i )\\), the spending key
 known only to the receiver, and sender offset private key \\(k\_{Oi}\\) known only to the sender. This prevents
 malleability of the UTXO metadata.
@@ -407,7 +417,7 @@ The script offset provides a proof that every script public key \\( K\_{Si} \\) 
 [sender offset key]: #sender-offset-keypair
 
 The sender offset private - public keypair, (\\( k\_{Oi} \\),\\( K\_{Oi} \\)), is used by the sender of an output to
-lock all its metadata by virtue of a [sender metadata signature].
+lock all its metadata by virtue of a [metadata signature].
 
 ## Spending Key
 
