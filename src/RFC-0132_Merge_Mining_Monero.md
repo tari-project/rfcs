@@ -175,10 +175,10 @@ Tari block is retrieved, enriched with the `MoneroPowData` struct and submitted 
 
 # Change Log
 
-| Date        | Change              | Author    |
-|:------------|:--------------------|:----------|
-| 26 Oct 2022 | Stablise RFC       | CjS77    |
-| 21 Oct 2022 | Update fields       | Cifko     |
+| Date        | Change        | Author |
+|:------------|:--------------|:-------|
+| 26 Oct 2022 | Stablise RFC  | CjS77  |
+| 21 Oct 2022 | Update fields | Cifko  |
 
 [Monero's tree hash]: https://github.com/monero-project/monero/blob/1c8e598172bd2eddba2607cae0804db2e685813b/src/crypto/tree-hash.c
 [merge mining subfield]: https://docs.rs/monero/0.13.0/monero/blockdata/transaction/enum.SubField.html#variant.MergeMining
