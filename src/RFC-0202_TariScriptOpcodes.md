@@ -111,12 +111,12 @@ The full list of [Error codes](#error-codes) is given below.
 
 ### Opcode versions
 
-Base layer core consensus constants are linked to block height for each network, being it testnet, stagenet or mainnet, 
-and is backwards compatible, meaning a base node running updated consensus constants will also be able to validate the 
+Base layer core consensus constants are linked to block height for each network, be it testnet, stagenet or mainnet, 
+and are backwards compatible, meaning a base node running updated consensus constants will also be able to validate the 
 blockchain for the previous version up to its last effective block height.
 
-Opcode versioning is contained within the consensus constants and used to determine which opcodes should be effective 
-from which block height. As an example, `OpcodeVersion::V0` could be effective from the genysis block, 
+Opcode versioning is contained within the consensus constants and is used to determine which opcodes are effective 
+from which block height. As an example, `OpcodeVersion::V0` could be effective from the genesis block, 
 `OpcodeVersion::V1` may contain two additional opcodes and could be effective from height 1234, whereas 
 `OpcodeVersion::V2` may deprecate three other opcodes and be effective from height 21743.
 
