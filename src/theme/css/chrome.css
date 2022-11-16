@@ -14,7 +14,7 @@
 a:visited,
 a > .hljs {
     /*color: var(--links);*/
-    color: #932FFF;
+    color: #9330FF;
     font-weight:700;
 }
 
@@ -376,15 +376,15 @@ li .section li .section {
     border-bottom: 3px solid rgba(113, 109, 109, 0.3);
 }
 .chapter li a:hover {
-    box-shadow: rgba(231, 219, 219, 0.8) 0px 0px 0.35em !important;
-    background-color: rgba(215, 177, 177, 0.8) !important;
-    color: rgb(0, 0, 0) !important;
+    box-shadow: rgb(84, 84, 84) 0 0 0.35em !important;
+    background-color: rgba(84, 84, 84, 0.8) !important;
+    color: #fff !important;
 }
 .chapter li .active {
     text-decoration: none;
-    box-shadow: rgb(255 128 128) 0px 0px 0.35em !important;
-    background-color: rgba(255, 128, 128, 0.8) !important;
-    color: rgb(0, 0, 0) !important;
+    box-shadow: rgb(147, 48, 255) 0 0 0.35em !important;
+    background-color: rgba(147, 48, 255, 0.8) !important;
+    color: #fff !important;
 }
 
 .spacer {

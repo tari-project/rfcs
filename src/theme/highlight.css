@@ -49,12 +49,12 @@
 /* Atelier-Dune Purple */
 .hljs-keyword,
 .hljs-selector-tag {
-  color: #b854d4;
+  color: rgb(147, 48, 255);
 }
 
 :not(pre) > code.hljs {
-  box-shadow: rgba(15, 101, 192, 0.82) 0px 0px 0.35em !important;
-  background-color: rgb(29, 79, 156) !important;
+  box-shadow: rgba(147, 48, 255, 0.82) 0 0 0.35em !important;
+  background-color: rgb(147, 48, 255) !important;
   color: rgb(255, 255, 255) !important;
 }
 
@@ -64,7 +64,7 @@
   /*background: #f1f1f1;*/
   /*color: #6e6b5e;*/
   padding: 2.0em;
-  box-shadow: rgba(15, 101, 192, 0.82) 0px 0px 0.35em !important;
+  box-shadow: rgba(15, 101, 192, 0.82) 0 0 0.35em !important;
 }
 
 .hljs-emphasis {
