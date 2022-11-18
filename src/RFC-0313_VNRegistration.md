@@ -149,16 +149,10 @@ The `validator_node_mr` MUST remain unchanged for blocks between epochs, that is
 > A validator generates a [Merkle proof] that proves its `VN_Shard_Key` is included in the validator set for any given epoch. This proof is provided in [Quorum Certificate]s.
 
 The `validator_node_mr` is calculated for each block as follows:
-
-```rust,ignore
-if block_height % EpochSize == 0 {
-    let vn_set = get_vn_set(chain_db, consensus_constants, current_epoch);
-    calculate_validate_node_mr(vn_set)
-} else {
-    let previous_block_header = get_previous_block_header(chain_db, block_height);
-    previous_block_header.validator_node_mr
-}
-```
+1. if the current block height is a multiple of `EpochSize`
+    - then fetch the VN set for the epoch
+    - build a merkle tree from the VN set, each node is $H(P_i \mathbin\Vert S_i)$
+2. otherwise, fetch the previous block's `validator_node_mr` and return it
 
 ## Epoch transitions
 
@@ -214,33 +208,33 @@ Point (c) - the transition point for epoch 12:
 
 #### Validator Node Set Definition
 
-The function $\text{get_vn_set}(\epsilon_n) \rightarrow \vec{S}$ that returns an ordered vector $\vec{S}$ of `VN_Shard_Key`s that are registered for the epoch $\epsilon_n$.
+The function $\text{get_vn_set}(\epsilon_\text{start}, \epsilon_\text{end}) \rightarrow \vec{S}$ that returns an ordered vector $\vec{S}$ of `VN_Shard_Key`s that are registered for the epoch $\epsilon_n$.
 As all [UTXO]s are already ordered in the base layer, we can rely on deterministic ordering based on order the registration [UTXO]s are placed in the blockchain.
 
+##### Data Indexes
+
+The following additional indexes are recommended to allow efficient retrieval of the VN set, shard key mappings and to produce a valid `validator_node_mr`:
+- $I_\text{primary} = \\{ (h_i, V_i, C_i) \rightarrow (V_i, S_i) \\}$ 
+- $I_\text{shard} = \\{ (V_i, h_i, C_i) \rightarrow S_i \\}$
+- $C_i$ is the $i$th [UTXO] commitment 
+
+Database index $I_\text{primary}$ that maintains a mapping from the next epoch after the registration to all the 
+`<VN_Public_Key, VN_Shard_Key>` tuples for all `ValidatorNodeRegistration` [UTXO]s. This allows efficient retrieval 
+from a particular height onwards, optionally for a particular validator node public key.
+
+The index entry is _not_ removed whenever the `ValidatorNodeRegistration` [UTXO] is spent or expires. This is to allow
+state to be rewound for reorgs.
+If a validator adds two or more validator registration [UTXOS][UTXO] in the same block, the index will order them by commitment, that is, 
+the same canonical ordering as the Tari block body. The `get_vn_set` function MUST return the last registration 
+public key and shard key tuple only, according to this canonical ordering.
+
+#### Algorithm
+
 The function $\text{get_vn_set}$ is defined as follows:
-
-```rust,ignore
-fn get_vn_set(chain_db, current_epoch) -> Vec<VN_Shard_Key> {
-   let cursor = chain_db.vn_reg_index.seek_gte(current_epoch - VNRegistrationValidityPeriod)
-   while let Some((epoch, (_, vn_shard_key))) = cursor.next() {
-      if epoch == current_epoch {
-         break;
-      }
-      vn_set.push(vn_shard_key);
-   }
-   vn_set
-}
-```
-
-The following additional indexes are recommended to allow efficient retrieval of the VN set and to produce a valid `validator_node_mr`:
-- $I_\epsilon = \\{ \epsilon_i \rightarrow (V_i, S_i) \\}$
-- $I_V = \\{ V_i \rightarrow (\epsilon_i, S_i) \\}$
-
-Database index $I_\epsilon$ that maintains a mapping from the next epoch after the registration to all the 
-`<VN_Public_Key, VN_Shard_Key>` tuples for all `ValidatorNodeRegistration` [UTXO]s.
-
-The index entry is removed whenever the `ValidatorNodeRegistration` [UTXO] is spent or expires.
-The index replaces the previous `ValidatorNodeRegistration` [UTXO] if the validator creates a new one.
+1. Iterate on index $I_\text{primary}$, starting from where the key is between (inclusive) the equivalent block height for 
+   $\epsilon_\text{start}$ and $\epsilon_\text{end}$:
+    * Add to the set, and
+    * if the validator node public key is already in the set, remove the previous entry.
 
 For this example, we say that there have been no registrations prior to `V_1`; we define 
 `VNRegistrationValidityPeriod = 2 epochs` and `VNRegActivationDelay = 0 epochs`.
@@ -278,25 +272,24 @@ Over time, an adversary may gain excessive control over a particular shard space
 periodically and randomly reassigns `VN_Shard_Key`s within the network.
 
 We define the function $\text{generate_shard_key}(P_n, \eta) \rightarrow S$ that generates the `VN_Shard_Key` from the inputs.
-$S = H(P_n \mathbin\Vert \eta)$ where $H$ is a domain-separated [Blake256] hash function, $P_n$ is the public `VN_Public_Key` and $\eta$ is some entropy.
+$S = H_\text{shard}(P_n \mathbin\Vert \eta)$ where $H_\text{shard}$ is a domain-separated [Blake256] hash function, $P_n$ is the public `VN_Public_Key` and $\eta$ is some entropy.
 
 And we define the function $\text{derive_shard_key}(S_{n-1}, P_n, \epsilon_n, \hat{B}) \rightarrow S$ that deterministically derives the `VN_Shard_Key` for
 epoch $\epsilon_n$ from the public `VN_Public_Key` $P_n$, $\hat{B}$ the block hash at height $\epsilon_n * \text{EpochSize} - 1$ (the block before the epoch block).
 
-```rust,ignore
-fn derive_shard_key(prev_shard_key: Option<ShardId>, vn_key: U256, epoch: u64, interval: u64, prev_block_hash: U256) -> ShardId {
-    match prev_shard_key {
-        Some(prev_shard_key) => {
-           if (vn_key + epoch) % interval == 0 {
-              generate_shard_key(vn_key, prev_block_hash)
-           } else {
-              prev_shard_key
-           }
-       },
-       None => generate_shard_key(vn_key, prev_block_hash)
-   }
-}
-```
+The function $\text{derive_shard_key}$ is defined as follows:
+
+1. Given:
+    - $S_{n-1}$ the previous `VN_Shard_Key` 
+    - $V$ the `VN_Public_Key`
+    - $\epsilon_n$ the epoch number to generate a `VN_Shard_Key` for
+    - $\hat{B}$ the previous block hash 
+1. If the previous shard key $S_{n-1}$ is not null, 
+    * Check $(V + \epsilon_n) \bmod \text{ShufflePeriod} == 0$.
+    * If true, generate a new shard key using $\text{generate_shard_key}(V, \hat{B})$.
+    * If false, return $S_{n-1}$.
+1. If the previous shard key $S_{n-1}$ is null, 
+    * generate a new shard key using $\text{generate_shard_key}(V, \hat{B})$.
 
 Only a random fraction of validators will be re-assigned shard keys per epoch and that fraction will not be shuffled again
 for `VNShardShuffleInterval` epochs. Although the exact number of validators that shuffle per epoch varies, on average 
@@ -325,3 +318,4 @@ to re-sync their state and spend time not participating in the network, losing o
 [scnorr signature]: https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures
 [utxo]: Glossary.md#unspent-transaction-outputs
 [shard space]: RFC-0304-DanGlossarymd#Consensus-level
+[Blake256]: https://github.com/tari-project/tari-crypto/blob/fa042e498be144d8d2af7b96efe805c5af0b2d4f/src/hash/blake2.rs
