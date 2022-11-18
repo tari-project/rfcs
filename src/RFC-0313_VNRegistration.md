@@ -110,7 +110,7 @@ The published `ValidatorNodeRegistration` [UTXO] has these requirements:
     * The signature challenge is defined as $e = H(P \mathbin\Vert R \mathbin\Vert m)$
     * $R$ is a public nonce, $P$ is the public `VN_Public_Key` 
     * $m$ is the [UTXO] commitment
-1. the [UTXO]'s `minimum_value` must be at least `VNRegDepositAmount` to mitigate spam/[Sybil] attacks,
+1. the [UTXO]'s `minimum_value` must be at least `VNRegDepositAmount` to mitigate spam/Sybil attacks,
 1. the [UTXO] lock-height must be set to `VNRegLockHeight`.
 1. A script which burns the validator node registration funds if the validator does not reclaim it for a long period after the lock height expires.
 
@@ -146,7 +146,7 @@ Additionally, we introduce a new [block header] field `validator_node_mr` that c
 The `validator_node_mr` needs to be recalculated at every `EpochSize` blocks to account for departing and arriving nodes.
 The `validator_node_mr` MUST remain unchanged for blocks between epochs, that is, blocks that are not multiples of `EpochSize`.
 
-> A validator generates a [Merkle proof] that proves its `VN_Shard_Key` is included in the validator set for any given epoch. This proof is provided in [Quorum Certificate]s.
+> A validator generates a Merkle proof that proves its `VN_Shard_Key` is included in the validator set for any given epoch. This proof is provided in layer 2 Quorum Certificates.
 
 The `validator_node_mr` is calculated for each block as follows:
 1. if the current block height is a multiple of `EpochSize`
@@ -315,7 +315,9 @@ to re-sync their state and spend time not participating in the network, losing o
 [reorg]: Glossary.md#chain-reorganization
 [DAN]: RFC-0303_DanOverview.md
 [VNC]: RFC-0314-VNCSelection.md#Intro
-[scnorr signature]: https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures
+[Schnorr signature]: https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures
 [utxo]: Glossary.md#unspent-transaction-outputs
 [shard space]: RFC-0304-DanGlossarymd#Consensus-level
 [Blake256]: https://github.com/tari-project/tari-crypto/blob/fa042e498be144d8d2af7b96efe805c5af0b2d4f/src/hash/blake2.rs
+[Ristretto]: https://ristretto.group/
+[Block header]: Glossary.md#block-header
