@@ -304,10 +304,11 @@ to re-sync their state and spend time not participating in the network, losing o
 
 # Change Log
 
-| Date        | Change        | Author     |
-|:------------|:--------------|:-----------|
-| 12 Oct 2022 | First outline | SWvHeerden |
-| 08 Nov 2022 | Updates       | sdbondi    |
+| Date        | Change                 | Author     |
+|:------------|:-----------------------|:-----------|
+| 12 Oct 2022 | First outline          | SWvHeerden |
+| 08 Nov 2022 | Updates                | sdbondi    |
+| 18 Nov 2022 | Implementation updates | sdbondi    |
 
 [base node]: Glossary.md#base-node
 [Base Layer]: Glossary.md#base-layer
