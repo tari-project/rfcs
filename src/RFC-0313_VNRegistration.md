@@ -92,7 +92,6 @@ and spans all blocks from the start of the epoch up to but excluding the start o
 | `VNRegDepositAmount`           | TBD Tari           | The minimum amount that must be spent to create a valid `ValidatorNodeRegistration` [UTXO] |
 | `VNRegLockHeight`              | 10 Epochs          | The lock height that must be set on every `ValidatorNodeRegistration` [UTXO]               |
 | `VNShardShuffleInterval`       | 100 Epochs         | The interval that a validator node shard key is shuffled                                   |
-| `VNRegActivationDelay`         | 2 Epochs           | The number of epochs to delay for before activating a new VN                               |
 
 *Validator node consensus constants:*
 
@@ -237,7 +236,7 @@ The function $\text{get_vn_set}$ is defined as follows:
     * if the validator node public key is already in the set, remove the previous entry.
 
 For this example, we say that there have been no registrations prior to `V_1`; we define 
-`VNRegistrationValidityPeriod = 2 epochs` and `VNRegActivationDelay = 0 epochs`.
+`VNRegistrationValidityPeriod = 2 epochs`.
 
 ```text
                                     (a)            (b)            (c)
