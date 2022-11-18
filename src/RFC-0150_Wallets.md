@@ -162,7 +162,7 @@ An output is recognized if it matches either of the following input script patte
 
 ### Change Log
 
-| Date        | Change                                                                         | Author           |
-|:------------|:-------------------------------------------------------------------------------|:-----------------|
-| 26 Oct 2022 | Stabilized RFC                                                                 | CjS77            |
-| 14 Nov 2022 | Added table of contents, recovery process overview and a few minor adjustments | agubarev & pluto |
+| Date        | Change                                                                         | Author                    |
+|:------------|:-------------------------------------------------------------------------------|:--------------------------|
+| 26 Oct 2022 | Stabilized RFC                                                                 | CjS77                     |
+| 14 Nov 2022 | Added table of contents, recovery process overview and a few minor adjustments | agubarev & hansieodendaal |
