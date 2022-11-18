@@ -5,19 +5,24 @@
 ## Base Layer Wallet Module
 
 <!-- TOC -->
-* [Changelog](#change-log)
+* [RFC-0150/Wallets](#rfc-0150wallets)
+  * [Base Layer Wallet Module](#base-layer-wallet-module)
 * [Licence](#licence)
-* [Language](#language)
-* [Disclaimer](#disclaimer)
-* [Goals](#goals)
-* [Related Requests for Comment](#related-requests-for-comment)
-* [Description](#description)
+  * [Language](#language)
+  * [Disclaimer](#disclaimer)
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
     * [Key Responsibilities](#key-responsibilities)
-    * [Functionality Details](#functionality-details)
+    * [Functional Details](#functional-details)
       * [Basic Transaction Functionality](#basic-transaction-functionality)
       * [Key Management Features](#key-management-features)
-      * [Different Methods for Recovering Wallet State of Tari Software Wallet](#different-methods-for-recovering-wallet-state-of-tari-software-wallet)
+      * [State Recovery](#state-recovery)
+      * [State Recovery: Process Overview](#state-recovery-process-overview)
+    * [Change Log](#change-log)
 <!-- TOC -->
+
+
 
 # Licence
 
@@ -129,72 +134,21 @@ transactions, using keys derived from the master key.
 
 #### State Recovery: Process Overview
 If the wallet database has been lost, corrupted or otherwise damaged, the outputs contained within ([UTXOs](Glossary.md#unspent-transaction-outputs))
-can still be recovered from the Tari [blockchain], given you provide the valid seed (recovery) phrase. When the wallet is first initialized in recovery mode, 
-it attempts to synchronize with available base nodes, pulling blocks, scanning through its transactions and attempting to recognize outputs attributed to that particular wallet,
-by attempting to rewind and verify the blinding factor with the range proof for a commitment of each unspent output found. All recognized and verified outputs are 
-stored in the newly initialized, local wallet database, available for further spending. 
+can still be recovered from the Tari [blockchain], given you provide the valid recovery keys. When the wallet is first initialized in recovery mode, 
+it attempts to synchronize with available base nodes, pulling blocks, attempting to recognize outputs attributed to that particular wallet.
 
-The output is recognized if it matches either of the following input script patterns:
+If one can successfully decrypt the encrypted value, then the UTXO is successfully recognized. The next step is to attempt the mask (blinding factor)
+recovery by rewinding the range proof. All recognized and verified outputs are stored in the newly initialized, local wallet database, 
+available for further spending. 
+
+The recovery of simple and stealth one-sided outputs is a bit more complex as we first have to recognize the output by its script pattern, before we can try
+to decrypt the encrypted value. 
+
+An output is recognized if it matches either of the following input script patterns:
 
 - The standard output is the simplest, having a single `Nop` instruction.
-- The simple one-sided is matched by the `Opcode::PushPubKey(<recipient public key>)`, so if the recipient's key matches the key derived from the recovery phrase - it's recognized,
-```rust,ignore
-// simple one-sided address
-[Opcode::PushPubKey(scanned_pk)] => {
-    match known_keys
-        .iter()
-        .find(|x| &PublicKey::from_secret_key(&x.private_key) == scanned_pk.as_ref())
-    {
-        // none of the keys match, skipping
-        None => continue,
-
-        // match found
-        Some(matched_key) => {
-            let shared_secret =
-                CommsDHKE::new(&matched_key.private_key, &output.sender_offset_public_key);
-            scanned_outputs.push((
-                output.clone(),
-                OutputSource::OneSided,
-                matched_key.private_key.clone(),
-                shared_secret,
-            ));
-        },
-    }
-},
-
-```
-
-
-- stealth one-sided is similar to its simple counterpart with only the script pattern being different, matching by the last provided `Opcode::PushPubKey(...)` instruction; [RFC-0203/StealthAddresses](RFC-0203_StealthAddresses.md)
-```rust,ignore
-// one-sided stealth address
-// NOTE: Extracting the nonce R and a spending (public aka scan_key) key from the script
-// NOTE: [RFC 203 on Stealth Addresses](https://rfc.tari.com/RFC-0203_StealthAddresses.html)
-[Opcode::PushPubKey(nonce), Opcode::Drop, Opcode::PushPubKey(scanned_pk)] => {
-    // Compute the stealth address offset
-    let stealth_address_offset = PrivateKey::from_bytes(
-        WalletHasher::new_with_label("stealth_address")
-            .chain(CommsDHKE::new(&wallet_sk, nonce.as_ref()).as_bytes())
-            .finalize()
-            .as_ref(),
-    )
-    .unwrap();
-
-    // matching spending (public) keys
-    if &(PublicKey::from_secret_key(&stealth_address_offset) + wallet_pk) != scanned_pk.as_ref() {
-        continue;
-    }
-
-    let shared_secret = CommsDHKE::new(&wallet_sk, &output.sender_offset_public_key);
-    scanned_outputs.push((
-        output.clone(),
-        OutputSource::StealthOneSided,
-        wallet_sk.clone() + stealth_address_offset,
-        shared_secret,
-    ));
-},
-```
-
+- The simple one-sided is matched by the `[Opcode::PushPubKey(scanned_pk)]` so if the `scanned_pk` matches the key derived from the recovery phrase - it's recognized,
+- The [stealth one-sided](RFC-0203_StealthAddresses.md) is similar to its simple counterpart with only the script pattern being different `[Opcode::PushPubKey(nonce), Opcode::Drop, Opcode::PushPubKey(scanned_pk)]`, matching by the last provided `Opcode::PushPubKey(scanned_pk)` instruction.
 
 
 
@@ -208,7 +162,7 @@ The output is recognized if it matches either of the following input script patt
 
 ### Change Log
 
-| Date        | Change                                              | Author   |
-|:------------|:----------------------------------------------------|:---------|
-| 26 Oct 2022 | Stabilized RFC                                      | CjS77    |
-| 14 Nov 2022 | Added Table of Contents and a few minor adjustments | agubarev |
+| Date        | Change                                                                         | Author           |
+|:------------|:-------------------------------------------------------------------------------|:-----------------|
+| 26 Oct 2022 | Stabilized RFC                                                                 | CjS77            |
+| 14 Nov 2022 | Added table of contents, recovery process overview and a few minor adjustments | agubarev & pluto |
