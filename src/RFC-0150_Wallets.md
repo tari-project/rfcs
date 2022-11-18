@@ -127,6 +127,77 @@ transactions, using keys derived from the master key.
 - The master seed key **SHOULD** be derivable from a set of mnemonic word sequences using known word lists.
 - Wallet **MAY** enable the reconstruction of the master seed key by scanning a coded marker of a paper wallet.
 
+#### State Recovery: Process Overview
+If the wallet database has been lost, corrupted or otherwise damaged, the outputs contained within ([UTXOs](Glossary.md#unspent-transaction-outputs))
+can still be recovered from the Tari [blockchain], given you provide the valid seed (recovery) phrase. When the wallet is first initialized in recovery mode, 
+it attempts to synchronize with available base nodes, pulling blocks, scanning through its transactions and attempting to recognize outputs attributed to that particular wallet,
+by attempting to rewind and verify the blinding factor with the range proof for a commitment of each unspent output found. All recognized and verified outputs are 
+stored in the newly initialized, local wallet database, available for further spending. 
+
+The output is recognized if it matches either of the following input script patterns:
+
+- The standard output is the simplest, having a single `Nop` instruction.
+- The simple one-sided is matched by the `Opcode::PushPubKey(<recipient public key>)`, so if the recipient's key matches the key derived from the recovery phrase - it's recognized,
+```rust,ignore
+// simple one-sided address
+[Opcode::PushPubKey(scanned_pk)] => {
+    match known_keys
+        .iter()
+        .find(|x| &PublicKey::from_secret_key(&x.private_key) == scanned_pk.as_ref())
+    {
+        // none of the keys match, skipping
+        None => continue,
+
+        // match found
+        Some(matched_key) => {
+            let shared_secret =
+                CommsDHKE::new(&matched_key.private_key, &output.sender_offset_public_key);
+            scanned_outputs.push((
+                output.clone(),
+                OutputSource::OneSided,
+                matched_key.private_key.clone(),
+                shared_secret,
+            ));
+        },
+    }
+},
+
+```
+
+
+- stealth one-sided is similar to its simple counterpart with only the script pattern being different, matching by the last provided `Opcode::PushPubKey(...)` instruction; [RFC-0203/StealthAddresses](RFC-0203_StealthAddresses.md)
+```rust,ignore
+// one-sided stealth address
+// NOTE: Extracting the nonce R and a spending (public aka scan_key) key from the script
+// NOTE: [RFC 203 on Stealth Addresses](https://rfc.tari.com/RFC-0203_StealthAddresses.html)
+[Opcode::PushPubKey(nonce), Opcode::Drop, Opcode::PushPubKey(scanned_pk)] => {
+    // Compute the stealth address offset
+    let stealth_address_offset = PrivateKey::from_bytes(
+        WalletHasher::new_with_label("stealth_address")
+            .chain(CommsDHKE::new(&wallet_sk, nonce.as_ref()).as_bytes())
+            .finalize()
+            .as_ref(),
+    )
+    .unwrap();
+
+    // matching spending (public) keys
+    if &(PublicKey::from_secret_key(&stealth_address_offset) + wallet_pk) != scanned_pk.as_ref() {
+        continue;
+    }
+
+    let shared_secret = CommsDHKE::new(&wallet_sk, &output.sender_offset_public_key);
+    scanned_outputs.push((
+        output.clone(),
+        OutputSource::StealthOneSided,
+        wallet_sk.clone() + stealth_address_offset,
+        shared_secret,
+    ));
+},
+```
+
+
+
+
 [wallet]: Glossary.md#wallet
 [Base Layer]: Glossary.md#base-layer
 [tari coin]: Glossary.md#tari-coin
