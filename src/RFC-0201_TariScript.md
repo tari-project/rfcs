@@ -206,6 +206,7 @@ At a high level, TariScript works as follows:
   create a _script offset_ \\((\so)\\), which are used in the consensus balance to prevent a number of attacks.
 
 > NOTE: One can prove ownership of a UTXO by demonstrating knowledge of both the commitment _blinding factor_ \\((k\\)), _and_ the _[script private key]_ \\((k_\{S})\\) for a valid script input.
+
 ### UTXO data commitments
 
 The script, as well as other UTXO metadata, such as the output features are signed for with the [sender offset] private 
@@ -217,9 +218,57 @@ There are two changes to the protocol data structures that must be made to allow
 The first is a relatively minor adjustment to the transaction output definition.
 The second is the inclusion of script input data and an additional public key in the transaction input field.
 
+### Commitment and public key signature
+
+The Commitment and Public Key signature ([CAPK Signature]) is used in Tari protocols as part of transaction authorization. 
+It can be thought of as a combination (not addition) of a commitment signature ([Signature on Commitment values] by F. 
+Zhang et. al. and [Commitment Signature] by G. Yu.) and a Schnorr Signature. Given a commitment 
+\\( C  = a \cdot H  + x \cdot G \\) and group element \\( PK = y \cdot G \\)\, a CAPK Signature is based on a 
+representation proof of both openings \\( (a, x) \\) and \\( y \\). It additionally binds to arbitrary message data 
+\\( m \\) via the challenge to produce a signature construction. 
+
+The construction works as follows:
+- Sample scalar nonces \\( (r_a, r_x, r_y) \\) uniformly at random.
+- Compute ephemeral values \\( C_{eph} = r_a \cdot H + r_x \cdot G \\) and \\( PK_{eph} = r_y \cdot G \\) where
+  \\( C_{eph} \\) is the ephemeral commitment and \\( PK_{eph} \\) is the ephemeral public key.
+- Use strong Fiat-Shamir to produce a challenge \\( e \\). If \\( e \overset{?}{=} 0 \\) (this is unlikely), abort and 
+  start over.
+- Compute the responses \\( u_a = r_a + e \cdot a \\) and \\( u_x = r_x + e \cdot x \\) and \\( u_y = r_y + e \cdot y\\) 
+  where \\( e \\) is the challenge scalar.
+
+A commitment signature tuple has the form \\( (u_a, u_x, C_{eph}) \\) where \\( u_a \\) and \\( u_x \\) are the first  
+second commitment signature scalars respectively. A Schnorr signature tuple has the form \\( (u_y, PK_{eph}) \\) where 
+\\( u_y \\) is the public key signature scalar. The CAPK Signature therefor has the combined form 
+\\( (u_a, u_x, C_{eph}, u_y, PK_{eph}) \\). Note that in this context a signature scalar is also a private key. 
+
+To verify:
+- The verifier computes the challenge \\( e \\) and rejects the signature if \\( e \overset{?}{=} 0 \\) (this is 
+  unlikely).
+- Verification succeeds if and only if the following equations hold:
+
+$$
+\begin{aligned}
+u_a \cdot H + u_x \cdot G &\overset{?}{=} C_{eph} + e \cdot C \\\\
+u_y \cdot G &\overset{?}{=} PK_{eph} + e \cdot PK
+\end{aligned}
+\tag{1}
+$$
+
+We note that it is possible to make verification slightly more efficient by reducing calculation of the number of 
+group elements by one. To do so, the verifier selects a nonzero scalar weight \\( w \\) uniformly at random (not 
+through Fiat-Shamir!) and accepts the signature if and only if the following equation holds:
+
+$$
+\begin{aligned}
+u_a \cdot H + (u_x + w \cdot u_y) G  - C_{eph} - w \cdot PK_{eph} - e \cdot C - (w \cdot e) PK \overset{?}{=} 0
+\end{aligned}
+\tag{2}
+$$
+
+
 ### Transaction output changes
 
-The current definition of a Tari UTXO is:
+The definition of a Tari _script-less_ UTXO would be:
 
 ```rust,ignore
 pub struct TransactionOutput {
@@ -232,7 +281,7 @@ pub struct TransactionOutput {
 }
 ```
 
-_Note:_ Currently, the output features are actually malleable. TariScript fixes this.
+_Note:_ With a Tari _script-less_ UTXO, the output features would be malleable, but TariScript fixes this.
 
 Under TariScript, this definition changes to accommodate the script and the [sender offset] public keys:
 
@@ -254,21 +303,108 @@ pub struct TransactionOutput {
 }
 ```
 
+The [metadata signature] is a [CAPK Signature] (as described [here](#commitment-and-public-key-signature)) signed with 
+the commitment value, \\( v_i \\), known by the sender and receiver, the spending key, \\( k_i \\), known by the 
+receiver and the sender offset private key, \\(k\_{Oi}\\), known by the sender. (_Note that \\( k\_{Oi} \\) should be 
+treated as a nonce._) The CAPK Signature is effectively an aggregated CAPK Signature between the sender and receiver, 
+and the challenge consists of all the transaction output metadata, effectively forming a contract between the sender and 
+receiver, making all those values non-malleable and ensuring only the sender and receiver can enter into this contract.
+
+For purposes of this RFC we denote the metadata signature terms as follows:
+- \\( R_{MRi} \\) is the ephemeral commitment, 
+- \\( R_{MSi} \\) is the ephemeral public key, 
+- \\( a_{MRi} \\) and \\( b_{MRi} \\) are the first and second commitment signature scalars,
+- \\( b_{MSi} \\) is the public key signature scalar. 
+
+<u>Sender:</u>
+
+The sender's ephemeral public key is:
+
+$$
+\begin{aligned}
+R_{MSi} &= r_{MSi_b} \cdot G
+\end{aligned}
+\tag{3}
+$$
+
+The sender sends \\( (K\_{Oi}, R_{MSi}) \\) along with the other partial transaction information 
+\\( (\script_i, F_i) \\) to the receiver, who now has all the required information to calculate the final challenge.
+
+<u>Reciver:</u>
+
 The commitment definition is unchanged:
 
 $$
 \begin{aligned}
 C_i = v_i \cdot H  + k_i \cdot G
 \end{aligned}
-\tag{1}
+\tag{4}
 $$
 
-The [metadata signature] is a [commitment and public key signature] signed with the private values of the commitment \\( (v\_i \\, , \\, k\_i )\\)
-known by the receiver, and sender 
-offset private key \\(k\_{Oi}\\), only known by the sender.
-The signature challenge consists of all the transaction output metadata, effectively forming a contract between the 
-sender and receiver, making all those values non-malleable and ensuring only the sender and receiver can enter into 
-this contract.
+The receiver's ephemeral commitment is:
+
+$$
+\begin{aligned}
+R_{MRi} &= r_{MRi_a} \cdot H + r_{MRi_b} \cdot G
+\end{aligned}
+\tag{5}
+$$
+
+The final challenge is:
+
+$$
+\begin{aligned}
+e &= \hash{ R_{MSi} \cat R_{MRi} \cat \script_i \cat F_i \cat K_{Oi} \cat C_i} \\\\
+\end{aligned}
+\tag{6}
+$$
+
+The receiver can now calculate their portion of the aggregated CAPK Signature as:
+
+$$
+\begin{aligned}
+a_{MRi} &= r_{MRi_a} + e \cdot v_{i} \\\\
+b_{MRi} &= r_{MRi_b} + e \cdot k_i
+\end{aligned}
+\tag{7}
+$$
+
+The receiver sends \\( s_{MRi} = (a_{MRi}, b_{MRi}, R_{MRi} ) \\) along with the other partial transaction information
+\\( (C_i) \\) to the sender.
+
+<u>Sender:</u>
+
+The sender starts by calculating the final challenge \\( e \\) (6) and then completes their part of the aggregated CAPK 
+Signature.
+
+$$
+\begin{aligned}
+b_{MSi} &= r_{MSi_b} + e \cdot k\_{Oi}
+\end{aligned}
+\tag{8}
+$$
+
+The final CAPK Signature is combined as follows:
+
+$$
+\begin{aligned}
+s_{Mi} = (a_{MRi}, b_{MRi}, R_{MRi}, b_{MSi}, R_{MSi} )
+\end{aligned}
+\tag{9}
+$$
+
+
+<u>Verifier:</u>
+
+This is verified by the following:
+
+$$
+\begin{aligned}
+a_{MRi} \cdot H + b_{MRi} \cdot G &\overset{?}{=} R_{MRi} + e \cdot C \\\\
+b_{MSi} \cdot G &\overset{?}{=} R_{MSi} + e \cdot K\_{Oi}
+\end{aligned}
+\tag{10}
+$$
 
 Note that:
 - The UTXO has a positive value \\( v \\) like any normal UTXO.
@@ -279,7 +415,7 @@ Note that:
 
 ### Transaction input changes
 
-The current definition of an input is
+The definition of a Tari _script-less_ input would be:
 
 ```rust,ignore
 pub struct TransactionInput {
@@ -313,14 +449,66 @@ pub struct TransactionInput {
 }
 ```
 
-The `script_signature` is a [commitment and public key signature] using a combination of the output commitment 
-private values \\( (v\_i \\, , \\, k\_i )\\) and [script private key] \\(k\_{Si}\\) to prove ownership thereof. It 
-signs the script, the script input, [script public key] and the commitment.
+The [script signature] is a [CAPK Signature]  using a combination of the output commitment private values 
+\\( (v\_i \\, , \\, k\_i )\\) and [script private key] \\(k\_{Si}\\) to prove ownership thereof. It signs the script, 
+the script input, [script public key] and the commitment.
 
-The script public key \\(K\_{Si}\\) needed for the script signature verification is not stored with the TransactionInput, 
-but obtained by executing the script with the provided input data. Because this signature is signed with the script 
-private key \\(k\_{Si}\\), it ensures that only the owner can provide the input data \\(\input_i\\) to the 
-TransactionInput. 
+For purposes of this RFC we denote the script signature terms as follows:
+- \\( R_{SCi} \\) is the ephemeral commitment,
+- \\( R_{SPi} \\) is the ephemeral public key,
+- \\( a_{SCi} \\) and \\( b_{SCi} \\) are the first and second commitment signature scalars,
+- \\( b_{SPi} \\) is the public key signature scalar.
+
+<u>Sender:</u>
+
+The script signature is given by  
+
+$$
+\begin{aligned}
+s_{Si} = (a_{SCi}, b_{SCi}, R_{SCi}, b_{SPi}, R_{SPi} )
+\end{aligned}
+\tag{11}
+$$
+
+where
+
+$$
+\begin{aligned}
+R_{SCi} &= r_{SCi_a} \cdot H + r_{SCi_b} \cdot G \\\\
+a_{SCi}  &= r_{SCi_a} +  e \cdot v_i \\\\
+b_{SCi} &= r_{SCi_b} +  e \cdot k_i \\\\
+R_{SPi} &= r_{SPi_b} \cdot G \\\\
+b_{SPi} &= r_{SPi_b} +  e \cdot k_{Si} \\\\
+\end{aligned}
+\tag{12}
+$$
+
+with the challenge being
+
+$$
+\begin{aligned}
+e &= \hash{ R_{SCi} \cat R_{SPi} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\\\
+\end{aligned}
+\tag{13}
+$$
+
+<u>Verifier:</u>
+
+This is verified by the following:
+
+$$
+\begin{aligned}
+a_{SCi} \cdot H + b_{SCi} \cdot G &\overset{?}{=} R_{SCi} + e \cdot C \\\\
+b_{SPi} \cdot G &\overset{?}{=} R_{SPi} + e \cdot K_{Si}
+\end{aligned}
+\tag{14}
+$$
+
+
+The script public key \\(K\_{Si}\\) needed for the script signature verification is not stored with the 
+TransactionInput, but obtained by executing the script with the provided input data. Because this signature is signed 
+with the script private key \\(k\_{Si}\\), it ensures that only the owner can provide the input data \\(\input_i\\) to 
+the TransactionInput. 
 
 ### Script Offset
 
@@ -333,16 +521,16 @@ $$
 \begin{aligned}
 \so = \sum_j\mathrm{k_{Sj}} - \sum_i\mathrm{k_{Oi}} \\; \text{for each input}, j,\\, \text{and each output}, i
 \end{aligned}
-\tag{16}
+\tag{15}
 $$
 
-Verification of (16) will entail:
+Verification of (15) will entail:
 
 $$
 \begin{aligned}
 \so \cdot G = \sum_j\mathrm{K_{Sj}} - \sum_i\mathrm{K_{Oi}} \\; \text{for each input}, j,\\, \text{and each output}, i
 \end{aligned}
-\tag{17}
+\tag{16}
 $$
 
 We modify the transactions to be:
@@ -358,26 +546,26 @@ pub struct Transaction {
 }
 ```
 
-All script offsets (\\(\so\\)) from (16) contained in a block is summed together to create a total [script offset] (18) 
-so that algorithm (16) still holds for a block.
+All script offsets (\\(\so\\)) from (15) contained in a block is summed together to create a total [script offset] (17) 
+so that algorithm (15) still holds for a block.
 
 $$
 \begin{aligned}
 \so_{total} = \sum_k\mathrm{\so_{k}}\\; \text{for every transaction}, k
 \end{aligned}
-\tag{18}
+\tag{17}
 $$
 
-Verification of (18) will entail:
+Verification of (17) will entail:
 
 $$
 \begin{aligned}
 \so_{total} \cdot G = \sum_j\mathrm{K_{Sj}} - \sum_i\mathrm{K_{Oi}} \\; \text{for each input}, j,\\, \text{and each output}, i
 \end{aligned}
-\tag{19}
+\tag{18}
 $$
 
-As can be seen all information required to verify (18) is contained in a block's inputs and outputs. One important 
+As can be seen all information required to verify (17) is contained in a block's inputs and outputs. One important 
 distinction to make is that the Coinbase output in a coinbase transaction does not count towards the script offset. 
 This is because the Coinbase UTXO already has special rules accompanying it and it has no input, thus we cannot generate 
 a script offset \\( \so \\). The coinbase output can allow any script \\(\script_i\\) and sender offset public key 
@@ -396,7 +584,7 @@ pub struct BlockHeader {
 ```
 
 This notion of the script offset \\(\so\\) means that the no third party can remove any input or output from a 
-transaction or the block, as that will invalidate the script offset balance equation, either (17) or (19) depending on 
+transaction or the block, as that will invalidate the script offset balance equation, either (16) or (18) depending on 
 whether the scope is a transaction or block. It is important to know that this also stops 
 [cut&#8209;through](#cut-through) so that we can verify all spent UTXO scripts. Because the script private key and  
 sender offset private key is not publicly known, its impossible to create a new script offset.
@@ -406,10 +594,10 @@ third party to change the script keypair \\((k\_{Si}\\),\\(K\_{Si})\\). If an at
 keys of the input then he can take control of the \\(K\_{Oi}\\) as well, allowing the attacker to change the metadata of 
 the UTXO including the script. But as shown in [Script offset security](#script-offset-security), this is not possible.
 
-If equation (17) or (19) balances then we know that every included input and output in the transaction or block has its 
-correct script public key and sender offset public key. Signatures (2) & (13) are checked independently from script 
-offset verification (17) and (19), and looked at in isolation those could verify correctly but can still be signed by 
-fake keys. When doing verification in (17) and (19) you know that the signatures and the message/metadata signed by the 
+If equation (16) or (18) balances then we know that every included input and output in the transaction or block has its 
+correct script public key and sender offset public key. Signatures (9) & (11) are checked independently from script 
+offset verification (16) and (18), and looked at in isolation those could verify correctly but can still be signed by 
+fake keys. When doing verification in (16) and (18) you know that the signatures and the message/metadata signed by the 
 private keys can be trusted.
 
 ### Consensus changes
@@ -447,14 +635,14 @@ $$
 \so_1 = k_{Sa} - k_{Ob}\\\\
 \so_2 = k_{Sb} - k_{Oc}\\\\
 \end{aligned}
-\tag{32}
+\tag{19}
 $$
 
 $$
 \begin{aligned}
 \so_t = \so_1 + \so_2 =  (k_{Sa} + k_{Sb}) - (k_{Ob} + k_{Oc})\\\\
 \end{aligned}
-\tag{33}
+\tag{20}
 $$
 
 In standard Mimblewimble [cut-through] can be applied to get:
@@ -469,7 +657,7 @@ $$
 \begin{aligned}
 \so'\_t = k\_{Sa} - k\_{Oc}\\\\
 \end{aligned}
-\tag{34}
+\tag{21}
 $$
 
 As we can see:
@@ -478,7 +666,7 @@ $$
 \begin{aligned}
 \so\_t\ \neq \so'\_t \\\\
 \end{aligned}
-\tag{35}
+\tag{22}
 $$
 
 A third party cannot generate a new script offset as only the original owner can provide the script private key \\(k\_{Sa}\\) 
@@ -500,7 +688,7 @@ stack. She sends all the required information to Bob as per the [standard mw tra
 creates an output \\(C\_{b}\\). Because of the `NOP` script \\( \script\_a \\), Bob can change the script public key 
 \\( K\_{Sa}\\) contained in the input data. Bob can now use his own \\(k'\_{Sa}\\) as the script private key. He 
 replaces the sender offset public key with his own \\(K'\_{Ob}\\) allowing him to change the script 
-\\( \script\_b \\) and generate a new signature as in (2). Bob can now generate a new script offset with 
+\\( \script\_b \\) and generate a new signature as in (9). Bob can now generate a new script offset with 
 \\(\so' = k'\_{Sa} - k'\_{Ob} \\). Up to this point, it all seems valid. No one can detect that Bob changed the script 
 to \\( \script\_b \\).
 
@@ -547,18 +735,18 @@ Where possible, the "usual" notation is used to denote terms commonly found in c
 characters are used as private keys, while uppercase characters are used as public keys. New terms introduced by 
 TariScript are assigned greek lowercase letters in most cases. 
 
-| Symbol                    | Definition                                                                                                                                                 |
-|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| \\( \script_i \\)         | An output script for output _i_, serialised to binary.                                                                                                     |
-| \\( F_i \\)               | Output features for UTXO _i_.                                                                                                                              |
-| \\( f_t \\)               | Transaction fee for transaction _t_.                                                                                                                       |
-| \\( (k_{Oi}\, K_{Oi}) \\) | The private - public keypair for the UTXO sender offset key. Note that \\( k_{Oi} \\) should be treated as a nonce.                                        |
-| \\( (k_{Si}\, K_{Si}) \\) | The private - public keypair for the script key. The script, \\( \script_i \\) resolves to \\( K_S \\) after completing execution.                         |
-| \\( \so_t \\)             | The script offset for transaction _t_, see (16)                                                                                                            |
-| \\( C_i \\)               | A Pedersen commitment to a value \\( v_i \\), see (1)                                                                                                      |
-| \\( \input_i \\)          | The serialised input for script \\( \script_i \\)                                                                                                          |
-| \\( s_{Si} \\)            | A script signature for output \\( i \\), see (13 - 15)                                                                                                     |
-| \\( s_{Mi} \\)            | A metadata signature for output \\( i \\), see (2 - 12) - the capital letter subscripts, _R_ and _S_ refer to a UTXO _receiver_ and _sender_ respectively. |
+| Symbol                    | Definition                                                                                                                                                                                                                             |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| \\( \script_i \\)         | An output script for output _i_, serialised to binary.                                                                                                                                                                                 |
+| \\( F_i \\)               | Output features for UTXO _i_.                                                                                                                                                                                                          |
+| \\( f_t \\)               | Transaction fee for transaction _t_.                                                                                                                                                                                                   |
+| \\( (k_{Oi}\, K_{Oi}) \\) | The private - public keypair for the UTXO sender offset key. Note that \\( k_{Oi} \\) should be treated as a nonce.                                                                                                                    |
+| \\( (k_{Si}\, K_{Si}) \\) | The private - public keypair for the script key. The script, \\( \script_i \\) resolves to \\( K_S \\) after completing execution.                                                                                                     |
+| \\( \so_t \\)             | The script offset for transaction _t_, see (15)                                                                                                                                                                                        |
+| \\( C_i \\)               | A Pedersen commitment to a value \\( v_i \\), see (4)                                                                                                                                                                                 |
+| \\( \input_i \\)          | The serialised input for script \\( \script_i \\)                                                                                                                                                                                      |
+| \\( s_{Si} \\)            | A script signature for output \\( i \\), see (11 - 13). Additional the capital letter subscripts, _C_ and _P_ refer to the _ephemeral commitment_ and _ephemeral public key_ portions respectively (exmple \\( s_{SCi}, s_{SPi} \\)) . |
+| \\( s_{Mi} \\)            | A metadata signature for output \\( i \\), see (3 - 10). Additional the capital letter subscripts, _R_ and _S_ refer to a UTXO _receiver_ and _sender_ respectively (exmple \\( s_{MRi}, s_{MSi} \\)) .                                |
 
 ## Extensions
 
@@ -581,17 +769,18 @@ Thanks to David Burkett for proposing a method to prevent cut-through and willin
 
 # Change Log
 
-| Date        | Change                                       | Author                        |
-|:------------|:---------------------------------------------|:------------------------------|
-| 17 Aug 2020 | First draft                                  | CjS77                         |
-| 11 Feb 2021 | Major update                                 | CjS77, SWvheerden, philipr-za |
-| 26 Apr 2021 | Clarify one sided payment rules              | SWvheerden                    |
-| 31 May 2021 | Including full script in transaction outputs | philipr-za                    |
-| 04 Jun 2021 | Remove beta range-proof calculation          | SWvheerden                    |
-| 22 Jun 2021 | Change script_signature type to ComSig       | hansieodendaal                |
-| 30 Jun 2021 | Clarify Tari Script nomenclature             | hansieodendaal                |
-| 06 Oct 2022 | Minor improvemnts in legibility              | stringhandler                 |
-| 11 Nov 2022 | Update ComAndPubSig and move out examples | stringhandler |
+| Date        | Change                                                 | Author                        |
+|:------------|:-------------------------------------------------------|:------------------------------|
+| 17 Aug 2020 | First draft                                            | CjS77                         |
+| 11 Feb 2021 | Major update                                           | CjS77, SWvheerden, philipr-za |
+| 26 Apr 2021 | Clarify one sided payment rules                        | SWvheerden                    |
+| 31 May 2021 | Including full script in transaction outputs           | philipr-za                    |
+| 04 Jun 2021 | Remove beta range-proof calculation                    | SWvheerden                    |
+| 22 Jun 2021 | Change script_signature type to ComSig                 | hansieodendaal                |
+| 30 Jun 2021 | Clarify Tari Script nomenclature                       | hansieodendaal                |
+| 06 Oct 2022 | Minor improvemnts in legibility                        | stringhandler                 |
+| 11 Nov 2022 | Update ComAndPubSig and move out examples              | stringhandler                 |
+| 22 Nov 2022 | Added `metadata_signature` and `script_signature` math | hansieodendaal                |
 
 [data commitments]: https://phyro.github.io/grinvestigation/data_commitments.html
 [LIP-004]: https://github.com/DavidBurkett/lips/blob/master/lip-0004.mediawiki
@@ -602,7 +791,10 @@ Thanks to David Burkett for proposing a method to prevent cut-through and willin
 
 [TariScript]: Glossary.md#tariscript
 [metadata signature]: Glossary.md#metadata-signature
-[commitment and public key signature]: Glossary.md#commitment-and-public-key-signature
+[script signature]: Glossary.md#script-signature
+[Signature on Commitment values]: https://documents.uow.edu.au/~wsusilo/ZCMS_IJNS08.pdf
+[Commitment Signature]: https://eprint.iacr.org/2020/061.pdf
+[CAPK Signature]: Glossary.md#commitment-and-public-key-signature
 [script private key]: Glossary.md#script-keypair
 [script public key]: Glossary.md#script-keypair
 [sender offset]: Glossary.md#sender-offset-keypair
