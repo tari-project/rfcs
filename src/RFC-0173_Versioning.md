@@ -1,20 +1,20 @@
 # RFC-0173/Versioning
 
-<!-- TOC -->
-  * [Goals](#goals)
-  * [Related Requests for Comment](#related-requests-for-comment)
-  * [Description](#description)
-    * [WireMode byte](#wiremode-byte)
-    * [P2P message version](#p2p-message-version)
-    * [Consensus version](#consensus-version)
-* [Change Log](#change-log)
-<!-- TOC -->
-
 ## Versioning
 
 ![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Philip Robinson](https://github.com/philipr-za)
+
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+    * [WireMode byte](#wiremode-byte)
+    * [P2P message version](#p2p-message-version)
+    * [Consensus version](#consensus-version)
+* [Change Log](#change-log)
+<!-- TOC -->
 
 # Licence
 

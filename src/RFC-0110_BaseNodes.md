@@ -1,5 +1,11 @@
 # RFC-0110/BaseNodes
 
+## Base Layer Full Nodes (Base Nodes)
+
+![status: stable](theme/images/status-stable.svg)
+
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [S W van heerden](https://github.com/SWvheerden) and  [Stanley Bondi](https://github.com/sdbondi)
+
 <!-- TOC -->
 * [Goals](#goals)
 * [Related Requests for Comment](#related-requests-for-comment)
@@ -13,12 +19,6 @@
 * [Pruned Nodes](#pruned-nodes)
 * [Change Log](#change-log)
 <!-- TOC -->
-
-## Base Layer Full Nodes (Base Nodes)
-
-![status: stable](theme/images/status-stable.svg)
-
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [S W van heerden](https://github.com/SWvheerden) and  [Stanley Bondi](https://github.com/sdbondi)
 
 # Licence
 

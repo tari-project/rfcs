@@ -1,5 +1,11 @@
 # RFC-0152/EmojiId
 
+## Emoji Id specification
+
+![status: stable](theme/images/status-stable.svg)
+
+**Maintainer(s)**:[Cayle Sharrock](https://github.com/CjS77)
+
 <!-- TOC -->
 * [Goals](#goals)
 * [Related Requests for Comment](#related-requests-for-comment)
@@ -11,12 +17,6 @@
         * [Checksum effectiveness](#checksum-effectiveness)
 * [Change Log](#change-log)
 <!-- TOC -->
-
-## Emoji Id specification
-
-![status: stable](theme/images/status-stable.svg)
-
-**Maintainer(s)**:[Cayle Sharrock](https://github.com/CjS77)
 
 # Licence
 

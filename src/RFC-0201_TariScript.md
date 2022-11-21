@@ -1,15 +1,21 @@
 # RFC-0201/TariScript
 
+## TariScript
+
+![status: stable](theme/images/status-stable.svg)
+
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Stringhandler](https://github.com/stringhandler)
+
 <!-- TOC -->
-  * [Goals](#goals)
-  * [Related Requests for Comment](#related-requests-for-comment)
-  * [Introduction](#introduction)
-  * [Scripting on Mimblewimble](#scripting-on-mimblewimble)
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Introduction](#introduction)
+* [Scripting on Mimblewimble](#scripting-on-mimblewimble)
     * [Scriptless scripts](#scriptless-scripts)
-  * [TariScript - a brief motivation](#tariscript---a-brief-motivation)
+* [TariScript - a brief motivation](#tariscript---a-brief-motivation)
     * [Additional requirements](#additional-requirements)
     * [Preventing Cut-through](#preventing-cut-through)
-  * [Protocol modifications](#protocol-modifications)
+* [Protocol modifications](#protocol-modifications)
     * [UTXO data commitments](#utxo-data-commitments)
     * [Transaction output changes](#transaction-output-changes)
     * [Transaction input changes](#transaction-input-changes)
@@ -20,18 +26,12 @@
     * [Script lock key generation](#script-lock-key-generation)
     * [Blockchain bloat](#blockchain-bloat)
     * [Fodder for chain analysis](#fodder-for-chain-analysis)
-  * [Notation](#notation)
-  * [Extensions](#extensions)
+* [Notation](#notation)
+* [Extensions](#extensions)
     * [Lock-time malleability](#lock-time-malleability)
     * [Credits](#credits)
 * [Change Log](#change-log)
 <!-- TOC -->
-
-## TariScript
-
-![status: stable](theme/images/status-stable.svg)
-
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Stringhandler](https://github.com/stringhandler)
 
 # Licence
 

@@ -1,5 +1,12 @@
 # RFC-0111/BaseNodesArchitecture
 
+
+## Base Node Architecture
+
+![status: draft](theme/images/status-draft.svg)
+
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za)
+
 <!-- TOC -->
 * [Goals](#goals)
 * [Architectural Layout](#architectural-layout)
@@ -16,12 +23,6 @@
 * [gRPC Interface](#grpc-interface)
 * [Change Log](#change-log)
 <!-- TOC -->
-
-## Base Node Architecture
-
-![status: draft](theme/images/status-draft.svg)
-
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za)
 
 # Licence
 

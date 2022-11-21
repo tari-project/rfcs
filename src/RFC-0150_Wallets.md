@@ -1,5 +1,11 @@
 # RFC-0150/Wallets
 
+## Base Layer Wallet Module
+
+![status: draft](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-draft.svg)
+
+**Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
+
 <!-- TOC -->
 * [Goals](#goals)
 * [Related Requests for Comment](#related-requests-for-comment)
@@ -10,12 +16,6 @@
         * [Key Management Features](#key-management-features)
         * [Different Methods for Recovering Wallet State of Tari Software Wallet](#different-methods-for-recovering-wallet-state-of-tari-software-wallet)
 <!-- TOC -->
-
-## Base Layer Wallet Module
-
-![status: draft](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-draft.svg)
-
-**Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
 
 # Licence
 

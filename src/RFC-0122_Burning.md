@@ -1,22 +1,23 @@
 # RFC-0260/Burning
 
-<!-- TOC -->
-   * [Goals](#goals)
-   * [Related Requests for Comment](#related-requests-for-comment)
-   * [Description](#description)
-   * [Introduction](#introduction)
-      * [TL;DR](#tldr)
-      * [Transaction output changes](#transaction-output-changes)
-      * [Kernel changes](#kernel-changes)
-      * [Consensus rules changes](#consensus-rules-changes)
-      * [Chain balance equation changes](#chain-balance-equation-changes)
-<!-- TOC -->
-
 ## Consensus-level burn transactions
 
 ![status: draft](theme/images/status-draft.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [stringhandler](https://github.com/stringhandler) and [SW van heerden](https://github.com/SWvheerden) 
+
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+* [Introduction](#introduction)
+    * [TL;DR](#tldr)
+    * [Transaction output changes](#transaction-output-changes)
+    * [Kernel changes](#kernel-changes)
+    * [Consensus rules changes](#consensus-rules-changes)
+    * [Chain balance equation changes](#chain-balance-equation-changes)
+<!-- TOC -->
+
 
 # Licence
 

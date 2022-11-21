@@ -1,28 +1,28 @@
 # RFC-0170/NetworkCommunicationProtocol
 
-<!-- TOC -->
-  * [Goals](#goals)
-  * [Related RFCs](#related-rfcs)
-  * [Description](#description)
-    * [Assumptions](#assumptions)
-    * [Abstract](#abstract)
-    * [Overview](#overview)
-      * [Communication Nodes and Communication Clients](#communication-nodes-and-communication-clients)
-      * [Unique identification of Communication Nodes and Communication Clients](#unique-identification-of-communication-nodes-and-communication-clients)
-      * [Online Communication Address, Peer Address and Routing Table](#online-communication-address-peer-address-and-routing-table)
-      * [Joining the Network using a Joining Request](#joining-the-network-using-a-joining-request)
-      * [Sending Data Messages and Discovery Requests](#sending-data-messages-and-discovery-requests)
-      * [Maintaining connections with peers](#maintaining-connections-with-peers)
-      * [Functionality Required of Communication Nodes](#functionality-required-of-communication-nodes)
-      * [Functionality Required of Communication Clients](#functionality-required-of-communication-clients)
-* [Change Log](#change-log)
-<!-- TOC -->
-
 ## The Tari Communication Network and Network Communication Protocol
 
 ![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64)
+
+<!-- TOC -->
+* [Goals](#goals)
+* [Related RFCs](#related-rfcs)
+* [Description](#description)
+    * [Assumptions](#assumptions)
+    * [Abstract](#abstract)
+    * [Overview](#overview)
+        * [Communication Nodes and Communication Clients](#communication-nodes-and-communication-clients)
+        * [Unique identification of Communication Nodes and Communication Clients](#unique-identification-of-communication-nodes-and-communication-clients)
+        * [Online Communication Address, Peer Address and Routing Table](#online-communication-address-peer-address-and-routing-table)
+        * [Joining the Network using a Joining Request](#joining-the-network-using-a-joining-request)
+        * [Sending Data Messages and Discovery Requests](#sending-data-messages-and-discovery-requests)
+        * [Maintaining connections with peers](#maintaining-connections-with-peers)
+        * [Functionality Required of Communication Nodes](#functionality-required-of-communication-nodes)
+        * [Functionality Required of Communication Clients](#functionality-required-of-communication-clients)
+* [Change Log](#change-log)
+<!-- TOC -->
 
 # License
 

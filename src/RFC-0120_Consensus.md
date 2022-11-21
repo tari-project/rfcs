@@ -1,39 +1,39 @@
 # RFC-0120/Consensus
 
-<!-- TOC -->
-  * [Goals](#goals)
-  * [Related Requests for Comment](#related-requests-for-comment)
-  * [Description](#description)
-    * [Blocks](#blocks)
-      * [Coinbase](#coinbase)
-    * [Block Headers](#block-headers)
-      * [Version](#version)
-      * [Height](#height)
-      * [Prev_hash](#prev_hash)
-      * [Timestamp](#timestamp)
-      * [Output_mr](#output_mr)
-      * [Output_mmr_size](#output_mmr_size)
-      * [Input_mr](#input_mr)
-      * [Witness_mr](#witness_mr)
-      * [Kernel_mr](#kernel_mr)
-      * [Kernel_mmr_size](#kernel_mmr_size)
-      * [Total_kernel_offset](#total_kernel_offset)
-      * [Total_script_offset](#total_script_offset)
-      * [Nonce](#nonce)
-      * [PoW](#pow)
-      * [Difficulty Calculation](#difficulty-calculation)
-    * [FTL](#ftl)
-    * [MTP](#mtp)
-    * [Total accumulated proof of work](#total-accumulated-proof-of-work)
-    * [Transaction Ordering](#transaction-ordering)
-* [Change Log](#change-log)
-<!-- TOC -->
-
 ## Base Layer Consensus
 
 ![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Stanley Bondi](https://github.com/sdbondi) and [SW van heerden](https://github.com/SWvheerden)
+
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+  * [Blocks](#blocks)
+    * [Coinbase](#coinbase)
+  * [Block Headers](#block-headers)
+    * [Version](#version)
+    * [Height](#height)
+    * [Prev_hash](#prev_hash)
+    * [Timestamp](#timestamp)
+    * [Output_mr](#output_mr)
+    * [Output_mmr_size](#output_mmr_size)
+    * [Input_mr](#input_mr)
+    * [Witness_mr](#witness_mr)
+    * [Kernel_mr](#kernel_mr)
+    * [Kernel_mmr_size](#kernel_mmr_size)
+    * [Total_kernel_offset](#total_kernel_offset)
+    * [Total_script_offset](#total_script_offset)
+    * [Nonce](#nonce)
+    * [PoW](#pow)
+    * [Difficulty Calculation](#difficulty-calculation)
+  * [FTL](#ftl)
+  * [MTP](#mtp)
+  * [Total accumulated proof of work](#total-accumulated-proof-of-work)
+  * [Transaction Ordering](#transaction-ordering)
+* [Change Log](#change-log)
+<!-- TOC -->
 
 # Licence
 

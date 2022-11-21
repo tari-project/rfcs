@@ -1,26 +1,26 @@
 # RFC-0171/MessageSerialization
 
-<!-- TOC -->
-  * [Goals](#goals)
-  * [Related Requests for Comment](#related-requests-for-comment)
-  * [Description](#description)
-    * [Binary Serialization Formats](#binary-serialization-formats)
-      * [bincode](#bincode)
-      * [Message Pack](#message-pack)
-      * [Protobuf](#protobuf)
-      * [Cap'n Proto](#capn-proto)
-      * [Hand-rolled Serialization](#hand-rolled-serialization)
-    * [Tari message formats](#tari-message-formats)
-      * [Wire message format](#wire-message-format)
-      * [Other serialization formats](#other-serialization-formats)
-* [Change Log](#change-log)
-<!-- TOC -->
-
 ## Message Serialization
 
 ![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) [Stanley Bondi](https://github.com/sdbondi)
+
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+  * [Binary Serialization Formats](#binary-serialization-formats)
+    * [bincode](#bincode)
+    * [Message Pack](#message-pack)
+    * [Protobuf](#protobuf)
+    * [Cap'n Proto](#capn-proto)
+    * [Hand-rolled Serialization](#hand-rolled-serialization)
+  * [Tari message formats](#tari-message-formats)
+    * [Wire message format](#wire-message-format)
+    * [Other serialization formats](#other-serialization-formats)
+* [Change Log](#change-log)
+<!-- TOC -->
 
 # Licence
 
