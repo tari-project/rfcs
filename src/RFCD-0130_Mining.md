@@ -6,6 +6,18 @@
 
 **Maintainer(s)**: [Yuko Roodt] (https://github.com/neonknight64)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [Assumptions](#assumptions)
+    * [Abstract](#abstract)
+    * [Merged Mining on Tari Base Layer](#merged-mining-on-tari-base-layer)
+      * [Overview of Tari Merged Mining Process using Mining Servers and Mining Workers](#overview-of-tari-merged-mining-process-using-mining-servers-and-mining-workers)
+      * [Functionality Required by Tari Mining Server](#functionality-required-by-tari-mining-server)
+      * [Functionality Required by Tari Mining Worker](#functionality-required-by-tari-mining-worker)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

@@ -6,6 +6,18 @@
 
 **Maintainer(s)**: [Adrian Truszczyński](https://github.com/TruszczynskiA)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Description](#description)
+    * [Scheme](#scheme)
+    * [Command](#command)
+      * [Examples:](#examples-)
+    * [Data](#data)
+    * [The Structure](#the-structure)
+      * [Examples:](#examples-)
+    * [Deeplinks in use:](#deeplinks-in-use-)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

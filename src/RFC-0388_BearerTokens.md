@@ -6,6 +6,20 @@
 
 **Maintainer(s)**: @mikethetike
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+  * [Structure](#structure)
+    * [Auth Token](#auth-token)
+    * [Caveat Expression](#caveat-expression)
+  * [Delegation](#delegation)
+  * [Validation](#validation)
+  * [Revoking Tokens](#revoking-tokens)
+    * [Example 1: Invoking an instruction](#example-1--invoking-an-instruction)
+    * [Example 2: Delegation](#example-2--delegation)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

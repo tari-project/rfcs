@@ -6,6 +6,19 @@
 
 **Maintainer(s)**: Cayle Sharrock <CjS77>
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [The Issue with Multiple Recipients](#the-issue-with-multiple-recipients)
+    * [The Issue with Multiple Senders](#the-issue-with-multiple-senders)
+    * [Two-party Transactions](#two-party-transactions)
+    * [Multiple-recipient Transaction Scheme](#multiple-recipient-transaction-scheme)
+  * [Transaction ID](#transaction-id)
+  * [Replay Attacks](#replay-attacks)
+  * [Rogue Key Attacks](#rogue-key-attacks)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

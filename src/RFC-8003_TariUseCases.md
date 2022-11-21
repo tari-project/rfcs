@@ -6,6 +6,21 @@
 
 **Maintainer(s)**: [Leland Lee](https://github.com/lelandlee)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [Types](#types)
+    * [Behaviours](#behaviours)
+    * [Attributes](#attributes)
+    * [Interactions](#interactions)
+    * [Rules](#rules)
+    * [Examples](#examples)
+      * [Crystal Skull of Akador](#crystal-skull-of-akador)
+      * [AB de Villiers' bat](#ab-de-villiers-bat)
+      * [OVO Owl x Supreme](#ovo-owl-x-supreme)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

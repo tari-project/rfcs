@@ -1,5 +1,18 @@
 # RFC-0132/MergeMiningMonero
 
+
+<!-- TOC -->
+   * [Goals](#goals)
+   * [Related Requests for Comment](#related-requests-for-comment)
+   * [Introduction](#introduction)
+   * [Merge Mining on Tari](#merge-mining-on-tari)
+   * [Serialisation](#serialisation)
+   * [Merge Mining Proxy](#merge-mining-proxy)
+      * [`get_block_template`](#get_block_template)
+      * [`submit_block`](#submit_block)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 ## Tari protocol for Merge Mining with Monero
 
 ![status: stable](theme/images/status-stable.svg)

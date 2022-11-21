@@ -1,9 +1,20 @@
 # RFC-313/VN Registration
 
-
 ![status: draft](theme/images/status-draft.svg)
 
 **Maintainer(s)**: [stringhandler](https://github.com/stringhandler), [SW van heerden](https://github.com/SWvheerden) and [sdbondi](https://github.com/sdbondi)
+
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Overview](#overview)
+  * [Requirements and Definitions](#requirements-and-definitions)
+  * [Validator Registration](#validator-registration)
+    * [Base-layer consensus](#base-layer-consensus)
+  * [Epoch transitions](#epoch-transitions)
+      * [Validator Node Set Definition](#validator-node-set-definition)
+    * [Shard Key and Shuffling](#shard-key-and-shuffling)
+* [Change Log](#change-log)
+<!-- TOC -->
 
 # Licence
 

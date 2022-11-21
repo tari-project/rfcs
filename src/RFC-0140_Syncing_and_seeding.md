@@ -1,5 +1,19 @@
 # RFC-0140/SyncAndSeeding
 
+<!-- TOC -->
+   * [Goals](#goals)
+   * [Related Requests for Comment](#related-requests-for-comment)
+   * [Descriptions](#descriptions)
+      * [Syncing](#syncing)
+         * [Complete Sync](#complete-sync)
+         * [Complete Sync Process](#complete-sync-process)
+         * [Horizon Sync Process](#horizon-sync-process)
+         * [Keeping in Sync](#keeping-in-sync)
+         * [Chain Forks](#chain-forks)
+      * [Pruning](#pruning)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 ## Synchronizing the Blockchain: Archival and Pruned Modes
 
 ![status: stable](theme/images/status-stable.svg)

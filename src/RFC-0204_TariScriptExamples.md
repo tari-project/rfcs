@@ -6,6 +6,18 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
+<!-- TOC -->
+  * [TariScript Examples](#tariscript-examples)
+    * [Standard MW transaction](#standard-mw-transaction)
+      * [Transaction validation](#transaction-validation)
+    * [One sided payment](#one-sided-payment)
+    * [HTLC-like script](#htlc-like-script)
+    * [Multi-party considerations](#multi-party-considerations)
+      * [Multi-party transaction output](#multi-party-transaction-output)
+      * [Multi-party transaction input](#multi-party-transaction-input)
+      * [Multi-party script offset](#multi-party-script-offset)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

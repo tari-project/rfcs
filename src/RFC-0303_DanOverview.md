@@ -6,6 +6,21 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77),[S W van Heerden](https://github.com/SWvheerden)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+  * [Key actors](#key-actors)
+  * [The Tari Base Layer](#the-tari-base-layer)
+    * [Templates](#templates)
+    * [Contracts](#contracts)
+    * [Validator Nodes](#validator-nodes)
+    * [DAN consensus layer](#dan-consensus-layer)
+    * [The Tari Virtual Machine](#the-tari-virtual-machine)
+    * [Thaums and the turbine model](#thaums-and-the-turbine-model)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

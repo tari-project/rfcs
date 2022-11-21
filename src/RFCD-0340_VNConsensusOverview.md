@@ -6,6 +6,18 @@
 
 **Maintainer(s)**: Cayle Sharrock <CjS77>
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related RFCs](#related-rfcs)
+* [Description](#description)
+  * [Overview](#overview)
+  * [Implementation](#implementation)
+    * [Forks and byzantine failures](#forks-and-byzantine-failures)
+    * [Leader selection](#leader-selection)
+    * [Quorum Certificate](#quorum-certificate)
+  * [Tari-specific considerations](#tari-specific-considerations)
+<!-- TOC -->
+
 # License
 
 [ The 3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).

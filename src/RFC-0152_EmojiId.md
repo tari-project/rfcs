@@ -1,5 +1,17 @@
 # RFC-0152/EmojiId
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+* [The specification](#the-specification)
+    * [Emoji map](#emoji-map)
+    * [Encoding](#encoding)
+    * [Decoding](#decoding)
+        * [Checksum effectiveness](#checksum-effectiveness)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 ## Emoji Id specification
 
 ![status: stable](theme/images/status-stable.svg)

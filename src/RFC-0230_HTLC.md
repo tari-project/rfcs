@@ -6,6 +6,16 @@
 
 **Maintainer(s)**: [S W van Heerden](https://github.com/SWvheerden) and [Philip Robinson](https://github.com/philipr-za)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+      * [Time-locked UTXOs](#time-locked-utxos)
+      * [Time-locked Contracts](#time-locked-contracts)
+      * [Hashed Time-locked Contract](#hashed-time-locked-contract)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

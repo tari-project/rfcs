@@ -6,6 +6,21 @@
 
 **Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal)
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+  * [Background](#background)
+    * [Alternative Approaches](#alternative-approaches)
+    * [This Request for Comment](#this-request-for-comment)
+  * [Requirements](#requirements)
+    * [OpenAlias TXT DNS Records](#openalias-txt-dns-records)
+    * [RAID_ID](#raid_id)
+    * [Sequence of Events](#sequence-of-events)
+    * [Confidentiality and Security](#confidentiality-and-security)
+  * [References](#references)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

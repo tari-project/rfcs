@@ -1,5 +1,33 @@
 # RFC-0121/Consensus Encoding
 
+<!-- TOC -->
+   * [Goals](#goals)
+   * [Related Requests for Comment](#related-requests-for-comment)
+   * [Description](#description)
+      * [Consensus Encoding](#consensus-encoding)
+         * [Unsigned integer encoding](#unsigned-integer-encoding)
+         * [Dynamically-sized vec encoding](#dynamically-sized-vec-encoding)
+         * [Fixed size arrays](#fixed-size-arrays)
+         * [Optional or nullable encoding](#optional-or-nullable-encoding)
+         * [Ristretto Keys](#ristretto-keys)
+         * [Commitment](#commitment)
+         * [Schnorr Signature](#schnorr-signature)
+         * [Signature](#signature)
+         * [Commitment Signature](#commitment-signature)
+         * [Example](#example)
+      * [Block Header](#block-header)
+         * [Output Features](#output-features)
+            * [AssetOutputFeatures](#assetoutputfeatures)
+            * [MintNonFungibleFeatures](#mintnonfungiblefeatures)
+            * [SideChainCheckpointFeatures](#sidechaincheckpointfeatures)
+         * [Transaction Output](#transaction-output)
+            * [Witness hash](#witness-hash)
+            * [Metadata signature challenge](#metadata-signature-challenge)
+      * [Transaction Input](#transaction-input)
+      * [Transaction Kernel](#transaction-kernel)
+         * [Script Challenge](#script-challenge)
+<!-- TOC -->
+
 ## Consensus Encoding
 
 ![status: draft](theme/images/status-draft.svg)

@@ -6,6 +6,13 @@
 
 **Maintainer(s)**: [SW van heerden](https://github.com/SWvheerden)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related RFCs](#related-rfcs)
+  * [Description](#description)
+      * [Multi Party UTXO](#multi-party-utxo)
+<!-- TOC -->
+
 # License
 
 [ The 3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).

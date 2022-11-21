@@ -6,6 +6,16 @@
 
 **Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+   * [Template Registration UTXO fields](#template-registration-utxo-fields)
+   * [Obtaining the Template Binary](#obtaining-the-template-binary)
+   * [Spending the Template Registration UTXO](#spending-the-template-registration-utxo)
+   * [Upgrading a Template](#upgrading-a-template)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

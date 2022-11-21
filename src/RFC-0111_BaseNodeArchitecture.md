@@ -1,5 +1,22 @@
 # RFC-0111/BaseNodesArchitecture
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Architectural Layout](#architectural-layout)
+* [Base Node Service](#base-node-service)
+* [Base Node State Machine Service](#base-node-state-machine-service)
+* [Mempool and Mempool Sync Services](#mempool-and-mempool-sync-services)
+* [Liveness Service](#liveness-service)
+* [Chain Metadata Service](#chain-metadata-service)
+* [Distributed Hash Table (DHT) Service](#distributed-hash-table--dht--service)
+* [Blockchain Database](#blockchain-database)
+* [Communication Interfaces](#communication-interfaces)
+* [P2P communications](#p2p-communications)
+* [RPC Services](#rpc-services)
+* [gRPC Interface](#grpc-interface)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 ## Base Node Architecture
 
 ![status: draft](theme/images/status-draft.svg)

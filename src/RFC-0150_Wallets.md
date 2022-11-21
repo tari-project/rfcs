@@ -1,5 +1,16 @@
 # RFC-0150/Wallets
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+    * [Key Responsibilities](#key-responsibilities)
+    * [Details of Functionality](#details-of-functionality)
+        * [Basic Transaction Functionality](#basic-transaction-functionality)
+        * [Key Management Features](#key-management-features)
+        * [Different Methods for Recovering Wallet State of Tari Software Wallet](#different-methods-for-recovering-wallet-state-of-tari-software-wallet)
+<!-- TOC -->
+
 ## Base Layer Wallet Module
 
 ![status: draft](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-draft.svg)

@@ -6,6 +6,24 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+  * [Motivation](#motivation)
+  * [Implementation](#implementation)
+    * [Committee Parameters](#committee-parameters)
+    * [Issuer](#issuer)
+    * [Name and Description](#name-and-description)
+    * [RAID ID](#raid-id)
+    * [Fully Qualified Domain Name](#fully-qualified-domain-name)
+    * [Public Nonce](#public-nonce)
+    * [Asset Identification](#asset-identification)
+    * [Template ID](#template-id)
+    * [Asset Expiry](#asset-expiry)
+  * [Signature Validation](#signature-validation)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

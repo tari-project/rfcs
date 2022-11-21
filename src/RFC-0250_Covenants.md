@@ -6,6 +6,48 @@
 
 **Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Introduction](#introduction)
+  * [Covenants in MimbleWimble](#covenants-in-mimblewimble)
+  * [Assumptions](#assumptions)
+  * [Protocol modifications](#protocol-modifications)
+    * [Transaction input and output changes](#transaction-input-and-output-changes)
+    * [Covenant definition](#covenant-definition)
+      * [Execution Context and Scope](#execution-context-and-scope)
+      * [Argument types](#argument-types)
+        * [Output field tags](#output-field-tags)
+      * [Set operations](#set-operations)
+        * [identity()](#identity--)
+        * [and(A, B)](#and--a-b-)
+        * [or(A, B)](#or--a-b-)
+        * [xor(A, B)](#xor--a-b-)
+        * [not(A)](#not--a-)
+      * [Filters](#filters)
+        * [filter_output_hash_eq(hash)](#filter_output_hash_eq--hash-)
+        * [filter_fields_preserved(fields)](#filter_fields_preserved--fields-)
+        * [filter_fields_hashed_eq(fields, hash)](#filter_fields_hashed_eq--fields-hash-)
+        * [filter_field_eq(field, int)](#filter_field_eq--field-int-)
+        * [filter_absolute_height(height)](#filter_absolute_height--height-)
+      * [Encoding / Decoding](#encoding--decoding)
+    * [Covenant Validation](#covenant-validation)
+    * [Consensus changes](#consensus-changes)
+  * [Considerations](#considerations)
+    * [Complexity](#complexity)
+    * [Cut-through](#cut-through)
+    * [Chain analysis](#chain-analysis)
+    * [Security](#security)
+  * [Examples](#examples)
+    * [Now or never](#now-or-never)
+    * [Side-chain checkpointing](#side-chain-checkpointing)
+    * [Restrict spending to a particular commitment if not spent by block 100](#restrict-spending-to-a-particular-commitment-if-not-spent-by-block-100)
+    * [Output must preserve covenant, features and script or be burnt](#output-must-preserve-covenant-features-and-script-or-be-burnt)
+    * [Commission for NFT transfer](#commission-for-nft-transfer)
+    * [Other potential covenants](#other-potential-covenants)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

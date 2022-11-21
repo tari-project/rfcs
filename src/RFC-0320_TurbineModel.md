@@ -6,6 +6,18 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [An aside - the monetary policy trilemma](#an-aside---the-monetary-policy-trilemma)
+      * [Monetary policy](#monetary-policy)
+      * [Capital flow](#capital-flow)
+      * [Exchange rate](#exchange-rate)
+    * [The turbine model](#the-turbine-model)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

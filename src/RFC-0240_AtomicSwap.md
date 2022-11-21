@@ -4,6 +4,19 @@
 
 **Maintainer(s)**: [S W van Heerden](https://github.com/SWvheerden)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [BTC - XTR AtomicSwap](#btc---xtr-atomicswap)
+      * [Overview](#overview)
+      * [BTC - HTLC script](#btc---htlc-script)
+      * [XTR - HTLC script](#xtr---htlc-script)
+  * [XTR - XMR swap](#xtr---xmr-swap)
+  * [Notation](#notation)
+  * [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

@@ -6,6 +6,20 @@
 
 **Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [Rationale](#rationale)
+    * [A staged approach](#a-staged-approach)
+      * [Stage zero - zero balance](#stage-zero---zero-balance)
+      * [Stage 1a - a reminder to write down your seed phrase](#stage-1a---a-reminder-to-write-down-your-seed-phrase)
+      * [Stage 1b - simple wallet backups](#stage-1b---simple-wallet-backups)
+      * [Stage 2 - full wallet backups](#stage-2---full-wallet-backups)
+      * [Stage 3 - Sweep to cold wallet](#stage-3---sweep-to-cold-wallet)
+      * [Security hygiene](#security-hygiene)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

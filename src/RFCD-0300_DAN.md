@@ -6,6 +6,14 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) and [Philip Robinson](https://github.com/philipr-za)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [Abstract](#abstract)
+    * [Digital Assets](#digital-assets)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

@@ -1,5 +1,17 @@
 # RFC-0260/Burning
 
+<!-- TOC -->
+   * [Goals](#goals)
+   * [Related Requests for Comment](#related-requests-for-comment)
+   * [Description](#description)
+   * [Introduction](#introduction)
+      * [TL;DR](#tldr)
+      * [Transaction output changes](#transaction-output-changes)
+      * [Kernel changes](#kernel-changes)
+      * [Consensus rules changes](#consensus-rules-changes)
+      * [Chain balance equation changes](#chain-balance-equation-changes)
+<!-- TOC -->
+
 ## Consensus-level burn transactions
 
 ![status: draft](theme/images/status-draft.svg)

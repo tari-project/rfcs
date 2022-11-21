@@ -6,6 +6,33 @@
 
 **Maintainer(s)**: [Byron Hambly](https://github.com/delta1)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Specification](#specification)
+  * [Block field ordering](#block-field-ordering)
+  * [Mining template field ordering](#mining-template-field-ordering)
+  * [Value encryption](#value-encryption)
+  * [Hash domains](#hash-domains)
+  * [Tari Block and Mining Template - Data Types](#tari-block-and-mining-template---data-types)
+    * [Block Header](#block-header)
+      * [Proof Of Work](#proof-of-work)
+    * [Block Body](#block-body)
+      * [TransactionInput](#transactioninput)
+        * [SpentOutput](#spentoutput)
+        * [CommitmentAndPublicKeySignature](#commitmentandpublickeysignature)
+        * [OutputFeatures](#outputfeatures)
+        * [CovenantToken](#covenanttoken)
+        * [CovenantFilter](#covenantfilter)
+        * [CovenantArg](#covenantarg)
+        * [OutputField](#outputfield)
+      * [TransactionOutput](#transactionoutput)
+      * [TransactionKernel](#transactionkernel)
+      * [RistrettoSchnorr](#ristrettoschnorr)
+    * [New Block Template](#new-block-template)
+      * [New Block Header Template](#new-block-header-template)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

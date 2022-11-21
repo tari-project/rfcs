@@ -6,6 +6,16 @@
 
 **Maintainer(s)**: [Philip Robinson](https://github.com/philipr-za)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Introduction](#introduction)
+  * [Background](#background)
+  * [One-time (stealth) addresses](#one-time--stealth--addresses)
+  * [Implementation notes](#implementation-notes)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

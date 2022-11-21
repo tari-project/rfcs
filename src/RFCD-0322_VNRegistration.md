@@ -6,6 +6,15 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+  * [Node ID](#node-id)
+  * [Validator Node Registration](#validator-node-registration)
+  * [Validator Node Registration Renewal](#validator-node-registration-renewal)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

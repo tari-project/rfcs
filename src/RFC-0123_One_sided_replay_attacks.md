@@ -7,6 +7,20 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) and [S W van heerden](https://github.com/SWvheerden)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Replay attack](#replay-attack)
+  * [Solutions](#solutions)
+    * [Sign with chain information](#sign-with-chain-information)
+      * [Advantages](#advantages)
+      * [Disadvantages](#disadvantages)
+    * [Enforce global commitment uniqueness](#enforce-global-commitment-uniqueness)
+      * [advantages](#advantages)
+      * [disadvantages](#disadvantages)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

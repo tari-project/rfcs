@@ -1,5 +1,32 @@
 # RFC-0201/TariScript
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Introduction](#introduction)
+  * [Scripting on Mimblewimble](#scripting-on-mimblewimble)
+    * [Scriptless scripts](#scriptless-scripts)
+  * [TariScript - a brief motivation](#tariscript---a-brief-motivation)
+    * [Additional requirements](#additional-requirements)
+    * [Preventing Cut-through](#preventing-cut-through)
+  * [Protocol modifications](#protocol-modifications)
+    * [UTXO data commitments](#utxo-data-commitments)
+    * [Transaction output changes](#transaction-output-changes)
+    * [Transaction input changes](#transaction-input-changes)
+    * [Script Offset](#script-offset)
+    * [Consensus changes](#consensus-changes)
+    * [Preventing Cut-through with the Script Offset](#preventing-cut-through-with-the-script-offset)
+    * [Script offset security](#script-offset-security)
+    * [Script lock key generation](#script-lock-key-generation)
+    * [Blockchain bloat](#blockchain-bloat)
+    * [Fodder for chain analysis](#fodder-for-chain-analysis)
+  * [Notation](#notation)
+  * [Extensions](#extensions)
+    * [Lock-time malleability](#lock-time-malleability)
+    * [Credits](#credits)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 ## TariScript
 
 ![status: stable](theme/images/status-stable.svg)

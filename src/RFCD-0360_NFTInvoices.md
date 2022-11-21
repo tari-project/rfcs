@@ -6,6 +6,21 @@
 
 **Maintainer(s)**: [Philip Robinson](https://github.com/philipr-za)
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+* [Transaction Negotiation](#transaction-negotiation)
+  * [Assumptions:](#assumptions-)
+  * [Negotiation](#negotiation)
+    * [Round 1](#round-1)
+    * [Round 2](#round-2)
+    * [Round 3](#round-3)
+  * [Round 4](#round-4)
+  * [Validation](#validation)
+  * [Security concerns](#security-concerns)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

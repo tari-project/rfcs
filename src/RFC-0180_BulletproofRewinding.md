@@ -1,5 +1,17 @@
 # RFC-0180: Bulletproof range proof rewinding
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Introduction](#introduction)
+  * [Rewind Scheme](#rewind-scheme)
+    * [Constructing a rewindable Bulletproof range proof](#constructing-a-rewindable-bulletproof-range-proof)
+    * [Extracting data](#extracting-data)
+  * [Some notes on usage and use cases](#some-notes-on-usage-and-use-cases)
+  * [Implementation](#implementation)
+  * [Credits](#credits)
+<!-- TOC -->
+
 ## Bulletproof range proof rewinding
 
 ![status: draft](theme/images/status-draft.svg)

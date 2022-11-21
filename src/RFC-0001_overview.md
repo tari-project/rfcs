@@ -6,6 +6,19 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Abstract](#abstract)
+* [Multiple Layers](#multiple-layers)
+* [Base Layer](#base-layer)
+* [Proof of Work](#proof-of-work)
+* [The role of the base layer](#the-role-of-the-base-layer)
+* [Digital Assets Network](#digital-assets-network)
+* [Interplay of the layers](#interplay-of-the-layers)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

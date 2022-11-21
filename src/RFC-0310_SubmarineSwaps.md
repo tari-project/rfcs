@@ -4,6 +4,32 @@
 
 **Maintainer(s)**: [S W van Heerden](https://github.com/SWvheerden)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Comments](#comments)
+  * [Description](#description)
+  * [Method](#method)
+  * [TL;DR](#tldr)
+  * [Heights, Security, and other considerations](#heights-security-and-other-considerations)
+  * [Key construction](#key-construction)
+  * [Key security](#key-security)
+  * [Method](#method)
+    * [Detail](#detail)
+    * [TariScript](#tariscript)
+    * [Negotiation](#negotiation)
+    * [Key selection](#key-selection)
+    * [Commitment phase](#commitment-phase)
+      * [Starting values](#starting-values)
+    * [Tari payment](#tari-payment)
+    * [Thaum payment](#thaum-payment)
+    * [Claim Tari](#claim-tari)
+    * [Claim Thaum](#claim-thaum)
+    * [The refund](#the-refund)
+    * [The lapse transaction](#the-lapse-transaction)
+  * [Notation](#notation)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

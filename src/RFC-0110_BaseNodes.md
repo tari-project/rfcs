@@ -1,5 +1,19 @@
 # RFC-0110/BaseNodes
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Broad Requirements](#broad-requirements)
+* [Transaction Validation and Propagation](#transaction-validation-and-propagation)
+* [Block/Transaction Weight](#blocktransaction-weight)
+* [Block Validation and Propagation](#block-validation-and-propagation)
+* [Peer Validation and Propagation](#peer-validation-and-propagation)
+* [Synchronizing and Pruning of the Chain](#synchronizing-and-pruning-of-the-chain)
+* [Archival Nodes](#archival-nodes)
+* [Pruned Nodes](#pruned-nodes)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 ## Base Layer Full Nodes (Base Nodes)
 
 ![status: stable](theme/images/status-stable.svg)

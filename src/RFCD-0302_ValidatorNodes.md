@@ -6,6 +6,19 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) and [Philip Robinson](https://github.com/philipr-za)
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+  * [Abstract](#abstract)
+    * [Registration](#registration)
+    * [Execution of Instructions](#execution-of-instructions)
+    * [Fees](#fees)
+    * [Checkpoints](#checkpoints)
+    * [Consensus](#consensus)
+  * [Network Communication](#network-communication)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

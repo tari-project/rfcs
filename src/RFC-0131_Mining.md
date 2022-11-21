@@ -6,6 +6,21 @@
 
 **Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal), [Philip Robinson](https://github.com/philipr-za)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [The choice of algorithms](#the-choice-of-algorithms)
+    * [The block distribution](#the-block-distribution)
+    * [The difficulty adjustment strategy](#the-difficulty-adjustment-strategy)
+    * [Final proposal, hybrid mining details](#final-proposal-hybrid-mining-details)
+    * [Tari mining hash](#tari-mining-hash)
+      * [RandomX](#randomx)
+      * [Sha-3x](#sha-3x)
+* [Stabilisation note](#stabilisation-note)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

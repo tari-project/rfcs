@@ -5,6 +5,19 @@
 
 **Maintainer(s)**: [stringhandler](https://github.com/stringhandler) and [SW van heerden](https://github.com/SWvheerden)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Intro](#intro)
+  * [Requirements](#requirements)
+  * [VN-key expiry](#vn-key-expiry)
+* [Process of choosing committees when an instruction needs to be processed](#process-of-choosing-committees-when-an-instruction-needs-to-be-processed)
+  * [Committee Creation](#committee-creation)
+  * [Committee proofs](#committee-proofs)
+    * [Option 2 for Committee proofs](#option-2-for-committee-proofs)
+  * [Leader selection](#leader-selection)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

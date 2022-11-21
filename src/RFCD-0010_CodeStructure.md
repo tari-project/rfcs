@@ -6,6 +6,17 @@
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) and [Byron Hambly](https://github.com/delta1)
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+    * [Infrastructure Layer](#infrastructure-layer)
+    * [Domain Layer](#domain-layer)
+    * [Application Layer](#application-layer)
+    * [Code Layout](#code-layout)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

@@ -8,6 +8,8 @@
   - [RFC-0111: Base node architecture](RFC-0111_BaseNodeArchitecture.md)
   - [RFC-0120: Consensus rules](RFC-0120_Consensus.md)
   - [RFC-0121: Consensus encoding](RFC-0121_ConsensusEncoding.md)
+[//]: # (  - [RFC-0122: Burning]&#40;RFC-0122_Burning.md&#41;)
+[//]: # (  - [RFC-0123: One-sided replay attacks]&#40;RFC-0123_One_sided_replay_attacks.md&#41;)
   - [RFC-0131: Mining](RFC-0131_Mining.md)
   - [RFC-0132: Merge Mining Monero](RFC-0132_Merge_Mining_Monero.md)
   - [RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes](RFC-0140_Syncing_and_seeding.md)

@@ -8,6 +8,13 @@ Tracking issue: [assigned during WIP phase]()
 
 **Maintainer(s)**: <Maintainer name> <github username>
 
+<!-- TOC -->
+  * [Goals](#goals)
+  * [Related Requests for Comment](#related-requests-for-comment)
+  * [Description](#description)
+* [Change Log](#change-log)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).

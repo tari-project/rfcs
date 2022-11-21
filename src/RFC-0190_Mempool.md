@@ -5,22 +5,17 @@
 ## The Mempool for Unconfirmed Transactions on the Tari Base Layer
 
 <!-- TOC -->
-* [RFC-0190/Mempool](#rfc-0190mempool)
-  * [The Mempool for Unconfirmed Transactions on the Tari Base Layer](#the-mempool-for-unconfirmed-transactions-on-the-tari-base-layer)
-* [License](#license)
-  * [Language](#language)
-  * [Disclaimer](#disclaimer)
-  * [Goals](#goals)
-  * [Related RFCs](#related-rfcs)
-  * [Description](#description)
-    * [Assumptions](#assumptions)
-    * [Abstract](#abstract)
-    * [Overview](#overview)
-    * [Prioritizing Unconfirmed Transactions](#prioritizing-unconfirmed-transactions)
-    * [Memory Pool State: Syncing and Updating](#memory-pool-state--syncing-and-updating)
-    * [Unconfirmed Pool](#unconfirmed-pool)
-    * [Reorg Pool](#reorg-pool)
-    * [Mempool](#mempool)
+* [Goals](#goals)
+* [Related RFCs](#related-rfcs)
+* [Description](#description)
+* [Assumptions](#assumptions)
+* [Abstract](#abstract)
+* [Overview](#overview)
+* [Prioritizing Unconfirmed Transactions](#prioritizing-unconfirmed-transactions)
+* [Memory Pool State: Syncing and Updating](#memory-pool-state--syncing-and-updating)
+* [Unconfirmed Pool](#unconfirmed-pool)
+* [Reorg Pool](#reorg-pool)
+* [Mempool](#mempool)
 <!-- TOC -->
 
 # License

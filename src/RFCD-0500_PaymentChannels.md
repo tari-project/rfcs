@@ -6,6 +6,14 @@
 
 **Maintainer(s)**: Cayle Sharrock <CjS77>
 
+<!-- TOC -->
+* [Goals](#goals)
+* [Related Requests for Comment](#related-requests-for-comment)
+* [Description](#description)
+  * [Introduction](#introduction)
+  * [The Clacks](#the-clacks)
+<!-- TOC -->
+
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
