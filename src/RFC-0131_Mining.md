@@ -119,8 +119,8 @@ Tari's proof-of-work mining algorithm is summarized below:
 
 ### Tari mining hash
 
-First, the block header is hashed with the 256-bit Blake2b hashing algorithm based using the approach described in
-[consensus encoding](RFC-0121_ConsensusEncoding). The fields are hashed in the order:
+First, the block header is hashed with the 256-bit Blake2b hashing algorithm using the approach described in
+consensus encoding. The fields are hashed in the order:
 - version
 - previous header hash
 - timestamp
