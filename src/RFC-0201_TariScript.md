@@ -85,9 +85,8 @@ Some smart contract features are possible, or partly possible in vanilla [Mimble
 - Atomic swaps 
 - Hash time-locked contracts
 
-This RFC makes the case that if Tari were to implement a scripting language similar to Bitcoin script, then all of these
-use cases will collapse and can be achieved under a single set of (relatively minor) modifications and additions to the
-current Tari and Mimblewimble protocol.
+Tari implemented a scripting language similar to Bitcoin script, called [TariScript], under a single set of (relatively 
+minor) modifications and additions to the Mimblewimble protocol, which achieved collapsing all of these use cases.
 
 ## Scripting on Mimblewimble
 
@@ -104,8 +103,8 @@ code interact with transactions.
 the protocol ossified".
 
 Litecoin has included Mimblewimble as a
-[side-chain through MWEB](https://github.com/litecoin-project/lips/blob/master/lip-0003.mediawiki). As of 2022, there appears
-to be no plans to include general scripting into the protocol.
+[side-chain through MWEB](https://github.com/litecoin-project/lips/blob/master/lip-0003.mediawiki). As of 2022, there 
+appears to be no plans to include general scripting into the protocol.
 
 ### Scriptless scripts
 
@@ -173,6 +172,7 @@ The assumptions that broadly equate scripting with range proofs in the above arg
   malleable.
 
 ### Preventing Cut-through
+
 A major issue with many Mimblewimble extension schemes is that miners are able to cut-through UTXOs if an output is 
 spent in the same block it was created. This makes it so that the intervening UTXO never existed; along with any checks 
 and balances carried in that UTXO. It's also impossible to prove without additional information that cut-through even 
@@ -184,45 +184,43 @@ restricted to a single public key via the TariScript. A malicious user can spend
 and send the cut-through transaction to the mempool. Since the miner only sees the resulting aggregate transaction, it 
 cannot know that there was a TariScript on the removed UTXO. The solution to this problem is described later in this RFC.
 
-In contrast range proofs are still valid if they are cut-through, because the resulting UTXOs must have
+In contrast range proofs are still valid if they are cut-through, because the resulting UTXOs must have 
 valid range proofs. 
 
-## Protocol modifications
+## Protocol additions
 
 Please refer to [Notation](#notation), which provides important pre-knowledge for the remainder of the report.
 
 At a high level, TariScript works as follows:
 
 - The spending _script_ \\((\script)\\) is recorded in the transaction UTXO.
-- Although scripts are included on the UTXO, they are only executed when the UTXO is **spent**, and in most cases, will require additional
- input data to be provided at this time. 
+- Although scripts are included on the UTXO, they are only executed when the UTXO is **spent**, and in most cases, will 
+  require additional input data to be provided at this time. 
 - The _script input data_ is recorded in the transaction inputs.
 - When validating a transaction, the _script_ is executed using the _script input data_.
 - After the _script_ \\((\script)\\) is executed, the execution stack must contain exactly one value that will be 
   interpreted as the _[script public key]_ \\((K\_{S})\\). 
-- The _[script public key]_ and commitment must match the _script signature_ on the input, which prevents malleability of the data in the input.
-- To prevent a script from being removed from a UTXO, a new field  _[sender offset] public key_ \\((K\_{O})\\) has been added.
+- The _[script public key]_ and commitment must match the _script signature_ on the input, which prevents malleability 
+  of the data in the input.
+- To prevent a script from being removed from a UTXO, a new field  _[sender offset] public key_ \\((K\_{O})\\) has been 
+  added.
 - The _sender offset private keys_ \\((k\_{O})\\) and _script private keys_ \\((k\_{S})\\) are used in conjunction to 
   create a _script offset_ \\((\so)\\), which are used in the consensus balance to prevent a number of attacks.
 
-> NOTE: One can prove ownership of a UTXO by demonstrating knowledge of both the commitment _blinding factor_ \\((k\\)), _and_ the _[script private key]_ \\((k_\{S})\\) for a valid script input.
+> NOTE: One can prove ownership of a UTXO by demonstrating knowledge of both the commitment _blinding factor_ \\((k\\)), 
+> _and_ the _[script private key]_ \\((k_\{S})\\) for a valid script input.
 
 ### UTXO data commitments
 
 The script, as well as other UTXO metadata, such as the output features are signed for with the [sender offset] private 
 key to prevent malleability. As we will describe later, the notion of a [script offset] is introduced to prevent 
 cut-through and forces the preservation of these commitments until they are recorded into the blockchain.
- 
-There are two changes to the protocol data structures that must be made to allow this scheme to work. 
-
-The first is a relatively minor adjustment to the transaction output definition.
-The second is the inclusion of script input data and an additional public key in the transaction input field.
 
 ### Commitment and public key signature
 
-The Commitment and Public Key signature ([CAPK Signature]) is used in Tari protocols as part of transaction authorization. 
-It can be thought of as a combination (not addition) of a commitment signature ([Signature on Commitment values] by F. 
-Zhang et. al. and [Commitment Signature] by G. Yu.) and a Schnorr Signature. Given a commitment 
+The Commitment and Public Key signature ([CAPK Signature]) is used in Tari protocols as part of transaction 
+authorization. It can be thought of as a combination (not addition) of a commitment signature ([Signature on Commitment 
+values] by F. Zhang et. al. and [Commitment Signature] by G. Yu.) and a Schnorr Signature. Given a commitment 
 \\( C  = a \cdot H  + x \cdot G \\) and group element \\( PK = y \cdot G \\)\, a CAPK Signature is based on a 
 representation proof of both openings \\( (a, x) \\) and \\( y \\). It additionally binds to arbitrary message data 
 \\( m \\) via the challenge to produce a signature construction. 
@@ -266,27 +264,14 @@ u_a \cdot H + (u_x + w \cdot u_y) G  - C_{eph} - w \cdot PK_{eph} - e \cdot C - 
 $$
 
 
-### Transaction output changes
+### Transaction output
 
-The definition of a Tari _script-less_ UTXO would be:
-
-```rust,ignore
-pub struct TransactionOutput {
-    /// Options for an output's structure or use
-    features: OutputFeatures,
-    /// The homomorphic commitment representing the output amount
-    commitment: Commitment,
-    /// A proof that the commitment is in the right range
-    proof: RangeProof,
-}
-```
-
-_Note:_ With a Tari _script-less_ UTXO, the output features would be malleable, but TariScript fixes this.
-
-Under TariScript, this definition changes to accommodate the script and the [sender offset] public keys:
+The definition of a Tari transaction output is:
 
 ```rust,ignore
 pub struct TransactionOutput {
+    /// The transaction output version
+    version: TransactionOutputVersion,
     /// Options for an output's structure or use
     features: OutputFeatures,
     /// The homomorphic commitment representing the output amount
@@ -300,6 +285,12 @@ pub struct TransactionOutput {
     /// UTXO signature signing the transaction output data and the homomorphic commitment with a combination 
     /// of the homomorphic commitment private values (amount and blinding factor) and the sender offset private key.
     metadata_signature: CommitmentAndPublicKeySignature,
+    /// The covenant that will be executed when spending this output
+    covenant: Covenant,
+    /// The encrypted commitment value.
+    encrypted_value: EncryptedValue,
+    /// The minimum value of the commitment that is proven by the range proof
+    minimum_value_promise: MicroTari,
 }
 ```
 
@@ -354,7 +345,7 @@ The final challenge is:
 
 $$
 \begin{aligned}
-e &= \hash{ R_{MSi} \cat R_{MRi} \cat \script_i \cat F_i \cat K_{Oi} \cat C_i} \\\\
+e &= \hash{ R_{MSi} \cat R_{MRi} \cat \script_i \cat F_i \cat K_{Oi} \cat C_i \cat \pi_i \cat \varphi_i \cat \vartheta_i } \\\\
 \end{aligned}
 \tag{6}
 $$
@@ -413,39 +404,41 @@ Note that:
   metadata signature will be invalidated.
 - We provide the complete script on the output.
 
-### Transaction input changes
-
-The definition of a Tari _script-less_ input would be:
-
-```rust,ignore
-pub struct TransactionInput {
-    /// The features of the output being spent. We will check maturity for all outputs.
-    pub features: OutputFeatures,
-    /// The commitment referencing the output being spent.
-    pub commitment: Commitment,
-}
-```
+### Transaction input
 
 In standard Mimblewimble, an input is the same as an output _sans_ range proof. The range proof doesn't need to be 
 checked again when spending inputs, so it is dropped. 
 
-The updated input definition is:
+The definition of a Tari transaction input is:
 
 ```rust,ignore
 pub struct TransactionInput {
-    /// Options for an output's structure or use
-    features: OutputFeatures,
-    /// The homomorphic Pedersen commitment representing the output amount
-    commitment: Commitment,
-    /// The serialised script
-    script: Vec<u8>,
+    /// The transaction input version
+    version: TransactionInputVersion,
+    /// The output that will be spent that this input is referencing 
+    spent_output: SpentOutput {
+        /// The transaction output version
+        version: TransactionOutputVersion,
+        /// Options for an output's structure or use
+        features: OutputFeatures,
+        /// The homomorphic Pedersen commitment representing the output amount
+        commitment: Commitment,
+        /// The serialised script
+        script: Vec<u8>,
+        /// The sender offset pubkey, K_O
+        sender_offset_public_key: PublicKey
+        /// The covenant that will be executed when spending this output
+        covenant: Covenant,
+        /// The encrypted commitment value.
+        encrypted_value: EncryptedValue,
+        /// The minimum value of the commitment that is proven by the range proof
+        minimum_value_promise: MicroTari,
+    }
     /// The script input data, if any
     input_data: Vec<u8>,
     /// Signature signing the script, input data, [script public key] and the homomorphic commitment with a combination 
     /// of the homomorphic commitment private values (amount and blinding factor) and the [script private key].
     script_signature: CommitmentAndPubKeySignature,
-    /// The sender offset pubkey, K_O
-    sender_offset_public_key: PublicKey
 }
 ```
 
@@ -600,11 +593,10 @@ offset verification (16) and (18), and looked at in isolation those could verify
 fake keys. When doing verification in (16) and (18) you know that the signatures and the message/metadata signed by the 
 private keys can be trusted.
 
-### Consensus changes
+### Consensus
 
-The Mimblewimble balance for blocks and transactions stays the same.
-
-In addition to the changes given above, there are consensus rule changes for transaction and block validation.
+TariScript does not impact the Mimblewimble balance for blocks and transactions, however, additional consensus rule for 
+transaction and block validation is required.
 
 Verify that for every valid transaction or block:
 
@@ -616,10 +608,10 @@ Verify that for every valid transaction or block:
 
 ### Preventing Cut-through with the Script Offset
 
-Earlier, we described that cut-through needed to be prevented. This is achieved by the script offset in the TariScript proposal. It mathematically links all inputs 
-and outputs of all the transactions in a block and that tallied up to create the script offset. Providing the script 
-offset requires knowledge of keys that miners do not possess; thus they are unable to produce the necessary script 
-offset when attempting to perform cut-through on a pair of transactions.
+Earlier, we described that cut-through must be prevented; this is achieved by the script offset. It mathematically links 
+all inputs and outputs of all the transactions in a block and that tallied up creates the script offset. Providing the 
+script offset requires knowledge of keys that miners do not possess; thus they are unable to produce the necessary 
+script offset when attempting to perform cut-through on a pair of transactions.
 
 Lets show by example how the script offset stops cut-through, where Alice spends to Bob who spends to Carol. Ignoring 
 fees, we have: 
@@ -669,8 +661,8 @@ $$
 \tag{22}
 $$
 
-A third party cannot generate a new script offset as only the original owner can provide the script private key \\(k\_{Sa}\\) 
-to create a new script offset. 
+A third party cannot generate a new script offset as only the original owner can provide the script private key 
+\\(k\_{Sa}\\) to create a new script offset. 
 
 ### Script offset security
 
@@ -709,17 +701,17 @@ sender offset keys can be deterministically derived from the spend key. For exam
 
 ### Blockchain bloat
 
-The most obvious drawback to TariScript is the effect it will have on blockchain size. UTXOs are substantially larger,
-with the addition of the script, script signature, and a public key to every output.
+The most obvious drawback to TariScript is the effect it has on blockchain size. UTXOs are substantially larger,
+with the addition of the script, metadata signature, script signature, and a public key to every output.
 
 These can eventually be pruned, but will increase storage and bandwidth requirements.
 
-Input size of a block will now be much bigger as each input was previously just a commitment and output features.
-Each input now includes a script, input_data, the script signature and an extra public key. This could be compacted by
-just broadcasting input hashes along with the missing script input data and signature, instead of the full input in
-transaction messages, but this will still be larger than inputs are currently.
+Input size of a block is much bigger than in standard Mimblewimble, whereas it would only be a commitment and output 
+features. In Tari, each input includes a script, input_data, the script signature and an extra public key. This could be 
+compacted by just broadcasting input hashes along with the missing script input data and signature, instead of the full 
+input in a transaction messages, but this will still be larger than standard Mimblewimble inputs.
 
-Every header will also be bigger as it includes an extra blinding factor that will not be pruned away.
+In Tari every header is also bigger as it includes an extra blinding factor that cannot be pruned away.
 
 ### Fodder for chain analysis
 
@@ -729,7 +721,6 @@ re-spend outputs into vanilla, default UTXOs in a mixing transaction to disassoc
 script.
 
 ## Notation
-
 
 Where possible, the "usual" notation is used to denote terms commonly found in cryptocurrency literature. Lower case 
 characters are used as private keys, while uppercase characters are used as public keys. New terms introduced by 
@@ -743,22 +734,15 @@ TariScript are assigned greek lowercase letters in most cases.
 | \\( (k_{Oi}\, K_{Oi}) \\) | The private - public keypair for the UTXO sender offset key. Note that \\( k_{Oi} \\) should be treated as a nonce.                                                                                                                    |
 | \\( (k_{Si}\, K_{Si}) \\) | The private - public keypair for the script key. The script, \\( \script_i \\) resolves to \\( K_S \\) after completing execution.                                                                                                     |
 | \\( \so_t \\)             | The script offset for transaction _t_, see (15)                                                                                                                                                                                        |
-| \\( C_i \\)               | A Pedersen commitment to a value \\( v_i \\), see (4)                                                                                                                                                                                 |
+| \\( C_i \\)               | A Pedersen commitment to a value \\( v_i \\), see (4)                                                                                                                                                                                  |
 | \\( \input_i \\)          | The serialised input for script \\( \script_i \\)                                                                                                                                                                                      |
+| \\( \pi_i \\)             | The covenant for UTXO _i_.                                                                                                                                                                                                             |
+| \\( \varphi_i \\)         | The encrypted value for UTXO _i_.                                                                                                                                                                                                      |
+| \\( \vartheta_i \\)       | The minimum value promise for UTXO _i_.                                                                                                                                                                                                |
 | \\( s_{Si} \\)            | A script signature for output \\( i \\), see (11 - 13). Additional the capital letter subscripts, _C_ and _P_ refer to the _ephemeral commitment_ and _ephemeral public key_ portions respectively (exmple \\( s_{SCi}, s_{SPi} \\)) . |
 | \\( s_{Mi} \\)            | A metadata signature for output \\( i \\), see (3 - 10). Additional the capital letter subscripts, _R_ and _S_ refer to a UTXO _receiver_ and _sender_ respectively (exmple \\( s_{MRi}, s_{MSi} \\)) .                                |
 
-## Extensions
-
-### Lock-time malleability
-
-The current Tari protocol has an issue with Transaction Output Maturity malleability. This output feature is enforced in
-the consensus rules, but it is actually possible for a miner to change the value without invalidating the transaction.
-
-With TariScript, output features are properly committed to in the transaction and verified as part of the script offset
-validation.
-
-### Credits
+## Credits
 
 - [@CjS77](https://github.com/CjS77)
 - [@hansieodendaal](https://github.com/hansieodendaal)
@@ -767,7 +751,7 @@ validation.
 
 Thanks to David Burkett for proposing a method to prevent cut-through and willingness to discuss ideas.
 
-# Change Log
+# Change log
 
 | Date        | Change                                                 | Author                        |
 |:------------|:-------------------------------------------------------|:------------------------------|
