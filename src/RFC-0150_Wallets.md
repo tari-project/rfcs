@@ -1,10 +1,28 @@
 # RFC-0150/Wallets
+![status: stable](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-stable.svg)
+**Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
 
 ## Base Layer Wallet Module
 
-![status: draft](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-draft.svg)
+<!-- TOC -->
+* [RFC-0150/Wallets](#rfc-0150wallets)
+    * [Base Layer Wallet Module](#base-layer-wallet-module)
+* [Licence](#licence)
+    * [Language](#language)
+    * [Disclaimer](#disclaimer)
+    * [Goals](#goals)
+    * [Related Requests for Comment](#related-requests-for-comment)
+    * [Description](#description)
+        * [Key Responsibilities](#key-responsibilities)
+        * [Functional Details](#functional-details)
+            * [Basic Transaction Functionality](#basic-transaction-functionality)
+            * [Key Management Features](#key-management-features)
+            * [State Recovery](#state-recovery)
+            * [State Recovery: Process Overview](#state-recovery-process-overview)
+        * [Change Log](#change-log)
+<!-- TOC -->
 
-**Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
+
 
 # Licence
 
@@ -32,9 +50,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## Language
 
-The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", 
-"NOT RECOMMENDED", "MAY" and "OPTIONAL" in this document are to be interpreted as described in 
-[BCP 14](https://tools.ietf.org/html/bcp14) (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as 
+The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",
+"NOT RECOMMENDED", "MAY" and "OPTIONAL" in this document are to be interpreted as described in
+[BCP 14](https://tools.ietf.org/html/bcp14) (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as
 shown here.
 
 ## Disclaimer
@@ -48,7 +66,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to  propose the functionality and techniques required by the [Base Layer] 
+The aim of this Request for Comment (RFC) is to propose the functionality and techniques required by the [Base Layer]
 Tari [wallet] module. The module exposes the core wallet functionality on which user-facing wallet applications may be built.
 
 ## Related Requests for Comment
@@ -61,58 +79,78 @@ This RFC is derived from a proposal first made in [this issue](https://github.co
 
 ### Key Responsibilities
 
-The wallet software is responsible for constructing and negotiating [transaction]s for transferring and receiving 
-[Tari coin]s on the Base Layer. It should also provide functionality to generate, store and recover a master seed key 
-and derived cryptographic key pairs that can be used for Base Layer addresses and signing of transactions.
+The wallet software is responsible for constructing and negotiating [transactions][transaction] for transferring and receiving
+[Tari coins][Tari coin] on the [base layer][Base Layer]. It should also provide functionality to generate, store and recover a master seed key
+and derived cryptographic keypairs that can be used for Base Layer addresses and signing of transactions.
 
-### Details of Functionality
+### Functional Details
 
 A detailed description of the required functionality of the Tari software wallet is provided in three parts:
-* basic transaction functionality;
-* key management features; and
+* basic transaction functionality,
+* key management features, and
 * the different methods for recovering the wallet state of the Tari software wallet.
 
 #### Basic Transaction Functionality
 
-- It MUST be able to send and receive Tari coins using [Mimblewimble] transactions.
-- It SHOULD be able to establish a connection between different user wallets to negotiate:
-  - the construction of a transaction; and
-  - the signing of multi-signature transactions.
-- The Tari software wallet SHOULD be implemented as a library or Application Programming Interface (API) so that Graphic 
-User Interface (GUI) or Command Line Interface (CLI) applications can be developed on top of it.
-- It MUST be able to establish a connection to a [Base Node] to submit transactions and monitor the Tari [blockchain].
-- It SHOULD maintain an internal ledger to keep track of the Tari coin balance of the wallet.
-- It MAY offer transaction fee estimation, taking into account:
-  - transaction byte size;
-  - network congestion; and
-  - desired transaction priority.
-- It SHOULD be able to monitor and return the states (Spent, Unspent or Unconfirmed) of previously submitted transactions 
-by querying information from the connected Base Node.
-- It SHOULD present the total Spent, Unspent or Unconfirmed transactions in summarized form. 
-- It SHOULD be able to update its software to patch potential security vulnerabilities. 
-Automatic updating SHOULD be selected by default, but users can decide to opt out.
-- Wallet features requiring querying a base node for information SHOULD have caching capabilities to reduce bandwidth consumption.
+- Wallet **MUST** be able to send and receive Tari coins using [Mimblewimble] transactions.
+- Wallet **SHOULD** be able to establish a connection with other user wallets to interactively negotiate:
+    - construction of the transaction,
+    - signing of multi-signature transactions.
+- Wallet **SHOULD** be implemented as a library or Application Programming Interface (API) so that Graphical
+  User Interface (GUI) or Command Line Interface (CLI) applications can be developed on top of it.
+- Wallet **MUST** be able to establish connection to the [base node][Base Node], submit transactions and monitor the Tari [blockchain].
+- Wallet **SHOULD** maintain an internal ledger to keep track of the Tari coin balance.
+- Wallet **MAY** offer transaction fee estimation, taking into account:
+    - transaction byte size
+    - network congestion
+    - desired transaction priority
+- Wallet **SHOULD** be able to monitor and present states (`Spent`, `Unspent` or `Unconfirmed`) of previously submitted transactions,
+  by querying information from the connected base node.
+- Wallet **SHOULD** present the total `Spent`, `Unspent` or `Unconfirmed` transactions in a summarized form.
+- Wallet **SHOULD** be able to update its software to patch potential security vulnerabilities.
+  Automatic updating **SHOULD** be enabled by default, but users can decide to opt out.
+- Wallet **SHOULD** feature a caching mechanism for querying operations to reduce bandwidth consumption.
 
 #### Key Management Features
 
-- It MUST be able to generate a master seed key for the wallet by using:
-  - input from a user (e.g. when restoring a wallet, or in testing); or
-  - a user-defined set of mnemonic word sequences using known word lists; or
-  - a cryptographically secure random number generator.
-- It SHOULD be able to generate derived transactional cryptographic key pairs from the master seed key using deterministic 
-key pair generation.
-- It SHOULD store the wallet state using a password or passphrase encrypted persistent key-value database.
-- It SHOULD provide the ability to back up the wallet state to a single encrypted file to simplify wallet recovery and 
-reconstruction at a later stage.
-- It MAY provide the ability to export the master seed key or wallet state as a printable paper wallet, using coded markers.
+- Wallet **MUST** be able to generate a master seed key for the wallet by using at least one of the following methods:
+    - input from the user (e.g. when restoring a wallet or in testing),
+    - user-defined set of mnemonic word sequences using known word lists,
+    - cryptographically secure random number generator.
+- Wallet **SHOULD** be able to generate derived, transactional, cryptographic keypairs from the master seed key using deterministic
+  keypair generation.
+- Wallet **SHOULD** store wallet state using a password or passphrase encrypted persistent key-value database.
+- Wallet **SHOULD** provide the ability to store backup of the wallet state to a single encrypted file to simplify wallet recovery and
+  reconstruction at a later stage.
+- Wallet **MAY** provide the ability to export the master seed key or the wallet state as a printable paper wallet, using coded markers.
 
-#### Different Methods for Recovering Wallet State of Tari Software Wallet
+#### State Recovery
 
-- It MUST be able to reconstruct the wallet state from a manually entered master seed key. 
-- It MUST have a mechanism to systematically search through the Tari blockchain and mempool for unspent and unconfirmed 
-transactions, using the keys derived from the master key.
-- The master seed key SHOULD be derivable from a specific set of mnemonic word sequences using known word lists.
-- It MAY enable the reconstruction of the master seed key by scanning a coded marker of a paper wallet.
+- Wallet **MUST** be able to reconstruct the wallet state from a manually entered master seed key.
+- Wallet **MUST** have a mechanism to systematically scan through the Tari blockchain and [mempool](RFC-0190_Mempool.md) for `Unspent` and `Unconfirmed`
+  transactions, using keys derived from the master key.
+- The master seed key **SHOULD** be derivable from a set of mnemonic word sequences using known word lists.
+- Wallet **MAY** enable the reconstruction of the master seed key by scanning a coded marker of a paper wallet.
+
+#### State Recovery: Process Overview
+If the wallet database has been lost, corrupted or otherwise damaged, the outputs contained within ([UTXOs](Glossary.md#unspent-transaction-outputs))
+can still be recovered from the Tari [blockchain], given you provide the valid recovery keys. When the wallet is first initialized in recovery mode,
+it attempts to synchronize with available base nodes, pulling blocks, attempting to recognize outputs attributed to that particular wallet.
+
+If one can successfully decrypt the encrypted value, then the UTXO is successfully recognized. The next step is to attempt the mask (blinding factor)
+recovery by rewinding the range proof. All recognized and verified outputs are stored in the newly initialized, local wallet database,
+available for further spending.
+
+The recovery of simple and stealth one-sided outputs is a bit more complex as we first have to recognize the output by its script pattern, before we can try
+to decrypt the encrypted value.
+
+An output is recognized if it matches either of the following input script patterns:
+
+- The standard output is the simplest, having a single `Nop` instruction.
+- The simple one-sided is matched by the `[Opcode::PushPubKey(scanned_pk)]` so if the `scanned_pk` matches the key derived from the recovery phrase - it's recognized,
+- The [stealth one-sided](RFC-0203_StealthAddresses.md) is similar to its simple counterpart with only the script pattern being different `[Opcode::PushPubKey(nonce), Opcode::Drop, Opcode::PushPubKey(scanned_pk)]`, matching by the last provided `Opcode::PushPubKey(scanned_pk)` instruction.
+
+
 
 [wallet]: Glossary.md#wallet
 [Base Layer]: Glossary.md#base-layer
@@ -121,3 +159,10 @@ transactions, using the keys derived from the master key.
 [mimblewimble]: Glossary.md#mimblewimble
 [blockchain]: Glossary.md#blockchain
 [base node]: Glossary.md#base-node
+
+### Change Log
+
+| Date        | Change                                                                         | Author                    |
+|:------------|:-------------------------------------------------------------------------------|:--------------------------|
+| 26 Oct 2022 | Stabilized RFC                                                                 | CjS77                     |
+| 14 Nov 2022 | Added table of contents, recovery process overview and a few minor adjustments | agubarev & hansieodendaal |
