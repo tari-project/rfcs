@@ -76,7 +76,7 @@ We define the following validator variables:
 
 | Symbol       | Name            | Description                                        |
 |:-------------|:----------------|:---------------------------------------------------|
-| $P_i$        | `VN_Public_Key` | The $i$th public validator node key                |
+| $V_i$        | `VN_Public_Key` | The $i$th public validator node key                |
 | $S_i$        | `VN_Shard_Key`  | The $i$th 256-bit VN shard key.                    |
 | $\epsilon_i$ | `Epoch`         | The $i$th epoch. An epoch is `EpochLength` blocks. |
 
@@ -150,7 +150,7 @@ The `validator_node_mr` MUST remain unchanged for blocks between epochs, that is
 The `validator_node_mr` is calculated for each block as follows:
 1. if the current block height is a multiple of `EpochSize`
     - then fetch the VN set for the epoch
-    - build a merkle tree from the VN set, each node is $H(P_i \mathbin\Vert S_i)$
+    - build a merkle tree from the VN set, each node is $H(V_i \mathbin\Vert S_i)$
 2. otherwise, fetch the previous block's `validator_node_mr` and return it
 
 ## Epoch transitions
@@ -270,11 +270,11 @@ current epoch.
 Over time, an adversary may gain excessive control over a particular shard space. To mitigate this, we introduce a shuffling mechanism that
 periodically and randomly reassigns `VN_Shard_Key`s within the network.
 
-We define the function $\text{generate_shard_key}(P_n, \eta) \rightarrow S$ that generates the `VN_Shard_Key` from the inputs.
-$S = H_\text{shard}(P_n \mathbin\Vert \eta)$ where $H_\text{shard}$ is a domain-separated [Blake256] hash function, $P_n$ is the public `VN_Public_Key` and $\eta$ is some entropy.
+We define the function $\text{generate_shard_key}(V_n, \eta) \rightarrow S$ that generates the `VN_Shard_Key` from the inputs.
+$S = H_\text{shard}(V_n \mathbin\Vert \eta)$ where $H_\text{shard}$ is a domain-separated [Blake256] hash function, $V_n$ is the public `VN_Public_Key` and $\eta$ is some entropy.
 
-And we define the function $\text{derive_shard_key}(S_{n-1}, P_n, \epsilon_n, \hat{B}) \rightarrow S$ that deterministically derives the `VN_Shard_Key` for
-epoch $\epsilon_n$ from the public `VN_Public_Key` $P_n$, $\hat{B}$ the block hash at height $\epsilon_n * \text{EpochSize} - 1$ (the block before the epoch block).
+And we define the function $\text{derive_shard_key}(S_{n-1}, V_n, \epsilon_n, \hat{B}) \rightarrow S$ that deterministically derives the `VN_Shard_Key` for
+epoch $\epsilon_n$ from the public `VN_Public_Key` $V_n$, $\hat{B}$ the block hash at height $\epsilon_n * \text{EpochSize} - 1$ (the block before the epoch block).
 
 The function $\text{derive_shard_key}$ is defined as follows:
 
