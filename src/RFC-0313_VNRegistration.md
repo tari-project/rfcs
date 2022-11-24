@@ -207,8 +207,8 @@ Point (c) - the transition point for epoch 12:
 
 #### Validator Node Set Definition
 
-The function $\text{get_vn_set}(\epsilon_\text{start}, \epsilon_\text{end}) \rightarrow \vec{S}$ that returns an ordered vector $\vec{S}$ of `VN_Shard_Key`s that are registered for the epoch $\epsilon_n$.
-As all [UTXO]s are already ordered in the base layer, we can rely on deterministic ordering based on order the registration [UTXO]s are placed in the blockchain.
+The function $\text{get_vn_set}(\epsilon_\text{start}, \epsilon_\text{end}) \rightarrow \vec{S}$ that returns an ordered 
+vector $\vec{S}$ of `VN_Shard_Key`s that are registered for the epoch $\epsilon_n$. The validator node set is ordered by `VN_Shard_Key`.
 
 ##### Data Indexes
 
