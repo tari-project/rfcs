@@ -76,7 +76,7 @@ We define the following validator variables:
 
 | Symbol       | Name            | Description                                        |
 |:-------------|:----------------|:---------------------------------------------------|
-| $P_i$        | `VN_Public_Key` | The $i$th public validator node key                |
+| $V_i$        | `VN_Public_Key` | The $i$th public validator node key                |
 | $S_i$        | `VN_Shard_Key`  | The $i$th 256-bit VN shard key.                    |
 | $\epsilon_i$ | `Epoch`         | The $i$th epoch. An epoch is `EpochLength` blocks. |
 
@@ -121,7 +121,8 @@ OP_ELSE
 OP_END_IF
 ```
 
-By submitting this [UTXO] the validator node operator is committing to providing a highly-available node for `VNRegistrationValidityPeriod` epochs.
+By submitting this [UTXO] the validator node operator is committing to providing a highly-available node from the next epoch
+after the validator node registration was submitted to `VNRegistrationValidityPeriod` epochs after that.
 
 A validator node operator MAY re-register their `VN_Public_Key` before the `VNRegistrationValidityPeriod` epoch is reached, OPTIONALLY 
 spending the previous `ValidatorNodeRegistration` [UTXO]. If the previous `ValidatorNodeRegistration` [UTXO] has not expired and
@@ -150,7 +151,7 @@ The `validator_node_mr` MUST remain unchanged for blocks between epochs, that is
 The `validator_node_mr` is calculated for each block as follows:
 1. if the current block height is a multiple of `EpochSize`
     - then fetch the VN set for the epoch
-    - build a merkle tree from the VN set, each node is $H(P_i \mathbin\Vert S_i)$
+    - build a merkle tree from the VN set, each node is $H(V_i \mathbin\Vert S_i)$
 2. otherwise, fetch the previous block's `validator_node_mr` and return it
 
 ## Epoch transitions
@@ -207,8 +208,8 @@ Point (c) - the transition point for epoch 12:
 
 #### Validator Node Set Definition
 
-The function $\text{get_vn_set}(\epsilon_\text{start}, \epsilon_\text{end}) \rightarrow \vec{S}$ that returns an ordered vector $\vec{S}$ of `VN_Shard_Key`s that are registered for the epoch $\epsilon_n$.
-As all [UTXO]s are already ordered in the base layer, we can rely on deterministic ordering based on order the registration [UTXO]s are placed in the blockchain.
+The function $\text{get_vn_set}(\epsilon_\text{start}, \epsilon_\text{end}) \rightarrow \vec{S}$ that returns an ordered 
+vector $\vec{S}$ of `VN_Shard_Key`s that are registered for the epoch $\epsilon_n$. The validator node set is ordered by `VN_Shard_Key`.
 
 ##### Data Indexes
 
@@ -270,11 +271,11 @@ current epoch.
 Over time, an adversary may gain excessive control over a particular shard space. To mitigate this, we introduce a shuffling mechanism that
 periodically and randomly reassigns `VN_Shard_Key`s within the network.
 
-We define the function $\text{generate_shard_key}(P_n, \eta) \rightarrow S$ that generates the `VN_Shard_Key` from the inputs.
-$S = H_\text{shard}(P_n \mathbin\Vert \eta)$ where $H_\text{shard}$ is a domain-separated [Blake256] hash function, $P_n$ is the public `VN_Public_Key` and $\eta$ is some entropy.
+We define the function $\text{generate_shard_key}(V_n, \eta) \rightarrow S$ that generates the `VN_Shard_Key` from the inputs.
+$S = H_\text{shard}(V_n \mathbin\Vert \eta)$ where $H_\text{shard}$ is a domain-separated [Blake256] hash function, $V_n$ is the public `VN_Public_Key` and $\eta$ is some entropy.
 
-And we define the function $\text{derive_shard_key}(S_{n-1}, P_n, \epsilon_n, \hat{B}) \rightarrow S$ that deterministically derives the `VN_Shard_Key` for
-epoch $\epsilon_n$ from the public `VN_Public_Key` $P_n$, $\hat{B}$ the block hash at height $\epsilon_n * \text{EpochSize} - 1$ (the block before the epoch block).
+And we define the function $\text{derive_shard_key}(S_{n-1}, V_n, \epsilon_n, \hat{B}) \rightarrow S$ that deterministically derives the `VN_Shard_Key` for
+epoch $\epsilon_n$ from the public `VN_Public_Key` $V_n$, $\hat{B}$ the block hash at height $\epsilon_n * \text{EpochSize} - 1$ (the block before the epoch block).
 
 The function $\text{derive_shard_key}$ is defined as follows:
 
