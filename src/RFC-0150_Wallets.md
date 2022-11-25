@@ -1,8 +1,11 @@
 # RFC-0150/Wallets
-![status: stable](https://github.com/tari-project/tari/raw/master/RFC/src/theme/images/status-stable.svg)
-**Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
 
 ## Base Layer Wallet Module
+
+![status: stable](theme/images/status-stable.svg)
+
+**Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
+
 
 <!-- TOC -->
 * [RFC-0150/Wallets](#rfc-0150wallets)
