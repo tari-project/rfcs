@@ -121,7 +121,8 @@ OP_ELSE
 OP_END_IF
 ```
 
-By submitting this [UTXO] the validator node operator is committing to providing a highly-available node for `VNRegistrationValidityPeriod` epochs.
+By submitting this [UTXO] the validator node operator is committing to providing a highly-available node from the next epoch
+after the validator node registration was submitted to `VNRegistrationValidityPeriod` epochs after that.
 
 A validator node operator MAY re-register their `VN_Public_Key` before the `VNRegistrationValidityPeriod` epoch is reached, OPTIONALLY 
 spending the previous `ValidatorNodeRegistration` [UTXO]. If the previous `ValidatorNodeRegistration` [UTXO] has not expired and
