@@ -4,7 +4,7 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal)
+**Maintainer(s)**: [Aaron Feickert](https://github.com/AaronFeickert)
 
 # Licence
 
@@ -65,7 +65,7 @@ However, a later preprint for [Zarcanum](https://eprint.iacr.org/2021/1478) upda
 Aggregation of range assertions using Pedersen commitments is described in the Bulletproofs+ preprint, and the Zarcanum preprint describes the corresponding changes for extended commitments.
 Batch verification is described only informally in the Bulletproofs+ preprint, and in an incomplete fashion.
 Minimum value assertion is not addressed in the preprint.
-An approach to mask and value recovery was [used by Grin](https://github.com/mimblewimble/grin-wallet/issues/105) for a different range proving system, and can be modified to support Bulletproofs+ range proofs with extended commitments.
+An approach to mask and value recovery was [used by Grin](https://github.com/mimblewimble/grin-wallet/issues/105) for the Bulletproofs range proving system, implemented as described by the deprecated [RFC-0180](RFC-0180_BulletproofRewinding.md), and can be modified to support Bulletproofs+ range proofs with extended commitments.
 
 ## Notation
 
@@ -92,15 +92,15 @@ While this approach modifies the upper bound allowed for value binding, it does 
 
 We now describe how to reduce verification of a single aggregated range proof using extended commitments to a single multiscalar multiplication operation.
 A partial approach is described in the Bulletproofs+ preprint.
-The single multiscalar multiplication used to verify an aggregated range proof can be written more explicitly in our case by accounting for the extra steps used to support extended commitments, and by noting that the $P$ input term to the weighted inner product argument is replaced by the term $\widehat{A}$ defined in the overall range proving protocol.
+The single multiscalar multiplication used to verify an aggregated range proof (given in Section 6.1 of the Bulletproofs+ preprint) can be written more explicitly in our case by accounting for the extra steps used to support extended commitments, and by noting that the $P$ input term to the weighted inner product argument (given in Figure 1 of the Bulletproofs+ preprint and Figure D.1 of the Zarcanum preprint) is replaced by the term $\widehat{A}$ defined in the overall range proving protocol (given in Figure 3 of the Bulletproofs+ preprint and Figure D.3 of the Zarcanum preprint).
 
 Suppose we index the inner product generator vectors $\vec{G}$ and $\vec{H}$ using $i$, the inner product recursion generator vectors $\vec{L}$ and $\vec{R}$ using $j$, the aggregated commitment vector $\vec{V}$ by $k$, and the extended commitment mask generator vector $\vec{H}\_c$ by $l$.
 We assume indexing starts at zero unless otherwise noted.
-Single aggregated proof verification reduces to the following:
+Single aggregated proof verification reduces (by suitable modification of the equation given in Section 6.1 of the Bulletproofs+ preprint) to checking that the following equation holds:
 \\[
 \sum\_i (r'es\_i) G_i + \sum\_i (s'es\_i') H\_i + \sum\_l \delta\_l' H\_{c,l} = e^2 \widehat{A} + \sum\_j (e^2e\_j^2) L\_j + \sum\_j (e^2e\_j^{-2}) R\_j + e A' + B
 \\]
-But we also have that
+But we also have (from suitable modification of the definition given in Figure 3 of the Bulletproofs+ preprint) that
 \\[
 \widehat{A} = A - \sum\_i z G\_i + \sum\_i (z + d\_iy^{mn-i}) H\_i + x G\_c + y^{mn+1}\sum\_k z^{2(k+1)} (V\_k - v\_{\text{min},k} G\_c)
 \\]
@@ -113,9 +113,12 @@ x &= \langle \vec{1}^{mn}, \overrightarrow{y}^{mn} \rangle z - \langle \vec{1}^{
 \end{align*}
 \\]
 is a scalar defined entirely in terms of constants and challenge values from the proof.
-Grouping terms, we find that a single aggregated range proof can be verified as:
+Grouping terms, we find that a single aggregated range proof can be verified by checking that the following equation holds:
 \\[
-\sum\_i (r'es\_i + e^2z) G\_i + \sum\_i (s'es\_i' - e^2(z + d\_iy^{mn-i})) H\_i + \left( r'ys' - e^2x + e^2y^{mn+1}\sum\_k z^{2(k+1)}v\_{\text{min},k} \right) G\_c + \sum\_l \delta\_l' H\_{c,i} - \sum\_k (y^{mn+1}z^{2(k+1)}e^2) V\_k - e^2 A - \sum\_j (e^2e\_j^2) L\_j - \sum\_j (e^2e\_j^{-2}) R\_j - e A' - B = 0
+\begin{align*}
+\sum\_i (r'es\_i + e^2z) G\_i + \sum\_i (s'es\_i' - e^2(z + d\_iy^{mn-i})) H\_i + \left( r'ys' - e^2x + e^2y^{mn+1}\sum\_k z^{2(k+1)}v\_{\text{min},k} \right) G\_c & \\\\
+\+ \sum\_l \delta\_l' H\_{c,i} - \sum\_k (y^{mn+1}z^{2(k+1)}e^2) V\_k - e^2 A - \sum\_j (e^2e\_j^2) L\_j - \sum\_j (e^2e\_j^{-2}) R\_j - e A' - B &= 0
+\end{align*}
 \\]
 
 ## Batch verification
@@ -124,9 +127,10 @@ To verify a batch of proofs, we apply a separate random multiplicative scalar we
 Because each equation receives a separate random weight, successful evaluation of the resulting linear combination means that each constituent equation holds with high probability, and therefore that all proofs in the set are valid.
 If the linear combination evaluation fails, at least one included proof is invalid.
 The verifier must then test each proof in turn, or use a more efficient approach like binary search to identify each failure.
+This follows the general approach informally discussed in Section 6.1 of the Bulletproofs+ preprint.
 
 The reason for this rather convoluted algebra is twofold.
-First, it means that each unique generator used across a batch is only evaluated in the resulting multiscalar multiplication once; since the generators $\vec{G}, \vec{H}, G\_c, \vec{H}_c$ are globally fixed, this provides significant efficiency improvement.
+First, grouping like terms means that each unique generator used across a batch is only evaluated in the resulting multiscalar multiplication once; since the generators $\vec{G}, \vec{H}, G\_c, \vec{H}_c$ are globally fixed, this provides significant efficiency improvement.
 Second, the use of algorithms (like those of Straus and Pippenger and others) to evaluate the multiscalar multiplication scale slightly sublinearly, such that it is generally beneficial to minimize the number of multiscalar multiplications for a given set of generators.
 This means our approach to batch verification is effectively optimal.
 
@@ -135,7 +139,7 @@ This means our approach to batch verification is effectively optimal.
 It is possible for the prover to perform careful modifications to a non-aggregated range proof in order to allow a designated verifier to recover the masks used in the corresponding extended commitment.
 The construction we describe here does not affect the verification process for non-designated verifiers.
 Note that this construction requires a non-aggregated proof that contains a range assertion for only a single commitment.
-Unlike the approach described initially by Grin for the Bulletproofs range proving system, it is not possible to embed additional data (like the commitment value) into a Bulletproofs+ range proof.
+Unlike the approach used initially in [RFC-0180](RFC-0180_BulletproofRewinding.md), it is not possible to embed additional data (like the commitment value) into a Bulletproofs+ range proof.
 
 The general approach is that the prover and designated verifier share a common nonce seed.
 The prover uses this value to determinstically derive and replace certain nonces used in the proof.
@@ -144,7 +148,7 @@ Because the resulting proof is still special honest-verifier zero knowledge, as 
 
 After sampling a nonce seed, the prover passes it through an appropriate set of domain-separated hash functions with scalar output to generate the following nonces used in the proof:
 \\[
-\\{\eta\_k\\}, \\{\delta\_k\\}, \\{\alpha\_k\\}, \\{d\_{L,j,k}\\}, \\{d\_{R,j.k}\\}
+\\{\eta\_k\\}, \\{\delta\_k\\}, \\{\alpha\_k\\}, \\{d\_{L,j,k}\\}, \\{d\_{R,j,k}\\}
 \\]
 Here, as before, $k$ is indexed over the number of masks used in the extended commitment, and $j$ is indexed over the weighted inner product argument rounds.
 
@@ -158,3 +162,6 @@ It then computes the mask set $\\{\gamma\_k\\}$ as follows:
 \\[
 \gamma\_k = \left\( (\delta\_k' - \eta\_k - \delta\_ke)e^{-2} - \alpha\_k - \sum\_j(e\_j^2d\_{L,j,k} + e\_j^{-2}d\_{R,j,k}) \right\) y^{-(n+1)}z^{-2}
 \\]
+The recovered masks must then be checked against the extended commitment once the value is separately communicated to the verifier.
+Otherwise, if the verifier uses a different nonce seed than the prover did (or if the prover otherwise did not derive the nonces using a nonce seed at all), it will recover incorrect masks.
+If the verifier is able to construct the extended commitment from the value and recovered masks, the recovery succeeds; otherwise, the recovery fails.
