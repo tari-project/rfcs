@@ -157,7 +157,8 @@ This is the version currently running on the chain.
 The version MUST conform to the following:
 
 * It is represented as an unsigned 16-bit integer.
-* Version numbers MUST be incremented whenever there is a change in the blockchain schema starting from 0.
+* Version numbers MUST be incremented whenever there is a change in the blockchain schema or validation rules starting from 0.
+* The version must be one of the allowed versions for the consensus rules at this block's height.
 
 #### Height
 
