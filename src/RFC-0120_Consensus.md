@@ -285,10 +285,9 @@ This is the Proof of Work algorithm used to solve the Proof of Work. This is use
 
 The [PoW] MUST contain the following:
 
-* accumulated_monero_difficulty as an unsigned 64-bit integer.
-* accumulated_blake_difficulty as an unsigned 64-bit integer.
 * pow_algo as an enum (0 for Monero, 1 for Sha3).
-* pow_data as an array of unsigned 8-bit integers (bytes) in little-endian format.
+* pow_data for Monero blocks as an array of unsigned 8-bit integers (bytes) in little-endian format.
+* pow_data for Sha3 blocks must be empty.
 
 #### Difficulty Calculation
 [target difficulty]: #target-difficulty "Target Difficulty"
