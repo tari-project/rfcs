@@ -142,8 +142,9 @@ Every [block header] MUST contain the following fields:
 The [block header] MUST conform to the following:
 
 * The nonce and [PoW](#pow) must be valid for the [block header].
-  * The [achieved difficulty] MUST be greater than or equal to the [target difficulty].
+* The [achieved difficulty] MUST be greater than or equal to the [target difficulty].
 * The [FTL] and [MTP] rules, detailed below.
+* The block hash must not appear in the bad block list.
   
 The Merkle roots are validated as part of the full block validation, detailed in [Blocks].
 
