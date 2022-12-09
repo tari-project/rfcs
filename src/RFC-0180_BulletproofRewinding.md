@@ -2,7 +2,7 @@
 
 ## Bulletproof range proof rewinding
 
-![status: draft](theme/images/status-draft.svg)
+![status: deprecated](theme/images/status-deprecated.svg)
 
 **Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal)
 
