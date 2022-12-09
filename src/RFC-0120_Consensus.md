@@ -286,7 +286,8 @@ This is the Proof of Work algorithm used to solve the Proof of Work. This is use
 The [PoW] MUST contain the following:
 
 * pow_algo as an enum (0 for Monero, 1 for Sha3).
-* pow_data for Monero blocks as an array of unsigned 8-bit integers (bytes) in little-endian format.
+* pow_data for Monero blocks as an array of unsigned 8-bit integers (bytes) in little-endian format, containing the Monero merge-mining Proof-of-Work data.
+  * the RandomX seed, stored as `randomx_key` within the Monero block, must have not been first seen in a block with confirmations more than `max_randomx_seed_height`.
 * pow_data for Sha3 blocks must be empty.
 
 #### Difficulty Calculation
