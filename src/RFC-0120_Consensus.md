@@ -142,8 +142,9 @@ Every [block header] MUST contain the following fields:
 The [block header] MUST conform to the following:
 
 * The nonce and [PoW](#pow) must be valid for the [block header].
-  * The [achieved difficulty] MUST be greater than or equal to the [target difficulty].
+* The [achieved difficulty] MUST be greater than or equal to the [target difficulty].
 * The [FTL] and [MTP] rules, detailed below.
+* The block hash must not appear in the bad block list.
   
 The Merkle roots are validated as part of the full block validation, detailed in [Blocks].
 
@@ -157,7 +158,8 @@ This is the version currently running on the chain.
 The version MUST conform to the following:
 
 * It is represented as an unsigned 16-bit integer.
-* Version numbers MUST be incremented whenever there is a change in the blockchain schema starting from 0.
+* Version numbers MUST be incremented whenever there is a change in the blockchain schema or validation rules starting from 0.
+* The version must be one of the allowed versions for the consensus rules at this block's height.
 
 #### Height
 
@@ -284,10 +286,10 @@ This is the Proof of Work algorithm used to solve the Proof of Work. This is use
 
 The [PoW] MUST contain the following:
 
-* accumulated_monero_difficulty as an unsigned 64-bit integer.
-* accumulated_blake_difficulty as an unsigned 64-bit integer.
 * pow_algo as an enum (0 for Monero, 1 for Sha3).
-* pow_data as an array of unsigned 8-bit integers (bytes) in little-endian format.
+* pow_data for Monero blocks as an array of unsigned 8-bit integers (bytes) in little-endian format, containing the Monero merge-mining Proof-of-Work data.
+  * the RandomX seed, stored as `randomx_key` within the Monero block, must have not been first seen in a block with confirmations more than `max_randomx_seed_height`.
+* pow_data for Sha3 blocks must be empty.
 
 #### Difficulty Calculation
 [target difficulty]: #target-difficulty "Target Difficulty"
