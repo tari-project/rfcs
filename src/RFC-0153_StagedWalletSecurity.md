@@ -163,7 +163,7 @@ lose them.
  
 You should think about making a copy of your wallet's coins, which we will keep up date date after every transaction.
 
-If you have a copy of your seed phrase saved somewhere safe, and don't want to back up your coins into the cloud,you 
+If you have a copy of your seed phrase saved somewhere safe, and don't want to back up your coins into the cloud, you 
 can skip this step.
 ```
 
