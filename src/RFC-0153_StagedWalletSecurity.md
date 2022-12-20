@@ -135,13 +135,13 @@ This can be done using the standard APIs and Authentication flows that each clou
 In particular, we do not ask for a password to encrypt the commitment data. The consequence is that anyone who gains
 access to this data -- by stealing the user's cloud credentials -- _could_ steal the user's funds.
 
-Therefore, the threshold for moving from this stage to Stage 3, `STAGE_TWO_THRESHOLD_BALANCE` is relatively low;
-somewhere in the region of $10 to $50.
+Therefore, the threshold for moving from this stage to Stage 2, `STAGE_TWO_THRESHOLD_BALANCE` is relatively low;
+somewhere in the region of \\$10 to \\$50.
 
 The seed phrase MUST NOT be stored on the cloud in Stage 1b. Doing so would result in all _future_ funds of the user being
 lost if the backup were ever compromised. Since the backup is unencrypted in Stage 1b, we store the minimum amount of data
 needed to recover the funds and limit the potential loss of funds in case of a breach to just that found in the commitments in the
-backup, which should not be more than $50.
+backup, which should not be more than \\$50.
 
 Therefore, stage 1b backups are really just exporting and importing of UTXO data. The consequence of this is 
 that restoring from a 1b backup does not restore the emoji id. On the other hand, you can easily import into any 
@@ -258,3 +258,4 @@ To avoid spamming the user, do not fire this prompt more than once every three d
 |:-----------|:---------------------|:--------------------|
 | 2022-11-10 | Initial stable       | Adrian Truszczyński |
 | 2022-12-12 | Update user messages | CjS77               |
+| 2022-12-20 | Fix typo             | CjS77               |
