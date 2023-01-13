@@ -48,7 +48,7 @@
   - [RFC-0010: Tari code structure and organization](RFCD-0010_CodeStructure.md)
   - [RFC-0121: Consensus encoding](RFCD-0121_ConsensusEncoding.md)
   - [RFC-0130: Mining](RFCD-0130_Mining.md)
-  - [RFC-0180: Bulletproof range proof rewinding](RFC-0180_BulletproofRewinding.md)
+  - [RFC-0180: Bulletproof range proof rewinding](RFCD-0180_BulletproofRewinding.md)
   - [RFC-0300: The Digital Assets Network](RFCD-0300_DAN.md)
   - [RFC-0301: Namespace Registration](RFCD-0301_NamespaceRegistration.md)
   - [RFC-0302: Validator Nodes](RFCD-0302_ValidatorNodes.md)

@@ -173,7 +173,7 @@ k_b = k_{Ob} * K_{Sb}
 \tag{25}
 $$
 
-Next Alice uses Bulletproof rewinding, see [RFC 180](RFC-0180_BulletproofRewinding.md), to encrypt the value 
+Next Alice uses Bulletproof rewinding, see [RFC 180](RFCD-0180_BulletproofRewinding.md), to encrypt the value 
 \\( v_b \\) into the the Bulletproof for the commitment \\( C_b \\). For this she uses 
 \\( k_{rewind} =  \hash{k_{b}} \\) as the rewind_key and \\( k_{blinding} =  \hash{\hash{k_{b}}} \\) as the blinding 
 key.
