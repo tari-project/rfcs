@@ -316,3 +316,4 @@ Mask-recovery-only mode is linear and does not benefit from batched operations; 
 - [1] [Bulletproofs: Short Proofs for Confidential Transactions and More](https://eprint.iacr.org/2017/1066/20220414:014622)
 - [2] [Bulletproofs+: Shorter Proofs for Privacy-Enhanced Distributed Ledger](https://eprint.iacr.org/2020/735/20200618:154806)
 - [3] [Dalek's Bulletproofs docs](https://doc-internal.dalek.rs/bulletproofs/index.html) 
+- [4] [Bulletproofs+ Audit report](https://suyash67.github.io/homepage/assets/pdfs/bulletproofs_plus_audit_report_v1.1.pdf)
