@@ -52,7 +52,6 @@ This document describes the final proof-of-work strategy proposal for Tari main 
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
 * [RFC-0110: Base Nodes](RFC-0110_BaseNodes.md)
 
 This RFC replaces and deprecates [RFC-0130: Mining](RFCD-0130_Mining.md)
@@ -120,9 +119,12 @@ Tari's proof-of-work mining algorithm is summarized below:
 
 ### Tari mining hash
 
-First, the block header is hashed with the 256-bit Blake2b hashing algorithm based using the approach described in
-[consensus encoding](RFC-0121_ConsensusEncoding). The fields are hashed in the order:
+First, the block header is hashed with the 256-bit Blake2b hashing algorithm using 
+[domain-separated hashing](https://github.com/tari-project/tari-crypto/blob/main/src/hashing.rs), using the domain 
+`com.tari.base_layer.core.blocks`. The fields are hashed in the order:
+
 - version
+- block height
 - previous header hash
 - timestamp
 - input Merkle root
@@ -195,7 +197,8 @@ expected in block explorers and such that block hashes should always start with 
 This RFC is stable as of PR#4862
 # Change Log
 
-| Date         | Change                   | Author     |
-|:-------------|:-------------------------|:-----------|
-| 2022-11-26   | Finalise SHA-3 algorithm | CjS77      |
-| 2022-10-11   | First outline            | SWvHeerden |
+| Date       | Change                         | Author     |
+|:-----------|:-------------------------------|:-----------|
+| 2022-11-25 | Update mining hash decsription | CjS77      |
+| 2022-10-26 | Finalise SHA-3 algorithm       | CjS77      |
+| 2022-10-11 | First outline                  | SWvHeerden |

@@ -2,9 +2,9 @@
 
 ## Base Layer Consensus
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [S W van heerden](https://github.com/SWvheerden) and [Stanley Bondi](https://github.com/sdbondi)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Stanley Bondi](https://github.com/sdbondi) and [SW van heerden](https://github.com/SWvheerden)
 
 # Licence
 
@@ -52,7 +52,7 @@ The aim of this Request for Comment (RFC) is to describe the fields that a block
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
+* [RFC-0122: Burn outputs](RFC-0122_Burning.md)
 * [RFC-0130: Mining](RFCD-0130_Mining.md)
 * [RFC-0140: SyncAndSeeding](RFC-0140_Syncing_and_seeding.md)
 
@@ -72,19 +72,25 @@ Every [block] MUST:
 * have a total [transaction weight] less than the consensus maximum
 * be able to calculate matching Merkle roots ([kernel_mr], [output_mr], [witness_mr], and [input_mr]) 
 * each [transaction input] MUST: 
-  * spend an existing valid [UTXO] 
-  * have a maturity greater than the current block height
+  * be of an allowed [transaction input] version
+  * spend an existing valid [UTXO] with a maturity less than the current block height
+  * satisfy the [covenant] attached to the [UTXO]
+  * have a valid [script signature]
   * be in a canonical order (see [Transaction ordering])
 * each [transaction output] MUST:
-  * have a unique hash (`version || features || commitment || script || covenant || encrypted_values`)
+  * be of an allowed [transaction output] version
+  * have a unique domain separated hash (`version || features || commitment || script || covenant || encrypted_values`) with the domain (`transaction_output`)
   * have a unique commitment in the current [UTXO] set
   * be in a canonical order (see [Transaction ordering])
   * have a valid [range proof]
   * have a valid [metadata signature]
-  * have a valid script offset (\\gamma), as per [RFC-0201_TariScript](./RFC-0201_TariScript.md).
+  * contain only allowed opcodes in the script
 * each [transaction kernel] MUST 
-  * have a valid kernel signature
+  * have a valid kernel excess signature
   * have a unique excess
+* have a valid total script offset, \\( \gamma \\), see [script-offset].
+* the number of `BURNED` outputs MUST equal the number of `BURNED_KERNEL` kernels exactly,
+* the commitment values of each burnt output MUST match the commitment value of each corresponding `BURNED_KERNEL` exactly.
 * the transaction commitments and kernels MUST balance, as follows:
 
   $$
@@ -136,8 +142,9 @@ Every [block header] MUST contain the following fields:
 The [block header] MUST conform to the following:
 
 * The nonce and [PoW](#pow) must be valid for the [block header].
-  * The achieved difficulty MUST be greater than or equal to the [target difficulty].
+* The [achieved difficulty] MUST be greater than or equal to the [target difficulty].
 * The [FTL] and [MTP] rules, detailed below.
+* The block hash must not appear in the bad block list.
   
 The Merkle roots are validated as part of the full block validation, detailed in [Blocks].
 
@@ -151,7 +158,8 @@ This is the version currently running on the chain.
 The version MUST conform to the following:
 
 * It is represented as an unsigned 16-bit integer.
-* Version numbers MUST be incremented whenever there is a change in the blockchain schema starting from 1.
+* Version numbers MUST be incremented whenever there is a change in the blockchain schema or validation rules starting from 0.
+* The version must be one of the allowed versions for the consensus rules at this block's height.
 
 #### Height
 
@@ -170,7 +178,7 @@ This is the hash of the previous block's header.
 The prev_hash MUST conform to the following:
 
 * represented as an array of unsigned 8-bit integers (bytes) in little-endian format.
-* MUST be a hash of the entire contents of the previous block's header.
+* MUST be a hash of the entire contents of the previous block's header using the domain (`block_header`).
 
 #### Timestamp
 
@@ -264,16 +272,6 @@ The total_script_offset MUST conform to the following:
 
 * Must be transmitted as an array of unsigned 8-bit integers (bytes) in little-endian format
 
-#### Total_difficulty
-
-This is the total accumulated difficulty of the mined chained.
-
-The total_difficulty MUST conform to the following:
-
-* Must be transmitted as an unsigned 64-bit integer.
-* MUST be larger than the previous block's `total_difficulty`.
-* meet the difficulty target for the block as determined by the consensus difficulty algorithm.
-
 #### Nonce
 
 This is the nonce used in solving the Proof of Work.
@@ -288,10 +286,10 @@ This is the Proof of Work algorithm used to solve the Proof of Work. This is use
 
 The [PoW] MUST contain the following:
 
-* accumulated_monero_difficulty as an unsigned 64-bit integer.
-* accumulated_blake_difficulty as an unsigned 64-bit integer.
 * pow_algo as an enum (0 for Monero, 1 for Sha3).
-* pow_data as an array of unsigned 8-bit integers (bytes) in little-endian format.
+* pow_data for Monero blocks as an array of unsigned 8-bit integers (bytes) in little-endian format, containing the Monero merge-mining Proof-of-Work data.
+  * the RandomX seed, stored as `randomx_key` within the Monero block, must have not been first seen in a block with confirmations more than `max_randomx_seed_height`.
+* pow_data for Sha3 blocks must be empty.
 
 #### Difficulty Calculation
 [target difficulty]: #target-difficulty "Target Difficulty"
@@ -327,7 +325,7 @@ It is important to note that the two proof of work algorithms are calculated _in
 ### FTL
 [FTL]: #ftl "Future Time Limit"
 
-The Future Time Limit. This is how far into the future a time is accepted as a valid time. Any time that is more than the FTL is rejected until such a time that it is not less than the FTL.
+The Future Time Limit. This is how far into the future a time is accepted as a valid time. Any time that is more than the FTL is rejected until such a time that it is not more than the FTL.
 The FTL is calculated as (T*N)/20 with T and N defined as:
 T: Target time - This is the ideal time that should pass between blocks that have been mined.
 N: Block window - This is the number of blocks used when calculating difficulty adjustments.
@@ -359,16 +357,26 @@ final Merkle root. Input, output, and kernel ordering within a block is, therefo
 The block MUST be transmitted in canonical ordering. The advantage of this approach is that sorting does not need to be 
 done by the whole network, and verification of sorting is exceptionally cheap.
 
-Transaction outputs are sorted lexicographically by the byte representation of their Pedersen commitment i.e. `\\(k \cdot G + v \cdot H\\)`.
-Transaction inputs are sorted lexicographically by the [hash of the output](RFC-0121_ConsensusEncoding.md#transaction-output) that is spent by the input.
+- Transaction outputs are sorted lexicographically by the byte representation of their Pedersen commitment i.e. ( \\(k \cdot G + v \cdot H\\) ).
+- Transaction kernels are sorted lexicographically by the excess signature byte representation.
+- Transaction inputs are sorted lexicographically by the hash of the output that is spent by the input.
+
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 11 Oct 2022 | First stable        | SWvHeerden|
+
 
 
 [block]: Glossary.md#block
 [block header]: Glossary.md#block-header
 [transaction input]: Glossary.md#transaction
 [transaction output]: Glossary.md#unspent-transaction-outputs
+[transaction kernel]: Glossary.md#transaction-kernel
 [transaction weight]: Glossary.md#transaction-weight
 [metadata signature]: Glossary.md#metadata-signature
+[script signature]: Glossary.md#script-signature
 [utxo]: Glossary.md#unspent-transaction-outputs
 [range proof]: Glossary.md#range-proof
 [cut-through]: Glossary.md#cut-through
@@ -377,3 +385,5 @@ Transaction inputs are sorted lexicographically by the [hash of the output](RFC-
 [Ristretto]: https://docs.rs/curve25519-dalek/3.1.0/curve25519_dalek/ristretto/index.html
 [FTL]: RFC-0120_Consensus.md#FTL
 [MTP]: RFC-0120_Consensus.md#MTP
+[script-offset]: Glossary.md#script-offset
+[covenant]: RFC-0250_Covenants.md

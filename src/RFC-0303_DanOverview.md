@@ -53,7 +53,7 @@ Digital Assets Network (DAN).
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
+* [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
 
 ## Description
 

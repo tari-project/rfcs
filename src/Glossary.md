@@ -148,6 +148,16 @@ A commitment is a cryptographic primitive that allows one to commit to a chosen 
 others, with the ability to reveal the committed value later. Commitments are designed so that one cannot change the
 value or statement after they have committed to it.
 
+## Commitment and Public Key Signature
+
+[commitment and public key signature]: #commitment-and-public-key-signature
+
+A mathematical assertion of knowledge of the opening of a [commitment] and the private key corresponding to a public key, and
+which is bound to a message to produce a signature. In the context of Tari protocols, it is used to construct a
+[metadata signature] and script signature for transactions.
+
+Specifically, it is a Schnorr-type conjunction proof that uses the Fiat-Shamir technique for message binding.
+
 ## Communication Node
 
 [communication node]: #communication-node "A communication node that is responsible for maintaining the Tari
@@ -256,10 +266,19 @@ verified transactions from the mempool to build up transaction [block]s.
 
 [metadata signature]: #metadata-signature
 
-The metadata signature is an aggregated Commitment Signature ("ComSig") signature, attached to a transaction output and
+The metadata signature is a [commitment and public key signature], attached to a transaction output and
 signed with a combination of the homomorphic commitment private values \\( (v\_i \\, , \\, k\_i )\\), the spending key
 known only to the receiver, and sender offset private key \\(k\_{Oi}\\) known only to the sender. This prevents
 malleability of the UTXO metadata.
+
+## Script Signature
+
+[script signature]: #script-signature
+
+The script signature is an aggregated Commitment Signature ("ComSig") signature, attached to a transaction input and
+signed with a combination of the homomorphic commitment private values \\( (v\_i \\, , \\, k\_i )\\), the spending key
+known only to the sender, and script private key \\(k\_{Si}\\) known only to the sender. This ensures that the script is valid
+and that the input data has not changed.
 
 ## Mimblewimble
 
@@ -398,7 +417,7 @@ The script offset provides a proof that every script public key \\( K\_{Si} \\) 
 [sender offset key]: #sender-offset-keypair
 
 The sender offset private - public keypair, (\\( k\_{Oi} \\),\\( K\_{Oi} \\)), is used by the sender of an output to
-lock all its metadata by virtue of a [sender metadata signature].
+lock all its metadata by virtue of a [metadata signature].
 
 ## Spending Key
 
@@ -449,6 +468,13 @@ Tari uses a scripting system for transactions, not unlike [Bitcoin's scripting s
 called TariScript. It is also simple, stack-based, processed from left to right, not Turing-complete, with no loops. It
 is a list of instructions linked in a non&nbsp;malleable way to each output, specifying its conditions of spending.
 
+## Total Accumulated difficulty
+
+[total-accumulated-difficulty]: #total-accumulated-difficulty "The accumulated difficulty of a chain tip"
+
+The Accumulated difficulty of the chain is used to compare chain tips. Every block has a total accumulated difficulty that is calculated as 
+the sum of all achieved difficulties of Sha3 blocks multiplied by he sum of all achieved difficulties of RandomX blocks. This is represented as an u128.
+
 ## Transaction
 
 [transaction]: #transaction "Base layer tari coin transfers."
@@ -493,6 +519,13 @@ UTXOs represents all the Tari currently in circulation. In addition, the sum of 
 
 UTXO values are hidden by their [commitment]s. Only the owner of the UTXO and (presumably) the creator of the UTXO
 (either a [Coinbase transaction] or previous spender) know the value of the UTXO.
+
+## Transaction Kernel
+
+[transaction kernel]: #transaction-kernel
+
+A piece of data that is always kept as part of the blockchain and never pruned away. This contains the excess signature and
+serves as proof that the parties transacting know the blinding factors of their [commitment]s used in the transaction.
 
 ## Validator Node
 

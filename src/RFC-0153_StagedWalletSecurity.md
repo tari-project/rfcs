@@ -108,10 +108,14 @@ Once the user's balance exceeds the `MINIMUM_STAGE_ONE_BALANCE`, they will be pr
 seed phrase. The `MINIMUM_STAGE_ONE_BALANCE` is any non-zero balance by default.
 
 After the transaction that causes the balance to exceed `MINIMUM_STAGE_ONE_BALANCE` is confirmed, the user is presented
-with a friendly message: "You now have _real_ money in your wallet. If you accidentally delete your wallet app or lose
+with a friendly message: 
+
+```text
+You now have _real_ money in your wallet. If you accidentally delete your wallet app or lose
 your device, your funds are lost, and there is no way to recover them unless you have safely kept a copy of your
 `seed phrase` safe somewhere. Click 'Ok' to review and save the phrase now, or 'Do it later' to do it at a more
-convenient time".
+convenient time.
+```
 
 If the user elects _not_ to save the phrase, the message pops up again periodically. Once per day, or when the balance
 increases -- whichever is less frequent -- is sufficient without being too intrusive.
@@ -131,22 +135,41 @@ This can be done using the standard APIs and Authentication flows that each clou
 In particular, we do not ask for a password to encrypt the commitment data. The consequence is that anyone who gains
 access to this data -- by stealing the user's cloud credentials -- _could_ steal the user's funds.
 
-Therefore, the threshold for moving from this stage to Stage 3, `STAGE_TWO_THRESHOLD_BALANCE` is relatively low;
-somewhere in the region of $10 to $50.
+Therefore, the threshold for moving from this stage to Stage 2, `STAGE_TWO_THRESHOLD_BALANCE` is relatively low;
+somewhere in the region of \\$10 to \\$50.
 
 The seed phrase MUST NOT be stored on the cloud in Stage 1b. Doing so would result in all _future_ funds of the user being
 lost if the backup were ever compromised. Since the backup is unencrypted in Stage 1b, we store the minimum amount of data
 needed to recover the funds and limit the potential loss of funds in case of a breach to just that found in the commitments in the
-backup, which should not be more than $50.
+backup, which should not be more than \\$50.
+
+Therefore, stage 1b backups are really just exporting and importing of UTXO data. The consequence of this is 
+that restoring from a 1b backup does not restore the emoji id. On the other hand, you can easily import into any 
+other wallet (e.g. into another wallet on another device owned by the same user).
 
 Backups MUST be authorised by the user when the first cloud backup is made and SHOULD be automatically updated after each
 transaction is confirmed.
 
-Restoring a wallet from Stage 1b entails _importing_ the UTXO commitments into the user's current wallet.
-
 Wallet authors MAY choose to exclude Stage 1b from the staged security protocol.
 
 As usual, the user MUST be able to configure `STAGE_TWO_THRESHOLD_BALANCE` to suit their particular needs.
+
+When this threshold is reached, the user SHOULD be prompted with a call to back-up their data:
+
+```text
+Your wallet now holds a fair amount of value, which you probably don't want to lose. Unlike a physical wallet's 
+notes, it's possible to make a copy of your wallet's contents that you can use to recover your funds in case you 
+lose them.
+ 
+You should think about making a copy of your wallet's coins, which we will keep up date date after every transaction.
+
+If you have a copy of your seed phrase saved somewhere safe, and don't want to back up your coins into the cloud, you 
+can skip this step.
+```
+
+The user can pick between `backup my coins` or `I have my seed phrase. Skip backups for now`.
+
+If the user chooses to skip the backup, do not prompt them for stage 1b backups again.
 
 #### Stage 2 - full wallet backups
 
@@ -164,6 +187,32 @@ transaction.
 
 When migrating from Stage 1 to Stage 2, the Stage 1b backups SHOULD be deleted.
 
+Once the stage 2 threshold is reached, the user is again presented with a call-to-action:
+
+```text
+                   😎💰💰💰😎
+It's awesome that you're using [this Tari wallet] so much!
+You're a high-roller, so it's time to add another layer of security 
+to your wallet backups.
+
+Your funds will be safer if we encrypt your cloud backups with an 
+additional password of your own choosing. You need to make sure that 
+this password is very string and that YOU DO NOT FORGET it!
+
+(Whatever happens, you can always restore from your seed phrase, so 
+make sure you're still keeping this safe and secreted away).
+
+As an added benefit, password-encrypted backups allow us to backup your 
+transaction history as well!            
+```
+
+The user can choose to `Upgrade my backups`, `do this later`, `check my backup settings`. 
+
+The latter option takes the user to the wallet settings, where they can configure the various thresholds and 
+manually decide which backup strategy they want to pursue.
+
+They should be prompted periodically (once per day is sufficient) if they choose to defer the upgrade.
+
 #### Stage 3 - Sweep to cold wallet
 
 **Pending hardware wallet support**
@@ -179,7 +228,34 @@ Assuming one-sided payments are live, the user SHOULD be able to configure a `CO
 For security reasons, a user SHOULD be asked for their 2FA confirmation, if it is configured, before broadcasting the
 sweep transaction to the blockchain.
 
+A suitable prompt for the user once the `MAX_HOT_WALLET_BALANCE` threshold is reached is:
+
+```text
+🐋🐋🐋🐋🐋🐋🐋🐋  ❗❗❗ Whale Alert ❗❗❗  🐋🐋🐋🐋🐋🐋🐋🐋
+Your mobile wallet holds way more funds than would normally be 
+considered safe to walk around with in your pocket.
+
+You should really consider sweeping most of your balance into a 
+cold- or hardware wallet.   
+```
+
+Possible actions from this prompt include:
+* `Set up my cold wallet address`, if the cold wallet address has not been configured.
+* `Transfer funds to my cold wallet`, if the cold wallet _has_ been set up. The usual transaction confirmation flow 
+  SHOULD be followed here, and a stealth one-sided payment SHOULD be the default transaction type.
+* `I'll deal with this myself`, which takes the user to their backup settings.
+
+To avoid spamming the user, do not fire this prompt more than once every three days.
+
 #### Security hygiene
 
 - From stage 1 onwards Users should be asked periodically whether they still have their seed phrase written down.
   Once every two months is sufficient.
+
+# Change Log
+
+| Date       | Change               | Author              |
+|:-----------|:---------------------|:--------------------|
+| 2022-11-10 | Initial stable       | Adrian Truszczyński |
+| 2022-12-12 | Update user messages | CjS77               |
+| 2022-12-20 | Fix typo             | CjS77               |

@@ -53,7 +53,6 @@ their general approach for doing so.
 
 ## Related Requests for Comment
 
-* [RFC-0100: Base Layer](RFC-0100_BaseLayer.md)
 * [RFC-0140: SyncAndSeeding](RFC-0140_Syncing_and_seeding.md)
 
 $$
@@ -242,11 +241,13 @@ reorgs are no longer possible beyond that horizon. These nodes can sync from any
 
 # Change Log
 
-| Date        | Change              | Author |
-|:------------|:--------------------|:-------|
-| 18 Dec 2019 | First draft         | CjS77  |
-| 19 Oct 2022 | Stabilizing updates | brianp |
-
+| Date        | Change                  | Author     |
+|:------------|:------------------------|:-----------|
+| 07 Jan 2019 | First draft             | CjS77      |
+| 25 Jan 2019 | Pruning and cut-through | SWvheerden |
+| 07 Feb 2021 | Syncing                 | SWvheerden |
+| 23 Sep 2021 | Block weights           | sbondi     |
+| 19 Oct 2022 | Stabilizing updates     | brianp     |
 
 [archival nodes]: Glossary.md#archive-node
 [pruned nodes]: Glossary.md#pruned-node
