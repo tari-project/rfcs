@@ -236,17 +236,6 @@ Fields include:
 A peer may also contain reputation metrics (e.g. rejected_message_count, avg_latency) to be used to decide
 if a peer should be banned. This mechanism is yet to be decided.
 
-### General-purpose Messaging Protocol
-
-The messaging protocol is a simple fire-and-forget protocol where arbitrary messages can be sent between peers.
-If Alice wants to send a message to Bob, she will open a new [yamux] substream and [negotiate](#protocol-negotiation) the 
-`t/msg/0.1` protocol. If Bob wants to send a message to Alice, he will do the same. This means that two substreams (one per direction)
-are open for bi-directional message sending as required. 
-
-Message frames are length delimited (see [Tokio's LengthDelimitedCodec](https://docs.rs/tokio-util/latest/tokio_util/codec/length_delimited/)).
-At this level, no structure apart from the length-delimited framing is imposed on the message protocol allowing that 
-to be fully determined by domain-level components.
-
 #### PeerManager
 
 The PeerManager is responsible for managing the list of peers with which the node has previously interacted.
@@ -261,6 +250,17 @@ The PeerManager can
 - restore the peer list from the storage backend;
 - maintain lightweight views of peers, using a filter criterion, e.g. a list of peers that have been banned, i.e. a denylist; and
 - prune the routing table based on a filter criterion, e.g. last date seen.
+
+### General-purpose Messaging Protocol
+
+The messaging protocol is a simple fire-and-forget protocol where arbitrary messages can be sent between peers.
+If Alice wants to send a message to Bob, she will open a new [yamux] substream and [negotiate](#protocol-negotiation) the 
+`t/msg/0.1` protocol. If Bob wants to send a message to Alice, he will do the same. This means that two substreams (one per direction)
+are open for bi-directional message sending as required. 
+
+Message frames are length delimited (see [Tokio's LengthDelimitedCodec](https://docs.rs/tokio-util/latest/tokio_util/codec/length_delimited/)).
+At this level, no structure apart from the length-delimited framing is imposed on the message protocol allowing that 
+to be fully determined by domain-level components.
 
 #### Tari DHT and Base-Layer Messaging Protocol
 
@@ -408,21 +408,19 @@ Every Tari message MUST have a payload header containing the following fields at
 
 MessageTypes are represented as an unsigned eight-bit integer denoting the expected contents of the `MessageBody`.
 
-TariMessageTypeNone = 0;
-
-| Category   | Name                            | Valie   | Description                                                                                 |
-|------------|:--------------------------------|---------|---------------------------------------------------------------------------------------------|
-| Network    | PingPong                        | 1       | A PongPong message.                                                                         |
-| Blockchain | NewTransaction                  | 65      | Transaction submitted by a wallet or propagated by a base node.                             |
-| Blockchain | NewBlock                        | 66      | Block propagated by a base node.                                                            |
-| Wallet     | SenderPartialTransaction        | 67      | A partial MimbleWimble transaction submitted by a sender wallet to the receiver.            |
-| Wallet     | ReceiverPartialTransactionReply | 68      | Reply to SenderPartialTransaction submitted by a receiver wallet to the sender.             |
-| Blockchain | BaseNodeRequest                 | 69      | Base node request message.                                                                  |
-| Blockchain | BaseNodeResponse                | 70      | Base node response in reply to a BaseNodeRequest message.                                   |
-| Blockchain | MempoolRequest                  | 71      | Base node mempool request message.                                                          |
-| Blockchain | MempoolResponse                 | 72      | Base node response in reply to a MempoolRequest message.                                    |
-| Wallet     | TransactionFinalized            | 73      | Finalized transaction message sent by a sender to receiver wallet.                          |
-| Wallet     | TransactionCancelled            | 74      | A courtesy message sent by a wallet to inform the other that the transaction is cancelled.  |
+| Category   | Name                            | Value | Description                                                                                 |
+|------------|:--------------------------------|-------|---------------------------------------------------------------------------------------------|
+| Network    | PingPong                        | 1     | A PongPong message.                                                                         |
+| Blockchain | NewTransaction                  | 65    | Transaction submitted by a wallet or propagated by a base node.                             |
+| Blockchain | NewBlock                        | 66    | Block propagated by a base node.                                                            |
+| Wallet     | SenderPartialTransaction        | 67    | A partial MimbleWimble transaction submitted by a sender wallet to the receiver.            |
+| Wallet     | ReceiverPartialTransactionReply | 68    | Reply to SenderPartialTransaction submitted by a receiver wallet to the sender.             |
+| Blockchain | BaseNodeRequest                 | 69    | Base node request message.                                                                  |
+| Blockchain | BaseNodeResponse                | 70    | Base node response in reply to a BaseNodeRequest message.                                   |
+| Blockchain | MempoolRequest                  | 71    | Base node mempool request message.                                                          |
+| Blockchain | MempoolResponse                 | 72    | Base node response in reply to a MempoolRequest message.                                    |
+| Wallet     | TransactionFinalized            | 73    | Finalized transaction message sent by a sender to receiver wallet.                          |
+| Wallet     | TransactionCancelled            | 74    | A courtesy message sent by a wallet to inform the other that the transaction is cancelled.  |
 
 All other message types are reserved for future use.
 
