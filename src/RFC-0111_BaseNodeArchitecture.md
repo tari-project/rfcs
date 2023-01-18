@@ -4,9 +4,9 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za, [Jorge Antonio](https://github.com/jorgeantonio21))
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za), [Jorge Antonio](https://github.com/jorgeantonio21)
 
-# License
+# Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
@@ -79,8 +79,8 @@ The P2P message types this service subscribes to are:
 
 ### Base Node State Machine Service
 
-This service is essentially a finite state machine that synchronizes its blockchain state with its peers. When the state 
-machine decides it needs to synchronize its chain state with a peer it uses the Base Node Sync RPC service to do so. The
+This service is essentially a finite state machine that synchronises its blockchain state with its peers. When the state 
+machine decides it needs to synchronise its chain state with a peer it uses the Base Node Sync RPC service to do so. The
 RPC service allows for streaming of headers and blocks in a far more efficient manner than using the P2P messaging.
 
 This service does not provide a local API but does provide an event stream and Status Info watch channel for other 
@@ -93,7 +93,7 @@ block. The mempool is ephemeral and non-consensus critical, and as such may be a
 a large mempool is far more important for Base Nodes serving miners than those serving wallets. The mempool structure 
 itself is a set of hash maps as described in [RFC-0190]
 
-When the node reboots the Mempool sync service will contact peers and sync valid mempool transactions from them. After 
+When either the node reboots, or it synchronises a default number of 5 blocks, the Mempool sync service will contact peers and sync valid mempool transactions from them. After 
 it has synced this service runs to field such requests from other peers.
 
 The Mempool service handles Mempool Service Requests which it can receive from the P2P comms stack via its 
@@ -147,7 +147,7 @@ be thread-safe.
 ### P2P communications
 The Tari Peer to Peer messaging protocol is defined in [RFC-0172]. It is a fire-and-forget style protocol. Messages can 
 be sent directly to a known peer, sent indirectly to an offline or unknown peer and broadcast to a set of peers. When
-a message is sent to specific peer it is propagated to the peers local neighborhood and stored by those peers until it
+a message is sent to specific peer it is propagated to the peers local neighbourhood and stored by those peers until it
 comes online to receive the message. Messages that are broadcast will be propagated around the network until the whole
 network has received them, they are not stored.
 
@@ -161,7 +161,7 @@ Examples of RPC services running in
 Base Node are:
   - **Wallet RPC service**: An RPC interface containing methods used by wallets to submit and query transactions on a 
     Base Node
-  - **Base Node Sync RPC Service**: Used by the Base Node State Machine Service to synchronize blocks
+  - **Base Node Sync RPC Service**: Used by the Base Node State Machine Service to synchronise blocks
   - **Mempool RPC Service**: Provides the Mempool Service API via RPC
 
 ### gRPC Interface
@@ -192,7 +192,7 @@ A non-exhaustive list of methods the base node module API will expose includes:
   * Returning a list of transaction ranked by some criterion (of interest to miners)
   * The current size of the mempool (in transaction weight)
 * Block and transaction validation calls
-* Block synchronization calls
+* Block synchronisation calls
 
 # Change Log
 
@@ -202,6 +202,7 @@ A non-exhaustive list of methods the base node module API will expose includes:
 | 11 Aug 2019 | Updates             | CjS77     |
 | 15 Jun 2021 | Significant updates | SimianZa  |
 | 11 Sep 2022 | Minor update        | JorgeAnt  |
+| 18 Jan 2023 | Minor update        | JorgeAnt  |
 
 [gRPC]: https://grpc.io/
 [RFC-0190]: RFC-0190_Mempool.md
