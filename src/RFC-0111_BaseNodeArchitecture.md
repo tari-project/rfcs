@@ -2,15 +2,15 @@
 
 ## Base Node Architecture
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za), [Jorge Antonio](https://github.com/jorgeantonio21)
 
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
-Copyright 2021 The Tari Development Community
+Copyright 2022 The Tari Development Community
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 following conditions are met:
@@ -71,8 +71,8 @@ The P2P message types this service subscribes to are:
 * **NewBlock:** A newly mined block is being propagated over the network. If the node has not seen the block before, the
   node will validate it. Its action depends on the validation outcome:
   * _Invalid block_ - drop the block.
-  * _Valid block appending to the longest chain_ - add the block to the local state; propagate the block to peers.
-  * _Valid block forking off main chain_ - add the block to the local state; propagate the block to peers.
+  * _Valid block appending to the longest chain_ - add the block to the local state and propagate the block to peers.
+  * _Valid block forking off main chain_ - add the block to the local state and propagate the block to peers.
   * _Valid block building off unknown block_ - add the orphan block to the local state.
 
 * **BaseNodeServiceRequest:** A collection of requests for chain data from the node.
@@ -80,7 +80,7 @@ The P2P message types this service subscribes to are:
 ### Base Node State Machine Service
 
 This service is essentially a finite state machine that synchronises its blockchain state with its peers. When the state 
-machine decides it needs to synchronize its chain state with a peer it uses the Base Node Sync RPC service to do so. The
+machine decides it needs to synchronise its chain state with a peer it uses the Base Node Sync RPC service to do so. The
 RPC service allows for streaming of headers and blocks in a far more efficient manner than using the P2P messaging.
 
 This service does not provide a local API but does provide an event stream and Status Info watch channel for other 
@@ -93,7 +93,7 @@ block. The mempool is ephemeral and non-consensus critical, and as such may be a
 a large mempool is far more important for Base Nodes serving miners than those serving wallets. The mempool structure 
 itself is a set of hash maps as described in [RFC-0190]
 
-When the node reboots the Mempool sync service will contact peers and sync valid mempool transactions from them. After 
+When either the node reboots, or it synchronises a default number of 5 blocks, the Mempool sync service will contact peers and sync valid mempool transactions from them. After 
 it has synced this service runs to field such requests from other peers.
 
 The Mempool service handles Mempool Service Requests which it can receive from the P2P comms stack via its 
@@ -124,7 +124,6 @@ Peer discovery is a key service that blockchain nodes provide so that the peer m
 nodes making up the network.
 
 In Tari, the peer-to-peer network is not only used by full nodes (Base Nodes), but also by Validator Nodes, and
-
 Tari and Digital Assets Network (DAN) clients.
 
 For this reason, peer management is handled internally by the Comms layer. If a Base Node wants to propagate a message, 
@@ -162,7 +161,7 @@ Examples of RPC services running in
 Base Node are:
   - **Wallet RPC service**: An RPC interface containing methods used by wallets to submit and query transactions on a 
     Base Node
-  - **Base Node Sync RPC Service**: Used by the Base Node State Machine Service to synchronize blocks
+  - **Base Node Sync RPC Service**: Used by the Base Node State Machine Service to synchronise blocks
   - **Mempool RPC Service**: Provides the Mempool Service API via RPC
 
 ### gRPC Interface
@@ -201,7 +200,9 @@ A non-exhaustive list of methods the base node module API will expose includes:
 |:------------|:--------------------|:----------|
 | 2 Jul 2019  | First outline       | CjS77     |
 | 11 Aug 2019 | Updates             | CjS77     |
-| 15 Jun 2021 | Significant updates | SimianZa |
+| 15 Jun 2021 | Significant updates | SimianZa  |
+| 11 Sep 2022 | Minor update        | JorgeAnt  |
+| 18 Jan 2023 | Minor update        | JorgeAnt  |
 
 [gRPC]: https://grpc.io/
 [RFC-0190]: RFC-0190_Mempool.md
