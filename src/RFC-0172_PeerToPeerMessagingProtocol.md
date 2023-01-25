@@ -348,8 +348,9 @@ The following validation rules MUST be applied to all incoming messages:
   - If able to decrypt the message signature:
     - the signature MUST be valid
     - the destination public key MUST match the local public key
-- If `ENCRYPTED` is not set
+- If the `ENCRYPTED` flag is not set, indicating a cleartext message
   - The `message_signature` MAY be specified. If it is, it MUST be valid.
+  - Other fields relating to encryption e.g. `ephemeral_public_key` MAY be set but SHOULD be ignored.
 
 If any of these rules fail the message SHOULD be discarded.
 
@@ -397,6 +398,9 @@ It may be encrypted for a particular destination. The contents of these BLOBs ar
 
 The Tari protocol inserts a `MessageHeader` at index 0 and `MessageBody` at index 1.
 
+A zero-sized encoding of `EnvelopeBody` is permitted as that is a valid proto3 encoding. When applying [message encryption](#message-encryption), 
+the body MUST be padded and, therefore, a message SHOULD be discarded if the encoded `EnvelopeBody` is zero-sized.
+
 ##### MessageHeader
 
 Every Tari message MUST have a payload header containing the following fields at index 0 in the `EnvelopeBody`:
@@ -433,7 +437,7 @@ To route an encrypted message, the following requirements MUST be met:
 - The destination public key MUST be specified.
 - The `message_signature` MUST be non-empty and SHOULD be encrypted.
 - The `ephemeral_public_key` MUST be a valid [Ristretto] public key.
-- The `EnvelopeBody` MUST be non-empty.
+- The `EnvelopeBody` MUST be non-empty, as message padding (described below) is required.
 - If the message `expiry` is specified, a routing node MAY discard the message if the expiry time has passed.
 
 A message is encrypted using the following procedure:
@@ -492,6 +496,7 @@ discarded and not propagated further.
 | 13 Jun 2022 | Moved from tari repo          | sdbondi       |
 | 9 Nov 2022  | Removed I2P and ZeroMQ        | stringhandler |
 | 17 Jan 2023 | Implementation parity updates | sdbondi       |
+| 25 Jan 2023 | Clarify empty body rules      | sdbondi       |
 
 [communication client]: Glossary.md#communication-client
 [communication node]: Glossary.md#communication-node
