@@ -369,7 +369,7 @@ done by the whole network, and verification of sorting is exceptionally cheap.
 | Date        | Change              | Author    |
 |:------------|:--------------------|:----------|
 | 11 Oct 2022 | First stable        | SWvHeerden|
-| 13 Mrt 2023 | Add mention of coinbase extra        | SWvHeerden|
+| 13 Mar 2023 | Add mention of coinbase extra        | SWvHeerden|
 
 
 
