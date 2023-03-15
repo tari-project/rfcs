@@ -118,6 +118,9 @@ A coinbase transaction contained in a block MUST:
 * have a value exactly equal to the emission at the block height it was minted (see [emission schedule]) 
   plus the total transaction fees within the block
 * have a lock-height as per consensus
+  
+A coinbase transaction contained in a block CAN:
+* include any arbitrary 64 bytes of extra data, [coinbase-extra]
 
 ### Block Headers
 [block headers]: #block-headers "Block headers"
@@ -366,10 +369,12 @@ done by the whole network, and verification of sorting is exceptionally cheap.
 | Date        | Change              | Author    |
 |:------------|:--------------------|:----------|
 | 11 Oct 2022 | First stable        | SWvHeerden|
+| 13 Mar 2023 | Add mention of coinbase extra        | SWvHeerden|
 
 
 
 [block]: Glossary.md#block
+[coinbase-extra]:  Glossary.md#coinbase-extra
 [block header]: Glossary.md#block-header
 [transaction input]: Glossary.md#transaction
 [transaction output]: Glossary.md#unspent-transaction-outputs

@@ -117,6 +117,13 @@ A hash of the state of a Digital Asset that is recorded on the base layer.
 The first transaction in every Tari block yields a [Block Reward] according to the Tari [emission Schedule] and is
 awarded to the miner that performed the Proof of Work for the block.
 
+## Coinbase extra
+
+[coinbase extra]: #coinbase-extra
+
+An arbitrary 64 bytes can be included with the coinbase utxo that can be used to store any data. This can be used to identify the pool that mined the
+block for example or a Merkle root used when merge mining with Tari as the parent chain.
+
 ## Committee
 
 [committee]: #committee "A group of validator nodes that are responsible for managing a specific Digital Asset"
