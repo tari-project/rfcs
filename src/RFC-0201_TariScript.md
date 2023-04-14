@@ -54,6 +54,7 @@ payments and atomic swaps.
 
 ## Related Requests for Comment
 
+- [RFC-0182: Commitment and public key signatures](RFC-0182_CommitmentSignatures.md)
 - [RFC-0200: Base Layer Extensions](BaseLayerExtensions.md)
 - [RFC-0202: TariScript Opcodes](RFC-0202_TariScriptOpcodes.md)
 - [RFC-0204: TariScript Examples](RFC-0204_TariScriptExamples.md)
@@ -216,54 +217,6 @@ The script, as well as other UTXO metadata, such as the output features are sign
 key to prevent malleability. As we will describe later, the notion of a [script offset] is introduced to prevent 
 cut-through and forces the preservation of these commitments until they are recorded into the blockchain.
 
-### Commitment and public key signature
-
-The Commitment and Public Key signature ([CAPK Signature]) is used in Tari protocols as part of transaction 
-authorization. It can be thought of as a combination (not addition) of a commitment signature ([Signature on Commitment 
-values] by F. Zhang et. al. and [Commitment Signature] by G. Yu.) and a Schnorr Signature. Given a commitment 
-\\( C  = a \cdot H  + x \cdot G \\) and group element \\( PK = y \cdot G \\)\, a CAPK Signature is based on a 
-representation proof of both openings \\( (a, x) \\) and \\( y \\). It additionally binds to arbitrary message data 
-\\( m \\) via the challenge to produce a signature construction. 
-
-The construction works as follows:
-- Sample scalar nonces \\( (r_a, r_x, r_y) \\) uniformly at random.
-- Compute ephemeral values \\( C_{eph} = r_a \cdot H + r_x \cdot G \\) and \\( PK_{eph} = r_y \cdot G \\) where
-  \\( C_{eph} \\) is the ephemeral commitment and \\( PK_{eph} \\) is the ephemeral public key.
-- Use strong Fiat-Shamir to produce a challenge \\( e \\). If \\( e \overset{?}{=} 0 \\) (this is unlikely), abort and 
-  start over.
-- Compute the responses \\( u_a = r_a + e \cdot a \\) and \\( u_x = r_x + e \cdot x \\) and \\( u_y = r_y + e \cdot y\\) 
-  where \\( e \\) is the challenge scalar.
-
-A commitment signature tuple has the form \\( (u_a, u_x, C_{eph}) \\) where \\( u_a \\) and \\( u_x \\) are the first  
-second commitment signature scalars respectively. A Schnorr signature tuple has the form \\( (u_y, PK_{eph}) \\) where 
-\\( u_y \\) is the public key signature scalar. The CAPK Signature therefor has the combined form 
-\\( (u_a, u_x, C_{eph}, u_y, PK_{eph}) \\). Note that in this context a signature scalar is also a private key. 
-
-To verify:
-- The verifier computes the challenge \\( e \\) and rejects the signature if \\( e \overset{?}{=} 0 \\) (this is 
-  unlikely).
-- Verification succeeds if and only if the following equations hold:
-
-$$
-\begin{aligned}
-u_a \cdot H + u_x \cdot G &\overset{?}{=} C_{eph} + e \cdot C \\\\
-u_y \cdot G &\overset{?}{=} PK_{eph} + e \cdot PK
-\end{aligned}
-\tag{1}
-$$
-
-We note that it is possible to make verification slightly more efficient by reducing calculation of the number of 
-group elements by one. To do so, the verifier selects a nonzero scalar weight \\( w \\) uniformly at random (not 
-through Fiat-Shamir!) and accepts the signature if and only if the following equation holds:
-
-$$
-\begin{aligned}
-u_a \cdot H + (u_x + w \cdot u_y) G  - C_{eph} - w \cdot PK_{eph} - e \cdot C - (w \cdot e) PK \overset{?}{=} 0
-\end{aligned}
-\tag{2}
-$$
-
-
 ### Transaction output
 
 The definition of a Tari transaction output is:
@@ -294,10 +247,10 @@ pub struct TransactionOutput {
 }
 ```
 
-The [metadata signature] is a [CAPK Signature] (as described [here](#commitment-and-public-key-signature)) signed with 
+The [metadata signature] is a [CAPK signature] (as described in [RFC-0182](./RFC-0182_CommitmentSignatures.md)) signed with 
 the commitment value, \\( v_i \\), known by the sender and receiver, the spending key, \\( k_i \\), known by the 
 receiver and the sender offset private key, \\(k\_{Oi}\\), known by the sender. (_Note that \\( k\_{Oi} \\) should be 
-treated as a nonce._) The CAPK Signature is effectively an aggregated CAPK Signature between the sender and receiver, 
+treated as a nonce._) The CAPK signature is effectively an aggregated CAPK signature between the sender and receiver, 
 and the challenge consists of all the transaction output metadata, effectively forming a contract between the sender and 
 receiver, making all those values non-malleable and ensuring only the sender and receiver can enter into this contract.
 
@@ -350,7 +303,7 @@ e &= \hash{ R_{MSi} \cat R_{MRi} \cat \script_i \cat F_i \cat K_{Oi} \cat C_i \c
 \tag{6}
 $$
 
-The receiver can now calculate their portion of the aggregated CAPK Signature as:
+The receiver can now calculate their portion of the aggregated CAPK signature as:
 
 $$
 \begin{aligned}
@@ -366,7 +319,7 @@ The receiver sends \\( s_{MRi} = (a_{MRi}, b_{MRi}, R_{MRi} ) \\) along with the
 <u>Sender:</u>
 
 The sender starts by calculating the final challenge \\( e \\) (6) and then completes their part of the aggregated CAPK 
-Signature.
+signature.
 
 $$
 \begin{aligned}
@@ -375,7 +328,7 @@ b_{MSi} &= r_{MSi_b} + e \cdot k\_{Oi}
 \tag{8}
 $$
 
-The final CAPK Signature is combined as follows:
+The final CAPK signature is combined as follows:
 
 $$
 \begin{aligned}
@@ -442,7 +395,7 @@ pub struct TransactionInput {
 }
 ```
 
-The [script signature] is a [CAPK Signature]  using a combination of the output commitment private values 
+The [script signature] is a [CAPK signature]  using a combination of the output commitment private values 
 \\( (v\_i \\, , \\, k\_i )\\) and [script private key] \\(k\_{Si}\\) to prove ownership thereof. It signs the script, 
 the script input, [script public key] and the commitment.
 
@@ -777,8 +730,7 @@ Thanks to David Burkett for proposing a method to prevent cut-through and willin
 [metadata signature]: Glossary.md#metadata-signature
 [script signature]: Glossary.md#script-signature
 [Signature on Commitment values]: https://documents.uow.edu.au/~wsusilo/ZCMS_IJNS08.pdf
-[Commitment Signature]: https://eprint.iacr.org/2020/061.pdf
-[CAPK Signature]: Glossary.md#commitment-and-public-key-signature
+[CAPK signature]: Glossary.md#commitment-and-public-key-signature
 [script private key]: Glossary.md#script-keypair
 [script public key]: Glossary.md#script-keypair
 [sender offset]: Glossary.md#sender-offset-keypair
