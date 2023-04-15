@@ -1,5 +1,11 @@
 # RFC-0204/TariScriptExamples
-
+$$
+\newcommand{\script}{\alpha} % utxo script
+\newcommand{\input}{ \theta }
+\newcommand{\cat}{\Vert}
+\newcommand{\so}{\gamma} % script offset
+\newcommand{\hash}[1]{\mathrm{H}\bigl({#1}\bigr)}
+$$
 ## TariScript Examples
 
 ![status: stable](theme/images/status-stable.svg)
