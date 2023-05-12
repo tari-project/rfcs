@@ -98,11 +98,11 @@ tari://testnet/payments/send?amount=1.23&pubKey=01234556789abcde
    
 The data contains transaction information used in the send tokens process.
 
-| Value Name | Value Type | Note                         |
-| ---------- | :--------: | ---------------------------- |
-| publicKey  | String     | Receiver's public key        |
-| amount     | UInt64?    | The amount in micro Tari     |
-| note       | String?    | Note passed with transaction |
+| Value Name   | Value Type | Note                         |
+| ----------   | :--------: | ---------------------------- |
+| tariAddress  | String     | Receiver's Tari Address      |
+| amount       | UInt64?    | The amount in micro Tari     |
+| note         | String?    | Note passed with transaction |
 
 * `{network_name}/base_nodes/add`
 
@@ -112,3 +112,9 @@ The data contains a custom base node configuration. This deep link adds a new ba
 | ---------- | :--------: | ----------------------------------------------------------- |
 | name       | String     | The name of the base node                                   |
 | peer       | String     | Base node's public link and onion address combined together |  
+
+# Change Log
+
+| Date        | Change              | Author    |
+|:------------|:--------------------|:----------|
+| 19 Apr 2023 | First stable, replace public key with tari address     | SWvHeerden|
