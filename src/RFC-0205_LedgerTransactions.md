@@ -60,12 +60,12 @@ This Request for Comment (RFC) presents a design for a hardware wallet with Mimb
 
 ## Introduction
 
-Hardware wallets are secure physical devices used to protect crypto assests and funds by requiring user interaction from the device.
-These air gapped devices are used to sign for transaction by keeping all the secrets from the transactions on the hardware device. If
-the host machines that run the wallets are compromised by malware the secrets from the transactions are still safe as they not
-kept on the machine as with normal wallets. The devices are very low power and only featuring a very limited processing power. MimbleWimble 
+Hardware wallets are secure physical devices used to protect crypto assets and funds by requiring user interaction from the device.
+These air-gapped devices are used to sign for transactions by keeping all the secrets from the transactions on the hardware device. If
+the host machines that run the wallets are compromised by malware the secrets from the transactions are still safe as they are not
+kept on the machine as with regular wallets. The devices are very low power and only feature a very limited processing power. MimbleWimble 
 has intensive crypto operations that are in some instances very slow or not able to run on the hardware wallet at all. This RFC describes a way to 
-get around these limitations in order to have fully functional secure hardware wallet integration. 
+get around these limitations to have fully functional secure hardware wallet integration. 
 
 ## Background
 
@@ -73,20 +73,20 @@ Vanilla [Mimblewimble] only has a single secret per [UTXO], the blinding factor 
 
 ## Requirements
 
-In order to properly implement hardware wallets we need to following requirements to be met:
-* No UTXO can be spend without a user physically approving the transaction on the hardware wallet.
-* Users need to verify transaction property when singing for transaction.
+To properly implement hardware wallets we need the following requirements to be met:
+* No UTXO can be spent without a user physically approving the transaction on the hardware wallet.
+* Users need to verify transaction properties when signing for transactions.
 * The user must be able to receive transactions without having to authorize them on the hardware wallet.
 
 ## Implementation
 
 ### Entities
-Normal transactions have only a single entity, the wallet which controls all secrets and transactions. But with hardware wallets we need to define two distinct types:
-* Signer: This the devices that keeps the secrets for the transactions and approves it, aka the hardware wallet.
-* Helper: This device is the program that helps the signer construct the transaction and send over the network, aka wallet.
+Normal transactions have only a single entity, the wallet which controls all secrets and transactions. But with hardware wallets, we need to define two distinct types:
+* Signer: This is the device that keeps the secrets for the transactions and approves them, aka the hardware wallet.
+* Helper: This device is the program that helps the signer construct the transaction and send it over the network, aka wallet.
 
-### Process overview
-By splitting the ownership of the [UTXO]'s secret by assigning knowledge of only the script key (\\( k_s \\) ) to the signer, we can lift much of the heavy cryptography like bulletproof creation to the helper deivce by exposing (\\( k_i \\) ) to it. By looking how [one-sided-stealth] transactions are created, we can construct the script key in such a way that the helper can calculate the public script key, but cannot calculate the private script key.
+### Process Overview
+By splitting the ownership of the [UTXO]'s secret by assigning knowledge of only the script key (\\( k_s \\) ) to the signer, we can lift much of the heavy cryptography like bulletproof creation to the helper device by exposing (\\( k_i \\) ) to it. By looking at how [one-sided-stealth] transactions are created, we can construct the script key in such a way that the helper can calculate the public script key, but cannot calculate the private script key.
 
 All [UTXO]s created will be created with a script `PushPubkey(K_S)`. The key (\\( k_s \\) ) is created as follows:
 $$
@@ -99,35 +99,35 @@ $$
 
 The blinding factor (\\( k_i \\) ) is used as a random nonce when creating the script key. This means the helper can create the public key without the signer present, and the signer can then at a later stage create the private key from the nonce. The key pair (\\( a, A \\) ) is the master private key from the signer. The private key (\\( a \\) ) is kept secret by the signer at all times.
 
-### Initialzation
-Adding a hardware wallet to a wallet we need to ensure that all keys are only derived from a single seed phrase which is provided from the hardware wallet. 
+### Initialization
+Adding a hardware wallet to a wallet we need to ensure that all keys are only derived from a single seed phrase provided by the hardware wallet. 
 
 Helper asks signer for master helper key (\\( k_H \\) ). 
 This key is derived from the signer seed phrase.
 
 ### Transaction receiving
-When a transaction is received the helper constructs the new [UTXO] with its Rangeproof. Choosing a new (\\( k_i \\) ) for the [UTXO] it calculates a new \\( s \\) and \\( K_S \\). It attaches the script `PushPubkey(K_S)` to output.
+When a transaction is received the helper constructs the new [UTXO] with its Rangeproof. Choosing a new (\\( k_i \\) ) for the [UTXO], it calculates a new \\( s \\) and \\( K_S \\). It attaches the script `PushPubkey(K_S)` to output.
 
 ### Transaction sending
-When the user wants to send a transaction, the helper retrieves the desired [UTXO]. The helper gives asks the signer the transaction. 
+When the user wants to send a transaction, the helper retrieves the desired [UTXO]. The helper gives asks the signer to sign the transaction. 
 The singer calculates \\( s \\) from \\( a, K_i \\) and calculates \\( k_s \\) to sign the transaction. 
 The signer creates a random nonce \\( k_O \\) to use for the script_offset. It signs the metadata signature with \\( k_O \\), and supplies the script_offset to the helper. 
-The helper can attaches the correct signatures to the [UTXO]s and ship the transaction.
+The helper can attach the correct signatures to the [UTXO]s and ship the transaction.
 
 ### Receiving normal one-sided transaction
 This can be done by the helper asking the signer for a public key. And advertising this public key as the destination public key for a 1-sided transaction. 
-The helper can scan the block chain for this public key. 
+The helper can scan the blockchain for this public key. 
 
 ### Receiving one-sided-stealth
 `TODO`
 
 ### Output recovery
 When creating outputs the wallet encrypts the blinding factor (\\k_i \\) and value \\( v \\) with a key derived from (\\( k_H \\) ).
-Because the key (\\( k_H \\) ) is calculated from the seed phrase of the signer, this will be the same each time. The helper can try to decrypt each scanned output, when it is successful it knows it has found an own output. 
+Because the key (\\( k_H \\) ) is calculated from the seed phrase of the signer, this will be the same each time. The helper can try to decrypt each scanned output, when it is successful it knows it has found its own output. 
 
 ## Security
 Because the script key is required for spending, it is the only key that needs to be kept secret. 
-The following table explains what an attacker can do apon learing a key from the helper
+The following table explains what an attacker can do upon learning a key from the helper
 
 | key         | Worst case scenario          | 
 |:------------|:-----------------------------|
@@ -145,3 +145,4 @@ The keys ( \\( a, k_S, k_O \\) ) are only known to the signer, and should never 
 | Date        | Change                       | Author    |
 |:------------|:-----------------------------|:----------|
 | 17 May 2023 | First draft                  | swvheerden|
+
