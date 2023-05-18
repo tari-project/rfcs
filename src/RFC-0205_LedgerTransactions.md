@@ -69,7 +69,7 @@ get around these limitations to have fully functional secure hardware wallet int
 
 ## Background
 
-Vanilla [Mimblewimble] only has a single secret per [UTXO], the blinding factor (\\( k_i \\) ), the Tari protocol extends the [Mimblewimble] protocol to include scripting in the form of [TariScript]. This adds a second secret per [UTXO] called the script_key (\\( k_s \\) ). In practical terms this means that while vanilla [Mimblewimble] only requires that a wallet wishing to spend an [UTXO], prove knowledge of (\\( k_i \\) ) by singing the kernel signature, this is not sufficient for Tari. A Tari wallet must also prove knowledge of the script key (\\( k_s \\) ), by signing the script signature. 
+Vanilla [Mimblewimble] only has a single secret per [UTXO], the blinding factor (\\( k_i \\) ), the Tari protocol extends the [Mimblewimble] protocol to include scripting in the form of [TariScript]. This adds a second secret per [UTXO] called the script_key (\\( k_s \\) ). In practical terms this means that while vanilla [Mimblewimble] only requires that a wallet wishing to spend an [UTXO], prove knowledge of (\\( k_i \\) ) by producing the kernel signature, this is not sufficient for Tari. A Tari wallet must also prove knowledge of the script key (\\( k_s \\) ), by producing the script signature. 
 
 ## Requirements
 
@@ -82,8 +82,8 @@ To properly implement hardware wallets we need the following requirements to be 
 
 ### Entities
 Normal transactions have only a single entity, the wallet which controls all secrets and transactions. But with hardware wallets, we need to define two distinct types:
-* Signer: This is the device that keeps the secrets for the transactions and approves them, aka the hardware wallet.
-* Helper: This device is the program that helps the signer construct the transaction and send it over the network, aka wallet.
+* Signer: This is the entity that keeps the secrets for the transactions and approves them, aka the hardware wallet.
+* Helper: This entity is the program that helps the signer construct the transaction, send it over the network and scan the network, aka wallet.
 
 ### Process Overview
 By splitting the ownership of the [UTXO]'s secret by assigning knowledge of only the script key (\\( k_s \\) ) to the signer, we can lift much of the heavy cryptography like bulletproof creation to the helper device by exposing (\\( k_i \\) ) to it. By looking at how [one-sided-stealth] transactions are created, we can construct the script key in such a way that the helper can calculate the public script key, but cannot calculate the private script key.
@@ -91,13 +91,12 @@ By splitting the ownership of the [UTXO]'s secret by assigning knowledge of only
 All [UTXO]s created will be created with a script `PushPubkey(K_S)`. The key (\\( k_s \\) ) is created as follows:
 $$
 \begin{aligned}
-s = Hash(k_i * A) \\\\
-k_S = s + a \\\\
-K_S = s \cdot G + A
+k_S = k_i + a \\\\
+K_S = k_i \cdot G + A
 \end{aligned}
 $$
 
-The blinding factor (\\( k_i \\) ) is used as a random nonce when creating the script key. This means the helper can create the public key without the signer present, and the signer can then at a later stage create the private key from the nonce. The key pair (\\( a, A \\) ) is the master private key from the signer. The private key (\\( a \\) ) is kept secret by the signer at all times.
+The blinding factor (\\( k_i \\) ) is used as a random nonce when creating the script key. This means the helper can create the public key without the signer present, and the signer can then at a later stage create the private key from the nonce. The key pair (\\( a, A \\) ) is the master key pair from the signer. The private key (\\( a \\) ) is kept secret by the signer at all times.
 
 ### Initialization
 Adding a hardware wallet to a wallet we need to ensure that all keys are only derived from a single seed phrase provided by the hardware wallet. 
@@ -110,8 +109,8 @@ When a transaction is received the helper constructs the new [UTXO] with its Ran
 
 ### Transaction sending
 When the user wants to send a transaction, the helper retrieves the desired [UTXO]. The helper gives asks the signer to sign the transaction. 
-The singer calculates \\( s \\) from \\( a, K_i \\) and calculates \\( k_s \\) to sign the transaction. 
-The signer creates a random nonce \\( k_O \\) to use for the script_offset. It signs the metadata signature with \\( k_O \\), and supplies the script_offset to the helper. 
+The singer calculates \\( k_s \\) to sign the transaction. 
+The signer creates a random nonce \\( k_O \\) to use for the script_offset. It produces the metadata signature with \\( k_O \\), and supplies the script_offset to the helper. 
 The helper can attach the correct signatures to the [UTXO]s and ship the transaction.
 
 ### Receiving normal one-sided transaction
@@ -122,8 +121,9 @@ The helper can scan the blockchain for this public key.
 `TODO`
 
 ### Output recovery
-When creating outputs the wallet encrypts the blinding factor (\\k_i \\) and value \\( v \\) with a key derived from (\\( k_H \\) ).
+When creating outputs the wallet encrypts the blinding factor (\\k_i \\) and value \\( v \\) with (\\( k_H \\) ).
 Because the key (\\( k_H \\) ) is calculated from the seed phrase of the signer, this will be the same each time. The helper can try to decrypt each scanned output, when it is successful it knows it has found its own output. 
+The helper can validate that the commitment is correct using the blinding factor (\\k_i \\) and value \\( v \\). It can also validate (\\( K_S)\\) ) corresponds to (\\( k_i, A \\) )
 
 ## Security
 Because the script key is required for spending, it is the only key that needs to be kept secret. 
