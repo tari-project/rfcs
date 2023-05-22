@@ -61,7 +61,7 @@ This Request for Comment (RFC) presents a design for a hardware wallet with Mimb
 ## Introduction
 
 Hardware wallets are secure physical devices used to protect crypto assets and funds by requiring user interaction from the device.
-These air-gapped devices are used to sign for transactions by keeping all the secrets from the transactions on the hardware device. If
+These devices are used to sign for transactions by keeping all the secrets from the transactions on the hardware device. If
 the host machines that run the wallets are compromised by malware the secrets from the transactions are still safe as they are not
 kept on the machine as with regular wallets. The devices are very low power and only feature a very limited processing power. MimbleWimble 
 has intensive crypto operations that are in some instances very slow or not able to run on the hardware wallet at all. This RFC describes a way to 
