@@ -99,7 +99,7 @@ $$
 The blinding factor (\\( k_i \\) ) is used as a random nonce when creating the script key. This means the helper can create the public key without the signer present, and the signer can then at a later stage create the private key from the nonce. The key pair (\\( a, A \\) ) is the master key pair from the signer. The private key (\\( a \\) ) is kept secret by the signer at all times.
 
 ### Initialization
-Adding a hardware wallet to a wallet we need to ensure that all keys are only derived from a single seed phrase provided by the hardware wallet. 
+Adding a hardware wallet to a wallet (helper) we need to ensure that all keys are only derived from a single seed phrase provided by the hardware wallet. 
 
 Helper asks signer for master helper key (\\( k_H \\) ). 
 This key is derived from the signer seed phrase.
