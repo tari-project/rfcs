@@ -108,7 +108,7 @@ This key is derived from the signer seed phrase.
 When a transaction is received the helper constructs the new [UTXO] with its Rangeproof. Choosing a new (\\( k_i \\) ) for the [UTXO], it calculates a new \\( s \\) and \\( K_S \\). It attaches the script `PushPubkey(K_S)` to output.
 
 ### Transaction sending
-When the user wants to send a transaction, the helper retrieves the desired [UTXO]. The helper gives asks the signer to sign the transaction. 
+When the user wants to send a transaction, the helper retrieves the desired [UTXO]. The helper asks the signer to sign the transaction. 
 The singer calculates \\( k_s \\) to sign the transaction. 
 The signer creates a random nonce \\( k_O \\) to use for the script_offset. It produces the metadata signature with \\( k_O \\), and supplies the script_offset to the helper. 
 The helper can attach the correct signatures to the [UTXO]s and ship the transaction.
