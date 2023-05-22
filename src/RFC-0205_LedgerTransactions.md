@@ -90,10 +90,10 @@ By splitting the ownership of the [UTXO]'s secret by assigning knowledge of only
 
 All [UTXO]s created will be created with a script `PushPubkey(K_S)`. The key (\\( k_s \\) ) is created as follows:
 $$
-\begin{aligned}
-k_S = k_i + a \\\\
-K_S = k_i \cdot G + A
-\end{aligned}
+\begin{align}
+k_S &= k_i + a \\\\
+K_S &= k_i \cdot G + A
+\end{align}
 $$
 
 The blinding factor (\\( k_i \\) ) is used as a random nonce when creating the script key. This means the helper can create the public key without the signer present, and the signer can then at a later stage create the private key from the nonce. The key pair (\\( a, A \\) ) is the master key pair from the signer. The private key (\\( a \\) ) is kept secret by the signer at all times.
