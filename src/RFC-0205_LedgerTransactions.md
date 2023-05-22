@@ -105,7 +105,7 @@ Helper asks signer for master helper key (\\( k_H \\) ).
 This key is derived from the signer seed phrase.
 
 ### Transaction receiving
-When a transaction is received the helper constructs the new [UTXO] with its Rangeproof. Choosing a new (\\( k_i \\) ) for the [UTXO], it calculates a new \\( s \\) and \\( K_S \\). It attaches the script `PushPubkey(K_S)` to output.
+When a transaction is received the helper constructs the new [UTXO] with its Rangeproof. Choosing a new (\\( k_i \\) ) for the [UTXO], it calculates a new \\( K_S \\). It attaches the script `PushPubkey(K_S)` to output.
 
 ### Transaction sending
 When the user wants to send a transaction, the helper retrieves the desired [UTXO]. The helper asks the signer to sign the transaction. 
