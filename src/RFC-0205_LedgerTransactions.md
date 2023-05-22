@@ -109,7 +109,7 @@ When a transaction is received the helper constructs the new [UTXO] with its Ran
 
 ### Transaction sending
 When the user wants to send a transaction, the helper retrieves the desired [UTXO]. The helper asks the signer to sign the transaction. 
-The singer calculates \\( k_s \\) to sign the transaction. 
+The signer calculates \\( k_s \\) to sign the transaction. 
 The signer creates a random nonce \\( k_O \\) to use for the script_offset. It produces the metadata signature with \\( k_O \\), and supplies the script_offset to the helper. 
 The helper can attach the correct signatures to the [UTXO]s and ship the transaction.
 
