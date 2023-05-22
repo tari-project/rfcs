@@ -88,7 +88,7 @@ Normal transactions have only a single entity, the wallet which controls all sec
 ### Process Overview
 By splitting the ownership of the [UTXO]'s secret by assigning knowledge of only the script key (\\( k_s \\) ) to the signer, we can lift much of the heavy cryptography like bulletproof creation to the helper device by exposing (\\( k_i \\) ) to it. By looking at how [one-sided-stealth] transactions are created, we can construct the script key in such a way that the helper can calculate the public script key, but cannot calculate the private script key.
 
-All [UTXO]s created will be created with a script `PushPubkey(K_S)`. The key (\\( k_s \\) ) is created as follows:
+All hardware wallet created [UTXO]s created will be created with a script `PushPubkey(K_S)`. The key (\\( k_s \\) ) is created as follows:
 $$
 \begin{align}
 k_S &= k_i + a \\\\
