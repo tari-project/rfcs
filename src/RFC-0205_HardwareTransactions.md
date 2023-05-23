@@ -1,6 +1,6 @@
-# RFC-0205/ledger transactions
+# RFC-0205/Hardware transactions
 
-## Ledger addresses
+## Hardware transactions
 
 ![status: stable](theme/images/status-stable.svg)
 
