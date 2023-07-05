@@ -66,6 +66,10 @@ While it is defined as an interactive protocol, the (strong) Fiat-Shamir techniq
 ## Value-hiding protocol
 
 We first describe the version of the protocol that does not reveal the commitment value.
+It is a sigma protocol for the following relation, where $G$ and $H$ are fixed group generators with no efficiently-computable discrete logarithm relationship:
+\\[
+   \left\\{ C, P ; (a, x, y) | C = aH + xG, P = yG \right\\}
+\\]
 The interactive form of this protocol proceeds as follows:
 - The prover samples scalar nonces $r_a, r_x, r_y$ uniformly at random.
 - The prover computes ephemeral values $C_{eph} = r_a H + r_x G$ and $P_{eph} = r_y G$, and sends these values to the verifier.
@@ -122,6 +126,10 @@ This shows the protocol is special honest-verifier zero knowledge.
 
 We now describe a modified version of the protocol that reveals the commitment value.
 While this protocol can be made more efficient than we list here (discussed later), this design is intended to be more closely compatible with the value-hiding protocol for easier implementation.
+It is a sigma protocol for the following relation, where $G$ and $H$ are fixed group generators with no efficiently-computable discrete logarithm relationship:
+\\[
+   \left\\{ C, P, a ; (x, y) | C = aH + xG, P = yG \right\\}
+\\]
 The interactive form of this protocol proceeds as follows:
 - The prover samples scalar nonces $r_x, r_y$ uniformly at random.
 - The prover computes ephemeral values $C_{eph} = r_x G$ and $P_{eph} = r_y G$, and sends these values to the verifier.
