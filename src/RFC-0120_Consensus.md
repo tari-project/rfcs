@@ -118,6 +118,8 @@ A coinbase transaction contained in a block MUST:
 * have a value exactly equal to the emission at the block height it was minted (see [emission schedule]) 
   plus the total transaction fees within the block
 * have a lock-height as per consensus
+* can not have a offset except 0
+* can not have a script offset except 0
   
 A coinbase transaction contained in a block CAN:
 * include any arbitrary 64 bytes of extra data, [coinbase-extra]
@@ -370,6 +372,7 @@ done by the whole network, and verification of sorting is exceptionally cheap.
 |:------------|:--------------------|:----------|
 | 11 Oct 2022 | First stable        | SWvHeerden|
 | 13 Mar 2023 | Add mention of coinbase extra        | SWvHeerden|
+| 05 Jun 2023 | Add coinbase excess rule       | SWvHeerden|
 
 
 
