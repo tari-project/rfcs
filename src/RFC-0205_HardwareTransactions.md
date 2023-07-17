@@ -68,7 +68,7 @@ get around these limitations to have fully functional secure hardware wallet int
 
 ## Background
 
-Vanilla [Mimblewimble] only has a single secret per [UTXO], the blinding factor (\\( k_i \\) ), the Tari protocol extends the [Mimblewimble] protocol to include scripting in the form of [TariScript]. This adds a second secret per [UTXO] called the script_key (\\( k_s \\) ). In practical terms this means that while vanilla [Mimblewimble] only requires that a wallet wishing to spend an [UTXO], prove knowledge of (\\( k_i \\) ) by producing the kernel signature, this is not sufficient for Tari. A Tari wallet must also prove knowledge of the script key (\\( k_s \\) ), by producing the script signature. 
+Vanilla [Mimblewimble] only has a single secret per [UTXO], the blinding factor (\\( k_i \\) ). The Tari protocol extends the [Mimblewimble] protocol to include scripting in the form of [TariScript]. This adds a second secret per [UTXO] called the script_key (\\( k_s \\) ). In practical terms this means that while vanilla [Mimblewimble] only requires that a wallet wishing to spend an [UTXO], prove knowledge of (\\( k_i \\) ) by producing the kernel signature, this is not sufficient for Tari. A Tari wallet must also prove knowledge of the script key (\\( k_s \\) ), by producing the script signature. 
 
 ## Requirements
 
@@ -117,10 +117,10 @@ This can be done by the helper asking the signer for a public key. And advertisi
 The helper can scan the blockchain for this public key. 
 
 ### Receiving one-sided-stealth
-`TODO`
+Not yet possible with this this design.
 
 ### Output recovery
-When creating outputs the wallet encrypts the blinding factor \\(k_i \\) and value \\( v \\) with \\( k_H \\).
+When creating outputs the wallet encrypts the blinding factor \\(k_i \\) and value \\( v \\) with \\( k_H \\). This is encrypted using extended-nonce AEAD using a random nonce and authenticated decryption.
 Because the key \\( k_H \\)  is calculated from the seed phrase of the signer, this will be the same each time. The helper can try to decrypt each scanned output, when it is successful it knows it has found its own output. 
 The helper can validate that the commitment is correct using the blinding factor \\(k_i \\) and value \\( v \\). It can also validate (\\( K_S)\\) corresponds to (\\( k_i, A \\) )
 
