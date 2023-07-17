@@ -7,7 +7,6 @@
 **Maintainer(s)**: [SW van Heerden](https://github.com/swvheerden)
 
 
-\newcommand{\hash}[1]{\mathrm{H}\bigl({#1}\bigr)}
 
 # Licence
 
@@ -105,7 +104,7 @@ Helper asks signer for master helper key (\\( k_H \\) ).
 This key is derived from the signer seed phrase.
 
 ### Transaction receiving
-When a transaction is received the helper constructs the new [UTXO] with its Rangeproof. Choosing a new (\\( k_i \\) ) for the [UTXO], it calculates a new \\( K_S \\). It attaches the script `PushPubkey(K_S)` to output.
+When a transaction is received the helper constructs the new [UTXO] with its Rangeproof. Choosing a new ( \\( k_i \\) ) for the [UTXO], it calculates a new \\( K_S \\). It attaches the script `PushPubkey(K_S)` to output.
 
 ### Transaction sending
 When the user wants to send a transaction, the helper retrieves the desired [UTXO]. The helper asks the signer to sign the transaction. 
@@ -121,9 +120,9 @@ The helper can scan the blockchain for this public key.
 `TODO`
 
 ### Output recovery
-When creating outputs the wallet encrypts the blinding factor (\\k_i \\) and value \\( v \\) with (\\( k_H \\) ).
-Because the key (\\( k_H \\) ) is calculated from the seed phrase of the signer, this will be the same each time. The helper can try to decrypt each scanned output, when it is successful it knows it has found its own output. 
-The helper can validate that the commitment is correct using the blinding factor (\\k_i \\) and value \\( v \\). It can also validate (\\( K_S)\\) ) corresponds to (\\( k_i, A \\) )
+When creating outputs the wallet encrypts the blinding factor \\(k_i \\) and value \\( v \\) with \\( k_H \\).
+Because the key \\( k_H \\)  is calculated from the seed phrase of the signer, this will be the same each time. The helper can try to decrypt each scanned output, when it is successful it knows it has found its own output. 
+The helper can validate that the commitment is correct using the blinding factor \\(k_i \\) and value \\( v \\). It can also validate (\\( K_S)\\) corresponds to (\\( k_i, A \\) )
 
 ## Security
 Because the script key is required for spending, it is the only key that needs to be kept secret. 
