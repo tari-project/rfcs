@@ -81,18 +81,18 @@ To properly implement hardware wallets we need the following requirements to be 
 ## Implementation
 
 ### Entities
-Normal transactions have only a single entity, the wallet which controls all secrets and transactions. But with hardware wallets, we need to define two distinct types:
+Normal transactions have only a single entity, the wallet which controls all secrets and transactions. But with hardware wallets, we need to define two distinct entities:
 * Signer: This is the entity that keeps the secrets for the transactions and approves them, aka the hardware wallet.
 * Helper: This entity is the program that helps the signer construct the transaction, send it over the network and scan the network, aka wallet.
 
 ### Process Overview
-By splitting the ownership of the [UTXO]'s secret by assigning knowledge of only the script key (\\( k_s \\) ) to the signer, we can lift much of the heavy cryptography like bulletproof creation to the helper device by exposing (\\( k_i \\) ) to it. By looking at how [one-sided-stealth] transactions are created, we can construct the script key in such a way that the helper can calculate the public script key, but cannot calculate the private script key.
+By splitting the ownership of the [UTXO]'s secrets by assigning knowledge of only the script key (\\( k_s \\) ) to the signer, we can lift much of the heavy cryptography like bulletproof creation to the helper device by exposing (\\( k_i \\) ) to it. By looking at how [one-sided-stealth] transactions are created, we can construct the script key in such a way that the helper can calculate the public script key, but cannot calculate the private script key.
 
 All hardware wallet created [UTXO]s created will be created with a script `PushPubkey(K_S)`. The key (\\( k_s \\) ) is created as follows:
 $$
 \begin{align}
-k_S &= k_i + a \\\\
-K_S &= k_i \cdot G + A
+k_S &= H(k_i) + a \\\\
+K_S &= H(k_i) \cdot G + A
 \end{align}
 $$
 
