@@ -76,8 +76,19 @@ An approach to mask and value recovery was [used by Grin](https://github.com/mim
 
 To reduce confusion in our description and more closely match implementation libraries, we use additive notation and uppercase letters for group elements, and otherwise assume notation from the preprints.
 Denote the commitment value generator by $G\_c$ and the commitment mask generator vector by $\vec{H}\_c$.
-We note that the terms of the vector $\vec{d}$ can be succinctly expressed by noting that for $0 \leq i < n$ and $0 \leq j < m$ we have $d\_{jn+i} = z^{2(j+1)} 2^i$, which can be efficiently defined iteratively.
 Because the preprint uses the notation $A$ differently in the weighted inner product and range proving protocols, we rename it to $A'$ in the weighted inner product protocol.
+
+A specific definition of note relates to that of the vector $\vec{d}$ introduced in the preprint.
+This vector is defined as
+\\[
+   \vec{d} = \sum\_{j=0}^{m-1} z^{2(j+1)} \vec{d}\_j \tag{1}
+\\]
+where each
+\\[
+   \vec{d}\_j = (\underbrace{0,\ldots,0}\_{(j-1)n}, \vec{2}^n, \underbrace{0,\ldots,0}\_{(m-j)n}) \tag{2}
+\\]
+contains only powers of two.
+In particular, this means we can express individual elements of $\vec{d}$ as $d\_{jn+i} = z^{2(j+1)} 2^i$ for $0 \leq i < n$ and $0 \leq j < m$.
 
 Finally, we note one additional unfortunate notation change that applies to the implementation.
 Both the Bulletproofs+ and Zarcanum preprints use $G$ as the commitment value generator, and either $H$ or $\vec{H}\_c$ (in our notation) for masking.
@@ -114,7 +125,7 @@ Here
 \\[
 \begin{align*}
 x &= \langle \vec{1}^{mn}, \overrightarrow{y}^{mn} \rangle z - \langle \vec{1}^{mn}, \vec{d} \rangle y^{mn+1}z - \langle \vec{1}^{mn}, \overrightarrow{y}^{mn} \rangle z^2 \\\\
-&= z\sum\_{i=1}^{mn} y^i - y^{mn+1}z\sum\_{i=0}^{mn-1}d\_i - z^2\sum_{i=1}^{mn} y^i
+&= z\sum\_{i=1}^{mn} y^i - y^{mn+1}z\sum\_{i=0}^{mn-1}d\_i - z^2\sum_{i=1}^{mn} y^i \tag{3}
 \end{align*}
 \\]
 is a scalar defined entirely in terms of constants and challenge values from the proof.
@@ -173,8 +184,8 @@ If the verifier is able to construct the extended commitment from the value and 
 
 ## Sum optimization
 
-As noted above, batch verification requires that the verifier compute $\sum\_i d\_i$.
-Because the vector $\vec{d}$ contains $mn$ elements, computing the sum naively is a slow process.
+From Equation (3), the verifier must compute $\sum\_i d\_i$.
+Because the vector $\vec{d}$ contains $mn$ elements by Equations (1) and (2), computing the sum naively is a slow process.
 The implementation takes advantage of the fact that this sum can be expressed in terms of a partial sum of a geometric series to compute it much more efficiently; we describe this here.
 
 We first recall the following [identity](https://mathworld.wolfram.com/GeometricSeries.html) for the partial sum of a geometric series for $r \neq 0$:
@@ -182,7 +193,13 @@ We first recall the following [identity](https://mathworld.wolfram.com/Geometric
    \sum\_{k=0}^{n-1} r^k = \frac{1 - r^n}{1 - r}
 \\]
 
-Given this, we can express the required sum of the elements of $\vec{d}$ as follows:
+Next, we note that from Equation (2), we have
+\\[
+   \sum\_{i=0}^{mn-1} (d\_j)\_i = \sum\_{k=0}^{n-1} 2^k
+\\]
+for all $0 \leq j < m$.
+
+Given these facts, we can express the required sum of the elements of $\vec{d}$ as follows:
 \\[
 \begin{align*}
 \langle \vec{1}^{mn}, \vec{d} \rangle &= \sum\_{i=0}^{mn-1} d\_i \\\\
