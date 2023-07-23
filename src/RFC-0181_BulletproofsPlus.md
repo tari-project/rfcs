@@ -85,7 +85,7 @@ This vector is defined as
 \\]
 where each
 \\[
-   \vec{d}\_j = (\underbrace{0,\ldots,0}\_{(j-1)n}, \vec{2}^n, \underbrace{0,\ldots,0}\_{(m-j)n}) \tag{2}
+   \vec{d}\_j = (\underbrace{0,\ldots,0}\_{jn}, \vec{2}^n, \underbrace{0,\ldots,0}\_{(m-j-1)n}) \tag{2}
 \\]
 contains only powers of two.
 In particular, this means we can express individual elements of $\vec{d}$ as $d\_{jn+i} = z^{2(j+1)} 2^i$ for $0 \leq i < n$ and $0 \leq j < m$.
