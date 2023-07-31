@@ -74,9 +74,12 @@ An approach to mask and value recovery was [used by Grin](https://github.com/mim
 
 ## Notation
 
-To reduce confusion in our description and more closely match implementation libraries, we use additive notation and uppercase letters for group elements, and otherwise assume notation from the preprints.
+To reduce confusion in our description and more closely match implementation libraries, we use additive notation and uppercase letters for group elements, and otherwise generally assume notation from the preprints.
 Denote the commitment value generator by $G\_c$ and the commitment mask generator vector by $\vec{H}\_c$.
 Because the preprint uses the notation $A$ differently in the weighted inner product and range proving protocols, we rename it to $A'$ in the weighted inner product protocol.
+
+We assume that a range proof aggregates $m$ range assertions, each of which is to an $n$-bit range.
+We further assume that each value commitment uses $p$ masks; that is, a standard Pedersen commitment would have $p = 1$.
 
 A specific definition of note relates to that of the vector $\vec{d}$ introduced in the preprint.
 This vector is defined as
@@ -114,11 +117,11 @@ Suppose we index the inner product generator vectors $\vec{G}$ and $\vec{H}$ usi
 We assume indexing starts at zero unless otherwise noted.
 Single aggregated proof verification reduces (by suitable modification of the equation given in Section 6.1 of the Bulletproofs+ preprint) to checking that the following equation holds:
 \\[
-\sum\_i (r'es\_i) G_i + \sum\_i (s'es\_i') H\_i + \sum\_l \delta\_l' H\_{c,l} = e^2 \widehat{A} + \sum\_j (e^2e\_j^2) L\_j + \sum\_j (e^2e\_j^{-2}) R\_j + e A' + B
+\sum\_{i=0}^{mn-1} (r'es\_i) G_i + \sum\_{i=0}^{mn-1} (s'es\_i') H\_i + \sum\_{l=0}^{p-1} \delta\_l' H\_{c,l} = e^2 \widehat{A} + \sum\_{j=0}^{\operatorname{lg}(mn)-1} (e^2e\_j^2) L\_j + \sum\_{j=0}^{\operatorname{lg}(mn)-1} (e^2e\_j^{-2}) R\_j + e A' + B
 \\]
 But we also have (from suitable modification of the definition given in Figure 3 of the Bulletproofs+ preprint) that
 \\[
-\widehat{A} = A - \sum\_i z G\_i + \sum\_i (z + d\_iy^{mn-i}) H\_i + x G\_c + y^{mn+1}\sum\_k z^{2(k+1)} (V\_k - v\_{\text{min},k} G\_c)
+\widehat{A} = A - \sum\_{i=0}^{mn-1} z G\_i + \sum\_{i=0}^{mn-1} (z + d\_iy^{mn-i}) H\_i + x G\_c + y^{mn+1}\sum\_{k=0}^{m-1} z^{2(k+1)} (V\_k - v\_{\text{min},k} G\_c)
 \\]
 defined by the range proving system outside of the inner product argument.
 Here
@@ -132,8 +135,8 @@ is a scalar defined entirely in terms of constants and challenge values from the
 Grouping terms, we find that a single aggregated range proof can be verified by checking that the following equation holds:
 \\[
 \begin{multline*}
-\sum\_i (r'es\_i + e^2z) G\_i + \sum\_i (s'es\_i' - e^2(z + d\_iy^{mn-i})) H\_i + \left( r'ys' - e^2x + e^2y^{mn+1}\sum\_k z^{2(k+1)}v\_{\text{min},k} \right) G\_c \\\\
-\+ \sum\_l \delta\_l' H\_{c,i} - \sum\_k (y^{mn+1}z^{2(k+1)}e^2) V\_k - e^2 A - \sum\_j (e^2e\_j^2) L\_j - \sum\_j (e^2e\_j^{-2}) R\_j - e A' - B = 0
+\sum\_{i=0}^{mn-1} (r'es\_i + e^2z) G\_i + \sum\_{i=0}^{mn-1} (s'es\_i' - e^2(z + d\_iy^{mn-i})) H\_i + \left( r'ys' - e^2x + e^2y^{mn+1}\sum\_{k=0}^{m-1} z^{2(k+1)}v\_{\text{min},k} \right) G\_c \\\\
+\+ \sum\_{l=0}^{p-1} \delta\_l' H\_{c,i} - \sum\_{k=0}^{m-1} (y^{mn+1}z^{2(k+1)}e^2) V\_k - e^2 A - \sum\_{j=0}^{\operatorname{lg}(mn)-1} (e^2e\_j^2) L\_j - \sum\_{j=0}^{\operatorname{lg}(mn)-1} (e^2e\_j^{-2}) R\_j - e A' - B = 0 \tag{4}
 \end{multline*}
 \\]
 
@@ -164,19 +167,20 @@ Because the resulting proof is still special honest-verifier zero knowledge, as 
 
 After sampling a nonce seed, the prover passes it through an appropriate set of domain-separated hash functions with scalar output to generate the following nonces used in the proof:
 \\[
-\\{\eta\_k\\}, \\{\delta\_k\\}, \\{\alpha\_k\\}, \\{d\_{L,j,k}\\}, \\{d\_{R,j,k}\\}
+\\{\eta\_l\\}, \\{\delta\_l\\}, \\{\alpha\_l\\}, \\{d\_{L,j,l}\\}, \\{d\_{R,j,l}\\}
 \\]
-Here, as before, $k$ is indexed over the number of masks used in the extended commitment, and $j$ is indexed over the weighted inner product argument rounds.
+Here, as before, $0 \leq l < p$ is indexed over the number of masks used in the extended commitment, and $0 \leq j < \operatorname{lg}(mn)$ is indexed over the weighted inner product argument rounds.
+Let $\\{\gamma\_l\\}$ be the masks used in the non-aggregated proof.
 
-By doing this, the prover effectively defines the proof element set $\\{\delta\_k'\\}$ as follows:
+By doing this, the prover effectively defines the proof element set $\\{\delta\_l'\\}$ as follows:
 \\[
-\delta\_k' = \eta\_k + \delta\_ke + e^2 \left\( \alpha\_k + \gamma\_ky^{n+1}z^2 + \sum\_j(e\_j^2d\_{L,j,k} + e\_j^{-2}d\_{R,j,k}) \right\)
+\delta\_l' = \eta\_l + \delta\_le + e^2 \left\( \alpha\_l + \gamma\_ly^{n+1}z^2 + \sum\_{j=0}^{\operatorname{lg}(mn)-1}(e\_j^2d\_{L,j,l} + e\_j^{-2}d\_{R,j,l}) \right\)
 \\]
 
 When verifying the proof, the designated verifier uses the nonce seed to perform the same nonce derivation as the prover.
-It then computes the mask set $\\{\gamma\_k\\}$ as follows:
+It then computes the mask set $\\{\gamma\_l\\}$ as follows:
 \\[
-\gamma\_k = \left\( (\delta\_k' - \eta\_k - \delta\_ke)e^{-2} - \alpha\_k - \sum\_j(e\_j^2d\_{L,j,k} + e\_j^{-2}d\_{R,j,k}) \right\) y^{-(n+1)}z^{-2}
+\gamma\_l = \left\( (\delta\_l' - \eta\_l - \delta\_le)e^{-2} - \alpha\_l - \sum\_{j=0}^{\operatorname{lg}(mn)-1}(e\_j^2d\_{L,j,l} + e\_j^{-2}d\_{R,j,l}) \right\) y^{-(n+1)}z^{-2}
 \\]
 The recovered masks must then be checked against the extended commitment once the value is separately communicated to the verifier.
 Otherwise, if the verifier uses a different nonce seed than the prover did (or if the prover otherwise did not derive the nonces using a nonce seed at all), it will recover incorrect masks.
