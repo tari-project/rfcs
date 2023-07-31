@@ -48,7 +48,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This Request for Comment (RFC) describes Tari-specific implementation details for Bulletproofs+ range proving and verifying.
+This Request for Comment (RFC) describes Tari-specific implementation details for Bulletproofs+ range proving and verifying, in addition to giving an outline of comparative performance.
 
 ## Related Requests for Comment
 
@@ -215,9 +215,49 @@ Given these facts, we can express the required sum of the elements of $\vec{d}$ 
 \\]
 This requires a sum of only $m$ even powers of $z$, which can be computed iteratively.
 
+## Comparative performance
+
+We now compare Bulletproofs+ performance to that of the [Bulletproofs](https://eprint.iacr.org/2017/1066) range proving system.
+
+### Size
+
+Bulletproofs+ range proofs, like Bulletproofs, scale logarithmically in size.
+In each case, a proof consists of the following:
+
+| Proving system | Group elements | Scalars |
+|:---------------|:---------------|:--------|
+| Bulletproofs   | $2 \operatorname{lg}(nm) + 4$ | $5$ |
+| Bulletproofs+  | $2 \operatorname{lg}(nm) + 3$ | $p + 2$ |
+
+That is, both the range bit length $n$ and aggregation factor $m$ contribute logarithmically to the proof size.
+In the case of the Tari-specific implementation of Bulletproofs+, the number of masks contributes linearly to the proof size.
+
+Regardless of the bit length $n$ or aggregation factor $m$ used, a single-mask ($p = 1$) Bulletproofs+ range proof saves $1$ group element and $2$ scalars over the equivalent Bulletproofs range proof. For the [Ristretto](https://ristretto.group/)-based Tari implementation, this amounts to $96$ bytes after group element and scalar encoding.
+
+We also note that while it is possible to encode an extra scalar of data in a Bulletproofs non-aggregated range proof (in addition to the mask) using nonce-based recovery techniques, this is not possible with Bulletproofs+ range proofs.
+
+### Verification efficiency
+
+Like in Bulletproofs+, it is possible to reduce verification of a batch of Bulletproofs range proofs to a single multiscalar multiplication operation.
+
+To compare this efficiency, we count unique generators used in the multiscalar multiplication operation in both cases.
+It is the case that scalar-only operations differ greatly between the two systems, but these operations are much faster than those involving group elements.
+
+Let $b$ be the batch size of such a verification; that is, the number of proofs to be verified together.
+This means single-proof verification has $b = 1$.
+
+| Proving system | Operation size |
+|:---------------|:---------------|
+| Bulletproofs   | $b[2\operatorname{lg}(mn) + m + 4] + 2mn + 2$ |
+| Bulletproofs+  | $b[2\operatorname{lg}(mn) + m + 3] + 2mn + p + 1$ |
+
+Verification in Bulletproofs+ is slightly faster than in Bulletproofs.
+
+## Changelog
 
 | Date        | Change              | Author |
 |:------------|:--------------------|:-------|
 | 7 Dec 2022  | First draft         | Aaron  |
 | 13 Jan 2022 | Performance updates | brianp |
 | 20 Jul 2023 | Sum optimization    | Aaron  |
+| 31 Jul 2023 | Notation and efficiency | Aaron  |
