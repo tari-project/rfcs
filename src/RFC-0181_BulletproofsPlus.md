@@ -48,7 +48,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This Request for Comment (RFC) describes Tari-specific implementation details for Bulletproofs+ range proving and verifying.
+This Request for Comment (RFC) describes Tari-specific implementation details for Bulletproofs+ range proving and verifying, in addition to giving an outline of comparative performance.
 
 ## Related Requests for Comment
 
@@ -74,9 +74,12 @@ An approach to mask and value recovery was [used by Grin](https://github.com/mim
 
 ## Notation
 
-To reduce confusion in our description and more closely match implementation libraries, we use additive notation and uppercase letters for group elements, and otherwise assume notation from the preprints.
+To reduce confusion in our description and more closely match implementation libraries, we use additive notation and uppercase letters for group elements, and otherwise generally assume notation from the preprints.
 Denote the commitment value generator by $G\_c$ and the commitment mask generator vector by $\vec{H}\_c$.
 Because the preprint uses the notation $A$ differently in the weighted inner product and range proving protocols, we rename it to $A'$ in the weighted inner product protocol.
+
+We assume that a range proof aggregates $m$ range assertions, each of which is to an $n$-bit range.
+We further assume that each value commitment uses $p$ masks; that is, a standard Pedersen commitment would have $p = 1$.
 
 A specific definition of note relates to that of the vector $\vec{d}$ introduced in the preprint.
 This vector is defined as
@@ -114,11 +117,11 @@ Suppose we index the inner product generator vectors $\vec{G}$ and $\vec{H}$ usi
 We assume indexing starts at zero unless otherwise noted.
 Single aggregated proof verification reduces (by suitable modification of the equation given in Section 6.1 of the Bulletproofs+ preprint) to checking that the following equation holds:
 \\[
-\sum\_i (r'es\_i) G_i + \sum\_i (s'es\_i') H\_i + \sum\_l \delta\_l' H\_{c,l} = e^2 \widehat{A} + \sum\_j (e^2e\_j^2) L\_j + \sum\_j (e^2e\_j^{-2}) R\_j + e A' + B
+\sum\_{i=0}^{mn-1} (r'es\_i) G_i + \sum\_{i=0}^{mn-1} (s'es\_i') H\_i + \sum\_{l=0}^{p-1} \delta\_l' H\_{c,l} = e^2 \widehat{A} + \sum\_{j=0}^{\operatorname{lg}(mn)-1} (e^2e\_j^2) L\_j + \sum\_{j=0}^{\operatorname{lg}(mn)-1} (e^2e\_j^{-2}) R\_j + e A' + B
 \\]
 But we also have (from suitable modification of the definition given in Figure 3 of the Bulletproofs+ preprint) that
 \\[
-\widehat{A} = A - \sum\_i z G\_i + \sum\_i (z + d\_iy^{mn-i}) H\_i + x G\_c + y^{mn+1}\sum\_k z^{2(k+1)} (V\_k - v\_{\text{min},k} G\_c)
+\widehat{A} = A - \sum\_{i=0}^{mn-1} z G\_i + \sum\_{i=0}^{mn-1} (z + d\_iy^{mn-i}) H\_i + x G\_c + y^{mn+1}\sum\_{k=0}^{m-1} z^{2(k+1)} (V\_k - v\_{\text{min},k} G\_c)
 \\]
 defined by the range proving system outside of the inner product argument.
 Here
@@ -132,8 +135,8 @@ is a scalar defined entirely in terms of constants and challenge values from the
 Grouping terms, we find that a single aggregated range proof can be verified by checking that the following equation holds:
 \\[
 \begin{multline*}
-\sum\_i (r'es\_i + e^2z) G\_i + \sum\_i (s'es\_i' - e^2(z + d\_iy^{mn-i})) H\_i + \left( r'ys' - e^2x + e^2y^{mn+1}\sum\_k z^{2(k+1)}v\_{\text{min},k} \right) G\_c \\\\
-\+ \sum\_l \delta\_l' H\_{c,i} - \sum\_k (y^{mn+1}z^{2(k+1)}e^2) V\_k - e^2 A - \sum\_j (e^2e\_j^2) L\_j - \sum\_j (e^2e\_j^{-2}) R\_j - e A' - B = 0
+\sum\_{i=0}^{mn-1} (r'es\_i + e^2z) G\_i + \sum\_{i=0}^{mn-1} (s'es\_i' - e^2(z + d\_iy^{mn-i})) H\_i + \left( r'ys' - e^2x + e^2y^{mn+1}\sum\_{k=0}^{m-1} z^{2(k+1)}v\_{\text{min},k} \right) G\_c \\\\
+\+ \sum\_{l=0}^{p-1} \delta\_l' H\_{c,i} - \sum\_{k=0}^{m-1} (y^{mn+1}z^{2(k+1)}e^2) V\_k - e^2 A - \sum\_{j=0}^{\operatorname{lg}(mn)-1} (e^2e\_j^2) L\_j - \sum\_{j=0}^{\operatorname{lg}(mn)-1} (e^2e\_j^{-2}) R\_j - e A' - B = 0 \tag{4}
 \end{multline*}
 \\]
 
@@ -164,19 +167,20 @@ Because the resulting proof is still special honest-verifier zero knowledge, as 
 
 After sampling a nonce seed, the prover passes it through an appropriate set of domain-separated hash functions with scalar output to generate the following nonces used in the proof:
 \\[
-\\{\eta\_k\\}, \\{\delta\_k\\}, \\{\alpha\_k\\}, \\{d\_{L,j,k}\\}, \\{d\_{R,j,k}\\}
+\\{\eta\_l\\}, \\{\delta\_l\\}, \\{\alpha\_l\\}, \\{d\_{L,j,l}\\}, \\{d\_{R,j,l}\\}
 \\]
-Here, as before, $k$ is indexed over the number of masks used in the extended commitment, and $j$ is indexed over the weighted inner product argument rounds.
+Here, as before, $0 \leq l < p$ is indexed over the number of masks used in the extended commitment, and $0 \leq j < \operatorname{lg}(mn)$ is indexed over the weighted inner product argument rounds.
+Let $\\{\gamma\_l\\}$ be the masks used in the non-aggregated proof.
 
-By doing this, the prover effectively defines the proof element set $\\{\delta\_k'\\}$ as follows:
+By doing this, the prover effectively defines the proof element set $\\{\delta\_l'\\}$ as follows:
 \\[
-\delta\_k' = \eta\_k + \delta\_ke + e^2 \left\( \alpha\_k + \gamma\_ky^{n+1}z^2 + \sum\_j(e\_j^2d\_{L,j,k} + e\_j^{-2}d\_{R,j,k}) \right\)
+\delta\_l' = \eta\_l + \delta\_le + e^2 \left\( \alpha\_l + \gamma\_ly^{n+1}z^2 + \sum\_{j=0}^{\operatorname{lg}(mn)-1}(e\_j^2d\_{L,j,l} + e\_j^{-2}d\_{R,j,l}) \right\)
 \\]
 
 When verifying the proof, the designated verifier uses the nonce seed to perform the same nonce derivation as the prover.
-It then computes the mask set $\\{\gamma\_k\\}$ as follows:
+It then computes the mask set $\\{\gamma\_l\\}$ as follows:
 \\[
-\gamma\_k = \left\( (\delta\_k' - \eta\_k - \delta\_ke)e^{-2} - \alpha\_k - \sum\_j(e\_j^2d\_{L,j,k} + e\_j^{-2}d\_{R,j,k}) \right\) y^{-(n+1)}z^{-2}
+\gamma\_l = \left\( (\delta\_l' - \eta\_l - \delta\_le)e^{-2} - \alpha\_l - \sum\_{j=0}^{\operatorname{lg}(mn)-1}(e\_j^2d\_{L,j,l} + e\_j^{-2}d\_{R,j,l}) \right\) y^{-(n+1)}z^{-2}
 \\]
 The recovered masks must then be checked against the extended commitment once the value is separately communicated to the verifier.
 Otherwise, if the verifier uses a different nonce seed than the prover did (or if the prover otherwise did not derive the nonces using a nonce seed at all), it will recover incorrect masks.
@@ -211,9 +215,49 @@ Given these facts, we can express the required sum of the elements of $\vec{d}$ 
 \\]
 This requires a sum of only $m$ even powers of $z$, which can be computed iteratively.
 
+## Comparative performance
+
+We now compare Bulletproofs+ performance to that of the [Bulletproofs](https://eprint.iacr.org/2017/1066) range proving system.
+
+### Size
+
+Bulletproofs+ range proofs, like Bulletproofs, scale logarithmically in size.
+In each case, a proof consists of the following:
+
+| Proving system | Group elements | Scalars |
+|:---------------|:---------------|:--------|
+| Bulletproofs   | $2 \operatorname{lg}(nm) + 4$ | $5$ |
+| Bulletproofs+  | $2 \operatorname{lg}(nm) + 3$ | $p + 2$ |
+
+That is, both the range bit length $n$ and aggregation factor $m$ contribute logarithmically to the proof size.
+In the case of the Tari-specific implementation of Bulletproofs+, the number of masks contributes linearly to the proof size.
+
+Regardless of the bit length $n$ or aggregation factor $m$ used, a single-mask ($p = 1$) Bulletproofs+ range proof saves $1$ group element and $2$ scalars over the equivalent Bulletproofs range proof. For the [Ristretto](https://ristretto.group/)-based Tari implementation, this amounts to $96$ bytes after group element and scalar encoding.
+
+We also note that while it is possible to encode an extra scalar of data in a Bulletproofs non-aggregated range proof (in addition to the mask) using nonce-based recovery techniques, this is not possible with Bulletproofs+ range proofs.
+
+### Verification efficiency
+
+Like in Bulletproofs+, it is possible to reduce verification of a batch of Bulletproofs range proofs to a single multiscalar multiplication operation.
+
+To compare this efficiency, we count unique generators used in the multiscalar multiplication operation in both cases.
+It is the case that scalar-only operations differ greatly between the two systems, but these operations are much faster than those involving group elements.
+
+Let $b$ be the batch size of such a verification; that is, the number of proofs to be verified together.
+This means single-proof verification has $b = 1$.
+
+| Proving system | Operation size |
+|:---------------|:---------------|
+| Bulletproofs   | $b[2\operatorname{lg}(mn) + m + 4] + 2mn + 2$ |
+| Bulletproofs+  | $b[2\operatorname{lg}(mn) + m + 3] + 2mn + p + 1$ |
+
+Verification in Bulletproofs+ is slightly faster than in Bulletproofs.
+
+## Changelog
 
 | Date        | Change              | Author |
 |:------------|:--------------------|:-------|
 | 7 Dec 2022  | First draft         | Aaron  |
 | 13 Jan 2022 | Performance updates | brianp |
 | 20 Jul 2023 | Sum optimization    | Aaron  |
+| 31 Jul 2023 | Notation and efficiency | Aaron  |
