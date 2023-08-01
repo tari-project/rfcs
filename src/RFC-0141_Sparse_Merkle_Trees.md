@@ -59,87 +59,87 @@ used for tracking the commitment to the UTXO set, with a Sparse Merkle tree (SMT
 
 ### Sparse Merkle trees
 
-A sparse Merkle tree (SMT) is a Merkle-type structure, except the contained data is indexed, and each datapoint is 
+A sparse Merkle tree ([SMT]) is a Merkle-type structure, except the contained data is indexed, and each datapoint is 
 placed at the leaf that corresponds to that datapoint’s index. Empty nodes are represented by a predefined "null" value.
 
 Since every empty node has the same hash, and the tree is sparse, it is possible to prune the tree in a way such 
-that only the non-zero leaf nodes and placeholders marking the empty sub-trees are stored. THerefore SMTs are 
+that only the non-zero leaf nodes and placeholders marking the empty sub-trees are stored. Therefore, SMTs are 
 relatively compact. 
 
 A major feature of SMTs is that they are truly mutable. The current UTXO Merkle root in Tari is calculated using a 
 Merkle Mountain Range (MMR). This has some drawbacks: 
 
-1. MMRs are _immutable_ data structures,and therefore a bitmap is appended to the MMR to mark the spent outputs. 
-   In the implementation, a roaring bitmap is used, which takes advantage of compression, but even so, it is still 
-   fairly large and will grow indefinitely.
-2. All TXOs are tracked forever. The Merkle tree must keep a record of all TXOs forever, and mark them as they are 
-   spent. The blockchain cannot prune STXOs from the set.
-3. Let's say that the UTXO merkle root currently has a value `R1`. The immutability means that when you add a UTXO to 
-   the set, to giving a new Merkle root `R2`, say, and then immediately remove the UTXO, the Merkle root will now be 
-   some `R3` and _not_ `R1` as you might expect. This path dependent also extends to the order of adding UTXOs. 
+1. MMRs are _immutable_ data structures,and therefore as a workaround (some would say, hack), a bitmap is appended 
+   to the MMR to mark the spent outputs. In Tari's implementation, a roaring bitmap is used, which takes 
+   advantage of compression, but even so, it is still fairly large and will grow indefinitely.
+2. The Merkle tree must keep a record of all TXOs forever, and mark them as they are spent. The blockchain cannot 
+   prune STXOs from the set.
+3. The root is path-dependent. Let's say that the UTXO merkle root currently has a value `R1`. When you add a UTXO 
+   to the set, to giving a new Merkle root `R2`, say, and then immediately remove the UTXO, the Merkle root will now be 
+   some `R3` and _not_ `R1` as you might expect. This path dependence also extends to the order of adding UTXOs. 
    Adding UTXO `A` then `B` yields a different root to `B` then `A`.
 
 SMTs are true mutable data structures and do not have these drawbacks. 
 
-1. No tracking bitmap is needed. When a UTXO is pent, it can be deleted from the tree.
+1. No tracking bitmap is needed. When a UTXO is spent, it can be deleted from the tree.
 2. It is possible to prune STXOs from the UTXO set to calculate the Merkle root.
 3. Adding and removing UTXOs in any order will always yield the same Merkle root. Adding, and then deleting a UTXO 
    from the set will result in the same Merkle root as before the UTXO was added.
 
 ### Inclusion and exclusion proofs
 
-Inclusion proofs for the current MMMR structure are possible, but clunky, since the entire bitmap state must be 
+Inclusion proofs for the current MMMR structure are possible but clunky, since the entire bitmap state must be 
 included with the Merkle tree proof.
 
 Exclusion proofs are not possible in the current MMMR implementation, unless an output happens to be a spent output. 
-In this "STXO proof", the form of the proof is identical to the inclusion proof, with verification that the output 
-bit is set, rather than unset.
+In this "STXO proof", the form of the proof is identical to the inclusion proof, with the verifier checking that 
+the bit corresponding to the TXO is set, rather than unset.
 
-SMTs support *both* inclusion and exclusion proofs, and they are both succinct, O(log n), representations of the tree.
-
+SMTs support inclusion _and_ exclusion proofs, and they are both succinct, O(log n), representations of the tree.
 
 ### Space savings
 
 In terms of space, the SMT is more efficient than MMMRs and the advantage grows with time.
 
-For an SMT, to calculate the root of the UTXO set, all you need is the UTXO set itself.
+For an SMT, to calculate the root of the UTXO set, all you need is the UTXO set itself, assuming the commitment is 
+used as the tree index.
 
 Consider some representative numbers:
 
 Let's assume there are 1,000,000 UTXOs, with another 2,000,000 UTXOs having being spent over the lifetime of the
 project. A busy blockchain might achieve this level of traffic in a few days.
 
-If each UTXO hash is 32 bytes, you need serialize 32MB to recreate the merkle root for the SMT.
+If each commitment-UTXO hash pair is 64 bytes, you need serialize 64MB to recreate the merkle root for the SMT.
 
-For the MMMR, you need all 3,000,0000 hashes (96MB) plus approximately 1MB for every million hashes in a bitmap to
-indicate which hashes have  been deleted (3 MB) for a total of 100MB.
+For the MMMR, even though you only need the UTXO hash, you need all 3,000,0000 values (96MB) plus approximately 1MB 
+for every million hashes in a bitmap to indicate which hashes have  been deleted (3 MB) for a total of 99MB.
 
 This only gets worse with time. Over a period of a year, a busy blockchain might have 100,000,000 spent transaction 
 outputs. However, the UTXO set will grow far more slowly, and perhaps only 10x in size to 10 million outputs.
 
-The SMT tree requires serialising 320MB of data to recreate the root, whereas the MMMR now requires 3.6GB of data.
+The SMT tree requires serialising 640MB of data to recreate the root, whereas the MMMR now requires 3.6GB of data.
 
 ## Implementation
 
 The proposed implementation assumes that a key-value store for the data exists. The Merkle tree is only 
 concerned with the index and the value hash, as opposed to the value itself.
 
-When constructing a new tree, a hashing algorithm is specified. This is used to hash the non-leaf nodes. As 
+When constructing a new tree, a hashing algorithm is specified. As 
 indicated, the "values" provided to the tree must already be a hash, and should have been generated from a different 
 hashing algorithm to the one driving the tree, in order to prevent second pre-image attacks.
 
 To insert a new leaf, the key is used to derive a path through the tree. Starting with the most significant bit, you 
-move down the left branch if the bit is zero, or take the right branch if the bit is one. Once a terminal node is 
-reached, the node is replaced with a new sub-tree with the existing terminal node and the new leaf node forming the 
+move down the left branch if the bit is zero, or take the right branch if the bit is equal to one. Once a terminal 
+node is reached, the node is replaced with a new sub-tree with the existing terminal node and the new leaf node forming the 
 children of the last branch node in the sub-tree. The depth of the sub-tree is determined by the number of matching 
 bits of the respective keys of the two nodes.
 
 To delete a node, the procedure above is reversed. This entails that a significant portion of the tree may be pruned 
 when deleting a node in a highly sparse region of the tree.
 
-The null hashes representing the empty sub-trees are treated identically to the leaf nodes. Thus branch hashes are 
-calculated in the usual way, _inter alia_, `H_branch = H(Branch marker, H_left, H_right)`, irrespective of whether the 
-left or right nodes are empty or not. 
+The null hashes representing the empty sub-trees are treated identically to the leaf nodes. 
+Thus branch hashes are calculated in the usual way, _inter alia_, `H_branch = H(Branch marker, H_left, H_right)`, 
+irrespective of whether the left or right nodes are empty or not. 
 
 Domain separation SHOULD be used to distinguish branch nodes from leaf nodes. This also mitigates second pre-image 
 attacks if the advice above is not followed and the values are hashed with the same algorithm as the tree. 
@@ -237,6 +237,13 @@ The SMT is taking 1.92s to insert 1 mil nodes, or 1.9us per node on average on a
 
 This is still sufficiently fast for our purposes and the benefits of having a truly mutable data structure, succinct 
 inclusion and exclusion proofs, and significant serialisation savings far outweigh the performance costs. 
+
+# References
+
+[SMT]: https://eprint.iacr.org/2016/683.pdf "Original paper"
+
+1. Dahlberg et. al., "Efficient Sparse Merkle Trees", [SMT]
+
 
 # Change Log
 
