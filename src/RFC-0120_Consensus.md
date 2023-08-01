@@ -283,7 +283,8 @@ This is the nonce used in solving the Proof of Work.
 
 The nonce MUST conform to the following:
 
-* Must be transmitted as an unsigned 64-bit integer;
+* MUST be transmitted as an unsigned 64-bit integer;
+* for RandomX blocks, thus MUST be 0
 
 #### PoW
 
@@ -291,10 +292,10 @@ This is the Proof of Work algorithm used to solve the Proof of Work. This is use
 
 The [PoW] MUST contain the following:
 
-* pow_algo as an enum (0 for Monero, 1 for Sha3).
-* pow_data for Monero blocks as an array of unsigned 8-bit integers (bytes) in little-endian format, containing the Monero merge-mining Proof-of-Work data.
-  * the RandomX seed, stored as `randomx_key` within the Monero block, must have not been first seen in a block with confirmations more than `max_randomx_seed_height`.
-* pow_data for Sha3 blocks must be empty.
+* pow_algo as an enum (0 for RandomX, 1 for Sha3x).
+* pow_data for RandomX blocks as an array of unsigned 8-bit integers (bytes) in little-endian format, containing the RandomX merge-mining Proof-of-Work data.
+  * the RandomX seed, stored as `randomx_key` within the RandomX block, must have not been first seen in a block with confirmations more than `max_randomx_seed_height`.
+* pow_data for Sha3x blocks MUST be empty.
 
 #### Difficulty Calculation
 [target difficulty]: #target-difficulty "Target Difficulty"
@@ -311,8 +312,8 @@ $$
 | Symbol                 	| Value                   | Description                                                                                                         |
 |-------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------|
 | N                       | 90                      | Target difficulty block window                                                                                      |
-| T                       | SHA3: 300 Monero: 200   | Target block time in seconds.  The value used depends on the  PoW algorithm being used.                             |
-| \\( \solvetimemax \\)   | SHA3: 1800 Monero: 1200 | Maximum solve time.  This is six times the target time  of the current PoW algorithm.                                 |
+| T                       | SHA3x: 300 RandomX: 200   | Target block time in seconds.  The value used depends on the  PoW algorithm being used.                             |
+| \\( \solvetimemax \\)   | SHA3x: 1800 RandomX: 1200 | Maximum solve time.  This is six times the target time  of the current PoW algorithm.                                 |
 | \\( \solvetime \\)    	| variable                | The timestamp difference in seconds between  block _i_ and _i - 1_ where \\( 1 \le \solvetime \le \solvetimemax \\) |
 | \\( \mathrm{D_{avg}} \\)| variable                | The average difficulty of the last _N_ blocks                                                                       |
 
@@ -325,7 +326,7 @@ $$
 \tag{2}
 $$
 
-It is important to note that the two proof of work algorithms are calculated _independently_. i.e., if the current block uses _SHA3_ proof of work, the block window and solve times only include _SHA3_ blocks and vice versa.
+It is important to note that the two proof of work algorithms are calculated _independently_. i.e., if the current block uses _SHA3x_ proof of work, the block window and solve times only include _SHA3x_ blocks and vice versa.
 
 ### FTL
 [FTL]: #ftl "Future Time Limit"
@@ -347,7 +348,7 @@ This is defined as the total accumulated proof of work done on the blockchain. T
 rated at different difficulties. To compare them, we simply multiply them together into one number:
 $$
 \begin{align}
- \textit{accumulated_monero_difficulty} * \textit{accumulated_sha_difficulty} 
+ \textit{accumulated_randomx_difficulty} * \textit{accumulated_sha3x_difficulty} 
 \end{align}
 \tag{3}
 $$
@@ -373,6 +374,7 @@ done by the whole network, and verification of sorting is exceptionally cheap.
 | 11 Oct 2022 | First stable        | SWvHeerden|
 | 13 Mar 2023 | Add mention of coinbase extra        | SWvHeerden|
 | 05 Jun 2023 | Add coinbase excess rule       | SWvHeerden|
+| 01 Aug 2023 | Add Randomx rule, fix Sha and Monero names       | SWvHeerden|
 
 
 
