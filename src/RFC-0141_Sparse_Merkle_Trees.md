@@ -162,8 +162,9 @@ If we insert the nodes at
 
 you will notice that the first two diverge at the first bit, while the first and last pairs differ at the
 fourth bit. This results in a SMT that looks like this:
-
-```text
+   
+<div style="line-height: 1em" class="hljs">
+<pre>
             ┌──────┐
       ┌─────┤ root ├─────┐
       │     └──────┘     │
@@ -179,7 +180,10 @@ fourth bit. This results in a SMT that looks like this:
   ┌┴┐   ┌┴┐                  ┌┴┐   ┌┴┐
   │A│   │B│                  │D│   │C│
   └─┘   └─┘                  └─┘   └─┘
-```
+</pre>
+</div>
+
+_Figure 1: An example sparse Merkle tree._
 
 The merkle root is calculated by hashing nodes in the familiar way.
 
@@ -237,13 +241,422 @@ The SMT is taking 1.92s to insert 1 mil nodes, or 1.9us per node on average on a
 
 This is still sufficiently fast for our purposes and the benefits of having a truly mutable data structure, succinct 
 inclusion and exclusion proofs, and significant serialisation savings far outweigh the performance costs. 
+          
+## Specification
+
+Define the following constants:
+
+| Name             | Type    | Value    |
+|------------------|---------|----------|
+| EMPTY_NODE_HASH  | bytes   | [0; 32]] |
+| LEAF_PREFIX      | bytes   | b"V"     |
+| BRANCH_PREFIX    | bytes   | b"B"     |
+| KEY_LENGTH_BYTES | integer | 32       |
+           
+### Node types
+
+Each `Node` in the tree is either, `Empty`, a `Leaf`, or a `Branch`. Every node in the tree is associated with a 
+hash function, `H` that has a digest output length of `KEY_LENGTH_BYTES`.
+
+Leaf nodes store the key and value in their data property. Leaf nodes are immutable, and MAY cache the hash value 
+for efficiency.  
+
+Branch nodes contain two `Node` instances, referring to the left and right child nodes respectively.  Branch nodes 
+MAY store additional data, such as the height of the node in the tree, the key prefix and the node's hash value, for 
+performance and efficiency purposes.
+
+Default empty nodes always have a constant hash, `EMPTY_NODE_HASH`.  
+
+
+In summary, the nodes are defined as:
+
+```rust
+pub struct LeafNode<H> {
+    key: NodeKey,
+    hash: NodeHash,
+    value: ValueHash,
+    hash_type: PhantomData<H>,
+}
+
+pub struct EmptyNode {}
+
+impl EmptyNode {
+    pub fn hash(&self) -> &'static NodeHash {
+        &EMPTY_NODE_HASH
+    }
+}
+
+pub struct BranchNode<H> {
+    // The height of the branch. It is also the number of bits that all keys below this branch share.
+    height: usize,
+    // Only the first `height` bits of the key are relevant for this branch.
+    key: NodeKey,
+    hash: NodeHash,
+    // Flag to indicate that the tree hash changed somewhere below this branch. and that the hash should be
+    // recalculated.
+    is_hash_stale: bool,
+    left: Box<Node<H>>,
+    right: Box<Node<H>>,
+    hash_type: PhantomData<H>,
+}
+```
+
+### Leaf node values
+
+This specification outsources hashing the value data to an external service. 'Value' data in terms of the 
+specification refers to the hash of the value data. The hashing algorithm used to hash the data SHOULD be different 
+from `H`, to prevent second preimage attacks. 
+
+The digest length of the value hashes does not need to be `KEY_LENGTH_BYTES`, but it MUST be a constant predefined 
+length.
+
+### Node hashes
+
+#### Empty nodes
+
+As described above, empty nodes always return `EMPTY_NODE_HASH` as the hash value.
+
+#### Leaf nodes
+
+The definition of a leaf node's hash is
+
+    H::digest(LEAF_PREFIX || KEY(32-bytes) || VALUE_HASH)
+
+The key MUST be included in the hash. Imagine every leaf node has the same value. If the key was not hashed, there 
+would be many different tree structures that would yield the same tree root. Specifically, any tree could replace a 
+leaf node with a different leaf node with the same key prefix corresponding to the height of the original leaf node 
+without changing the root hash.  
+
+#### Branch nodes
+
+The definition of a branch node's hash is
+
+    H::digest(BRANCH_PREFIX || height || key_prefix || left_child_hash || right_child_hash)
+
+where
+
+* `height` is the height of the branch in the tree, where the root node is height 0.
+* `key_prefix` is the common prefix that the key of _every_ descendent node of this branch will begin with. 
+  `key_prefix` is `KEY_LENGTH_BYTES` long, and every bit after the prefix MUST be set to zero. This means that key 
+  prefixes are not unique. For example, every key prefix for the left-mode path down the tree will always have a 
+  prefix of `[0; 32]`. The height parameter helps disambiguate this.
+* `left_child_hash` and `right_child_hash` are the hashes of the left and right child noes respectively, and have 
+  length `KEY_LENGTH_BYTES`. 
+
+### Tree structure
+
+The Merkle tree is built on top of an underlying dataset consisting of a set of (key, value) tuples. 
+The key fixes the position of each dataset element in the tree: starting from the root, each digit in the binary 
+expansion  indicates whether we should follow the left child (next digit is 0) or the right child (next digit is 1), 
+see Figure 1. The length of the key (in bytes) is a fixed constant of the tree, `KEY_LENGTH_BYTES`, larger than 0.
+
+Rather than explicitly creating a full tree, we simulate it by inserting only non-zero leaves into the tree whenever 
+a new key-value pair is added to the dataset, using the two optimizations:
+
+1. Each subtree with exactly one non-empty leaf is replaced by the leaf itself.
+2. Each subtree containing only empty nodes is replaced by a constant node with hash value equal to `EMPTY_HASH`.
+
+### Root Hash Calculation
+
+The Merkle root of a dataset is computed as follows:
+
+1. The Merkle root of an empty dataset is set to the constant value `EMPTY_HASH`.
+2. The Merkle root of a dataset with a single element is set to the leaf hash of that element.
+3. Otherwise, the Merkle root is the hash of the branch node occupying the root position. The child hashes are 
+   calculated recursively using the definitions above.
+
+### Adding or updating a key-value pair
+
+Adding a new node or updating an existing one follows the same logic. Therefore, a single function, `upsert` is 
+defined. The borrow semantics of Rust requires a slightly different approach to managing the tree than one might 
+take in other languages (e.g. [LIP39]).
+
+```rust
+    pub fn upsert(&mut self, key: NodeKey, value: ValueHash) -> Result<UpdateResult, SMTError> {
+        let new_leaf = LeafNode::new(key, value);
+        if self.is_empty() {
+            self.root = Node::Leaf(new_leaf);
+            return Ok(UpdateResult::Inserted);
+        } else if self.root.is_leaf() {
+            return self.upsert_root(new_leaf);
+        }
+        // Traverse the tree until we find either an empty node or a leaf node.
+        let mut terminal_branch = self.find_terminal_branch(new_leaf.key())?;
+        let result = terminal_branch.insert_or_update_leaf(new_leaf)?;
+        Ok(result)
+    }
+    
+    /// Look at the height-th most significant bit and returns Left of it is a zero and Right if it is a one 
+    fn traverse_direction(height: usize, child: &NodeKey) -> TraverseDirection {...}
+    
+    // Finds the branch node above the terminal node. The case of an empty or leaf root node must be handled elsewhere 
+    fn find_terminal_branch(&mut self, child_key: &NodeKey) -> Result<TerminalBranch<'_, H>, SMTError> {
+        let mut parent_node = &mut self.root;
+        let mut empty_siblings = Vec::new();
+        if !parent_node.is_branch() {
+            return Err(SMTError::UnexpectedNodeType);
+        }
+        let mut done = false;
+        let mut traverse_dir = TraverseDirection::Left;
+        while !done {
+            let branch = parent_node.as_branch_mut().unwrap();
+            traverse_dir = traverse_direction(branch.height(), child_key)?;
+            let next = match traverse_dir {
+                TraverseDirection::Left => {
+                    empty_siblings.push(branch.right().is_empty());
+                    branch.left()
+                },
+                TraverseDirection::Right => {
+                    empty_siblings.push(branch.left().is_empty());
+                    branch.right()
+                },
+            };
+            if next.is_branch() {
+                parent_node = match traverse_dir {
+                    TraverseDirection::Left => parent_node.as_branch_mut().unwrap().left_mut(),
+                    TraverseDirection::Right => parent_node.as_branch_mut().unwrap().right_mut(),
+                };
+            } else {
+                done = true;
+            }
+        }
+        let terminal = TerminalBranch {
+            parent: parent_node,
+            direction: traverse_dir,
+            empty_siblings,
+        };
+        Ok(terminal)
+    }
+```
+
+```rust
+struct TerminalBranch<'a, H> {
+    parent: &'a mut Node<H>,
+    direction: TraverseDirection,
+    empty_siblings: Vec<bool>,
+}
+
+impl<'a, H: Digest<OutputSize = U32>> TerminalBranch<'a, H> {
+    /// Returns the terminal node of the branch
+    pub fn terminal(&self) -> &Node<H> {
+        let branch = self.parent.as_branch().unwrap();
+        branch.child(self.direction)
+    }
+
+    // When inserting a new leaf node, there might be a slew of branch nodes to create depending on where the keys
+    // of the existing leaf and new leaf node diverge. E.g. if a leaf node of key `1101` is being inserted into a
+    // tree with a single leaf node of key `1100` then we must create branches at `1...`, `11..`, and `110.` with
+    // the leaf nodes `1100` and `1101` being the left and right branches at height 4 respectively.
+    //
+    // This function handles this case, as well the simple update case, and the simple insert case, where the target
+    // node is empty.
+    fn insert_or_update_leaf(&mut self, leaf: LeafNode<H>) -> Result<UpdateResult, SMTError> {
+        let branch = self.parent.as_branch_mut().ok_or(SMTError::UnexpectedNodeType)?;
+        let height = branch.height();
+        let terminal = branch.child_mut(self.direction);
+        match terminal {
+            Empty(_) => {
+                let _ = [Set terminal to the new leaf (Insert)]
+                Ok(UpdateResult::Inserted)
+            },
+            Leaf(old_leaf) if old_leaf.key() == leaf.key() => {
+                let old_value = [Replace of leaf with new leaf (Update)]
+                Ok(UpdateResult::Updated(old_value))
+            },
+            Leaf(_) => {
+                let branch = // Create a new sub-tree with the old and new leaf being children of a branch at the height
+                             // of the common key-prefixes
+                Ok(UpdateResult::Inserted)
+            },
+            _ => unreachable!(),
+        }
+    }
+```
+
+### Removing a Leaf Node
+
+A certain key-value pair can be removed from the tree by deleting the corresponding leaf node and rearranging the 
+affected nodes in the tree. The following protocol can be used to remove a key `k` from the tree.
+
+```rust
+    /// Attempts to delete the value at the location `key`. If the tree contains the key, the deleted value hash is
+    /// returned. Otherwise, `KeyNotFound` is returned.
+    pub fn delete(&mut self, key: &NodeKey) -> Result<DeleteResult, SMTError> {
+        if self.is_empty() {
+            return Ok(DeleteResult::KeyNotFound);
+        }
+        if self.root.is_leaf() {
+            return self.delete_root(key);
+        }
+        let mut path = self.find_terminal_branch(key)?;
+        let result = match path.classify_deletion(key)? {
+            PathClassifier::KeyDoesNotExist => DeleteResult::KeyNotFound,
+            PathClassifier::TerminalBranch => {
+                let deleted = // prune tree placing sibling at correct place upstream
+                DeleteResult::Deleted(deleted)
+            },
+            PathClassifier::NonTerminalBranch => {
+                let deleted_hash = path.delete()?;
+                DeleteResult::Deleted(deleted_hash)
+            },
+        };
+        Ok(result)
+    }
+```
+
+### Proof Construction
+
+Proofs are constructed in a straightforward manner. Unlike other SMT implementations (e.g. [LIP39]), if a
+sibling node is empty, then `EMPTY_NODE_HASH` is included as the sibling hash, rather than building a bitmap of
+non-empty siblings.
+
+Both inclusion and exclusion proofs use a common algorithm, `build_proof_candidate` for traversing the tree to the 
+desired proof key,  
+collecting hashes of every sibling node. The terminal node for where the proof key should reside is also noted:
+
+```rust
+pub struct ExclusionProof<H> {
+    siblings: Vec<NodeHash>,
+    // The terminal node of the tree proof, or `None` if the the node is `Empty`.
+    leaf: Option<LeafNode<H>>,
+    phantom: std::marker::PhantomData<H>,
+}
+
+impl<H: Digest<OutputSize = U32>> SparseMerkleTree<H> {
+    /// Construct the data structures needed to generate the Merkle proofs. Although this function returns a struct
+    /// of type `ExclusionProof` it is not really a valid (exclusion) proof. The constructors do additional
+    /// validation before passing the structure on. For this reason, this method is `private` outside of the module.
+    pub(crate) fn build_proof_candidate(&self, key: &NodeKey) -> Result<ExclusionProof<H>, SMTError> {
+        let mut siblings = Vec::new();
+        let mut current_node = &self.root;
+        while current_node.is_branch() {
+            let branch = current_node.as_branch().unwrap();
+            let dir = traverse_direction(branch.height(), key)?;
+            current_node = match dir {
+                TraverseDirection::Left => {
+                    siblings.push(branch.right().hash().clone());
+                    branch.left()
+                },
+                TraverseDirection::Right => {
+                    siblings.push(branch.left().hash().clone());
+                    branch.right()
+                },
+            };
+        }
+        let leaf = current_node.as_leaf().cloned();
+        let candidate = ExclusionProof::new(siblings, leaf);
+        Ok(candidate)
+    }
+}
+```
+
+#### Inclusion proof
+
+An inclusion proof is valid if the terminal node found in `build_proof_candidate` matches the key and value provided 
+in the proof request. Equivalently, the leaf node's hash must match the hash of a new leaf node generated with the 
+key and value given in the proof request.
+
+The final proof consists of the vector of sibling hashes. 
+
+```rust
+pub struct InclusionProof<H> {
+    siblings: Vec<NodeHash>,
+    phantom: std::marker::PhantomData<H>,
+}
+
+impl<H: Digest<OutputSize = U32>> InclusionProof<H> {
+    /// Generates an inclusion proof for the given key and value hash from the given tree. If the key does not exist in
+    /// tree, or the key does exist, but the value hash does not match, then `from_tree` will return a
+    /// `NonViableProof` error.
+    pub fn from_tree(tree: &SparseMerkleTree<H>, key: &NodeKey, value_hash: &ValueHash) -> Result<Self, SMTError> {
+        let proof = tree.build_proof_candidate(key)?;
+        match proof.leaf {
+            Some(leaf) => {
+                let node_hash = LeafNode::<H>::hash_value(key, value_hash);
+                if leaf.hash() != &node_hash {
+                    return Err(SMTError::NonViableProof);
+                }
+            },
+            None => return Err(SMTError::NonViableProof),
+        }
+        Ok(Self::new(proof.siblings))
+    }
+}
+```
+
+#### Exclusion proof
+
+An exclusion proof request only requires a key value. A proof is valid if the leaf node returned by 
+`build_proof_candidate` does not have the same key as the proof request.
+
+The proof consists of the sibling hashes and a copy of the terminal leaf node.
+
+```rust
+impl<H: Digest<OutputSize = U32>> ExclusionProof<H> {
+    /// Generates an exclusion proof for the given key from the given tree. If the key exists in the tree then
+    /// `from_tree` will return a `NonViableProof` error.
+    pub fn from_tree(tree: &SparseMerkleTree<H>, key: &NodeKey) -> Result<Self, SMTError> {
+        let proof = tree.build_proof_candidate(key)?;
+        // If the keys match, then we cannot provide an exclusion proof, since the key *is* in the tree
+        if let Some(leaf) = &proof.leaf {
+            if leaf.key() == key {
+                return Err(SMTError::NonViableProof);
+            }
+        }
+        Ok(proof)
+    }
+```
+### Proof Verification
+
+To check an exclusion proof, the Verifier calls the `ExclusionProof::validate(&self, keys, root)` function. This 
+function is not a method of the tree, and can be run just by holding the Merkle root.  
+
+The function reconstructs the tree using the expected key and places the leaf node provided in the proof at the terminal 
+position. It then calculates the root hash. 
+
+Validation succeeds if the calculated root hash matches the given root hash, and the leaf node is
+empty, or the existing leaf node has a different key to the expected key.
+
+```rust
+    pub fn validate(&self, expected_key: &NodeKey, expected_root: &NodeHash) -> bool {
+        let leaf_hash = match &self.leaf {
+            Some(leaf) => leaf.hash().clone(),
+            None => (EmptyNode {}).hash().clone(),
+        };
+        let root = self.calculate_root_hash(expected_key, leaf_hash);
+        // For exclusion proof, roots must match AND existing leaf must be empty, or keys must not match
+        root == *expected_root &&
+            match &self.leaf {
+                Some(leaf) => leaf.key() != expected_key,
+                None => true,
+            }
+    }
+```
+
+Verifying inclusion proofs is similar, except that the terminal leaf node will be constructed from the key and value 
+hash provided by the verifier.
+
+```rust
+    pub fn validate(&self, expected_key: &NodeKey, expected_value: &ValueHash, expected_root: &NodeHash) -> bool {
+        // calculate expected leaf node hash
+        let leaf_hash = LeafNode::<H>::hash_value(expected_key, expected_value);
+        let calculated_root = self.calculate_root_hash(expected_key, leaf_hash);
+        calculated_root == *expected_root
+    }
+```
+
+## Backwards Compatibility
+
+If the UTXO merkle root is replaced by a sparse merkle tree, this change would require a **hard fork**, 
+since it fundamentally alters how the UTXO merkle root is calculated. 
 
 # References
 
 [SMT]: https://eprint.iacr.org/2016/683.pdf "Original paper"
+[LIP39]: https://github.com/LiskHQ/lips/blob/main/proposals/lip-0039.md "LIP-0039: Introduce sparse Merkle trees"
 
 1. Dahlberg et. al., "Efficient Sparse Merkle Trees", [SMT]
-
+2. A. Ricottone, "LIP-0039: Introduce sparse Merkle trees", [LIP39]
 
 # Change Log
 
