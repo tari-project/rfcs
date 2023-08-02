@@ -246,12 +246,12 @@ inclusion and exclusion proofs, and significant serialisation savings far outwei
 
 Define the following constants:
 
-| Name             | Type    | Value    |
-|------------------|---------|----------|
-| EMPTY_NODE_HASH  | bytes   | [0; 32]] |
-| LEAF_PREFIX      | bytes   | b"V"     |
-| BRANCH_PREFIX    | bytes   | b"B"     |
-| KEY_LENGTH_BYTES | integer | 32       |
+| Name             | Type    | Value   |
+|------------------|---------|---------|
+| EMPTY_NODE_HASH  | bytes   | [0; 32] |
+| LEAF_PREFIX      | bytes   | b"V"    |
+| BRANCH_PREFIX    | bytes   | b"B"    |
+| KEY_LENGTH_BYTES | integer | 32      |
            
 ### Node types
 
