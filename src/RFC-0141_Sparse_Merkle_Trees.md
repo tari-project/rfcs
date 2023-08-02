@@ -270,7 +270,7 @@ Default empty nodes always have a constant hash, `EMPTY_NODE_HASH`.
 
 In summary, the nodes are defined as:
 
-```rust
+```rust,noplayground,ignore
 pub struct LeafNode<H> {
     key: NodeKey,
     hash: NodeHash,
@@ -320,7 +320,9 @@ As described above, empty nodes always return `EMPTY_NODE_HASH` as the hash valu
 
 The definition of a leaf node's hash is
 
+```text
     H::digest(LEAF_PREFIX || KEY(32-bytes) || VALUE_HASH)
+```
 
 The key MUST be included in the hash. Imagine every leaf node has the same value. If the key was not hashed, there 
 would be many different tree structures that would yield the same tree root. Specifically, any tree could replace a 
@@ -331,7 +333,9 @@ without changing the root hash.
 
 The definition of a branch node's hash is
 
+```text
     H::digest(BRANCH_PREFIX || height || key_prefix || left_child_hash || right_child_hash)
+```
 
 where
 
@@ -371,7 +375,7 @@ Adding a new node or updating an existing one follows the same logic. Therefore,
 defined. The borrow semantics of Rust requires a slightly different approach to managing the tree than one might 
 take in other languages (e.g. [LIP39]).
 
-```rust
+```rust,noplayground,ignore
     pub fn upsert(&mut self, key: NodeKey, value: ValueHash) -> Result<UpdateResult, SMTError> {
         let new_leaf = LeafNode::new(key, value);
         if self.is_empty() {
@@ -429,7 +433,7 @@ take in other languages (e.g. [LIP39]).
     }
 ```
 
-```rust
+```rust,noplayground,ignore
 struct TerminalBranch<'a, H> {
     parent: &'a mut Node<H>,
     direction: TraverseDirection,
@@ -478,7 +482,7 @@ impl<'a, H: Digest<OutputSize = U32>> TerminalBranch<'a, H> {
 A certain key-value pair can be removed from the tree by deleting the corresponding leaf node and rearranging the 
 affected nodes in the tree. The following protocol can be used to remove a key `k` from the tree.
 
-```rust
+```rust,noplayground,ignore
     /// Attempts to delete the value at the location `key`. If the tree contains the key, the deleted value hash is
     /// returned. Otherwise, `KeyNotFound` is returned.
     pub fn delete(&mut self, key: &NodeKey) -> Result<DeleteResult, SMTError> {
@@ -514,7 +518,7 @@ Both inclusion and exclusion proofs use a common algorithm, `build_proof_candida
 desired proof key,  
 collecting hashes of every sibling node. The terminal node for where the proof key should reside is also noted:
 
-```rust
+```rust,noplayground,ignore
 pub struct ExclusionProof<H> {
     siblings: Vec<NodeHash>,
     // The terminal node of the tree proof, or `None` if the the node is `Empty`.
@@ -558,7 +562,7 @@ key and value given in the proof request.
 
 The final proof consists of the vector of sibling hashes. 
 
-```rust
+```rust,noplayground,ignore
 pub struct InclusionProof<H> {
     siblings: Vec<NodeHash>,
     phantom: std::marker::PhantomData<H>,
@@ -591,7 +595,7 @@ An exclusion proof request only requires a key value. A proof is valid if the le
 
 The proof consists of the sibling hashes and a copy of the terminal leaf node.
 
-```rust
+```rust,noplayground,ignore
 impl<H: Digest<OutputSize = U32>> ExclusionProof<H> {
     /// Generates an exclusion proof for the given key from the given tree. If the key exists in the tree then
     /// `from_tree` will return a `NonViableProof` error.
@@ -617,7 +621,7 @@ position. It then calculates the root hash.
 Validation succeeds if the calculated root hash matches the given root hash, and the leaf node is
 empty, or the existing leaf node has a different key to the expected key.
 
-```rust
+```rust,noplayground,ignore
     pub fn validate(&self, expected_key: &NodeKey, expected_root: &NodeHash) -> bool {
         let leaf_hash = match &self.leaf {
             Some(leaf) => leaf.hash().clone(),
@@ -636,7 +640,7 @@ empty, or the existing leaf node has a different key to the expected key.
 Verifying inclusion proofs is similar, except that the terminal leaf node will be constructed from the key and value 
 hash provided by the verifier.
 
-```rust
+```rust,noplayground,ignore
     pub fn validate(&self, expected_key: &NodeKey, expected_value: &ValueHash, expected_root: &NodeHash) -> bool {
         // calculate expected leaf node hash
         let leaf_hash = LeafNode::<H>::hash_value(expected_key, expected_value);
