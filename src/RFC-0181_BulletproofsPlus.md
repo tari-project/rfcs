@@ -251,13 +251,17 @@ This means single-proof verification has $b = 1$.
 | Bulletproofs   | $b[2\operatorname{lg}(mn) + m + 4] + 2mn + 2$ |
 | Bulletproofs+  | $b[2\operatorname{lg}(mn) + m + 3] + 2mn + p + 1$ |
 
-Verification in Bulletproofs+ is slightly faster than in Bulletproofs.
+Verification in Bulletproofs+ is slightly faster than in Bulletproofs in theory.
+
+In practice, verification of a single 64-bit range proof in the [Tari Bulletproofs+](https://github.com/tari-project/bulletproofs-plus) implementation is comparable to an [updated fork](https://github.com/tari-project/bulletproofs) of the [Dalek Bulletproofs](https://github.com/dalek-cryptography/bulletproofs) implementation, though verification of an aggregated proof is notably slower.
 
 ### Proving efficiency
 
 It is more challenging to compare proving efficiency, since generation of a range proof does not reduce cleanly to a single multiscalar multiplication evaluation for either Bulletproofs or Bulletproofs+ range proofs.
 However, we note that the overall complexity between the inner-product arguments in the proving systems is similar in terms of group operations; outside of these inner-product arguments, Bulletproofs+ requires fewer group operations.
 Overall efficiency is likely to depend on specific optimizations.
+
+In practice, verification of a single 64-bit range proof in the Tari Bulletproofs+ implementation is about 10% faster than in the Dalek Bulletproofs updated fork.
 
 ## Changelog
 
