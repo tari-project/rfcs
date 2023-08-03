@@ -253,6 +253,12 @@ This means single-proof verification has $b = 1$.
 
 Verification in Bulletproofs+ is slightly faster than in Bulletproofs.
 
+### Proving efficiency
+
+It is more challenging to compare proving efficiency, since generation of a range proof does not reduce cleanly to a single multiscalar multiplication evaluation for either Bulletproofs or Bulletproofs+ range proofs.
+However, we note that the overall complexity between the inner-product arguments in the proving systems is similar in terms of group operations; outside of these inner-product arguments, Bulletproofs+ requires fewer group operations.
+Overall efficiency is likely to depend on specific optimizations.
+
 ## Changelog
 
 | Date        | Change              | Author |
@@ -261,3 +267,4 @@ Verification in Bulletproofs+ is slightly faster than in Bulletproofs.
 | 13 Jan 2022 | Performance updates | brianp |
 | 20 Jul 2023 | Sum optimization    | Aaron  |
 | 31 Jul 2023 | Notation and efficiency | Aaron  |
+| 3 Aug 2023 | Proving efficiency note | Aaron |
