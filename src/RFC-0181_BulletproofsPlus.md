@@ -261,7 +261,7 @@ It is more challenging to compare proving efficiency, since generation of a rang
 However, we note that the overall complexity between the inner-product arguments in the proving systems is similar in terms of group operations; outside of these inner-product arguments, Bulletproofs+ requires fewer group operations.
 Overall efficiency is likely to depend on specific optimizations.
 
-In practice, verification of a single 64-bit range proof in the Tari Bulletproofs+ implementation is about 10% faster than in the Dalek Bulletproofs updated fork.
+In practice, generation of a single 64-bit range proof in the Tari Bulletproofs+ implementation is about 10% faster than in the Dalek Bulletproofs updated fork, with similar performance for aggregated proofs.
 
 ## Changelog
 
