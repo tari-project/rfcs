@@ -77,6 +77,7 @@ To properly implement hardware wallets we need the following requirements to be 
 * Users need to verify transaction properties when signing for transactions.
 * The user must be able to receive transactions without having to authorize them on the hardware wallet.
 * The user must be able to receive transactions without having the Hardware wallet attached.
+* The hardware device implementation should comply with the best practices and/or security recommendations of the provider.
 
 ## Implementation
 
