@@ -76,6 +76,7 @@ To properly implement hardware wallets we need the following requirements to be 
 * No UTXO can be spent without a user physically approving the transaction on the hardware wallet.
 * Users need to verify transaction properties when signing for transactions.
 * The user must be able to receive transactions without having to authorize them on the hardware wallet.
+* The user must be able to receive transactions without having the Hardware wallet attached.
 
 ## Implementation
 
