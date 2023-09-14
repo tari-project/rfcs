@@ -160,21 +160,21 @@ If we insert the nodes at
  * C: 11100000 (224 in decimal)
  * D: 11110000 (240 in decimal)
 
-you will notice that the first two diverge at the first bit, while the first and last pairs differ at the
-fourth bit. This results in a SMT that looks like this:
+you will notice that the first two diverge at the fourth bit, while the first and last pairs differ at the
+first bit. This results in a SMT that looks like this:
    
 <div style="line-height: 1em" class="hljs">
 <pre>
             ┌──────┐
       ┌─────┤ root ├─────┐
       │     └──────┘     │
-     ┌┴┐                ┌┴┐1
+     ┌┴┐0               ┌┴┐1
   ┌──┤ ├──┐          ┌──┤ ├───┐
   │  └─┘  │          │  └─┘   │
- ┌┴┐     ┌┴┐        ┌┴┐10    ┌┴┐11
+ ┌┴┐00   ┌┴┐01      ┌┴┐10    ┌┴┐11
  │0│  ┌──┤ ├──┐     │0│    ┌─┤ ├─┐
  └─┘  │  └─┘  │     └─┘    │ └─┘ │
-     ┌┴┐     ┌┴┐       110┌┴┐   ┌┴┐111
+     ┌┴┐010  ┌┴┐011     110┌┴┐   ┌┴┐111
    ┌─┤ ├─┐   │0│          │0│ ┌─┤ ├─┐
    │ └─┘ │   └─┘          └─┘ │ └─┘ │
   ┌┴┐   ┌┴┐                  ┌┴┐   ┌┴┐
@@ -342,7 +342,7 @@ where
 * `height` is the height of the branch in the tree, where the root node is height 0.
 * `key_prefix` is the common prefix that the key of _every_ descendent node of this branch will begin with. 
   `key_prefix` is `KEY_LENGTH_BYTES` long, and every bit after the prefix MUST be set to zero. This means that key 
-  prefixes are not unique. For example, every key prefix for the left-mode path down the tree will always have a 
+  prefixes are not unique. For example, every key prefix for the left-most path down the tree will always have a 
   prefix of `[0; 32]`. The height parameter helps disambiguate this.
 * `left_child_hash` and `right_child_hash` are the hashes of the left and right child noes respectively, and have 
   length `KEY_LENGTH_BYTES`. 
