@@ -69,7 +69,7 @@ relatively compact.
 A major feature of SMTs is that they are truly mutable. The current UTXO Merkle root in Tari is calculated using a 
 Merkle Mountain Range (MMR). This has some drawbacks: 
 
-1. MMRs are _immutable_ data structures,and therefore as a workaround (some would say, hack), a bitmap is appended 
+1. MMRs are _immutable_ data structures, and therefore as a workaround (some would say, hack), a bitmap is appended 
    to the MMR to mark the spent outputs. In Tari's implementation, a roaring bitmap is used, which takes 
    advantage of compression, but even so, it is still fairly large and will grow indefinitely.
 2. The Merkle tree must keep a record of all TXOs forever, and mark them as they are spent. The blockchain cannot 
@@ -83,7 +83,7 @@ SMTs are true mutable data structures and do not have these drawbacks.
 
 1. No tracking bitmap is needed. When a UTXO is spent, it can be deleted from the tree.
 2. It is possible to prune STXOs from the UTXO set to calculate the Merkle root.
-3. Adding and removing UTXOs in any order will always yield the same Merkle root. Adding, and then deleting a UTXO 
+3. Adding and removing UTXOs in any order will always yield the same Merkle root. Adding and then deleting a UTXO 
    from the set will result in the same Merkle root as before the UTXO was added.
 
 ### Inclusion and exclusion proofs
@@ -109,15 +109,15 @@ Consider some representative numbers:
 Let's assume there are 1,000,000 UTXOs, with another 2,000,000 UTXOs having being spent over the lifetime of the
 project. A busy blockchain might achieve this level of traffic in a few days.
 
-If each commitment-UTXO hash pair is 64 bytes, you need serialize 64MB to recreate the merkle root for the SMT.
+If each commitment-UTXO hash pair is 64 bytes, you need serialize 64MB to recreate the Merkle root for the SMT.
 
-For the MMMR, even though you only need the UTXO hash, you need all 3,000,0000 values (96MB) plus approximately 1MB 
+For the MMMR, even though you only need the UTXO hash, you need all 3,000,000 values (96MB) plus approximately 1MB 
 for every million hashes in a bitmap to indicate which hashes have  been deleted (3 MB) for a total of 99MB.
 
 This only gets worse with time. Over a period of a year, a busy blockchain might have 100,000,000 spent transaction 
 outputs. However, the UTXO set will grow far more slowly, and perhaps only 10x in size to 10 million outputs.
 
-The SMT tree requires serialising 640MB of data to recreate the root, whereas the MMMR now requires 3.6GB of data.
+The SMT requires serialising 640MB of data to recreate the root, whereas the MMMR now requires 3.6GB of data.
 
 ## Implementation
 
@@ -651,8 +651,8 @@ hash provided by the verifier.
 
 ## Backwards Compatibility
 
-If the UTXO merkle root is replaced by a sparse merkle tree, this change would require a **hard fork**, 
-since it fundamentally alters how the UTXO merkle root is calculated. 
+If the UTXO Merkle root is replaced by a sparse Merkle tree, this change would require a **hard fork**, 
+since it fundamentally alters how the UTXO Merkle root is calculated. 
 
 # References
 
