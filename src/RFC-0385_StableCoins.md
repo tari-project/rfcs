@@ -283,7 +283,7 @@ The remainder of this section describes the implementation in detail.
 
 An account is described by the following struct:
     
-```rust
+```rust,ignore
 pub type AccountId = PublicKey;
 
 /// All fields are immutable, except for `owner`, `nonce` and `pending_deposits`.
@@ -306,7 +306,7 @@ struct StableCoinAccount {
    
 Global management is handled by the `StableCoin` struct:
 
-```rust
+```rust,ignore
 struct StableCoin {
     // A distributed hashmap of accounts, keyed by the account id
     accounts: DistributedCollection<AccountId, StableCoinAccount>,
@@ -324,7 +324,7 @@ struct StableCoin {
 
 Transfers are facilitated by e-cheques, which are written to recipients by senders and can be claimed by recipients 
 at their convenience.
-```rust
+```rust,ignore
 struct ECheque {
     sender: Pubkey,
     amount: Commitment,    
@@ -345,7 +345,7 @@ an entry in the distributed collection is permitted.
 ### Balances
 The j-th balance commitment for an account, updated after every transaction, `C_j` is of the form
 
-```
+```text
   C_j = κ_j.G + v_j.H
 ```
 
@@ -358,7 +358,7 @@ where
 ### Derivation of blinding factor
 The balance blinding factor, `κ_j` is derived as
 
-```
+```text
 κ_j = H(BALANCE_DOMAIN || account_id_secret || j)
 ```
 
@@ -382,14 +382,14 @@ The issuer must maintain a list of all accounts that have been created on the st
 wishes to create a new account, the user must request one from the issuer using the `new_account` method, providing 
 their [owner public key](#the-owner-key) along with the request. 
 
-```rust
+```rust,ignore
    pub fn new_account(user_pubkey: PublicKey) -> Result<AccountId, Error> {}
 ```
 
 The issuer creates a new account id using a Diffie-Hellman key exchange with the user's public key, `U_i` and the 
 issuer account secret, `a`. 
 
-```
+```text
 a_i = H(ACCOUNT_DOMAIN || a.U_i)
 ```
 
@@ -416,13 +416,13 @@ The `issuer_signature` is a signature proving that the issuer has authorised the
 account id to the user's public key. Validators MUST verify this signature before processing and transfers or claims 
 from the account. The signature is a Schnorr signature, `(s,R)` signed by the `issuer` secret key of the message
 
-```
+```text
 msg = H(NEW_ACCOUNT_DOMAIN || A_i || U_i)
 ```
 
 Validators can validate the signature by checking that
 
-```
+```text
     s.G == R + msg.P
 ```
 
@@ -451,7 +451,7 @@ However, this model does have some benefits:
 
 A transfer is initiated by the sender calling the `transfer` method on the stablecoin contract.
 
-```rust
+```rust,ignore
 pub fn transfer(
     &mut self, // The sender's account 
     recipient: AccountId, 
@@ -473,7 +473,7 @@ pub fn transfer(
 
 The `signature` is a Schnorr signature, `(s,R)` signed by the `owner` secret key of the message.
 
-```
+```text
     msg = H(TRANSFER_DOMAIN || owner || recipient || amount || encrypted_memo || new_nonce)
 ```
 
@@ -519,7 +519,7 @@ The `encrypted_memo` is an encrypted message to the recipient, containing:
 The memo is encrypted using a symmetric cipher, with a key derived from the shared secret between the sender and
 recipient, and the transfer metadata:
 
-```
+```text
 encryption_key = H(MEMO_DOMAIN || sender_secret*recipient_owner || amount || encrypted_memo || new_nonce)
 = H(MEMO_DOMAIN || sender_secret*recipient_owner || amount || encrypted_memo || new_nonce)
 ```
@@ -537,7 +537,7 @@ Claiming follows this procedure:
 
 The `claim` method is defined as follows:
 
-```rust
+```rust,ignore
 pub fn claim(
     &mut self,
     e_cheque: ECheque,
@@ -569,7 +569,7 @@ effectively returns the e-cheque to the sender. The sender can then claim the de
 The recipient provides a signature when rejecting the deposit, which is verified by validator nodes when processing
 the transaction. The signature is a Schnorr signature, `(s,R)` signed by the `owner` secret key of the message.
 
-```
+```text
     msg = H(REJECT_DOMAIN || sender || recipient || amount || encrypted_memo || new_nonce)
 ```
 
@@ -589,7 +589,7 @@ Validators MUST verify the following as part of validating the instruction:
 
 The issuer may blacklist an account by calling the `set_blacklist` method on the stablecoin contract. 
 
-```rust
+```rust,ignore
 pub fn blacklist(&mut self, account_id: AccountId, signature: Signature) {}
 ```
 
@@ -602,7 +602,7 @@ If validation succeeds, the stablecoin object is updated to include `account_id`
 
 Removing an account from the blacklist follows a similar procedure:
 
-```rust
+```rust,ignore
 pub fn unblacklist(&mut self, account_id: AccountId, signature: Signature) {}
 ```
 
@@ -620,7 +620,7 @@ Both operations increase the nonce of the issuer's account by one to prevent rep
 The issuer may mint new tokens by calling the `mint` method on the stablecoin contract. 
 Similarly, the issuer may burn tokens by calling the `burn` method on the stablecoin contract. 
 
-```rust
+```rust,ignore
 pub fn mint(&mut self, amount: u64, nonce: u64, signature: Signature) {}
 pub fn burn(&mut self, amount: u64, nonce: u64, signature: Signature) {}
 ```
@@ -648,7 +648,7 @@ account, assuming that the Issuer is granted write-access to the relevant `Stabl
 
 This is done with the `issue` method:
 
-```rust
+```rust,ignore
 pub fn issue(
     &mut self, 
     recipient: &mut StableCoinAccount, 
