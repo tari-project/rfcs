@@ -317,7 +317,7 @@ standard Mimblewimble rules and signatures.
 When Bob sees that the Minotari UTXO that Alice created is mined on the Minotari blockchain with the correct script, Bob can
 publish the Tari transaction containing the Tari commitment with the aggregate key \\(X = X_a + X_b + k_i \cdot G \\).
 
-### Claim Tari 
+### Claim Minotari 
 
 When Alice sees that the Tari commitment that Bob created is confirmed on the second layer containing the correct aggregate 
 key \\(X\\), she can provide Bob with the required `pre_image` to spend the Minotari UTXO. She does not have the 
@@ -325,7 +325,7 @@ missing key \\(x_b \\) to claim the Tari yet, but it will be revealed when Bob c
 
 Bob can now supply the `pre_image` and his Tari private key as transaction input to unlock the script.
 
-### Claim Minotari
+### Claim Tari
 
 Alice can now see that Bob spent the Minotari UTXO, and by examining the `input_data` required to satisfy the script, she 
 can learn Bob's secret Tari key. Although this private key \\( x_b \\) is now public knowledge, her part of the Tari spend key 
