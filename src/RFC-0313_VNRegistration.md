@@ -315,7 +315,7 @@ to re-sync their state and spend time not participating in the network, losing o
 [Base Layer]: Glossary.md#base-layer
 [reorg]: Glossary.md#chain-reorganization
 [DAN]: RFC-0303_DanOverview.md
-[VNC]: RFC-0314-VNCSelection.md#Intro
+[VNC]: RFC-0314_VNCSelection.md#Intro
 [Schnorr signature]: https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures
 [utxo]: Glossary.md#unspent-transaction-outputs
 [shard space]: RFC-0304-DanGlossarymd#Consensus-level
