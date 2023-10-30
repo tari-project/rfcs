@@ -48,10 +48,9 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The Thaum is a [unit of magic](https://discworld.fandom.com/wiki/Thaum). Thaums are used to power the DAN's economic
-engine.
+Tari is used to power the DAN's economic engine.
 
-This RFC describes the motivation and mechanism of the Tari to Dan peg-in mechanism. 
+This RFC describes the motivation and mechanism of the Minotari to DAN peg-in mechanism. 
 
 ## Related Requests for Comment
 
@@ -76,7 +75,7 @@ side-chains, like [elements]. All of them have particular trade-offs and difficu
 For Tari, we propose a slightly different approach: A one-way peg with persistent 2nd-layer burn.
 
 Because the operating principle is quite similar to that of a gas turbine, we call this approach the _turbine model_.
-Fuel (Tari) is fed into the turbine, which is burnt (also burnt :)) which produces a hot, motive gas (Thaums) that 
+Fuel (Minotari) is fed into the turbine, which is burnt (also burnt :)) which produces a hot, motive gas (Tari) that 
 drives the engine (the DAN). The exhaust gas is ejected from the rear of the turbine (a portion of the instruction 
 fees are burnt).
 
@@ -94,8 +93,8 @@ Let's briefly consider the trilemma from the point of view of the DAN.
 #### Monetary policy
 
 We are effectively forced to control monetary policy.
-Or put another way, we can't let people freely mint their own Thaums. Unfortunately, even though we have "chosen" to
-control supply, it's difficult for us to control the Thaums supply in practice. In the physical world, the money 
+Or put another way, we can't let people freely mint their own Tari. Unfortunately, even though we have "chosen" to
+control supply, it's difficult for us to control the Tari supply in practice. In the physical world, the money 
 supply is typically managed by a central bank, with the emphasis on "central".
 
 The designers of a decentralised monetary system have precious few levers available to control supply and no simple ones.
@@ -139,36 +138,37 @@ model:
 
 ![turbine](./assets/turbine.png)
 
-The DAN Thaum supply is increased by user peg-in deposits, and any other mechanism that we may want to enforce, 
+The DAN Tari supply is increased by user peg-in deposits, and any other mechanism that we may want to enforce, 
 such as asset issuer financing. 
 
-To prevent the eventual collapse of the Thaum price to zero, there must be an exhaust mechanism that continually 
-removes Thaums from the system..
+To prevent the eventual collapse of the Tari price to zero, there must be an exhaust mechanism that continually 
+removes Tari from the system..
 
-The simplest exhaust mechanism is to simply burn a fraction of Thaums fees from every transaction! These can be very
-low. Presumably, over the long-run the burn rate should approximately match the Tari base layer tail emission.
+The simplest exhaust mechanism is to simply burn a fraction of Tari fees from every transaction! These can be very
+low. Presumably, over the long-run the burn rate should approximately match the Minotari blockchain tail emission.
 
-The exhaust places a permanent upward pressure on the Thaums exchange rate; but it will never exceed 1:1 with Tari,
-since any premium will be immediately arbitraged away. This is because anyone can _always_ burn as much Tari as they 
-wish and mint Thaums at a 1:1 ratio on the DAN and then sell them for a risk-free profit. This action will increase 
-the supply of Thaums and drive the price back down to parity.
+The exhaust places a permanent upward pressure on the Tari exchange rate; but it will never exceed 1:1 with Minotari,
+since any premium will be immediately arbitraged away. This is because anyone can _always_ burn as much Minotari as they 
+wish and mint Tari at a 1:1 ratio on the DAN and then sell them for a risk-free profit. This action will increase 
+the supply of Tari and drive the price back down to parity.
 
-If the exhaust is temporarily insufficient to hold the peg, the Thaums price will drop below 1 XTR. This will 
-immediately shut off deposits because submarine swaps will a be cheaper route to obtaining Thaums than burning 
-Tari (which are always 1:1). Since the exhausts upward price pressure is a constant force, the Thaums price will 
+If the exhaust is temporarily insufficient to hold the peg, the Tari price will drop below 1 XTR. This will 
+immediately shut off deposits because submarine swaps will a be cheaper route to obtaining Tari than burning 
+Minotari (which are always 1:1). Since the exhausts upward price pressure is a constant force, the Tari price will 
 eventually approach 1:1 again.
 
-Over time, we expect this mechanism to provide a somewhat stable peg between Thaum and Tari with the Thaum price 
+Over time, we expect this mechanism to provide a somewhat stable peg between Tari and Minotari with the Tari price 
 occasionally dropping below parity and possibly remaining there for some time. As secondary markets for the 
-Tari-Thaum pair matures, this event will immediately create a bid on Thaums, since -- in the absence of catastrophic 
-failure -- speculators know that the Thaum price will eventually return to parity, causing upward pressure to come into 
+Tari-Minotari pair matures, this event will immediately create a bid on Tari, since -- in the absence of catastrophic 
+failure -- speculators know that the Tari price will eventually return to parity, causing upward pressure to come into 
 play quickly and efficiently.
 
 # Change Log
 
-| Date        | Change      | Author     |
-|:------------|:------------|:-----------|
-| 1 Nov 2022  | First draft | CjS77      |
+| Date        | Change        | Author |
+|:------------|:--------------|:-------|
+| 23 Nov 2023 | Thaum -> Tari | CjS77  |
+| 1 Nov 2022  | First draft   | CjS77  |
 
 [space-chains]: https://www.youtube.com/watch?v=N2ow4Q34Jeg
 [drive-chains]: https://www.drivechain.info/

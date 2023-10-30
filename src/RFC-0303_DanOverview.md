@@ -84,7 +84,7 @@ These components include:
 * Validator Nodes - VNs validate smart contracts and earn fees for doing so.
 * Cerberus consensus engine - highly scalable, high-speed sharded BFT consensus engine.
 * Tari Virtual Machine - Runs smart contracts in a secure sandbox.
-* Thaums - the unit of magic that fuels the Tari DAN.
+* Tari - the token that fuels the Tari DAN.
 
 The remainder of this document describes these elements in a little more detail and how they relate to each other.
 
@@ -93,7 +93,7 @@ The remainder of this document describes these elements in a little more detail 
 Obviously, the most important role of the Tari base layer is to issue and secure the base Tari token.
 As it relates to the DAN, the base layer also serves as an immutable global registry for several key pieces of data:
 * It maintains the register of all validator nodes.
-* It provides the only means of minting more [Thaum]s into the DAN economy.
+* It provides the only means of minting more [Tari] into the DAN economy.
 * It maintains the register of all DAN contract templates.
 
 The base layer also forces the DAN to make progress in the case of a Byzantine stoppage.
@@ -138,7 +138,7 @@ Validator nodes must be able to
 Steps 1 - 3 are carried out in the Tari Virtual Machine (TVM).
 Step 4 is achieved by communicating with peers via the DAN consensus layer.
 
-[Thaums](#thaums-and-the-turbine-model) exist at the Validator node level, and VNs earn fees, in Thaums, for each 
+[Tari](#tari-and-the-turbine-model) exist at the Validator node level, and VNs earn fees, in Tari, for each 
 instruction that it aids in getting finalised.
 
 ### DAN consensus layer
@@ -167,21 +167,22 @@ The TVM is able to
 * Execute calls on the contract.
 * Persist and restore the state of the contract.
 
-### Thaums and the turbine model
+### Tari and the turbine model
 
-Thaums is a [unit of magic](https://discworld.fandom.com/wiki/Thaum). Thaums are used to power the DAN's economic 
-engine. Thaums are created with a one-way perpetual peg as described in [RFC-0320]. Briefly, Tari is burnt to create 
-Thaums, which are used to pay for the execution of instructions on the DAN. A portion of instruction fees are burnt 
-with every instruction to provide a constant source of demand for Thaums in the DAN.
+Tari is used to power the DAN's economic 
+engine. Tari is minted via a one-way perpetual peg as described in [RFC-0320]. Briefly, Minotari are burnt to create 
+Tari, which are used to pay for the execution of instructions on the DAN. A portion of instruction fees are burnt 
+with every instruction to provide a constant source of demand for Tari in the DAN.
 
-There is no peg out back to the base layer for Thaums. The reason for this is explained in [RFC-0320]. Thaum holders wishing to convert back to Tari will be able to 
-perform a submarine swap with a Tari seller. We also anticipate that exchanges will list the Thaum-Tari pair to 
-enable easy conversion of Thaums back to Tari.
+There is no peg out back to the base layer for Tari. The reason for this is explained in [RFC-0320]. 
+Tari holders wishing to convert back to Tari will be able to perform a submarine swap with a Tari seller. 
+We also anticipate that exchanges will list the Tari-Minotari pair to enable easy conversion of Tari back to Minotari.
 
 # Change Log
 
 | Date        | Change              | Author     |
 |:------------|:--------------------|:-----------|
+| 23 Oct 2023 | Thaum -> Tari       | CjS77      |
 | 1 Nov 2022  | High-level overview | CjS77      |
 | 26 Oct 2022 | First outline       | SWvHeerden |
 
