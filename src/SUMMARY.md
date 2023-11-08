@@ -33,6 +33,7 @@
 
 - [Proposals and Applications](proposals.md)
   - [RFC-0123: Mitigating One-sided payment replay attacks](RFC-0123_One_sided_replay_attacks.md)
+  - [RFC-0141: Sparse Merkle Tees](RFC-0141_Sparse_Merkle_Trees.md)
   - [RFC-0153: Staged Wallet Security](RFC-0153_StagedWalletSecurity.md)
   - [RFC-0154: Deep links structure convention](RFC-0154_DeepLinksConvencion.md)
   - [RFC-0230: Hash time locked contracts](RFC-0230_HTLC.md)
