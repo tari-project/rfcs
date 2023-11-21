@@ -53,15 +53,10 @@ This RFC describes the process of distributing and processing foreign proposals 
 Across the entire network transactions must be processed or time out. When a transaction is started on a shard, it locks up substates, preventing other transactions from completing. Therefore if a transaction is started on a shard, it 
 should complete or be aborted in a timely manner to release the resources.
 
-Ordering of transactions is also important across all shards. While the different
-shards form a Direct Acyclic Graph (DAG), there should be a consistent ordering 
-across the whole network.
-
-
-
 ## Related Requests for Comment
 
 <!-- * [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md) -->
+None
 
 ## Glossary
 
@@ -72,7 +67,7 @@ across the whole network.
 
 To solve the above problems, we'll use reliable broadcast and process foreign evidence in order.
 
-In a local shard committee, the proposed block **must** include a counter per epoch and per shard. If the proposal includes transactions that involve other shards, this counter **must** be incremented.
+In a local shard committee, the proposed block **must** include a counter per epoch and per shard (except for the local shard). If the proposal includes transactions that involve other shards, this counter **must** be incremented.
 
 When the proposed block becomes committed locally, the block **must** be broadcast to each involved shard that was incremented, along with evidence of being committeed (The chain of QCs must be included).
 
@@ -81,14 +76,14 @@ To ensure this, each node in the local committee will forward this committed blo
 As a local committee member, when I receive a foreign proposal, if it is valid I will queue up a special command ForeignProposal(number, QC_Hash) that I must propose 
 when I am next leader (if it has not been proposed already). I also **should** request all transaction hashes that I have not seen from involved_shards for each transaction in the proposal, and add them to my mempool for execution.
 
-In the same order of transactions in the proposal, the transactions must be sequenced into the local chain as either a TIMEOUT or a LOCALPREPARE(TxId, ForeignShardId).
+Before transactions in the `N+1`th foreign proposal for a shard, all transactions in the `N`th foreign proposal for that shard must be sequenced into the local chain as either a TIMEOUT or a LOCALPREPARE(TxId, ForeignShardId).
 
 When a LOCALPREPARE command is found in a local proposal, there **must** be a 
 Prepare(tx) command for that transaction in or before the current proposal.
 
-In the [TIMEOUT_TIME] block  (e.g. 1000 blocks, but should probably be equal to committee_size * X rounds) after the ForeignProposal command has been proposed, 
+In the `TIMEOUT_TIME`` block  (e.g. 1000 blocks, but should probably be equal to committee_size * X rounds) after the ForeignProposal command has been proposed, 
 all transactions in the proposal must be sequenced, either as LOCALPREPAREs or TIMEOUTs. This is to cater for the case where a transaction was prepared by a foreign committee, but was never found on the network. This is unlikely to happen 
-in a non-malicious scenario.
+in a non-malicious scenario. The more common case is that all transactions will be found and have a LOCALPREPARE, but a block at `TIMEOUT_TIME` **must** be considered invalid if there are any transactions that are not LOCALPREPARED or TIMEOUT from the foreign proposal that started the timeout.
 
 For this reason, LOCAL_PREPARES and TIMEOUTs do not count to the block size.
 
@@ -100,8 +95,8 @@ ForeignProposal commands **must** appear in strict ascending order in the blockc
 If a node receives a foreign proposal (not the command), and it has not received
 the previous foreign proposal, then it should ask the committee to provide it to them.
 
-If the LOCAL_PREPARE command appears in a local proposal for a transaction and is the last such LOCAL_PREPARE and all shards have voted to accept, an ALL_PREPARED(tx) command **must** also be present in the local proposal.
-If a LOCAL_PREPARE command appears in the local proposal and is the first such to abort, then a SOME_PREPARED(abort, tx) **must** also be present in the local proposal.
+If the LOCAL_PREPARE command would appear in a local proposal for a transaction and is the last such LOCAL_PREPARE and all shards have voted to accept, then the LOCAL_PREPARE **must** not be present and instead an ALL_PREPARED(tx) command **must** be present in the local proposal.
+Likewise, if a LOCAL_PREPARE command appears in the local proposal and is the first such to abort, then instead, a SOME_PREPARED(abort, tx) **must** be present in the local proposal.
 It may happen that a LOCAL_PREPARE(tx) must be sequenced for an already aborted transaction, in which case, it should not be followed by a SOME_PREPARED(abort, tx) but instead an ALREADY_ABORTED(tx) commmand **must** be present in the local proposal.
 
 
