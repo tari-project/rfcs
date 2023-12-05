@@ -133,7 +133,7 @@ also be short enough that we can easily remove inactive [VN]s from the list of [
 |:------------|:--------------------|:----------|
 | 19 Oct 2022 | First outline       | SWvHeerden|
 
-[VNC]: RFC-0314-VNCSelection.md#Intro
+[VNC]: RFC-0314_VNCSelection.md#Intro
 [VN]: RFC-0XXX.md
 [base node]: Glossary.md#base-node 
 [Base Layer]: Glossary.md#base-layer

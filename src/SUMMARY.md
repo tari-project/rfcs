@@ -27,9 +27,13 @@
     - [RFC-0203: Stealth Addresses](RFC-0203_StealthAddresses.md)
     - [RFC-0250: Covenants](RFC-0250_Covenants.md)
 - [RFC-0303: The Tari Digital Assets Network](RFC-0303_DanOverview.md)
-    - [RFC-0313: Validator Node Registration](RFC-0313_VNRegistration.md)
-    - [RFC-0320: The turbine model](RFC-0320_TurbineModel.md)
+  - [RFC-0313: Validator Node Registration](RFC-0313_VNRegistration.md)
+  - [RFC-0320: The turbine model](RFC-0320_TurbineModel.md)
 
+- [RFC-0304: The Tari Network Consensus Layer](RFC-0304_Consensus.md)
+  - [RFC-0314: Validator node committee selection](RFC-0314_VNCSelection.md)
+  - [RFC-0330: The Cerberus-Hotstuff consensus algorithm](RFC-0330_Cerberus.md)
+  - [RFC-0331: Indexers](RFC-0331_Indexers.md)
 
 - [Proposals and Applications](proposals.md)
   - [RFC-0123: Mitigating One-sided payment replay attacks](RFC-0123_One_sided_replay_attacks.md)

@@ -150,3 +150,37 @@ blockquote {
 .tooltipped .tooltiptext {
     visibility: visible;
 }
+
+.note {
+    padding: 15px;
+    border-radius: 5px;
+    background: #AA8CBE;
+    color: #FFF;
+    margin-bottom: 20px;
+    box-shadow: 5px 5px 15px #CCC;
+}
+.note a {
+    color: #FFF !important;
+    font-weight: 700;
+}
+.note:before {
+    content: '\2605';
+    color: #FFF;
+    font-size: 22px;
+    font-weight: 700;
+    margin-right: 7px;
+}
+.warning {
+    background: #902D19;
+}
+.warning:before {
+    content: '\203C';
+}
+
+.info {
+    background: #24A5CE;
+}
+.info:before {
+    content: '\24D8';
+}
+
