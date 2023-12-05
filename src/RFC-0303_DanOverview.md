@@ -73,24 +73,26 @@ outweighs this trade-off.
 
 ## Key actors
 
-There are several components on both the DAN and base layer that interoperate to collectively enable scalable 
-smart contracts on Tari.
+There are several components on both the Tari Digital Assets Network (DAN) and base layer that interoperate to 
+collectively enable scalable smart contracts on Tari.
 
 These components include:
-* Tari base layer - Enforces Tari monetary policy and plays the role of global registrar.
+* Minotari base layer - Enforces Tari monetary policy and plays the role of global registrar.
 * Templates - Reusable smart contract components.
 * Contracts - Self-contained pieces of code that describe the behaviour of a smart contract. They are compiled and 
   executed in the Tari VM.
 * Validator Nodes - VNs validate smart contracts and earn fees for doing so.
 * Cerberus consensus engine - highly scalable, high-speed sharded BFT consensus engine.
 * Tari Virtual Machine - Runs smart contracts in a secure sandbox.
-* Tari - the token that fuels the Tari DAN.
+* Tari - the token that fuels the Tari Network a.k.a DAN.
 
 The remainder of this document describes these elements in a little more detail and how they relate to each other.
 
-## The Tari Base Layer
+## The Minotari Base Layer
 
-Obviously, the most important role of the Tari base layer is to issue and secure the base Tari token.
+Obviously, the most important role of the Minotari base layer (formerly, Tari base layer) is to issue and secure the 
+base Tari token.
+
 As it relates to the DAN, the base layer also serves as an immutable global registry for several key pieces of data:
 * It maintains the register of all validator nodes.
 * It provides the only means of minting more [Tari] into the DAN economy.
@@ -111,7 +113,7 @@ smart contracts. Templates will also have version control features and a smooth 
 
 ### Contracts
 
-Tari smart contracts are the meat of the DAN ecosystem. Usually a smart contract will be comprised of one or more 
+Tari smart contracts are the meat of the Tari ecosystem. Usually, a smart contract will be comprised of one or more 
 Tari templates, glue code, and initialisation code.
 
 The contracts are always executed in the Tari Virtual machines. The input and output of every contract instruction 
@@ -138,8 +140,8 @@ Validator nodes must be able to
 Steps 1 - 3 are carried out in the Tari Virtual Machine (TVM).
 Step 4 is achieved by communicating with peers via the DAN consensus layer.
 
-[Tari](#tari-and-the-turbine-model) exist at the Validator node level, and VNs earn fees, in Tari, for each 
-instruction that it aids in getting finalised.
+[Tari](#tari-and-the-turbine-model) exists at the Validator node level, and VNs earn fees, in Tari, for each 
+instruction -- in aggregate -- that it aids in getting finalised.
 
 ### DAN consensus layer
 
@@ -155,6 +157,7 @@ In particular, the consensus layer has _no idea_ whether an instruction's output
 of the committee agree on the results, then consensus has been reached and the consensus layer is happy.
 
 For example, if consensus decides that 2 + 2 = 5, then for the purposes of this contract, that is the case. 
+
 ### The Tari Virtual Machine
 
 The TVM is a WASM-based virtual machine designed to run Tari contracts.
@@ -165,7 +168,8 @@ The TVM is able to
 * load a contract.
 * provide a list of methods that the contract exposes.
 * Execute calls on the contract.
-* Persist and restore the state of the contract.
+* Initiate retrieval and persistence of the state of the contract. The state itself is not stored in the VM, but by 
+  Indexers.
 
 ### Tari and the turbine model
 
