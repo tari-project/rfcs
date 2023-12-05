@@ -1,4 +1,4 @@
-# RFC-0304/Consensus
+# RFC-0305/Consensus
 
 ## The Tari Network Consensus Layer
 
@@ -50,7 +50,7 @@ technological merits of the potential system outlined herein.
 ## Goals
 
 This Request for Comment (RFC) describe the consensus mechanism known as Cerberus as it is implemented in Tari.
-Tari implements the Cerberus variant known as Optimistic Cerberus, for the most part, with Hotstuff BFT replacing
+Tari implements the Cerberus variant known as Pessimistic Cerberus, for the most part, with Hotstuff BFT replacing
 pBFT as described in the Cerberus paper.
 
 This RFC serves to document any deviations from the academic paper as well as finer-grained details of the

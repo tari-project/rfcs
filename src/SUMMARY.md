@@ -30,7 +30,7 @@
   - [RFC-0313: Validator Node Registration](RFC-0313_VNRegistration.md)
   - [RFC-0320: The turbine model](RFC-0320_TurbineModel.md)
 
-- [RFC-0304: The Tari Network Consensus Layer](RFC-0304_Consensus.md)
+- [RFC-0305: The Tari Network Consensus Layer](RFC-0305_Consensus.md)
   - [RFC-0314: Validator node committee selection](RFC-0314_VNCSelection.md)
   - [RFC-0330: The Cerberus-Hotstuff consensus algorithm](RFC-0330_Cerberus.md)
   - [RFC-0331: Indexers](RFC-0331_Indexers.md)

@@ -69,8 +69,8 @@ paper.
 
 The core idea of Cerberus is that instead of dividing work up between validator nodes according to the contracts
 they are managing (as per Tari DANv1, Polkadot, Avalanche, etc.), Cerberus distributes nodes evenly over a set of
-state slots. Any time an instruction modifies the state of a contract, it will affect one or more state
-slots, and only those nodes that are responsible for covering those addresses will reach consensus on the correct
+state slots, called substates. Any time an instruction modifies the state of a contract, it will affect one or more 
+substates, and only those nodes that are responsible for covering those addresses will reach consensus on the correct
 state changes.
 
 This means that nodes have to be prepared to execute instructions on any contract in the network. This
@@ -80,17 +80,23 @@ outweighs this trade-off.
 ## Shards, substates and state addresses
 
 The central idea of Cerberus is that all possible state objects are assigned a unique address, deterministically.
-Know the state, know the address [^1]. The state space is incredible large, with 2^256 possible slots. The chance of
-any two pieces of state ever trying to occupy the same slot is vanishingly small.
+Know the state, know the address [^1]. The state space is incredibly large, with 2^256 possible substate addresses; 
+which is way more than the number of atoms in our galaxy. 
+The chance of any two pieces of state ever trying to occupy the same substate is vanishingly small.
 
-Each validator node registered on the base layer is randomly assigned a set of state slots to cover. This set is a
-contiguous set of state addresses, and is known as a _shard_. As the network grows, multiple nodes will cover the same
-slot, and these nodes will need to reach consensus on any state changes involving substates in their shard.
+The state space is also evenly divided into contiguous sections, called shards.  Each shard covers a set of non-overlapping substate addresses and 
+the full set of shards covers the entire state space.
 
-Collectively, all the nodes covering the same shard are known as a _validator node committee_ (VNC).
+Each validator node registered on the base layer is randomly assigned a shard to cover.  The number of shards 
+depends on the total number of validator nodes in the network. 
 
-The number of nodes in a VNC is set system-wide. The final number has not been determined yet, but it will 
-likely be a value, 3n+1, where n is an integer between 8 and 33, giving a committee size of between 25 and 100 nodes.
+Collectively, all the nodes covering the same shard are known as a _validator (node) committee_ (VNC).
+
+Broadly speaking, the shard-assignment algorithm will
+try to arrange tings in a way that every shard has the same number of validator nodes covering it.
+
+The number of nodes in a VNC is set system-wide. The final number has not been determined yet, but it will be a 
+value, 3n+1, where n is an integer between 8 and 33, giving a committee size of between 25 and 100 nodes.
 
 As nodes continue to join the network, the target committee size stays fixed, whereas the shard size will shrink. 
 This is what will allow the Tari network to scale to achieve 
@@ -104,7 +110,7 @@ Every substate slot can only be used once. The substate lifecycle is
 
 [^1]: This is a simplification to convey the general idea. The address derivation procedure is explained in full below.
 
-[^2]: It's possible that substates could be reset, hundreds of years in the future, if substate address collisions 
+[^2]: It's possible that substates could be reset, decades in the future, if substate address collisions 
 become a risk. For now, we treat all down substates as permanently unusable.
 
 ## Braided consensus
@@ -118,7 +124,7 @@ A correct outcome is one of:
 * `Commit`: All input substates for the instruction will be set to `Down`, and at least one new substate will be 
   marked to `Up` (from `Empty`).
 
-Achieving this outcome entails a fairly complicated dance between the participating nodes, and it goes like this[^3]:
+Achieving this outcome entails a fairly complicated dance between the participating nodes[^3]:
 
 * When nodes receive an instruction that affects contract state, the nodes determine the _input substates_ that will 
   be consumed in the instruction. This substates MUST currently _all_ be in an `Up` state. If any input state is 
