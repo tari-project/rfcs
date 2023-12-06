@@ -374,13 +374,12 @@ pushed to the stack if multiple signature validation succeeds.
 In addition to the failures mentioned:
 * Fails with `VerifyFailed` if any signature is invalid.
 
-##### ToRistrettoPoint,
+##### ToRistrettoPoint
+Pops the top element from the stack (either a scalar or a hash), parses it canonically as a Ristretto secret key if possible, computes the corresponding Ristretto public key, and pushes this value to the stack.
 
-Pops the top element from the stack, either a scalar or a hash, calculates the corresponding Ristretto point,
-and pushes the result to the stack. 
-
-* Fails with `StackUnderflow` if the stack is empty. 
-* Fails with `IncompatibleTypes` if the stack item is not a valid 32 byte sequence.
+* Fails with `StackUnderflow` if the stack is empty.
+* Fails with `IncompatibleTypes` if the stack item is not either a scalar or a hash.
+* Fails with `InvalidInput` if the stack item cannot be canonically parsed as a Ristretto secret key.
 
 ### Miscellaneous
 
@@ -653,5 +652,6 @@ and contributions to this RFC.
 | 27 Sep 2022  | Add aggregate signatures to transaction inputs and outputs | hansieodendaal |
 | 28 Sep 2022  | Minor update to reflect implementation                     | sdbondi        |
 | 11 Nov 2022  | Update for code review/audit                               | hansieodendaal |
+| 20 Nov 2023  | Update `ToRistrettoPoint` documentation                    | AaronFeickert  |
 
 [TariScript]: Glossary.md#tariscript
