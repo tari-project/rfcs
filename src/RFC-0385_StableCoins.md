@@ -258,7 +258,7 @@ Validator nodes validate all stablecoin transactions. In particular:
    6. the sending party is not on the blacklist,
    7. the receiving party holds a valid account,
    8. the receiving party is not on the blacklist.
-3. If any of the conditions in 3 are not met, the transaction is invalid and the validator node MUST reject the 
+3. If any of the conditions in 2 are not met, the transaction is invalid and the validator node MUST reject the 
    transaction.
 
 ## Implementation
