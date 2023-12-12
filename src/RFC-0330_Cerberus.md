@@ -160,7 +160,9 @@ Transaction processing for Pessimistic Cerberus follows the following broad algo
    the leader proposing a new block containing the transaction, and the committee members voting on the block.
 5. At the same time, all local inputs (the subset of transaction inputs covered by the local shard) are marked as
    `Pledged`. If any input is already marked as `Pledged`, the transaction immediately resolves as `Abort`. This step 
-   prevents double-spending of inputs across concurrent transactions in separate shards. 
+   prevents double-spending of inputs across concurrent transactions in separate shards. Note that if a double-spend 
+   is attempted by submitting the two transactions to different shards, then _both_ transactions will be aborted, since 
+   Cerberus does not have a way to determine which transaction was 'first'. 
 6. If _every_ input is in a single shard, then the local consensus is sufficient to finalise the outcome of the 
    transaction (proceeding to execution phase as described below), and the result can be broadcast to the client. 
 6. Otherwise, the leader of the round broadcasts the transaction, some metadata, and the local input state to the 
@@ -174,7 +176,9 @@ Transaction processing for Pessimistic Cerberus follows the following broad algo
 9. Each VN checks that the state received from each foreign shard corresponds to the inputs in the transaction. If 
    not, the VN can immediately vote `Abort`. 
 8. At this point, the shard leaders have all the state they need to execute the transaction. Execution is handed off 
-   to the TariVM which returns a new set of state objects as output.
+   to the TariVM which returns a new set of state objects as output. It is important to note that if a transaction 
+   _execution_ returns an error (because someone tried to spend more than they have, for example), then this _does 
+   not lead to an `Abort` decision!`
 9. Each shard executes the transaction independently, and another Hotstuff consensus chain is produced to achieve 
    consensus on the resulting output set. If the transaction is `Abort`, then all pledged inputs are rolled back. 
    Otherwise, the decision is `Commit`, and the pledged inputs are marked as `Down`. Any output objects that belong 
@@ -219,50 +223,65 @@ flowchart TD
         CI --> |Yes| EX[[Execute transaction]]
         EX --> NSG[Create new substates]
     end
-    NSG --> R1[Broadcast result]
-    
-
-    
+    NSG --> R1[Broadcast result]  
 ```
 
-## Validator node registration
-
-Validator nodes are registered on the base layer. This is a process that is currently under discussion, but the
-general idea is that the base layer will maintain a list of registered validator nodes. This list will be
-distributed to all nodes on the network and will be used to assign shards to nodes.
-
-## Sharding algorithm
-
-The sharding algorithm is designed to ensure that every shard has the same number of nodes covering it.
-
-The algorithm works as follows:
-
-1. Every node is assigned a shard number, which is calculated as follows:
-
-$$
-\begin{aligned}
-\text{shard} = \text{VN-key } MOD \text{ (number of shards)}
-\end{aligned}
-$$
-
-2. Shards are then assigned to nodes according to the following algorithm:
-
-* If the shard is empty, assign the node to that shard and move on.
-* If the shard is full
-
-## Transaction specification
-
-
+The process above describes PCerberus in general. There are a few details that need some additional explanation. In 
+particular, this includes substate address derivation and state synchronisation. 
 
 ## Substate address derivation
+
+A substate contains two pieces of information:
+
+* The value of the substate object,
+* The version number of the substate object.
+
+The _substate address_ is the universal location of the substate in the 256-bit state space. Most substate addresses
+  are derived from a hash of their id, the provenance of which depends on the substate value type, and their version.
+
+The substate value depends on the type of data the value represents. It is exactly one of the following:
+
+* Component - A component is an instantiation of a [contract template].
+* Resource - A resource represents a token. Tokens can be fungible, non-fungible, or confidential. The `Resource` 
+  substate does not store the tokens themselves, but serves as the global identifier for the resource. The tokens 
+  themselves are kept in `Vaults`, or `NonFungible` substates.  
+* Vault - Resources are stored in Vaults. Vaults provide generalised functionality for depositing and withdrawing 
+  their resources from the vaults into Buckets. 
+* NonFungible - A substate representing a singular non-fungible item. Non-fungible items are always associated with 
+  their associated non-fungible `Resource`.
+* NonFungibleIndex - A substate that holds a reference to another substate. 
+* UnclaimedConfidentialOutput - A substate representing funds that were burnt on the Minotari layer and are yet to 
+  be claimed in the Tari network. 
+* TransactionReceipt - A substate recording the result of a transaction.
+* FeeClaim - To prevent a proliferation of dust-like value transfers for every transaction due to fees, a fee claim is 
+  generated instead that allows VNs to aggregate fees and claim them in a single batched transaction at a later time.
+  Fee claims remain in the up state forever to prevent double claims.
+  
+
+                                                                                                                   
+Substate ids are domain-separated hashes of their identifying data, which depends on substate type as follows:
+* Component - Component addresses are derived from the hash of the component's contract template id and a component 
+  id. The component id is typically a hash of the origin transaction's hash and a counter. 
+* Resource - Generally a unique, random 256-bit integer, derived from the hash of the transaction hash and a counter. 
+  Some ids for special resources are hard-coded.
+* Vault - Vault ids are a unique, random 256-bit integer, derived from the hash of the transaction hash and a counter.
+* NonFungible - The id of a non-fungible item is derived from the item's resource address, and its id. The id 
+  depends on the specifics of the NFT, and could be an integer, a string, a hash, or a uuid.  
+* NonFungibleIndex - Non-fungible index ids are derived from the resource they are pointing to and an index offset.
+* UnclaimedConfidentialOutput - The UCO id is derived from the burn commitment on the Minotari layer.
+* TransactionReceipt - The id of a transaction receipt is the hash of the associated transaction.
+* FeeClaim - The id of a fee claim is derived from the epoch number and the validator's public key.
+
+## State synchronisation
 
 
 
 # Change Log
 
-| Date        | Change      | Author |
-|:------------|:------------|:-------|
-| 30 Oct 2023 | First draft | CjS77  |
+| Date        | Change       | Author |
+|:------------|:-------------|:-------|
+| 12 Dec 2023 | Second draft | CjS77  |
+| 30 Oct 2023 | First draft  | CjS77  |
 
 [base layer]: Glossary.md#base-layer
 

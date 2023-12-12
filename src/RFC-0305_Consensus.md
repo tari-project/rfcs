@@ -95,14 +95,14 @@ This job can be subdivided into several smaller, co-ordinated tasks:
 
 1. Deterministic distribution of validator nodes across the state space, to form **validator committees**.
 2. Periodically re-distributing validator nodes across the state space to reduce the likelihood and opportunity for 
-3. collusion.
-4. Efficient transmission of consensus messages to the rest of the network.
-5. Identifying and removing malicious nodes from the network.
-6. Correct identification of nodes participating in cross-shard consensus.
-7. Requesting and responding to state requests from other nodes.
-8. Reaching consensus on the state transition for a given transaction.
-9. Effective leader rollover in the case of a faulty leader.
-10. Guaranteeing liveness in the face of a Byzantine stoppage.
+   collusion.
+3. Efficient transmission of consensus messages to the rest of the network.
+4. Identifying and removing malicious nodes from the network.
+5. Correct identification of nodes participating in cross-shard consensus.
+6. Requesting and responding to state requests from other nodes.
+7. Reaching consensus on the state transition for a given transaction.
+8. Effective leader rollover in the case of a faulty leader.
+9. Guaranteeing liveness in the face of a Byzantine stoppage.
        
 ## Distribution of validator nodes
 
@@ -114,12 +114,14 @@ the periodic re-distribution of validator nodes across the state space.
 The Tari communications layer is used to transmit consensus messages to the rest of the network.
 The Comms layer is described in [RFC-170](./RFC-0170_NetworkCommunicationProtocol.md) and related sub-RFCs.
 
+<div class="note">
 TODO:
 * Describe differences in configuration between the Tari and Minotari networks.
 * Describe how VNC members find each other and how they keep in touch.
 * Describe how banning or other sanctioning behaviour works. 
 * How client messages are propagated and routed to the correct nodes in the network.
 * How consensus messages are communicated across the network.
+</div>
 
 ## Identifying and removing malicious nodes from the network
 
@@ -128,12 +130,9 @@ described above, and then de-registered as validator nodes at an epoch transitio
 
 ## Identification of nodes participating in cross-shard consensus.
 
-If an instruction touches state involving multiple shards, cross-shard consensus is required.
-The broad steps for cross-shard consensus are as follows:
-* Identify the sub-states involved as inputs in the instruction.
-* Identify the shards that the sub-states belong to.
-* Look up the validator nodes responsible for those shards in the VN registry for the current epoch.
-* Establish a connection to each validator node in the superset of the participating VNCs.
+<div class="note">
+TODO -- refer to RFC-330.
+</div>
 
 ##  Requesting and responding to state requests from other nodes.
 
@@ -161,7 +160,7 @@ How does a client know if a provided state hash and quorum certificate is curren
 
 ## Reaching consensus on the state transition for a given transaction.
 
-Tari uses Cerberus in conjunction with HotStuff BFT to achieve consensus on sub-state transitions. This process is 
+Tari uses Cerberus in conjunction with HotStuff BFT to achieve consensus on substate transitions. This process is 
 described in detail in [RFC-330](RFC-0330_Cerberus.md). 
 
 ## Effective leader rollover in the case of a faulty leader.
@@ -174,9 +173,9 @@ Leader rollover is also covered in  [RFC-330](RFC-0330_Cerberus.md).
 The final design for liveness guarantees is still under active discussion.
 </div>
 
-A liveness break will only occur if at least a third of nodes are actively or passively colluding to prevent 
-consensus being reached. Successive leader rollovers will have failed to resolve the issue, and the transaction will 
-become stuck. 
+A liveness break will only occur if at least a third of nodes in a single VNC are actively or passively colluding to 
+prevent consensus being reached. Successive leader rollovers will have failed to resolve the issue, and the 
+transaction will become stuck. 
 
 Eventually, the entire network will stop functioning even though the network is sharded, because probabilistically, 
 every contract will eventually produce a state change that required the Byzantine committee to be part of the 
@@ -190,9 +189,10 @@ as validator nodes.
 
 The epoch change causes a validator node shuffle, and any remaining nodes that may have been preparing to collude 
 will be assigned new shards.
-
+    
+<div .note>
 The specifics of this mechanism are yet to be decided.
-
+</div>
 
 # Change Log
 
