@@ -80,7 +80,8 @@ outweighs this trade-off.
 ## Shards, substates and state addresses
 
 The central idea of Cerberus is that all possible state objects are assigned a unique address, deterministically.
-Know the state, know the address [^1]. The state space is incredibly large, with 2^256 possible substate addresses;
+Know the provenance of the state, know the address [^1]. The state space is incredibly large, with 2^256 possible 
+substate addresses;
 which is way more than the number of atoms in our galaxy.
 The chance of any two pieces of state ever trying to occupy the same substate is vanishingly small.
 
@@ -188,6 +189,7 @@ Transaction processing for Pessimistic Cerberus follows the following broad algo
 A mermaid flow diagram of the above process is shown below:
 
 ```mermaid
+
 flowchart TD
     A[Client] --> B([Broadcast transaction])
     B --> C{Any tx inputs in my shard?}
