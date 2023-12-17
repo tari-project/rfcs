@@ -292,7 +292,7 @@ Substate ids are domain-separated hashes of their identifying data, which depend
 
 | Date        | Change       | Author |
 |:------------|:-------------|:-------|
-| 12 Dec 2023 | Second draft | CjS77  |
+| 17 Dec 2023 | Second draft | CjS77  |
 | 30 Oct 2023 | First draft  | CjS77  |
 
 [base layer]: Glossary.md#base-layer
@@ -300,3 +300,7 @@ Substate ids are domain-separated hashes of their identifying data, which depend
 [validator node]: Glossary.md#validator-node
 
 [validator node comittee]: Glossary.md#validator-node-committee
+
+[chainspace]: https://arxiv.org/pdf/1708.03778.pdf "Chainspace whitepaper"
+
+[contract template]: RFC-0303_DanOverview.md#templates
