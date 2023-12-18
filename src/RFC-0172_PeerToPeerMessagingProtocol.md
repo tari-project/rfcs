@@ -4,7 +4,7 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi), [Cayle Sharrock](https://github.com/CjS77), [Yuko Roodt](https://github.com/neonknight64), [Stringhandler](https://github.com/stringhandler)
+**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi), [Cayle Sharrock](https://github.com/CjS77), [Stringhandler](https://github.com/stringhandler)
 
 # Licence
 

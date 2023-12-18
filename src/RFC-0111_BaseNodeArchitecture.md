@@ -4,7 +4,7 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [Philip Robinson](https://github.com/philipr-za), [Jorge Antonio](https://github.com/jorgeantonio21)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
 # Licence
 

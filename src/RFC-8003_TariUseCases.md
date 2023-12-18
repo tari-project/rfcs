@@ -4,7 +4,7 @@
 
 ![status: draft](./theme/images/status-draft.svg)
 
-**Maintainer(s)**: [Leland Lee](https://github.com/lelandlee)
+**Maintainer(s)**: [CjS77](https://github.com/CjS77)
 
 # Licence
 

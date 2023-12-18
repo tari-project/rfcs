@@ -3,7 +3,7 @@
 
 ![status: deprecated](theme/images/status-deprecated.svg)
 
-**Maintainer(s)**: [Philip Robinson](https://github.com/philipr-za)
+**Maintainer(s)**: [Stringhandler](https://github.com/stringhandler)
 
 # Licence
 

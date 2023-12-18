@@ -4,7 +4,8 @@
 
 ![status: deprecated](theme/images/status-deprecated.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) and [Philip Robinson](https://github.com/philipr-za)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
+
 
 # Licence
 
