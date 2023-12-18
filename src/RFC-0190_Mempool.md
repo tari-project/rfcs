@@ -1,6 +1,6 @@
 # RFC-0190/Mempool
 ![status: updated](theme/images/status-stable.svg)
-**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi), [SW van Heerden](https://github.com/SWvheerden) and [Yuko Roodt](https://github.com/neonknight64)
+**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi), [SW van Heerden](https://github.com/SWvheerden)
 
 ## The Mempool for Unconfirmed Transactions on the Tari Base Layer
 

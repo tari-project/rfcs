@@ -4,7 +4,7 @@
 
 ![status: deprecated](theme/images/status-deprecated.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) and [Byron Hambly](https://github.com/delta1)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
 # Licence
 

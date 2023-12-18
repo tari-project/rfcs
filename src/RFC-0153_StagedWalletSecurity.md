@@ -4,7 +4,7 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Yuko Roodt](https://github.com/neonknight64), [Cayle Sharrock](https://github.com/CjS77)
+**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
 # Licence
 

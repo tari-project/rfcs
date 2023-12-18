@@ -715,7 +715,7 @@ Thanks to David Burkett for proposing a method to prevent cut-through and willin
 | 04 Jun 2021 | Remove beta range-proof calculation                    | SWvheerden                    |
 | 22 Jun 2021 | Change script_signature type to ComSig                 | hansieodendaal                |
 | 30 Jun 2021 | Clarify Tari Script nomenclature                       | hansieodendaal                |
-| 06 Oct 2022 | Minor improvemnts in legibility                        | stringhandler                 |
+| 06 Oct 2022 | Minor improvements in legibility                       | stringhandler                 |
 | 11 Nov 2022 | Update ComAndPubSig and move out examples              | stringhandler                 |
 | 22 Nov 2022 | Added `metadata_signature` and `script_signature` math | hansieodendaal                |
 | 06 Apr 2023 | Grammar and spelling changes                           | SWvheerden                    |

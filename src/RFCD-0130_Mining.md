@@ -4,7 +4,7 @@
 
 ![status: deprecated](theme/images/status-deprecated.svg)
 
-**Maintainer(s)**: [Yuko Roodt] (https://github.com/neonknight64)
+**Maintainer(s)**: [Stringhandler](https://github.com/stringhandler)
 
 # Licence
 

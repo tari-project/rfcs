@@ -4,7 +4,7 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Byron Hambly](https://github.com/delta1)
+**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
 # Licence
 

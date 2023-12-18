@@ -4,7 +4,7 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal), [Philip Robinson](https://github.com/philipr-za)
+**Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal)
 
 # Licence
 
