@@ -1,6 +1,6 @@
 # RFC-0385/StableCoin
 
-## Digital Assets Network
+## Privacy-enabled Stablecoin contract design
 
 ![status: draft](theme/images/status-draft.svg)
 
