@@ -49,6 +49,7 @@
   - [RFC-8001: Multi-party transactions](RFC-8001_MultiPartyTransactions.md)
   - [RFC-8002: Transaction protocol](RFC-8002_TransactionProtocol.md)
   - [RFC-8003: Tari Use Cases](RFC-8003_TariUseCases.md)
+  - [RFC-0385: Tari stablecoin specification](RFC-0385_StableCoins.md)
   
 - [Deprecated RFCs](deprecated.md)
 

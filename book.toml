@@ -6,7 +6,7 @@ description = "The Tari network RFC library and documentation"
 [build]
 build-dir = "./book"
 create-missing = false
-preprocess = ["links", "index"]
+#preprocess = ["links", "index"]
 
 [output.html]
 mathjax-support=true
