@@ -11,7 +11,7 @@ create-missing = false
 [output.html]
 mathjax-support=true
 theme = "src/theme"
-additional-js = ["mermaid.min.js", "mermaid-init.js"]
+additional-js = []
 
 [output.html.playpen]
 editable = false
