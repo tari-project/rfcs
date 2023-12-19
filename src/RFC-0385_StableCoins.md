@@ -248,9 +248,9 @@ The following functions are available to the public:
    entity, including the `issuer`.
 4. The `issuer` has the following "administrator" powers:
     1. Create and authorise new accounts.
-    2. Issue new tokens. The new tokens are credited to the `issuer`'s account. The transactions are i the clear so
+    2. Issue new tokens. The new tokens are credited to the `issuer`'s account. The transactions are in the clear so
        that anyone can verify the total circulating supply of the stablecoin.
-    3. Redeem (burn) existing tokens. The burnt tokens are debited from the `issuer`'s account. These transactnios
+    3. Redeem (burn) existing tokens. The burnt tokens are debited from the `issuer`'s account. These transactions
        are in the clear.
     4. Have access to the full list of account ids.
     5. Blacklist an account. Blacklisted accounts are not allowed to send, or receive, tokens.
@@ -271,7 +271,7 @@ Validator nodes validate all stablecoin transactions. In particular:
 1. Validator nodes cannot determine the value of any transaction.
 2. However, they _are_ able to, and MUST verify that
     1. no coins are created or destroyed in the transaction, i.e. the sum of the parties' balances before and after
-       the transfer are equal.
+       the transfer are equal,
     2. the transfer value is positive,
     3. the sender has a positive balance after the transaction,
     4. the sender has authorised the transaction,
@@ -279,7 +279,7 @@ Validator nodes validate all stablecoin transactions. In particular:
     6. the sending party is not on the blacklist,
     7. the receiving party holds a valid account,
     8. the receiving party is not on the blacklist.
-3. If any of the conditions in 3 are not met, the transaction is invalid and the validator node MUST reject the
+3. If any of the conditions in 2 are not met, the transaction is invalid and the validator node MUST reject the
    transaction.
 
 ## Implementation
@@ -293,9 +293,8 @@ The broad strategy is as follows:
 * The issuer can carry out confidential transfers by first transferring tokens from the
   cleartext issuer account to another, standard account controlled by the issuer, and then performing a confidential
   transfer from there to the final destination account.
-* Balances are stored in Pedersen commitments. The blinding factor is updated after every transaction and is a
-  function of a shared secret between the account holder and the issuer, and a public nonce, that is stored in the
-  account metadata.
+* Balances are stored in Pedersen commitments, the masks of which are known only to account holders.
+* Balances are also verifiably encrypted to the issuer.
 * Users create a new account by interacting with the issuer. The issuer provides an account id that can be compared
   against a blacklist for the purposes of determining whether the account is valid or not. The issuer may choose to
   conduct a KYC procedure out-of-band as part of the account creation process.
@@ -305,10 +304,6 @@ The broad strategy is as follows:
 * Spending authority rests solely with the account owner and required knowledge of the account private key.
 * Transfers are done in two-steps, via the issuance of an e-cheque by the sender, followed by the claiming of the
   e-cheque by the recipient.
-* Issuers are able to view account balances by holding a shared encryption key with every user. This key is used to
-  encrypt the memo field of the account. The issuer can decrypt the memo field and determine the value of the
-  transfer. Every account also possesses an equivalence proof, which shows that the balance commitment is equal to
-  the value in the memo field.
 
 The remainder of this section describes the implementation in more detail.
 
