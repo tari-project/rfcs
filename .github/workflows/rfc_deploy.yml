@@ -14,7 +14,7 @@ jobs:
 
       - name: Install 🦀
         run: |
-          curl -L https://github.com/rust-lang/mdBook/releases/download/v0.4.36/mdbook-v0.4.36-x86_64-unknown-linux-gnu.tar.gz
+          curl -L https://github.com/rust-lang/mdBook/releases/download/v0.4.36/mdbook-v0.4.36-x86_64-unknown-linux-gnu.tar.gz | tar xvz
 
       - name: Build 🛠
         run: |
