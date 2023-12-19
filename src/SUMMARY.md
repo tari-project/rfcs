@@ -29,6 +29,7 @@
 - [RFC-0303: The Tari Digital Assets Network](RFC-0303_DanOverview.md)
   - [RFC-0313: Validator Node Registration](RFC-0313_VNRegistration.md)
   - [RFC-0320: The turbine model](RFC-0320_TurbineModel.md)
+  - [RFC-0350: The Tari Virtual Machine](RFC-0350_TariVM.md)
 
 - [RFC-0305: The Tari Network Consensus Layer](RFC-0305_Consensus.md)
   - [RFC-0314: Validator node committee selection](RFC-0314_VNCSelection.md)
