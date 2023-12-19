@@ -31,4 +31,4 @@ copy-js = true
 [preprocessor]
 
 [preprocessor.mermaid]
-command = "./mdbook-mermaid"
+command = "mdbook-mermaid"
