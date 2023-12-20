@@ -56,4 +56,7 @@ technological merits of the potential system outlined herein.
 
 # Change Log
 
-* **dd-mm-yyyy**: Summary of changes
+
+| Date        | Change     | Author |
+|:------------|:-----------|:-------|
+| dd mmm YYYY | Short desc | Author |

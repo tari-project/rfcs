@@ -291,7 +291,11 @@ watching.
 For the time-being, WebAssembly is a pretty clear winner.
 
 
+# Change Log
 
+| Date        | Change           | Author |
+|:------------|:-----------------|:-------|
+| 20 Dec 2023 | First draft      | CjS77  |
 
 
 
