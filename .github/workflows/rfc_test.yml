@@ -24,5 +24,6 @@ jobs:
 
       - name: Test 🧪
         run: |
+          export PATH=$PATH:$(pwd)
           mdbook test
           mdbook build
