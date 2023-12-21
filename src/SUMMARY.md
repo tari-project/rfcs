@@ -17,6 +17,7 @@
     - [RFC-0171: Message Serialisation](RFC-0171_MessageSerialisation.md)
     - [RFC-0172: Peer to Peer Messaging Protocol](RFC-0172_PeerToPeerMessagingProtocol.md)
     - [RFC-0173: Versioning](RFC-0173_Versioning.md)
+    - [RFC-0174: Chat Metadata](RFC-0174_Chat_Metadata.md)
   - [RFC-0181: Bulletproofs+ range proving](RFC-0181_BulletproofsPlus.md)
   - [RFC-0182: Commitment signatures](RFC-0182_CommitmentSignatures.md)
   - [RFC-0190: Mempool](RFC-0190_Mempool.md)
