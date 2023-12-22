@@ -65,27 +65,32 @@ None
 
 ## Description
 
-To solve the above problems, we'll use reliable broadcast and process foreign evidence in order.
+To solve the above problems, we'll use reliable broadcast between shards and process foreign evidence in order.
 
-In a local shard committee, the proposed block **must** include a counter per epoch and per shard (except for the local shard). If the proposal includes transactions that involve other shards, this counter **must** be incremented.
+In a local shard committee, the proposed block **must** include a reliable broadcast counter for each other shard. If the proposal includes transactions that involve other shards, this counter **must** be incremented.
+At the beginning of each epoch, all reliable broadcast counters must be reset.
 
-When the proposed block becomes committed locally, the block **must** be broadcast to each involved shard that was incremented, along with evidence of being committeed (The chain of QCs must be included).
+When the proposed block becomes committed locally (i.e. it has a chain of 3 QCs validating it), the block **must** be broadcast to each involved shard that was incremented, along with evidence of being committeed (The chain of QCs must be included).
 
-To ensure this, each node in the local committee will forward this committed block, along with a 3 chain of QC's proving it was committeed.
+To ensure this, `f+1` nodes in the local committee will forward this committed block to each relevant committee, along with a 3 chain of QC's proving it was committeed.
 
 As a local committee member, when I receive a foreign proposal, if it is valid I will queue up a special command ForeignProposal(number, QC_Hash) that I must propose 
 when I am next leader (if it has not been proposed already). I also **should** request all transaction hashes that I have not seen from involved_shards for each transaction in the proposal, and add them to my mempool for execution.
 
-Before transactions in the `N+1`th foreign proposal for a shard, all transactions in the `N`th foreign proposal for that shard must be sequenced into the local chain as either a TIMEOUT or a LOCALPREPARE(TxId, ForeignShardId).
+When processing transactions from a foreign, there are two methodologies we can try. 
+1. Strict ordering 
+2. Relaxed ordering
 
-When a LOCALPREPARE command is found in a local proposal, there **must** be a 
-Prepare(tx) command for that transaction in or before the current proposal.
+### Strict ordering
+In strict ordering, before transactions in the `N+1`th foreign proposal for a shard, all transactions in the `N`th foreign proposal for that shard must be sequenced into the local chain as either a ABORT(reason = Timeout) or a LOCALPREPARE(TxId, ForeignShardId).
+This means that if a transaction is going to timeout, it will hold up all transactions in future proposals. While timeouts are expected to be rare when at least one honest node is able to provide the transaction, this approach could lead to 
+really long finalization times, slowing down all cross shard transactions. In addition, there may be potential for deadlocks, where state is locked for a long time while transactions wait to timeout.
 
-In the `TIMEOUT_TIME`` block  (e.g. 1000 blocks, but should probably be equal to committee_size * X rounds) after the ForeignProposal command has been proposed, 
-all transactions in the proposal must be sequenced, either as LOCALPREPAREs or TIMEOUTs. This is to cater for the case where a transaction was prepared by a foreign committee, but was never found on the network. This is unlikely to happen 
-in a non-malicious scenario. The more common case is that all transactions will be found and have a LOCALPREPARE, but a block at `TIMEOUT_TIME` **must** be considered invalid if there are any transactions that are not LOCALPREPARED or TIMEOUT from the foreign proposal that started the timeout.
+### Relaxed ordering
+In relaxed ordering, transactions from foreign proposals can be processed in any order, but transactions must still timeout if they are not processed after a certain number of blocks from the FOREIGN_PROPOSAL command. This could lead to some 
+strange behaviour where a transaction can be aborted due to double spends, even though the double spend happens much later in one shard. This however could happen even with strict ordering if the transactions arrive at different times.
 
-For this reason, LOCAL_PREPARES and TIMEOUTs do not count to the block size.
+Given the above, we shall use relaxed ordering unless future development reveals other problems.
 
 NOTE: ForeignProposal commands can be proposed in between a previous ForeignProposal and LocalPrepare/Timeout commands, but commands from the ForeignProposal **must** only be proposed after all transactions in the first ForeignProposal have been sequenced. 
 The TIMEOUT_TIME block is counted from the height where the ForeignProposal is sequenced.
@@ -94,10 +99,6 @@ ForeignProposal commands **must** appear in strict ascending order in the blockc
 
 If a node receives a foreign proposal (not the command), and it has not received
 the previous foreign proposal, then it should ask the committee to provide it to them.
-
-If the LOCAL_PREPARE command would appear in a local proposal for a transaction and is the last such LOCAL_PREPARE and all shards have voted to accept, then the LOCAL_PREPARE **must** not be present and instead an ALL_PREPARED(tx) command **must** be present in the local proposal.
-Likewise, if a LOCAL_PREPARE command appears in the local proposal and is the first such to abort, then instead, a SOME_PREPARED(abort, tx) **must** be present in the local proposal.
-It may happen that a LOCAL_PREPARE(tx) must be sequenced for an already aborted transaction, in which case, it should not be followed by a SOME_PREPARED(abort, tx) but instead an ALREADY_ABORTED(tx) commmand **must** be present in the local proposal.
 
 
 # Change Log
