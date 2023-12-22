@@ -33,6 +33,7 @@
 
 - [RFC-0305: The Tari Network Consensus Layer](RFC-0305_Consensus.md)
   - [RFC-0314: Validator node committee selection](RFC-0314_VNCSelection.md)
+  - [RFC-0321: Processing Foreign Proposals](RFC-0321_ProcessingForeignProposals.md)
   - [RFC-0325: Epochs and time management](RFC-0325_DanTimeManagement.md)
   - [RFC-0330: The Cerberus-Hotstuff consensus algorithm](RFC-0330_Cerberus.md)
   - [RFC-0331: Indexers](RFC-0331_Indexers.md)
