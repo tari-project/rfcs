@@ -54,6 +54,7 @@
   - [RFC-8002: Transaction protocol](RFC-8002_TransactionProtocol.md)
   - [RFC-8003: Tari Use Cases](RFC-8003_TariUseCases.md)
   - [RFC-0385: Privacy-enabled Stablecoin contract design](RFC-0385_StableCoins.md)
+  - [RFC-0323: Tari throttle exploratory analysis](RFC-0323_TariThrottle.md)
   
 - [Deprecated RFCs](deprecated.md)
 
