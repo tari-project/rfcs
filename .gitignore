@@ -1,5 +1,7 @@
 target
 .env
+build
+node_modules
 
 # Ignore IDE workspace files
 .idea
