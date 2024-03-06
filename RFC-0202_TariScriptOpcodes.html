@@ -1,0 +1,711 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0202: TariScript Opcodes - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html" class="active"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0202tariscriptopcodes"><a class="header" href="#rfc-0202tariscriptopcodes">RFC-0202/TariScriptOpcodes</a></h1>
+<h2 id="tariscript-opcodes"><a class="header" href="#tariscript-opcodes">TariScript Opcodes</a></h2>
+<p><img src="theme/images/status-stable.svg" alt="status: stable" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2020 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;NOT
+RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all
+capitals, as shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update without
+notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>This Request for Comment (RFC) defines the opcodes that make up the TariScript scripting language and provides some 
+examples and applicaitons.</p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a></li>
+<li><a href="BaseLayerExtensions.html">RFC-0200: Base Layer Extensions</a></li>
+</ul>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<h2 id="tariscript-semantics"><a class="header" href="#tariscript-semantics">TariScript semantics</a></h2>
+<p>The proposal for TariScript is straightforward. It is based on Bitcoin script and inherits most of its ideas.</p>
+<p>The main properties of <a href="Glossary.html#tariscript">TariScript</a> are</p>
+<ul>
+<li>The scripting language is stack-based. At redeem time, the UTXO spender must supply an input stack. The script runs by
+operating on the stack contents.</li>
+<li>If an error occurs during execution, the script fails.</li>
+<li>After the script completes, it is successful if and only if it has not aborted, and there is exactly a single element
+on the stack. The script fails if the stack is empty, or contains more than one element, or aborts early.</li>
+<li>It is not Turing complete, so there are no loops or timing functions.</li>
+<li>The opcodes enforce type safety. e.g. A public key cannot be added to an integer scalar. Errors of this kind MUST 
+cause the script to fail. The Rust implementation of <a href="Glossary.html#tariscript">TariScript</a> automatically applies the type safety rules.</li>
+</ul>
+<h3 id="failure-modes"><a class="header" href="#failure-modes">Failure modes</a></h3>
+<p>Bitcoin transactions can &quot;fail&quot; in two main ways: Either there is a genuine error in the locking or unlocking script;
+or a wallet broadcasts a <em><a href="https://www.frontiersin.org/articles/10.3389/fbloc.2019.00007/full">Non-standard transaction</a></em> to a non-mining node. To be more precise, Bitcoin core nodes
+only accept a small subset of valid transaction scripts that are deemed <a href="https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html">Standard transactions</a>. To succesfully produce
+a non-standard Bitcoin transaction, one has to submit it directly to a miner that accepts non-standard transactions.</p>
+<p>It's interesting to note that only 0.02% of transactions
+mined in Bitcoin before block 550,000 were non-standard, and it appears that the vast majority of these were in fact
+unintentional, leading to loss of funds (see <a href="https://www.frontiersin.org/articles/10.3389/fbloc.2019.00007/full">Non-standard transaction</a>).</p>
+<p>The present RFC proposes that TariScript not identify a subset of transactions as &quot;standard&quot;. However, some transactions
+might be invalid in and of- themselves (e.g. invalid signature, invalid script), while others may be invalid because of
+the execution context (e.g. a lock time has not expired).</p>
+<p>All Tari nodes MUST reject the former type of invalid transaction; and SHOULD reject the latter. In these instances, it
+is the <em>wallets'</em> responsibility to wait until transactions are valid before broadcasting them.</p>
+<p>Rejected transactions are simply silently dropped.</p>
+<p>This policy discourages spamming on the network and promotes responsible behaviour by wallets.</p>
+<p>The full list of <a href="#error-codes">Error codes</a> is given below.</p>
+<h3 id="constraints"><a class="header" href="#constraints">Constraints</a></h3>
+<ul>
+<li>The maximum length of a script when serialised is 1,024 bytes.</li>
+<li>The maximum length of a script's input is 1,024 bytes.</li>
+<li>The maximum stack height is 255.</li>
+</ul>
+<h3 id="opcode-versions"><a class="header" href="#opcode-versions">Opcode versions</a></h3>
+<p>Base layer core consensus constants are linked to block height for each network, be it testnet, stagenet or mainnet, 
+and are backwards compatible, meaning a base node running updated consensus constants will also be able to validate the 
+blockchain for the previous version up to its last effective block height.</p>
+<p>Opcode versioning is contained within the consensus constants and is used to determine which opcodes are effective 
+from which block height. As an example, <code>OpcodeVersion::V0</code> could be effective from the genesis block, 
+<code>OpcodeVersion::V1</code> may contain two additional opcodes and could be effective from height 1234, whereas 
+<code>OpcodeVersion::V2</code> may deprecate three other opcodes and be effective from height 21743.</p>
+<h2 id="opcodes"><a class="header" href="#opcodes">Opcodes</a></h2>
+<p><a href="Glossary.html#tariscript">TariScript</a> opcodes range from 0 to 255 and are represented as a single unsigned byte. The opcode set is
+limited to allow for the applications specified in this RFC, but can be expanded in the future.</p>
+<h3 id="block-height-checks"><a class="header" href="#block-height-checks">Block height checks</a></h3>
+<p>All these opcodes test the current block height (or, if running the script as part of a transaction
+validation, the next earliest block height) against a given value.</p>
+<h5 id="checkheightverifyheight"><a class="header" href="#checkheightverifyheight">CheckHeightVerify(height)</a></h5>
+<p>Pops the top of the stack as <code>height</code>. Compare the current block height to <code>height</code>. </p>
+<ul>
+<li>Fails with <code>IncompatibleTypes</code> if u64 is not a valid 64-bit unsigned integer. </li>
+<li>Fails with <code>VerifyFailed</code> if the block height &lt; <code>height</code>.</li>
+</ul>
+<h5 id="checkheightheight"><a class="header" href="#checkheightheight">CheckHeight(height)</a></h5>
+<p>Pops the top of the stack as <code>height</code>. Pushes the value of (the current tip height - <code>height</code>) to the stack. In
+other words, the top of the stack will hold the height difference between <code>height</code> and the current height.
+If the chain has progressed beyond <code>height</code>, the value is positive; and negative if the chain has yet to
+reach <code>height</code>. </p>
+<ul>
+<li>Fails with <code>IncompatibleTypes</code> if u64 is not a valid 64-bit unsigned integer. </li>
+<li>Fails with <code>StackOverflow</code> if the stack would exceed the max stack height.</li>
+</ul>
+<h5 id="compareheightverify"><a class="header" href="#compareheightverify">CompareHeightVerify</a></h5>
+<p>Pops the top of the stack as <code>height</code> and compares it to the current block height. </p>
+<ul>
+<li>Fails with <code>InvalidInput</code> if there is not a valid integer value on top of the stack. </li>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty.</li>
+<li>Fails with <code>VerifyFailed</code> if the block height &lt; <code>height</code>.</li>
+</ul>
+<h5 id="compareheight"><a class="header" href="#compareheight">CompareHeight</a></h5>
+<p>Pops the top of the stack as <code>height</code>, then pushes the value of (<code>height</code> - the current height) to the stack.
+In other words, this opcode replaces the top of the stack with the difference between <code>height</code> and the
+current height. </p>
+<ul>
+<li>Fails with <code>InvalidInput</code> if there is not a valid integer value on top of the stack. </li>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty.</li>
+</ul>
+<h3 id="stack-manipulation"><a class="header" href="#stack-manipulation">Stack manipulation</a></h3>
+<h5 id="noop"><a class="header" href="#noop">NoOp</a></h5>
+<p>No op. Does nothing. Never fails.</p>
+<h5 id="pushzero"><a class="header" href="#pushzero">PushZero</a></h5>
+<p>Pushes a zero onto the stack. This is a very common opcode and has the same effect as <code>PushInt(0)</code> but is more
+compact. <code>PushZero</code> can also be interpreted as <code>PushFalse</code>, although no such opcode exists. </p>
+<ul>
+<li>Fails with <code>StackOverflow</code> if the stack would exceed the max stack height.</li>
+</ul>
+<h5 id="pushone"><a class="header" href="#pushone">PushOne</a></h5>
+<p>Pushes a one onto the stack. This is a very common opcode and has the same effect as <code>PushInt(1)</code> but is more
+compact. <code>PushOne</code> can also be interpreted as <code>PushTrue</code>, although no such opcode exists. </p>
+<ul>
+<li>Fails with <code>StackOverflow</code> if the stack would exceed the max stack height.</li>
+</ul>
+<h5 id="pushhashhashvalue"><a class="header" href="#pushhashhashvalue">PushHash(HashValue)</a></h5>
+<p>Pushes the associated 32-byte value onto the stack. </p>
+<ul>
+<li>Fails with <code>IncompatibleTypes</code> if HashValue is not a valid 32 byte sequence. </li>
+<li>Fails with <code>StackOverflow</code> if the stack would exceed the max stack height.</li>
+</ul>
+<h5 id="pushintval"><a class="header" href="#pushintval">PushInt(val)</a></h5>
+<p>Pushes the associated 64-bit signed integer (<code>val</code>) onto the stack. </p>
+<ul>
+<li>Fails with <code>IncompatibleTypes</code> if <code>val</code> is not a valid 64-bit signed integer. </li>
+<li>Fails with <code>StackOverflow</code> if the stack would exceed the max stack height.</li>
+</ul>
+<h5 id="pushpubkeypublickey"><a class="header" href="#pushpubkeypublickey">PushPubKey(PublicKey)</a></h5>
+<p>Pushes the associated 32-byte value onto the stack. It will be interpreted as a public key or a commitment.</p>
+<ul>
+<li>Fails with <code>IncompatibleTypes</code> if PublicKey is not a valid 32 byte RistrettoPublicKey sequence. </li>
+<li>Fails with <code>StackOverflow</code> if the stack would exceed the max stack height.</li>
+</ul>
+<h5 id="drop"><a class="header" href="#drop">Drop</a></h5>
+<p>Drops the top stack item. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty.</li>
+</ul>
+<h5 id="dup"><a class="header" href="#dup">Dup</a></h5>
+<p>Duplicates the top stack item. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty. </li>
+<li>Fails with <code>StackOverflow</code> if the stack would exceed the max stack height.</li>
+</ul>
+<h5 id="revrot"><a class="header" href="#revrot">RevRot</a></h5>
+<p>Reverse rotation. The top stack item moves into 3rd place, e.g. abc =&gt; bca. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than three items.</li>
+</ul>
+<h3 id="math-operations"><a class="header" href="#math-operations">Math operations</a></h3>
+<h4 id="gezero"><a class="header" href="#gezero">GeZero</a></h4>
+<p>Pops the top stack element as <code>val</code>. If <code>val</code> is greater than or equal to zero, push a 1 to the stack,
+otherwise push 0. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty. </li>
+<li>Fails with <code>InvalidInput</code> if <code>val</code> is not an integer.</li>
+</ul>
+<h4 id="gtzero"><a class="header" href="#gtzero">GtZero</a></h4>
+<p>Pops the top stack element as <code>val</code>. If <code>val</code> is strictly greater than zero, push a 1 to the stack, otherwise push 0. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty. </li>
+<li>Fails with <code>InvalidInput</code> if the item is not an integer.</li>
+</ul>
+<h4 id="lezero"><a class="header" href="#lezero">LeZero</a></h4>
+<p>Pops the top stack element as <code>val</code>. If <code>val</code> is less than or equal to zero, push a 1 to the stack, otherwise push 0. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty. </li>
+<li>Fails with <code>InvalidInput</code> if the item is not an integer.</li>
+</ul>
+<h4 id="ltzero"><a class="header" href="#ltzero">LtZero</a></h4>
+<p>Pops the top stack element as <code>val</code>. If <code>val</code> is strictly less than zero, push a 1 to the stack, otherwise push 0. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty. </li>
+<li>Fails with <code>InvalidInput</code> if the items is not an integer.</li>
+</ul>
+<h5 id="add"><a class="header" href="#add">Add</a></h5>
+<p>Pops two items from the stack and pushes their sum to the stack. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than two items. </li>
+<li>Fails with <code>InvalidInput</code> if the items cannot be added to each other (e.g. an integer and public key).</li>
+</ul>
+<h5 id="sub"><a class="header" href="#sub">Sub</a></h5>
+<p>Pops two items from the stack and pushes the second minus the top to the stack. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than two items. </li>
+<li>Fails with <code>InvalidInput</code> if the items cannot be subtracted from each other (e.g. an integer and public key).</li>
+</ul>
+<h5 id="equal"><a class="header" href="#equal">Equal</a></h5>
+<p>Pops the top two items from the stack, and pushes 1 to the stack if the inputs are exactly equal, 0 otherwise.
+A 0 is also pushed if the values cannot be compared (e.g. integer and pubkey). </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than two items.</li>
+</ul>
+<h5 id="equalverify"><a class="header" href="#equalverify">EqualVerify</a></h5>
+<p>Pops the top two items from the stack, and compares their values. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than two items. </li>
+<li>Fails with <code>VerifyFailed</code> if the top two stack elements are not equal.</li>
+</ul>
+<h3 id="boolean-logic"><a class="header" href="#boolean-logic">Boolean logic</a></h3>
+<h4 id="orn"><a class="header" href="#orn">Or(n)</a></h4>
+<p>Pops <code>n</code> + 1 items from the stack. If the last item matches at least one of the first <code>n</code>
+items, push 1 onto the stack, otherwise push 0 onto the stack. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than <code>n</code> + 1 items. </li>
+<li>Fails with <code>InvalidInput</code> if <code>n</code> is not a valid 8-bit unsigned integer.</li>
+</ul>
+<h4 id="orverifyn"><a class="header" href="#orverifyn">OrVerify(n)</a></h4>
+<p>Pops <code>n</code> + 1 items from the stack. If the last item matches at least one of the first n items,
+continue. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than <code>n</code> + 1 items. </li>
+<li>Fails with <code>VerifyFailed</code> the last item does not match at least one of the first <code>n</code> items. </li>
+<li>Fails with <code>InvalidInput</code> if <code>n</code> is not a valid 8-bit unsigned integer.</li>
+</ul>
+<h3 id="cryptographic-operations"><a class="header" href="#cryptographic-operations">Cryptographic operations</a></h3>
+<h5 id="hashblake256"><a class="header" href="#hashblake256">HashBlake256</a></h5>
+<p>Pops the top element, hash it with the Blake256 hash function and push the result to the stack. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty. </li>
+<li>Fails with <code>InvalidInput</code> if the input is not a valid 32 byte hash value.</li>
+</ul>
+<h5 id="hashsha256"><a class="header" href="#hashsha256">HashSha256</a></h5>
+<p>Pops the top element, hash it with the SHA256 hash function and push the result to the stack. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty. </li>
+<li>Fails with <code>InvalidInput</code> if the input is not a valid 32 byte hash value.</li>
+</ul>
+<h5 id="hashsha3"><a class="header" href="#hashsha3">HashSha3</a></h5>
+<p>Pops the top element, hash it with the SHA-3 hash function and push the result to the stack. </p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty. </li>
+<li>Fails with <code>InvalidInput</code> if the input is not a valid 32 byte hash value.</li>
+</ul>
+<h5 id="checksigmessage"><a class="header" href="#checksigmessage">CheckSig(Message)</a></h5>
+<p>Pops the public key and then the signature from the stack. If signature validation using the 32-byte message
+and public key succeeds , push 1 to the stack, otherwise push 0. </p>
+<ul>
+<li>Fails with <code>IncompatibleTypes</code> if Message is not a valid 32-byte sequence. </li>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than 2 items. </li>
+<li>Fails with <code>InvalidInput</code> if the top stack element is not a PublicKey. </li>
+<li>Fails with <code>InvalidInput</code> if the second stack element is not a Signature.</li>
+</ul>
+<h5 id="checksigverifymessage"><a class="header" href="#checksigverifymessage">CheckSigVerify(Message)</a></h5>
+<p>Identical to <a href="#checksigmsg"><code>CheckSig</code></a>, except that nothing is pushed to the stack if the signature is valid.</p>
+<p>In addition to the failures mentioned:</p>
+<ul>
+<li>Fails with <code>VerifyFailed</code> if the signature is invalid.</li>
+</ul>
+<h5 id="checkmultisigm-n-vec-message"><a class="header" href="#checkmultisigm-n-vec-message">CheckMultiSig(m, n, Vec<PublicKey>, Message)</a></h5>
+<p>Pops exactly <code>m</code> signatures from the stack. The multiple signature validation will not succeed if the <code>m</code>
+signatures are not unique or if Vec<RistrettoPublicKey> contains a duplicate public key. Each signature is
+validated using the 32-byte message and a public key that match. If signature validation for m unique
+signatures succeeds, push 1 to the stack, otherwise push 0.</p>
+<ul>
+<li>Fails with <code>IncompatibleTypes</code> if either <code>m</code> or <code>n</code> is not a valid 8-bit unsigned integer, if Vec<RistrettoPublicKey> 
+contains an invalid public key or if Message is not a valid 32-byte sequence.</li>
+<li>Fails with <code>ValueExceedsBounds</code> if <code>m</code> == 0 or if <code>n</code> == 0 or if <code>m</code> &gt; <code>n</code> or if <code>n</code> &gt; <code>MAX_MULTISIG_LIMIT</code>
+(32) or if the number of public keys provided != <code>n</code>.</li>
+<li>Fails with <code>StackUnderflow</code> if the stack has fewer than m items.</li>
+<li>Fails with <code>IncompatibleTypes</code> if any of the m signatures from the stack is not a valid signature.</li>
+<li>Fails with <code>InvalidInput</code> if each of the top m elements is not a Signature.</li>
+</ul>
+<h5 id="checkmultisigverifym-n-vec-message"><a class="header" href="#checkmultisigverifym-n-vec-message">CheckMultiSigVerify(m, n, Vec<PublicKey>, Message)</a></h5>
+<p>Identical to <a href="#checkmultisigm-n-public-keys-msg"><code>CheckMultiSig</code></a>, except that nothing is pushed to the stack if the 
+multiple signature validation is either valid or invalid. </p>
+<p>In addition to the failures mentioned:</p>
+<ul>
+<li>Fails with <code>VerifyFailed</code> if any signature is invalid.</li>
+</ul>
+<h5 id="checkmultisigverifyaggregatepubkeym-n-public-keys-msg"><a class="header" href="#checkmultisigverifyaggregatepubkeym-n-public-keys-msg">CheckMultiSigVerifyAggregatePubKey(m, n, public keys, Msg)</a></h5>
+<p>Identical to <a href="#checkmultisigm-n-public-keys-msg"><code>CheckMultiSig</code></a>, except that the aggregate of the public keys is 
+pushed to the stack if multiple signature validation succeeds. </p>
+<p>In addition to the failures mentioned:</p>
+<ul>
+<li>Fails with <code>VerifyFailed</code> if any signature is invalid.</li>
+</ul>
+<h5 id="toristrettopoint"><a class="header" href="#toristrettopoint">ToRistrettoPoint</a></h5>
+<p>Pops the top element from the stack (either a scalar or a hash), parses it canonically as a Ristretto secret key if possible, computes the corresponding Ristretto public key, and pushes this value to the stack.</p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty.</li>
+<li>Fails with <code>IncompatibleTypes</code> if the stack item is not either a scalar or a hash.</li>
+<li>Fails with <code>InvalidInput</code> if the stack item cannot be canonically parsed as a Ristretto secret key.</li>
+</ul>
+<h3 id="miscellaneous"><a class="header" href="#miscellaneous">Miscellaneous</a></h3>
+<h5 id="return"><a class="header" href="#return">Return</a></h5>
+<p>This opcode does nothing except that it always fails.</p>
+<ul>
+<li>Fails with <code>Return</code>.</li>
+</ul>
+<h5 id="if-then-else"><a class="header" href="#if-then-else">If-then-else</a></h5>
+<p>Pops the top element of the stack into <code>pred</code>. If <code>pred</code> is 1, the instructions between <code>IfThen</code> and <code>Else</code> are
+executed. If <code>pred</code> is 0, instructions are popped until <code>Else</code> or <code>EndIf</code> is encountered. If <code>Else</code> is
+encountered, instructions are executed until <code>EndIf</code> is reached. <code>EndIf</code> is a marker opcode and a no-op.</p>
+<ul>
+<li>Fails with <code>StackUnderflow</code> if the stack is empty.</li>
+<li>Fails with <code>InvalidInput</code> if pred is anything other than 0 or 1.</li>
+<li>Fails with the corresponding failure code if any instruction during execution of the clause causes a failure.</li>
+</ul>
+<h5 id="else"><a class="header" href="#else">Else</a></h5>
+<p>Marks the beginning of the <code>Else</code> branch.</p>
+<h5 id="endif"><a class="header" href="#endif">EndIf</a></h5>
+<p>Marks the end of the <code>IfThen</code> statement.</p>
+<h2 id="serialisation"><a class="header" href="#serialisation">Serialisation</a></h2>
+<p>TariScript and the execution stack are serialised into byte strings using a simple linear parser. Since all opcodes are
+a single byte, it's very easy to read and write script byte strings. If an opcode has a parameter associated with it,
+e.g. <code>PushHash</code> then it is equally known how many bytes following the opcode will contain the parameter.</p>
+<p>The script input data is serialised in an analogous manner. The first byte in a stream indicates the type of data in the
+bytes that follow. The length of each type is fixed and known <em>a priori</em>. The next <em>n</em> bytes read represent the data type.</p>
+<p>As input data elements are read in, they are pushed onto the stack. This means that the <em>last</em> input element will 
+typically be operated on <em>first</em>!</p>
+<p>The types of input parameters that are accepted are:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Type</th><th style="text-align: left">Range / Value</th></tr></thead><tbody>
+<tr><td style="text-align: left">Number</td><td style="text-align: left">64-bit signed integer</td></tr>
+<tr><td style="text-align: left">Hash</td><td style="text-align: left">32-byte hash value</td></tr>
+<tr><td style="text-align: left">Scalar</td><td style="text-align: left">32-byte scalar value</td></tr>
+<tr><td style="text-align: left">Commitment</td><td style="text-align: left">32-byte homomorphic commitment (Pedersen commitment )</td></tr>
+<tr><td style="text-align: left">PublicKey</td><td style="text-align: left">32-byte Ristretto public key</td></tr>
+<tr><td style="text-align: left">Signature</td><td style="text-align: left">64-byte Ristretto Schnorr signature (32-byte nonce + 32-byte signature)</td></tr>
+</tbody></table>
+</div>
+<h2 id="example-scripts"><a class="header" href="#example-scripts">Example scripts</a></h2>
+<h3 id="anyone-can-spend"><a class="header" href="#anyone-can-spend">Anyone can spend</a></h3>
+<p>The simplest script is an empty script, or a script with a single <code>NoOp</code> opcode. When faced with this script, the 
+spender can supply any pubkey in her script input for which she knows the private key. The script will execute, leaving 
+that public key as the result, and the transaction script validation will pass.</p>
+<h3 id="one-sided-transactions"><a class="header" href="#one-sided-transactions">One-sided transactions</a></h3>
+<p>One-sided transactions lock the input to a predetermined public key provided by the recipient; essentially the same
+method that Bitcoin uses. The simplest form of this is to simply post the new owner's public key as the script:</p>
+<pre><code class="language-text">PushPubkey(P_B)
+</code></pre>
+<p>To spend this output, Bob provides an empty input stack. After execution, the stack contains his public key.</p>
+<p>An equivalent script to Bitcoin's P2PKH would be:</p>
+<pre><code class="language-text">Dup HashBlake256 PushHash(PKH) EqualVerify
+</code></pre>
+<p>To spend this, Bob provides his public key as script input.
+To illustrate the execution process, we show the script running on the left, and resulting stack on the right:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Initial script</th><th style="text-align: left">Initial Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>Dup</code></td><td style="text-align: left">Bob's Pubkey</td></tr>
+<tr><td style="text-align: left"><code>HashBlake256</code></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><code>PushHash(PKH)</code></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><code>EqualVerify</code></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<p>Copy Bob's pubkey:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"><code>Dup</code></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>HashBlake256</code></td><td style="text-align: left">Bob's Pubkey</td></tr>
+<tr><td style="text-align: left"><code>PushHash(PKH)</code></td><td style="text-align: left">Bob's Pubkey</td></tr>
+<tr><td style="text-align: left"><code>EqualVerify</code></td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<p>Hash the public key:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"><code>HashBlake256</code></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>PushHash(PKH)</code></td><td style="text-align: left">H(Bob's Pubkey)</td></tr>
+<tr><td style="text-align: left"><code>EqualVerify</code></td><td style="text-align: left">Bob's Pubkey</td></tr>
+</tbody></table>
+</div>
+<p>Push the expected hash to the stack:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"><code>PushHash(PKH)</code></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>EqualVerify</code></td><td style="text-align: left">PKH</td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left">H(Bob's Pubkey)</td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left">Bob's Pubkey</td></tr>
+</tbody></table>
+</div>
+<p>Is <code>PKH</code> equal to the hash of Bob's public key?</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"><code>EqualVerify</code></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"></td><td style="text-align: left">Bob's Pubkey</td></tr>
+</tbody></table>
+</div>
+<p>The script has completed without errors, and Bob's public key remains on the stack.</p>
+<h3 id="multiparty-time-locked-contract"><a class="header" href="#multiparty-time-locked-contract">Multiparty Time-locked contract</a></h3>
+<p>Alice sends some Tari to Bob. If he doesn't spend it within a certain timeframe (up till block 4000), then she is also
+able to spend it back to herself.</p>
+<p>The spender provides their public key as input to the script.</p>
+<pre><code class="language-text">Dup PushPubkey(P_b) CheckHeight(4000) GeZero IFTHEN PushPubkey(P_a) OrVerify(2) ELSE EqualVerify ENDIF
+</code></pre>
+<p>Let's run through this script assuming it's block 3990 and Bob is spending the UTXO. We'll only print the stack this
+time:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Initial Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>Dup</code>:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>PushPubkey(P_b)</code>:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>P_b</code></td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>CheckHeight(4000)</code>. The block height is 3990, so <code>3990 - 4000</code> is pushed to the stack:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">-10</td></tr>
+<tr><td style="text-align: left"><code>P_b</code></td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>GeZero</code> pushes a 1 if the top stack element is positive or zero:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">0</td></tr>
+<tr><td style="text-align: left"><code>P_b</code></td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>IFTHEN</code> compares the top of the stack to 1. It is not a match, so it will execute the <code>ELSE</code> branch:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>P_b</code></td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>EqualVerify</code> checks that <code>P_b</code> is equal to Bob's pubkey:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p>The <code>ENDIF</code> is a no-op, so the stack contains Bob's public key, meaning Bob must sign to spend this transaction.</p>
+<p>Similarly, if it is after block 4000, say block 4005, and Alice or Bob tries to spend the UTXO, the sequence is:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Initial Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>Dup</code> and <code>PushPubkey(P_b)</code> as before:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>P_b</code></td></tr>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>CheckHeight(4000)</code> calculates <code>4005 - 4000)</code> and pushes 5 to the stack:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">5</td></tr>
+<tr><td style="text-align: left"><code>P_b</code></td></tr>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>GeZero</code> pops the 5 and pushes a 1 to the stack:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">1</td></tr>
+<tr><td style="text-align: left"><code>P_b</code></td></tr>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p>The top of the stack is 1, so <code>IFTHEN</code> executes the first branch, <code>PushPubkey(P_a)</code>:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>P_a</code></td></tr>
+<tr><td style="text-align: left"><code>P_b</code></td></tr>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p><code>OrVerify(2)</code> compares the 3rd element, Alice's pubkey, with the 2 top items that were popped. There is a match, so the 
+script continues.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stack</th></tr></thead><tbody>
+<tr><td style="text-align: left">Alice or Bob's pubkey</td></tr>
+</tbody></table>
+</div>
+<p>If the script executes successfully, then either Alice's or Bob's public key is left on the stack, meaning only Alice
+or Bob can spend the output.</p>
+<h3 id="error-codes"><a class="header" href="#error-codes">Error codes</a></h3>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Code</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>Return</code></td><td style="text-align: left">The script failed with an explicit Return</td></tr>
+<tr><td style="text-align: left"><code>StackOverflow</code></td><td style="text-align: left">The stack exceeded 255 elements during script execution</td></tr>
+<tr><td style="text-align: left"><code>NonUnitLengthStack</code></td><td style="text-align: left">The script completed execution with a stack size other than one</td></tr>
+<tr><td style="text-align: left"><code>StackUnderflow</code></td><td style="text-align: left">Tried to pop an element off an empty stack</td></tr>
+<tr><td style="text-align: left"><code>IncompatibleTypes</code></td><td style="text-align: left">An operand was applied to incompatible types</td></tr>
+<tr><td style="text-align: left"><code>ValueExceedsBounds</code></td><td style="text-align: left">A script opcode resulted in a value that exceeded the maximum or minimum value</td></tr>
+<tr><td style="text-align: left"><code>InvalidOpcode</code></td><td style="text-align: left">The script encountered an invalid opcode</td></tr>
+<tr><td style="text-align: left"><code>MissingOpcode</code></td><td style="text-align: left">The script is missing closing opcodes (Else or EndIf)</td></tr>
+<tr><td style="text-align: left"><code>InvalidSignature</code></td><td style="text-align: left">The script contained an invalid signature</td></tr>
+<tr><td style="text-align: left"><code>InvalidInput</code></td><td style="text-align: left">The serialised stack contained invalid input</td></tr>
+<tr><td style="text-align: left"><code>InvalidData</code></td><td style="text-align: left">The script contained invalid data</td></tr>
+<tr><td style="text-align: left"><code>VerifyFailed</code></td><td style="text-align: left">A verification opcode failed, aborting the script immediately</td></tr>
+<tr><td style="text-align: left"><code>InvalidDigest</code></td><td style="text-align: left"><code>as_hash</code> requires a Digest function that returns at least 32 bytes</td></tr>
+</tbody></table>
+</div>
+<h3 id="credits"><a class="header" href="#credits">Credits</a></h3>
+<p>Thanks to <a href="https://github.com/philipr-za">@philipr-za</a> and <a href="https://github.com/SWvheerden">@SWvheerden</a> for their input
+and contributions to this RFC.</p>
+<h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
+<tr><td style="text-align: left">17 Aug 2020</td><td style="text-align: left">First draft</td><td style="text-align: left">CjS77</td></tr>
+<tr><td style="text-align: left">11 Feb 2021</td><td style="text-align: left">Tari script proposal v3</td><td style="text-align: left">CjS77</td></tr>
+<tr><td style="text-align: left">16 Feb 2021</td><td style="text-align: left">Update TariScript OpCodes</td><td style="text-align: left">CjS77</td></tr>
+<tr><td style="text-align: left">08 Mar 2021</td><td style="text-align: left">Update RFC docs</td><td style="text-align: left">delta1</td></tr>
+<tr><td style="text-align: left">12 Nov 2021</td><td style="text-align: left">Add CheckMultiSig/Verify</td><td style="text-align: left">delta1</td></tr>
+<tr><td style="text-align: left">30 Jun 2021</td><td style="text-align: left">Add missing OP_CHECKMULTISIG/VERIFY and update error codes</td><td style="text-align: left">sdbondi</td></tr>
+<tr><td style="text-align: left">11 Jan 2022</td><td style="text-align: left">Add ToRistrettoPoint opcode to TariScript</td><td style="text-align: left">SWvheerden</td></tr>
+<tr><td style="text-align: left">27 Sep 2022</td><td style="text-align: left">Add aggregate signatures to transaction inputs and outputs</td><td style="text-align: left">hansieodendaal</td></tr>
+<tr><td style="text-align: left">28 Sep 2022</td><td style="text-align: left">Minor update to reflect implementation</td><td style="text-align: left">sdbondi</td></tr>
+<tr><td style="text-align: left">11 Nov 2022</td><td style="text-align: left">Update for code review/audit</td><td style="text-align: left">hansieodendaal</td></tr>
+<tr><td style="text-align: left">20 Nov 2023</td><td style="text-align: left">Update <code>ToRistrettoPoint</code> documentation</td><td style="text-align: left">AaronFeickert</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0201_TariScript.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0204_TariScriptExamples.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0201_TariScript.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0204_TariScriptExamples.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

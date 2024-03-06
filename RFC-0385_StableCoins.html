@@ -1,0 +1,3463 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0385: Privacy-enabled Stablecoin contract design - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html" class="active"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0385stablecoin"><a class="header" href="#rfc-0385stablecoin">RFC-0385/StableCoin</a></h1>
+<h2 id="privacy-enabled-stablecoin-contract-design"><a class="header" href="#privacy-enabled-stablecoin-contract-design">Privacy-enabled Stablecoin contract design</a></h2>
+<p><img src="theme/images/status-draft.svg" alt="status: draft" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a>, <a href="https://github.com/AaronFeickert">Aaron Feickert</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2022 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:<a href="RFC-0303_DanOverview.html">RFC-0303_DanOverview.md</a></p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;,
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all
+capitals, as
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>This Request for Comment (RFC) describes the a possible manifestation of a privacy-preserving
+stablecoin on the Tari Digital Assets Network (DAN).</p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<h2 id="evaluation-of-existing-stablecoins"><a class="header" href="#evaluation-of-existing-stablecoins">Evaluation of existing stablecoins</a></h2>
+<p>The top two stablecoins by issuance, or &quot;total value locked&quot; (TVL) are Tether USD (USDT, under various contracts) and
+USD Coin (USDC).
+As of August 2023, these two coins accounted
+for <a href="https://defillama.com/stablecoins">87% of the total stablecoin market</a>.</p>
+<p>Both coins are fully collateralised and the peg is maintained by the centralised issuer.</p>
+<p>Although Tether is under scrutiny by authorities, both stablecoins have been in operation for several years. One
+might reasonably assume that the intersection of the feature set of the two coins' contracts represent a minimal set of
+requirements for legal operation.</p>
+<p>What follows is a brief summary of the features of the two coins.</p>
+<h3 id="tether-usd-usdt"><a class="header" href="#tether-usd-usdt">Tether USD (USDT)</a></h3>
+<p>The Tether USD ERC-20 contract is deployed at address
+<a href="https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7"><code>0xdac17f958d2ee523a2206206994597c13d831ec7</code></a>.
+The contract code for this contract is presented in <a href="#appendix-a---tether-usd-contract">Appendix A</a>. As of August
+2023, USDT 39B was help in this contract.</p>
+<p>The contract has the following key features:</p>
+<h4 id="administration"><a class="header" href="#administration">Administration</a></h4>
+<p>The following monetary functions can only be called by the contract owner:</p>
+<ul>
+<li><code>issue(amount)</code> - issues new tokens to the contract owner's account.</li>
+<li><code>redeem(amount)</code> - redeems tokens from the contract owner's account.</li>
+<li><code>setParams(...)</code> - Allows owner to set or change fees for transfers. Currently set to zero.</li>
+</ul>
+<p>The owner has access to the following fraud/AML functions:</p>
+<ul>
+<li><code>addBlackList(address)</code> - Adds an address to the blacklist. Blacklisted addresses are not allowed to send tokens
+(but they can receive them).</li>
+<li><code>removeBlackList(address)</code> - Removes an address from the blacklist.</li>
+<li><code>destroyBlackFunds(address)</code> - Destroys all tokens in the blacklisted address, reducing the total supply.</li>
+</ul>
+<p>Finally, the owner has access to the following contract management functions:</p>
+<ul>
+<li><code>deprecate(address)</code> - Deprecates the contract and supplies the upgraded contract address.</li>
+<li><code>pause</code> - pauses the entire contract, preventing any transfers.</li>
+<li><code>unpause</code> - unpauses the contract.</li>
+<li><code>transferOwnership(address)</code> - transfers ownership of the contract to a new address.</li>
+</ul>
+<h4 id="account-owners"><a class="header" href="#account-owners">Account owners</a></h4>
+<p>The Tether contract records balances through a simple map of standard wallet addresses to amount.
+Any ethereum address is eligible to hold a USDT balance by virtue of the ERC-20 contract.</p>
+<p>Account owners (ie the address matching the transaction <code>sender</code>) have the following abilities:</p>
+<ul>
+<li><code>transfer(to, amount)</code> - transfers tokens to another address. Fees get sent to the owner's account.</li>
+<li><code>transferFrom(from, to, value)</code> - allows a 3rd party to transfer tokens from the <code>from</code> account to the <code>to</code> account.
+The 3rd party must have been authorised by the <code>from</code> account to do so using <code>approve</code> and amount must be less
+than or equal to <code>allowance(from, sender)</code>.</li>
+<li><code>approve(spender, amount)</code> - authorises a 3rd party to transfer tokens from the owner's account to another account.
+The 3rd party must call <code>transferFrom</code> to perform the transfer.</li>
+</ul>
+<h4 id="public-read-only-functions"><a class="header" href="#public-read-only-functions">Public read-only functions</a></h4>
+<p>The following functions are available to the public:</p>
+<ul>
+<li><code>totalSupply</code> - returns the total supply of minted tokens. The unit is in millionths of a USD.</li>
+<li><code>balanceOf(address)</code> - returns the balance of the given address.</li>
+<li><code>allowance(owner, spender)</code> - returns the amount of tokens that the spender is allowed to spend on behalf of the
+owner.</li>
+<li><code>getBlackListStatus(address)</code> - returns whether the given address is blacklisted.</li>
+<li><code>getOwner</code> - returns the owner of the contract.</li>
+</ul>
+<h3 id="circle-usd-usdc"><a class="header" href="#circle-usd-usdc">Circle USD (USDC)</a></h3>
+<p>The primary Circle USD contract address is
+<a href="https://etherscan.io/address/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"><code>0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48</code></a>.</p>
+<p>This is a proxy contract that relays calls to a secondary contract. This is ostensibly done to allow transparent
+upgrades to the contract, but it does imply additional risk, since the contract code that actually runs and secures
+your funds is not actually immutable anymore.</p>
+<p>The current proxied contract is presented in <a href="#appendix-b---circle-usd-contract">Appendix B</a>. As of August 2023,<br />
+USDC 24B was held in this contract.</p>
+<p>It is an ERC-20 contract like Tether, but adds the ability to carry out signature-based operations. Fees are not
+supported in this contract.</p>
+<p>The contract has the following key features:</p>
+<h4 id="administration-1"><a class="header" href="#administration-1">Administration</a></h4>
+<p>The owner has access to the following contract management functions:</p>
+<ul>
+<li><code>updatePauser(address)</code> - gives the <code>Pause</code> role to a new address.</li>
+<li><code>updateBlacklister(address)</code> - gives the <code>Blacklist</code> role to a new address.</li>
+<li><code>transferOwnership(address)</code> - transfers ownership of the contract to a new address.</li>
+<li><code>updateMasterMinter(address)</code> - gives the <code>MasterMinter</code> role to a new address.</li>
+<li><code>updateRescuer(address)</code> - gives the <code>Rescuer</code> role to a new address.</li>
+</ul>
+<p>The address with the <code>Pauser</code> role has access to the following functions:</p>
+<ul>
+<li><code>pause</code> - pauses the entire contract, preventing any transfers. Caller must have the <code>Pauser</code> role.</li>
+<li><code>unpause</code> - unpauses the contract. Caller must have the <code>Pauser</code> role.</li>
+</ul>
+<p>The address with the <code>Blacklist</code> role has access to the following functions:</p>
+<ul>
+<li><code>blacklist(address)</code> - Adds an address to the blacklist. Blacklisted addresses are not allowed to send tokens
+(but they can receive them).</li>
+<li><code>unBlacklist(address)</code> - Removes an address from the blacklist. Caller must have the <code>Blacklist</code> role.</li>
+</ul>
+<p>The address with the <code>MasterMinter</code> role has access to the following functions:</p>
+<ul>
+<li><code>configureMinter(address, amount)</code> - Allows the <code>MasterMinter</code> to add a new minter. The minter is allowed to mint
+up to the given amount of tokens. New minters have the <code>Mint</code> role.</li>
+<li><code>removeMinter(address)</code> - Removes a minter. The address will no longer be able to mint tokens.</li>
+</ul>
+<p>Addresses with the <code>Mint</code> role have access to the following functions:</p>
+<ul>
+<li><code>mint(address, amount)</code> - Mints tokens to the given address. The amount must be less than or equal to the amount
+that the minter is allowed to mint. Unlike in Tether, USDC mints can be injected directly into arbitrary accounts.</li>
+<li><code>burn(amount)</code> - Burns tokens from the minter's address. Minter must not be blacklisted.</li>
+</ul>
+<p>The address with the <code>Rescuer</code> role has access to the following function:</p>
+<ul>
+<li><code>rescueERC20(contract, address, amount)</code> - Unconditionally transfers <code>amount</code> funds from the contract to <code>address</code>.
+This is ostensibly a backdoor that allows the owner to recover funds in the event of a bug.</li>
+</ul>
+<h4 id="account-owners-1"><a class="header" href="#account-owners-1">Account owners</a></h4>
+<p>The Tether contract records balances through a simple map of standard wallet addresses to amount.
+Any ethereum address is eligible to hold a USDT balance by virtue of the ERC-20 contract.</p>
+<p>Account owners (ie the address matching the transaction <code>sender</code>) have the following abilities:</p>
+<ul>
+<li><code>transfer(to, amount)</code> - transfers tokens to another address. Fees get sent to the owner's account. Neither party
+may be blacklisted.</li>
+<li><code>transferFrom(from, to, value)</code> - allows a 3rd party to transfer tokens from the <code>from</code> account to the <code>to</code> account.
+The 3rd party must have been authorised by the <code>from</code> account to do so using <code>approve</code> and amount must be less
+than or equal to <code>allowance(from, sender)</code>. Neither <code>from</code>, <code>to</code> or the <code>sender</code> may be blacklisted.</li>
+<li><code>approve(spender, amount)</code> - authorises a 3rd party to transfer tokens from the owner's account to another account.
+The 3rd party must call <code>transferFrom</code> to perform the transfer. Neither the 3rd party or the authorising account
+may be blacklisted.</li>
+<li><code>in(de)creaseAllowance(spender, amount)</code> - increases (decreases) the amount that the spender is allowed to spend on
+behalf of the owner. Neither the 3rd party or the authorising account may be blacklisted.</li>
+<li><code>transferWithAuthorization(to, value, authParams..)</code> - transfers tokens to another
+address based on the signature provided. This allows clients to batch transfers and save on gas, or services to pay
+gas on behalf of clients.</li>
+<li><code>cancelAuthorization(authParams..)</code> - cancels a pending transferWithAuthorization.</li>
+<li><code>permit(owner, spender, value, ...)</code> - Similar to <code>approve</code> but authorisation is provided by a bearer signature.</li>
+</ul>
+<h4 id="public-read-only-functions-1"><a class="header" href="#public-read-only-functions-1">Public read-only functions</a></h4>
+<p>The following functions are available to the public:</p>
+<ul>
+<li><code>totalSupply</code> - returns the total supply of minted tokens. The unit is in millionths of a USD.</li>
+<li><code>balanceOf(address)</code> - returns the balance of the given address.</li>
+<li><code>allowance(owner, spender)</code> - returns the amount of tokens that the spender is allowed to spend on behalf of the
+owner.</li>
+<li><code>isBlacklisted(address)</code> - returns whether the given address is blacklisted.</li>
+<li><code>getOwner</code> - returns the owner of the contract.</li>
+<li><code>minterAllowance(address)</code> - returns the amount of tokens that the given address is allowed to mint.</li>
+<li><code>isMinter(address)</code> - returns whether the given address is a minter.</li>
+</ul>
+<h2 id="feature-comparison-of-tether-and-circle-usd"><a class="header" href="#feature-comparison-of-tether-and-circle-usd">Feature Comparison of Tether and Circle USD</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Feature</th><th>Tether</th><th>Circle USD</th><th>Minimal requirements</th></tr></thead><tbody>
+<tr><td>Contract type</td><td>ERC-20</td><td>ERC-20</td><td></td></tr>
+<tr><td>Minting</td><td>Yes (owner only)</td><td>Yes (multiple minters)</td><td>Yes</td></tr>
+<tr><td>Burning</td><td>Yes (owner only)</td><td>Yes (multiple minters)</td><td>Yes</td></tr>
+<tr><td>Minting to arbitrary account</td><td>No</td><td>Yes</td><td>No</td></tr>
+<tr><td>Blacklisting</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Blacklisted account can send</td><td>No</td><td>No</td><td>No</td></tr>
+<tr><td>Blacklisted account can receive</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+<tr><td>Blacklisted account can be destroyed</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td>Take funds from arbitrary account</td><td>No</td><td>No</td><td>No</td></tr>
+<tr><td>Fees</td><td>Yes (currently zero)</td><td>No</td><td>No</td></tr>
+<tr><td>Contract upgrade</td><td>Yes (via linked list)</td><td>Yes (via proxy)</td><td>N/A</td></tr>
+<tr><td>Contract pause</td><td>Yes</td><td>Yes</td><td>N/A</td></tr>
+</tbody></table>
+</div>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<h3 id="key-assumptions-and-requirements"><a class="header" href="#key-assumptions-and-requirements">Key assumptions and requirements</a></h3>
+<ol>
+<li>The stablecoin is account-based.</li>
+<li>Issuance and redemptions of the stablecoin tokens are performed by a centralised entity, the <code>issuer</code>. The stability
+of the token and its peg are completely dependent on the issuer's ability to maintain the peg. The issuer is
+required to act responsibly and issue and redeem tokens in a timely manner in order to engender confidence in the
+coin and maintain the peg.</li>
+<li>Aside from the administrator privileges conferred on the <code>issuer</code> by the stablecoin contract, the coin is operated
+in a decentralised manner, and transfers are facilitated by the Tari network, and are not processed by any
+centralised
+entity, including the <code>issuer</code>.</li>
+<li>The <code>issuer</code> has the following &quot;administrator&quot; powers:
+<ol>
+<li>Create and authorise new accounts.</li>
+<li>Issue new tokens. The new tokens are credited to the <code>issuer</code>'s account. The transactions are in the clear so
+that anyone can verify the total circulating supply of the stablecoin.</li>
+<li>Redeem (burn) existing tokens. The burnt tokens are debited from the <code>issuer</code>'s account. These transactions
+are in the clear.</li>
+<li>Have access to the full list of account ids.</li>
+<li>Blacklist an account. Blacklisted accounts are not allowed to send, or receive, tokens.</li>
+<li>Remove an account from the blacklist.</li>
+</ol>
+</li>
+<li>Account-holders have the following abilities:
+<ol>
+<li>View their own balance.</li>
+<li>If their account is not blacklisted, transfer funds to any other (non-blacklisted) account.</li>
+</ol>
+</li>
+<li>General users:
+<ol>
+<li>Cannot see the balance of any account (other than their own).</li>
+<li>Can see the total supply of tokens in circulation.</li>
+<li>Can apply for a new account by interacting with the <code>issuer</code>.</li>
+</ol>
+</li>
+<li>The possibility of the issuer charging a fee for transfers is not considered in this design.</li>
+<li>The issuer can view the balance of account holders.</li>
+<li>The issuer cannot unilaterally spend or seize funds from any account holder.</li>
+</ol>
+<p>Validator nodes validate all stablecoin transactions. In particular:</p>
+<ol>
+<li>Validator nodes cannot determine the value of any transaction.</li>
+<li>However, they <em>are</em> able to, and MUST verify that
+<ol>
+<li>no coins are created or destroyed in the transaction, i.e. the sum of the parties' balances before and after
+the transfer are equal,</li>
+<li>the transfer value is positive,</li>
+<li>the sender has a positive balance after the transaction,</li>
+<li>the sender has authorised the transaction,</li>
+<li>the sending party holds a valid account,</li>
+<li>the sending party is not on the blacklist,</li>
+<li>the receiving party holds a valid account,</li>
+<li>the receiving party is not on the blacklist.</li>
+</ol>
+</li>
+<li>If any of the conditions in 2 are not met, the transaction is invalid and the validator node MUST reject the
+transaction.</li>
+</ol>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>The broad strategy is as follows:</p>
+<ul>
+<li>The issuer mints stablecoin tokens in equal quantity to the amount of fiat currency deposited with the issuer.
+These mint transactions are in the clear and anyone can ascertain the total circulating supply of the stablecoin.</li>
+<li>Issuers can transfer tokens to any account. These transfers are also in the clear.</li>
+<li>Transfers between account holders are confidential.</li>
+<li>The issuer can carry out confidential transfers by first transferring tokens from the
+cleartext issuer account to another, standard account controlled by the issuer, and then performing a confidential
+transfer from there to the final destination account.</li>
+<li>Balances are stored in Pedersen commitments, the masks of which are known only to account holders.</li>
+<li>Balances are also verifiably encrypted to the issuer.</li>
+<li>Users create a new account by interacting with the issuer. The issuer provides an account id that can be compared
+against a blacklist for the purposes of determining whether the account is valid or not. The issuer may choose to
+conduct a KYC procedure out-of-band as part of the account creation process.</li>
+<li>The full list of accounts form part of a whitelist. Only the issuer can modify the whitelist.</li>
+<li>A blacklist, which only the issuer can modify, comprises a list of accounts that may no longer participate in
+stablecoin transactions.</li>
+<li>Spending authority rests solely with the account owner and required knowledge of the account private key.</li>
+<li>Transfers are done in two-steps, via the issuance of an e-cheque by the sender, followed by the claiming of the
+e-cheque by the recipient.</li>
+</ul>
+<p>The remainder of this section describes the implementation in more detail.</p>
+<div class="note">
+This design is experimental and not yet suitable for production.
+</div>
+<h2 id="mathematical-furniture"><a class="header" href="#mathematical-furniture">Mathematical furniture</a></h2>
+<p>As a point of notation, we sometimes use superscripts in mathematical notation in this note; unless otherwise indicated,
+this is symbolic and not to be interpreted as indicating exponentiation.</p>
+<h3 id="hash-functions-and-ciphers"><a class="header" href="#hash-functions-and-ciphers">Hash functions and ciphers</a></h3>
+<p>We require the use of multiple cryptographic hash functions, which must be sampled independently.
+It is possible to do this by carefully applying domain separation to a single cryptographic hash function.
+We further require that when data is provided as input to such a hash function, it is done safely in a manner that is
+canonical and cannot induce collisions.
+We use a comma notation to indicate multiple input values, as in $H(a, b, c, \ldots)$.</p>
+<p>We also require the use of a key-committing AEAD (authenticated encryption with additional data) construction.
+It is possible to extend an arbitrary AEAD design in this manner by including a safe cryptographic hash of a derived
+key.</p>
+<p>Let $H_{\text{AEAD}}$ be a cryptographic hash function whose output is the AEAD key space, suitable for $H_
+{\text{AEAD}}$ to operate as a key derivation function for the AEAD.</p>
+<h3 id="proving-systems"><a class="header" href="#proving-systems">Proving systems</a></h3>
+<p>The design will require several zero-knowledge proving systems that allow validators to assert correctness of operations
+without revealing protected data.</p>
+<h3 id="verifiable-encryption"><a class="header" href="#verifiable-encryption">Verifiable encryption</a></h3>
+<p>We require the use of a verifiable ElGamal encryption proving system that asserts the value bound to a Pedersen
+commitment matches the value encrypted to a given public key.
+This will be used to assert that the issuer can decrypt account balances without knowing the opening to the account's
+balance commitment.</p>
+<p>The proving relation is </p>
+<p>$\{ (C, E, R, P); (v, m, r) | C = vG + mH, E = vG + rP, R = rG \}$.</p>
+<ul>
+<li>The prover samples $x_v, x_m, x_r$ uniformly at random.</li>
+<li>It computes $C' = x_v G + x_m H$, $E' = x_v G + x_r P$, and $R' = x_r G$ and sends them to the verifier.</li>
+<li>The verifier samples nonzero $e$ uniformly at random and sends it to the prover.</li>
+<li>The prover computes $s_v = ev + x_v$, $s_m = em + x_m$, and $s_r = er + x_r$ and sends them to the verifier.</li>
+<li>The verifier accepts the proof if and only if $eC + C' = s_v G + s_m H$, $eE + E' = s_v G + s_r P$, and $eR + R' = s_r
+G$.</li>
+</ul>
+<p>The proof can be made non-interactive using the Fiat-Shamir technique.
+It is a sigma protocol for the relation that is complete, 2-special sound, and special honest-verifier zero knowledge.</p>
+<h3 id="value-equality"><a class="header" href="#value-equality">Value equality</a></h3>
+<p>We require the use of a value equality proving system that asserts two Pedersen commitments bind to the same value.
+This will be used to assert that commitments used in transfers retain balance.</p>
+<p>The proving relation is </p>
+<p>$\{ (C_1, C_2); (v, m_1, m_2) | C_1 = vG + m_1 H, C_2 = vG + m_2 H \}$.</p>
+<ul>
+<li>The prover samples $x_v, x_{m_1}, x_{m_2}$ uniformly at random.</li>
+<li>It computes $C_1' = x_v G + x_{m_1} H$ and $C_2' = x_v G + x_{m_2} H$ and sends them to the verifier.</li>
+<li>The verifier samples nonzero $e$ uniformly at random and sends it to the prover.</li>
+<li>The prover computes $s_v = ev + x_v$, $s_{m_1} = em_1 + x_{m_1}$, and $s_{m_2} = em_2 + x_{m_2}$ and sends them to the
+verifier.</li>
+<li>The verifier accepts the proof if and only if $eC_1 + C_1' = s_v G + s_{m_1} H$ and $eC_2 + C_2' = s_v G + s_{m_2} H$.</li>
+</ul>
+<p>The proof can be made non-interactive using the Fiat-Shamir technique.
+It is a sigma protocol for the relation that is complete, 2-special sound, and special honest-verifier zero knowledge.</p>
+<h3 id="schnorr-representation"><a class="header" href="#schnorr-representation">Schnorr representation</a></h3>
+<p>We require the use of a Schnorr representation proving system that asserts knowledge of a discrete logarithm.
+This will be used to sign messages, as well as to assert that a Pedersen commitment binds to a given value.</p>
+<p>The proving relation is </p>
+<p>$\{ P; p | P = pG \}$.</p>
+<ul>
+<li>The prover samples $x_p$ uniformly at random.</li>
+<li>It computes $P' = x_p G$ and sends it to the verifier.</li>
+<li>The verifier samples nonzero $e$ uniformly at random and sends it to the prover.</li>
+<li>The prover computes $s_p = ep + x_p$ and sends it to the verifier.</li>
+<li>The verifier accepts the proof if and only if $eP + P' = s_p G$.</li>
+</ul>
+<p>The proof can be made non-interactive using the Fiat-Shamir technique.
+It is a sigma protocol for the relation that is complete, 2-special sound, and special honest-verifier zero knowledge.</p>
+<p>To use this proving system to assert that a commitment $C$ binds to a given value $v$, we set $P = C - vG$ and use the
+Schnorr representation proving system on this statement using the generator $H$ instead of $G$, and being careful to
+bind $v$ into the Fiat-Shamir transcript.</p>
+<h3 id="commitment-range"><a class="header" href="#commitment-range">Commitment range</a></h3>
+<p>We require the use of a commitment range proving system that asserts that all Pedersen commitments in a set bind to
+values in a specified range.
+This will be used to prevent balance underflow and overflow that would inflate supply.
+We assume the intended range is $[0, 2^n)$ for some globally-fixed $n$; in practice, $n = 64$ is typically used (since
+it is often the case that $n$ must itself be a power of two).</p>
+<p>The proving relation is </p>
+<p>$\{ (C_j)_{j=0}^{m-1}; (v_j, m_j)_{j=0}^{m-1} : C_j = v_j G + m_j H, v_j \in [0, 2^n) \forall j \}$.</p>
+<p>The popular and efficient Bulletproofs and <a href="https://github.com/tari-project/bulletproofs-plus">Bulletproofs+</a> range 
+proving systems may be used for this purpose.</p>
+<h2 id="design"><a class="header" href="#design">Design</a></h2>
+<p>We now describe the stablecoin design.</p>
+<h3 id="issuer"><a class="header" href="#issuer">Issuer</a></h3>
+<p>The stablecoin is instantiated by defining the issuer.</p>
+<p>The issuer samples its secret key $p$ uniformly at random, and computes the corresponding public key $P = pG$.
+It produces a Schnorr representation proof $\Pi_P$ using statement $P$ and witness $p$.
+It sets up the stablecoin as follows:</p>
+<ul>
+<li>Public key: $P$</li>
+<li>Public key proof: $\Pi_P$</li>
+</ul>
+<p>Validators check this operation by verifying $\Pi_P$.</p>
+<p>The issuer also sets up an account for itself using the structure described below for users.</p>
+<h3 id="users"><a class="header" href="#users">Users</a></h3>
+<p>A user who wishes to open an account interacts with the issuer via a side channel.
+The user samples its secret key $k$ uniformly at random, and computes the corresponding public key $K = kG$.
+It produces a Schnorr representation proof $\Pi_K$ using statement $K$ and witness $k$.
+The issuer checks that $K$ has not been used in any other approved account, and verifies $\Pi_K$.</p>
+<p>If the issuer approves the account, it signs $K$ by generating a Schnorr representation proof $\Pi_{P, K}$ using
+statement $P$ and witness $p$, binding $K$ into the Fiat-Shamir transcript.</p>
+<p>The issuer sets up the account structure as follows:</p>
+<ul>
+<li>Public key: $K$</li>
+<li>Public key proof: $\Pi_K$</li>
+<li>Issuer proof: $\Pi_{P, K}$</li>
+<li>State nonce: 0</li>
+<li>Balance commitment: 0 (identity group element)</li>
+<li>Issuer-encrypted balance: None</li>
+<li>User-encrypted balance: None</li>
+<li>Pending e-cheques: None</li>
+</ul>
+<ul>
+<li>The <em>state nonce</em> is a value used to track changes to the account and avoid replaying messages.</li>
+<li>The <em>issuer-encrypted balance</em> field will be populated with a verifiable encryption of the balance that can be 
+decrypted by the issuer.</li>
+<li>The <em>user-encrypted balance</em> field will be populated with an authenticated encryption of the value and mask
+corresponding to the balance commitment that can be decrypted by the user for account recovery purposes.</li>
+<li>The <em>pending e-cheques</em> field will be populated with <em>e-cheques</em> representing transfers that are destined for the 
+account, but that the user has neither approved nor rejected.</li>
+</ul>
+<p>Validators check this operation by verifying $\Pi_K$ and $\Pi_{P, K}$, asserting that $K$ does not appear in any other
+account, and asserting the other constant values are as expected.</p>
+<h3 id="cheques"><a class="header" href="#cheques">Cheques</a></h3>
+<p>When a user wishes to transfer funds to another user, it does so by generating an <em>e-cheque</em>.
+Once validators check the e-cheque, it is added to the recipient's pending e-cheques list and the 
+sender's account is updated.</p>
+<p>The e-cheque remains until the recipient approves or rejects it, or until the e-cheque becomes abandoned, as 
+described later.</p>
+<p>Suppose the sender wishes to transfer value $v^\Delta$ to a recipient.</p>
+<ul>
+<li>Let $K_s = k_s G$ and $K_r$ be the sender and recipient keys, respectively.</li>
+<li>Let $C = vG + mH$ be the sender balance commitment.</li>
+<li>Let $i$ be the sender state nonce.</li>
+</ul>
+<p>The sender does the following:</p>
+<ul>
+<li>Samples a scalar $m_s^\Delta$ uniformly at random and uses it to generate a commitment $C_s^\Delta = v^\Delta G +
+m_s^\Delta H$ to the transfer value.</li>
+<li>Samples a scalar $m^\Delta$ uniformly at random and uses it to generate a commitment $C^\Delta = v^\Delta G + m^\Delta
+H$ to the transfer value.</li>
+<li>Generates a proof of value equality $\Pi_\Delta$ on the statement $(C_s^\Delta, C^\Delta)$ and witness $(v^\Delta,
+m_s^\Delta, m^\Delta)$.</li>
+<li>Samples a scalar $r$ uniformly at random, and computes $R = rG$.</li>
+<li>Generates an AEAD key $H_{\text{AEAD}}(r K_r)$ and uses it to encrypt the tuple $(v^\Delta, m^\Delta)$, producing
+authenticated ciphertext $c$.</li>
+<li>Sets $E = (v - v^\Delta) G + rP$ as an ElGamal encryption of its new balance, and generates a verifiable encryption
+proof $\Pi_{\text{enc}}$ on the statement $(C - C_s^\Delta, E, R, P)$ and witness $(v - v^\Delta, m - m_s^\Delta, r)$.</li>
+<li>Generates a range proof $\Pi_{\text{range}}$ on the statement $\{ C_s^\Delta, C - C_s^\Delta \}$ and witness $\{ (
+v^\Delta, m_s^\Delta), (v - v^\Delta, m - m_s^\Delta) \}$.</li>
+<li>Generates an AEAD key $H_{\text{AEAD}}(k_s)$ and uses it to encrypt the tuple $(v - v^\Delta, m - m_s^\Delta)$,
+producing authenticated ciphertext $c_s$.</li>
+<li>Sets the e-cheque to be the tuple $t = (K_s, K_r, C, i, C_s^\Delta, C^\Delta, E, R, \Pi_\Delta, \Pi_{\text{enc}}, \Pi_
+{\text{range}}, c_s, c_{sr})$.</li>
+<li>Signs the e-cheque by generating a Schnorr representation proof $\Pi_t$ using statement $K_s$ and witness $k_s$, binding
+$t$ into the Fiat-Shamir transcript.</li>
+</ul>
+<p>Prior to accepting the e-cheque as valid, validators perform the following checks:</p>
+<ul>
+<li>Assert that neither $K_s$ nor $K_r$ appear on the blacklist.</li>
+<li>Verify the proof $\Pi_t$.</li>
+<li>Look up the sender's account using $K_s$ and assert that $C$ and $i$ match the corresponding values in the account.</li>
+<li>Verify the proofs $\Pi_\Delta$, $\Pi_{\text{enc}}$, and $\Pi_{\text{range}}$.</li>
+</ul>
+<p>If these checks pass, validators add the e-cheque to the recipient's pending e-cheques list, and update the sender's account
+as follows:</p>
+<ul>
+<li>Increment the state nonce.</li>
+<li>Set the balance commitment to $C - C_s^\Delta$.</li>
+<li>Set the issuer-encrypted balance to the tuple $(E, R)$.</li>
+<li>Set the user-encrypted balance to $c_s$.</li>
+</ul>
+<p>When the recipient sees the e-cheque, it can either <em>endorse</em> or <em>void</em> it.</p>
+<p>Endorsement means the recipient intends to accept the funds and wishes to have its account updated accordingly.
+Voiding means the recipient does not intend to accept the funds and wishes for the sender to be able to claim them back.
+Prior to making this determination, the recipient does the following:</p>
+<ul>
+<li>Generates an AEAD key $H_{\text{AEAD}}(k_r R)$ and uses it to authenticate and decrypt $c$, producing the tuple $(
+v^\Delta, m^\Delta)$.</li>
+<li>Checks that $C^\Delta = v^\Delta G + m^\Delta H$.</li>
+</ul>
+<p>If these checks pass, it may choose to endorse or void the e-cheque.
+If they fail, it must void the e-cheque.</p>
+<h3 id="voiding-an-e-cheque"><a class="header" href="#voiding-an-e-cheque">Voiding an e-cheque</a></h3>
+<p>Suppose the recipient wishes to void an e-cheque $t$.</p>
+<p>It does the following:</p>
+<ul>
+<li>Sets the voiding to be the tuple $t_{\text{void}} = (t)$.</li>
+<li>Signs the voiding by generating a Schnorr representation proof $\Pi_t$ using statement $K_r$ and witness $k_r$,
+binding $t_{\text{void}}$ into the Fiat-Shamir transcript.</li>
+</ul>
+<p>Prior to accepting the voiding as valid, validators perform the following checks:</p>
+<ul>
+<li>Assert that neither $K_s$ nor $K_r$ appear on the blacklist.</li>
+<li>Verify the proof $\Pi_t$.</li>
+</ul>
+<p>If these checks pass, validators annotate $t$ in the recipient's pending e-cheques list to indicate the voiding.</p>
+<h3 id="endorsing-an-e-cheque"><a class="header" href="#endorsing-an-e-cheque">Endorsing an e-cheque</a></h3>
+<p>Suppose the recipient wishes to endorse an e-cheque $t$ with $C^\Delta = v^\Delta G + m^\Delta H$ from its pending e-cheques
+list.</p>
+<p>Now let $C = vG + mH$ be the recipient balance commitment.</p>
+<p>Let $i$ be the recipient state nonce.</p>
+<p>The recipient does the following:</p>
+<ul>
+<li>Samples a scalar $m_r^\Delta$ uniformly at random, and uses it to generate a commitment $C_r^\Delta = v^\Delta G +
+m_r^\Delta H$ to the transfer value.</li>
+<li>Generates a proof of value equality $\Pi_\Delta$ on the statement $(C_r^\Delta, C^\Delta)$ and witness $(v^\Delta,
+m_r^\Delta, m^\Delta)$.</li>
+<li>Samples a scalar $r$ uniformly at random, and computes $R = rG$.</li>
+<li>Sets $E = (v + v^\Delta) G + rP$ as an ElGamal encryption of its new balance, and generates a verifiable encryption
+proof $\Pi_{\text{enc}}$ on the statement $(C + C_r^\Delta, E, R, P)$ and witness $(v + v^\Delta, m + m_r^\Delta, r)$.</li>
+<li>Generates an AEAD key $H_{\text{AEAD}}(k_r)$ and uses it to encrypt the tuple $(v + v^\Delta, m + m_r^\Delta)$,
+producing authenticated ciphertext $c_r$.</li>
+<li>Sets the endorsement to be the tuple $t_{\text{end}} = (t, C, i, C_r^\Delta, E, R, \Pi_\Delta, \Pi_{\text{enc}},
+c_r)$.</li>
+<li>Signs the endorsement by generating a Schnorr representation proof $\Pi_t$ using statement $K_r$ and witness $k_r$,
+binding $t_{\text{end}}$ into the Fiat-Shamir transcript.</li>
+</ul>
+<p>It is also possible for the original sender of an e-cheque to endorse it as well.
+This can arise in two cases:</p>
+<ul>
+<li>The recipient of the e-cheque has voided it.</li>
+<li>The recipient of the e-cheque has neither accepted nor voided it, and a protocol-specified period of time has passed.</li>
+</ul>
+<p>The process is the same as above, with the sender now playing the role of the recipient.</p>
+<p>Prior to accepting the endorsement as valid, validators perform the following checks:</p>
+<ul>
+<li>Assert that neither $K_s$ nor $K_r$ appear on the blacklist.</li>
+<li>Verify the proof $\Pi_t$.</li>
+<li>Look up the recipient's account using $K_r$ and assert that $C$ and $i$ match the corresponding values in the account,
+and that $t$ appears in the pending e-cheques list.</li>
+<li>Verify the proofs $\Pi_\Delta$ and $\Pi_{\text{enc}}$.</li>
+</ul>
+<p>If these checks pass, validators remove the e-cheque $t$ from the recipient's pending e-cheques list, and update the
+recipient's account as follows:</p>
+<ul>
+<li>Increment the state nonce.</li>
+<li>Set the balance commitment to $C + C_r^\Delta$.</li>
+<li>Set the issuer-encrypted balance to the tuple $(E, R)$.</li>
+<li>Set the user-encrypted balance to $c_r$.</li>
+</ul>
+<h3 id="issuer-balance-visibility"><a class="header" href="#issuer-balance-visibility">Issuer balance visibility</a></h3>
+<p>The issuer can privately view any user's balance at any time using ElGamal decryption.
+Suppose it wishes to view the balance of a user whose issuer-encrypted balance is $(E, R)$.</p>
+<p>It does the following:</p>
+<ul>
+<li>Sets $V = E - pR$.</li>
+<li>Finds $v$ such that $V = vG$; this is the user's balance.</li>
+</ul>
+<p>Because the search space for balances is limited, the issuer can optimize this process.
+For example, it could produce a lookup table mapping $vG \mapsto v$ for reasonable values $v$, or simply use brute force
+on the search space.</p>
+<h3 id="user-account-recovery"><a class="header" href="#user-account-recovery">User account recovery</a></h3>
+<p>If the user loses access to their account balance, they can recover the opening to their balance commitment to regain 
+access, provided they still hold the private key $k$.</p>
+<p>Suppose such a user with key $k$ queries validators for its account's user-encrypted balance.</p>
+<p>It does the following:</p>
+<ul>
+<li>Generates an AEAD key $H_{\text{AEAD}}(k)$ and uses it to authenticate and decrypt the user-encrypted balance,
+producing the tuple $(v, m)$; this is the opening to their balance commitment.</li>
+</ul>
+<h3 id="issuer-transfers"><a class="header" href="#issuer-transfers">Issuer transfers</a></h3>
+<p>When transferring funds from the issuer to a user, or from a user to the issuer, it is required that the value be
+publicly visible for transparency purposes.
+However, we wish to reuse as much of the existing design as possible, in order to simplify the design and reduce
+engineering risk.</p>
+<p>If the issuer wishes to transfer funds to a user, it produces an e-cheque with the following modifications:</p>
+<ul>
+<li>It sets $r = 0$.</li>
+<li>It uses a zero key to produce $c_s$.</li>
+</ul>
+<p>When validating such an e-cheque, validators additionally do the following:</p>
+<ul>
+<li>Assert that $R = 0$.</li>
+<li>Assert that $c_s$ decrypts using a zero key, and that the resulting opening is valid.</li>
+<li>Decrypt $c_s$ and assert the resulting opening is valid.</li>
+<li>Decrypt $c$ using a zero key and assert the resulting opening is valid.</li>
+</ul>
+<p>If a user wishes to transfer funds to the issuer, it produces an e-cheque with the following modifications:</p>
+<ul>
+<li>It sets $r = 0$.</li>
+</ul>
+<p>When validating such an e-cheque, validators additionally do the following:</p>
+<ul>
+<li>Assert that $R = 0$.</li>
+<li>Decrypt $c$ using a zero key and asserting the resulting opening is valid.</li>
+</ul>
+<p>If the issuer wishes to accept transfer funds from a user, it produces an endorsement with the following modifications:</p>
+<ul>
+<li>It uses a zero key to produce $c_r$.</li>
+</ul>
+<p>When validating such an endorsement, validators additionally do the following:</p>
+<ul>
+<li>Assert that $c_r$ decrypts using a zero key, and that the resulting opening is valid.</li>
+</ul>
+<p>This design allows for transparent analysis of the issuer's balance and e-cheques.</p>
+<h2 id="final-notes"><a class="header" href="#final-notes">Final notes</a></h2>
+<p>There are several variations of this contract that could be implemented.</p>
+<p>For example, removing the encrypted balance fields would make user balances opaque to the issuer as well, while also 
+simplifying the design considerably.</p>
+<p>The transfer process can be augmented to include dummy inputs and outputs, using a strategy similar to that 
+used in <a href="https://ia.cr/2021/1173">Lelantus Spark</a>. This would obfuscate the parties in a transfer, dramatically
+improving privacy.</p>
+<p>The use of e-cheques as the primary value transfer vehicle opens up many possibilities for adding additional margin
+of error to on-chain financial transactions:</p>
+<ul>
+<li>For example, e-cheques could have a holding time associated with them, to allow parties to validate payments 
+out-of-band. </li>
+<li>They could have additional claim constraints, which would simplify escrow contracts and swap contracts while 
+improving security.</li>
+</ul>
+<h1 id="appendix-a---tether-usd-contract"><a class="header" href="#appendix-a---tether-usd-contract">Appendix A - Tether USD contract</a></h1>
+<pre><code class="language-js">/**
+ *Submitted for verification at Etherscan.io on 2017-11-28
+*/
+
+pragma solidity ^0.4.17;
+
+/**
+ * @title SafeMath
+ * @dev Math operations with safety checks that throw on error
+ */
+library SafeMath {
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        if (a == 0) {
+            return 0;
+        }
+        uint256 c = a * b;
+        assert(c / a == b);
+        return c;
+    }
+
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+        // assert(b &gt; 0); // Solidity automatically throws when dividing by 0
+        uint256 c = a / b;
+        // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+        return c;
+    }
+
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        assert(b &lt;= a);
+        return a - b;
+    }
+
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        uint256 c = a + b;
+        assert(c &gt;= a);
+        return c;
+    }
+}
+
+/**
+ * @title Ownable
+ * @dev The Ownable contract has an owner address, and provides basic authorization control
+ * functions, this simplifies the implementation of &quot;user permissions&quot;.
+ */
+contract Ownable {
+    address public owner;
+
+    /**
+      * @dev The Ownable constructor sets the original `owner` of the contract to the sender
+      * account.
+      */
+    function Ownable() public {
+        owner = msg.sender;
+    }
+
+    /**
+      * @dev Throws if called by any account other than the owner.
+      */
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+
+    /**
+    * @dev Allows the current owner to transfer control of the contract to a newOwner.
+    * @param newOwner The address to transfer ownership to.
+    */
+    function transferOwnership(address newOwner) public onlyOwner {
+        if (newOwner != address(0)) {
+            owner = newOwner;
+        }
+    }
+
+}
+
+/**
+ * @title ERC20Basic
+ * @dev Simpler version of ERC20 interface
+ * @dev see https://github.com/ethereum/EIPs/issues/20
+ */
+contract ERC20Basic {
+    uint public _totalSupply;
+    function totalSupply() public constant returns (uint);
+    function balanceOf(address who) public constant returns (uint);
+    function transfer(address to, uint value) public;
+    event Transfer(address indexed from, address indexed to, uint value);
+}
+
+/**
+ * @title ERC20 interface
+ * @dev see https://github.com/ethereum/EIPs/issues/20
+ */
+contract ERC20 is ERC20Basic {
+    function allowance(address owner, address spender) public constant returns (uint);
+    function transferFrom(address from, address to, uint value) public;
+    function approve(address spender, uint value) public;
+    event Approval(address indexed owner, address indexed spender, uint value);
+}
+
+/**
+ * @title Basic token
+ * @dev Basic version of StandardToken, with no allowances.
+ */
+contract BasicToken is Ownable, ERC20Basic {
+    using SafeMath for uint;
+
+    mapping(address =&gt; uint) public balances;
+
+    // additional variables for use if transaction fees ever became necessary
+    uint public basisPointsRate = 0;
+    uint public maximumFee = 0;
+
+    /**
+    * @dev Fix for the ERC20 short address attack.
+    */
+    modifier onlyPayloadSize(uint size) {
+        require(!(msg.data.length &lt; size + 4));
+        _;
+    }
+
+    /**
+    * @dev transfer token for a specified address
+    * @param _to The address to transfer to.
+    * @param _value The amount to be transferred.
+    */
+    function transfer(address _to, uint _value) public onlyPayloadSize(2 * 32) {
+        uint fee = (_value.mul(basisPointsRate)).div(10000);
+        if (fee &gt; maximumFee) {
+            fee = maximumFee;
+        }
+        uint sendAmount = _value.sub(fee);
+        balances[msg.sender] = balances[msg.sender].sub(_value);
+        balances[_to] = balances[_to].add(sendAmount);
+        if (fee &gt; 0) {
+            balances[owner] = balances[owner].add(fee);
+            Transfer(msg.sender, owner, fee);
+        }
+        Transfer(msg.sender, _to, sendAmount);
+    }
+
+    /**
+    * @dev Gets the balance of the specified address.
+    * @param _owner The address to query the the balance of.
+    * @return An uint representing the amount owned by the passed address.
+    */
+    function balanceOf(address _owner) public constant returns (uint balance) {
+        return balances[_owner];
+    }
+
+}
+
+/**
+ * @title Standard ERC20 token
+ *
+ * @dev Implementation of the basic standard token.
+ * @dev https://github.com/ethereum/EIPs/issues/20
+ * @dev Based oncode by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
+ */
+contract StandardToken is BasicToken, ERC20 {
+
+    mapping (address =&gt; mapping (address =&gt; uint)) public allowed;
+
+    uint public constant MAX_UINT = 2**256 - 1;
+
+    /**
+    * @dev Transfer tokens from one address to another
+    * @param _from address The address which you want to send tokens from
+    * @param _to address The address which you want to transfer to
+    * @param _value uint the amount of tokens to be transferred
+    */
+    function transferFrom(address _from, address _to, uint _value) public onlyPayloadSize(3 * 32) {
+        var _allowance = allowed[_from][msg.sender];
+
+        // Check is not needed because sub(_allowance, _value) will already throw if this condition is not met
+        // if (_value &gt; _allowance) throw;
+
+        uint fee = (_value.mul(basisPointsRate)).div(10000);
+        if (fee &gt; maximumFee) {
+            fee = maximumFee;
+        }
+        if (_allowance &lt; MAX_UINT) {
+            allowed[_from][msg.sender] = _allowance.sub(_value);
+        }
+        uint sendAmount = _value.sub(fee);
+        balances[_from] = balances[_from].sub(_value);
+        balances[_to] = balances[_to].add(sendAmount);
+        if (fee &gt; 0) {
+            balances[owner] = balances[owner].add(fee);
+            Transfer(_from, owner, fee);
+        }
+        Transfer(_from, _to, sendAmount);
+    }
+
+    /**
+    * @dev Approve the passed address to spend the specified amount of tokens on behalf of msg.sender.
+    * @param _spender The address which will spend the funds.
+    * @param _value The amount of tokens to be spent.
+    */
+    function approve(address _spender, uint _value) public onlyPayloadSize(2 * 32) {
+
+        // To change the approve amount you first have to reduce the addresses`
+        //  allowance to zero by calling `approve(_spender, 0)` if it is not
+        //  already 0 to mitigate the race condition described here:
+        //  https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+        require(!((_value != 0) &amp;&amp; (allowed[msg.sender][_spender] != 0)));
+
+        allowed[msg.sender][_spender] = _value;
+        Approval(msg.sender, _spender, _value);
+    }
+
+    /**
+    * @dev Function to check the amount of tokens than an owner allowed to a spender.
+    * @param _owner address The address which owns the funds.
+    * @param _spender address The address which will spend the funds.
+    * @return A uint specifying the amount of tokens still available for the spender.
+    */
+    function allowance(address _owner, address _spender) public constant returns (uint remaining) {
+        return allowed[_owner][_spender];
+    }
+
+}
+
+
+/**
+ * @title Pausable
+ * @dev Base contract which allows children to implement an emergency stop mechanism.
+ */
+contract Pausable is Ownable {
+  event Pause();
+  event Unpause();
+
+  bool public paused = false;
+
+
+  /**
+   * @dev Modifier to make a function callable only when the contract is not paused.
+   */
+  modifier whenNotPaused() {
+    require(!paused);
+    _;
+  }
+
+  /**
+   * @dev Modifier to make a function callable only when the contract is paused.
+   */
+  modifier whenPaused() {
+    require(paused);
+    _;
+  }
+
+  /**
+   * @dev called by the owner to pause, triggers stopped state
+   */
+  function pause() onlyOwner whenNotPaused public {
+    paused = true;
+    Pause();
+  }
+
+  /**
+   * @dev called by the owner to unpause, returns to normal state
+   */
+  function unpause() onlyOwner whenPaused public {
+    paused = false;
+    Unpause();
+  }
+}
+
+contract BlackList is Ownable, BasicToken {
+
+    /////// Getters to allow the same blacklist to be used also by other contracts (including upgraded Tether) ///////
+    function getBlackListStatus(address _maker) external constant returns (bool) {
+        return isBlackListed[_maker];
+    }
+
+    function getOwner() external constant returns (address) {
+        return owner;
+    }
+
+    mapping (address =&gt; bool) public isBlackListed;
+
+    function addBlackList (address _evilUser) public onlyOwner {
+        isBlackListed[_evilUser] = true;
+        AddedBlackList(_evilUser);
+    }
+
+    function removeBlackList (address _clearedUser) public onlyOwner {
+        isBlackListed[_clearedUser] = false;
+        RemovedBlackList(_clearedUser);
+    }
+
+    function destroyBlackFunds (address _blackListedUser) public onlyOwner {
+        require(isBlackListed[_blackListedUser]);
+        uint dirtyFunds = balanceOf(_blackListedUser);
+        balances[_blackListedUser] = 0;
+        _totalSupply -= dirtyFunds;
+        DestroyedBlackFunds(_blackListedUser, dirtyFunds);
+    }
+
+    event DestroyedBlackFunds(address _blackListedUser, uint _balance);
+
+    event AddedBlackList(address _user);
+
+    event RemovedBlackList(address _user);
+
+}
+
+contract UpgradedStandardToken is StandardToken{
+    // those methods are called by the legacy contract
+    // and they must ensure msg.sender to be the contract address
+    function transferByLegacy(address from, address to, uint value) public;
+    function transferFromByLegacy(address sender, address from, address spender, uint value) public;
+    function approveByLegacy(address from, address spender, uint value) public;
+}
+
+contract TetherToken is Pausable, StandardToken, BlackList {
+
+    string public name;
+    string public symbol;
+    uint public decimals;
+    address public upgradedAddress;
+    bool public deprecated;
+
+    //  The contract can be initialized with a number of tokens
+    //  All the tokens are deposited to the owner address
+    //
+    // @param _balance Initial supply of the contract
+    // @param _name Token Name
+    // @param _symbol Token symbol
+    // @param _decimals Token decimals
+    function TetherToken(uint _initialSupply, string _name, string _symbol, uint _decimals) public {
+        _totalSupply = _initialSupply;
+        name = _name;
+        symbol = _symbol;
+        decimals = _decimals;
+        balances[owner] = _initialSupply;
+        deprecated = false;
+    }
+
+    // Forward ERC20 methods to upgraded contract if this one is deprecated
+    function transfer(address _to, uint _value) public whenNotPaused {
+        require(!isBlackListed[msg.sender]);
+        if (deprecated) {
+            return UpgradedStandardToken(upgradedAddress).transferByLegacy(msg.sender, _to, _value);
+        } else {
+            return super.transfer(_to, _value);
+        }
+    }
+
+    // Forward ERC20 methods to upgraded contract if this one is deprecated
+    function transferFrom(address _from, address _to, uint _value) public whenNotPaused {
+        require(!isBlackListed[_from]);
+        if (deprecated) {
+            return UpgradedStandardToken(upgradedAddress).transferFromByLegacy(msg.sender, _from, _to, _value);
+        } else {
+            return super.transferFrom(_from, _to, _value);
+        }
+    }
+
+    // Forward ERC20 methods to upgraded contract if this one is deprecated
+    function balanceOf(address who) public constant returns (uint) {
+        if (deprecated) {
+            return UpgradedStandardToken(upgradedAddress).balanceOf(who);
+        } else {
+            return super.balanceOf(who);
+        }
+    }
+
+    // Forward ERC20 methods to upgraded contract if this one is deprecated
+    function approve(address _spender, uint _value) public onlyPayloadSize(2 * 32) {
+        if (deprecated) {
+            return UpgradedStandardToken(upgradedAddress).approveByLegacy(msg.sender, _spender, _value);
+        } else {
+            return super.approve(_spender, _value);
+        }
+    }
+
+    // Forward ERC20 methods to upgraded contract if this one is deprecated
+    function allowance(address _owner, address _spender) public constant returns (uint remaining) {
+        if (deprecated) {
+            return StandardToken(upgradedAddress).allowance(_owner, _spender);
+        } else {
+            return super.allowance(_owner, _spender);
+        }
+    }
+
+    // deprecate current contract in favour of a new one
+    function deprecate(address _upgradedAddress) public onlyOwner {
+        deprecated = true;
+        upgradedAddress = _upgradedAddress;
+        Deprecate(_upgradedAddress);
+    }
+
+    // deprecate current contract if favour of a new one
+    function totalSupply() public constant returns (uint) {
+        if (deprecated) {
+            return StandardToken(upgradedAddress).totalSupply();
+        } else {
+            return _totalSupply;
+        }
+    }
+
+    // Issue a new amount of tokens
+    // these tokens are deposited into the owner address
+    //
+    // @param _amount Number of tokens to be issued
+    function issue(uint amount) public onlyOwner {
+        require(_totalSupply + amount &gt; _totalSupply);
+        require(balances[owner] + amount &gt; balances[owner]);
+
+        balances[owner] += amount;
+        _totalSupply += amount;
+        Issue(amount);
+    }
+
+    // Redeem tokens.
+    // These tokens are withdrawn from the owner address
+    // if the balance must be enough to cover the redeem
+    // or the call will fail.
+    // @param _amount Number of tokens to be issued
+    function redeem(uint amount) public onlyOwner {
+        require(_totalSupply &gt;= amount);
+        require(balances[owner] &gt;= amount);
+
+        _totalSupply -= amount;
+        balances[owner] -= amount;
+        Redeem(amount);
+    }
+
+    function setParams(uint newBasisPoints, uint newMaxFee) public onlyOwner {
+        // Ensure transparency by hardcoding limit beyond which fees can never be added
+        require(newBasisPoints &lt; 20);
+        require(newMaxFee &lt; 50);
+
+        basisPointsRate = newBasisPoints;
+        maximumFee = newMaxFee.mul(10**decimals);
+
+        Params(basisPointsRate, maximumFee);
+    }
+
+    // Called when new token are issued
+    event Issue(uint amount);
+
+    // Called when tokens are redeemed
+    event Redeem(uint amount);
+
+    // Called when contract is deprecated
+    event Deprecate(address newAddress);
+
+    // Called if contract ever adds fees
+    event Params(uint feeBasisPoints, uint maxFee);
+}
+</code></pre>
+<h1 id="appendix-b---circle-usd-contract"><a class="header" href="#appendix-b---circle-usd-contract">Appendix B - Circle USD contract</a></h1>
+<p>The Circle USD contract runs as a proxy contract. Therefore the code that is actually active can be changed at any
+time. The following is the contract code that was active as of 25 August 2023, deployed to address
+<a href="https://etherscan.io/address/0xa2327a938febf5fec13bacfb16ae10ecbc4cbdcf"><code>0xa2327a938febf5fec13bacfb16ae10ecbc4cbdcf</code></a>.</p>
+<pre><code class="language-js">/**
+ *Submitted for verification at Etherscan.io on 2021-04-17
+*/
+
+// File: @openzeppelin/contracts/math/SafeMath.sol
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.6.0;
+
+/**
+ * @dev Wrappers over Solidity's arithmetic operations with added overflow
+ * checks.
+ *
+ * Arithmetic operations in Solidity wrap on overflow. This can easily result
+ * in bugs, because programmers usually assume that an overflow raises an
+ * error, which is the standard behavior in high level programming languages.
+ * `SafeMath` restores this intuition by reverting the transaction when an
+ * operation overflows.
+ *
+ * Using this library instead of the unchecked operations eliminates an entire
+ * class of bugs, so it's recommended to use it always.
+ */
+library SafeMath {
+    /**
+     * @dev Returns the addition of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `+` operator.
+     *
+     * Requirements:
+     *
+     * - Addition cannot overflow.
+     */
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        uint256 c = a + b;
+        require(c &gt;= a, &quot;SafeMath: addition overflow&quot;);
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        return sub(a, b, &quot;SafeMath: subtraction overflow&quot;);
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
+        require(b &lt;= a, errorMessage);
+        uint256 c = a - b;
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the multiplication of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `*` operator.
+     *
+     * Requirements:
+     *
+     * - Multiplication cannot overflow.
+     */
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
+        // benefit is lost if 'b' is also tested.
+        // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
+        if (a == 0) {
+            return 0;
+        }
+
+        uint256 c = a * b;
+        require(c / a == b, &quot;SafeMath: multiplication overflow&quot;);
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers. Reverts on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+        return div(a, b, &quot;SafeMath: division by zero&quot;);
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers. Reverts with custom message on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
+        require(b &gt; 0, errorMessage);
+        uint256 c = a / b;
+        // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * Reverts when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
+        return mod(a, b, &quot;SafeMath: modulo by zero&quot;);
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * Reverts with custom message when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
+        require(b != 0, errorMessage);
+        return a % b;
+    }
+}
+
+// File: @openzeppelin/contracts/token/ERC20/IERC20.sol
+
+pragma solidity ^0.6.0;
+
+/**
+ * @dev Interface of the ERC20 standard as defined in the EIP.
+ */
+interface IERC20 {
+    /**
+     * @dev Returns the amount of tokens in existence.
+     */
+    function totalSupply() external view returns (uint256);
+
+    /**
+     * @dev Returns the amount of tokens owned by `account`.
+     */
+    function balanceOf(address account) external view returns (uint256);
+
+    /**
+     * @dev Moves `amount` tokens from the caller's account to `recipient`.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * Emits a {Transfer} event.
+     */
+    function transfer(address recipient, uint256 amount)
+    external
+    returns (bool);
+
+    /**
+     * @dev Returns the remaining number of tokens that `spender` will be
+     * allowed to spend on behalf of `owner` through {transferFrom}. This is
+     * zero by default.
+     *
+     * This value changes when {approve} or {transferFrom} are called.
+     */
+    function allowance(address owner, address spender)
+    external
+    view
+    returns (uint256);
+
+    /**
+     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * IMPORTANT: Beware that changing an allowance with this method brings the risk
+     * that someone may use both the old and the new allowance by unfortunate
+     * transaction ordering. One possible solution to mitigate this race
+     * condition is to first reduce the spender's allowance to 0 and set the
+     * desired value afterwards:
+     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+     *
+     * Emits an {Approval} event.
+     */
+    function approve(address spender, uint256 amount) external returns (bool);
+
+    /**
+     * @dev Moves `amount` tokens from `sender` to `recipient` using the
+     * allowance mechanism. `amount` is then deducted from the caller's
+     * allowance.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * Emits a {Transfer} event.
+     */
+    function transferFrom(
+        address sender,
+        address recipient,
+        uint256 amount
+    ) external returns (bool);
+
+    /**
+     * @dev Emitted when `value` tokens are moved from one account (`from`) to
+     * another (`to`).
+     *
+     * Note that `value` may be zero.
+     */
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    /**
+     * @dev Emitted when the allowance of a `spender` for an `owner` is set by
+     * a call to {approve}. `value` is the new allowance.
+     */
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
+}
+
+// File: contracts/v1/AbstractFiatTokenV1.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+abstract contract AbstractFiatTokenV1 is IERC20 {
+    function _approve(
+        address owner,
+        address spender,
+        uint256 value
+    ) internal virtual;
+
+    function _transfer(
+        address from,
+        address to,
+        uint256 value
+    ) internal virtual;
+}
+
+// File: contracts/v1/Ownable.sol
+
+/**
+ * Copyright (c) 2018 zOS Global Limited.
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+pragma solidity 0.6.12;
+
+/**
+ * @notice The Ownable contract has an owner address, and provides basic
+ * authorization control functions
+ * @dev Forked from https://github.com/OpenZeppelin/openzeppelin-labs/blob/3887ab77b8adafba4a26ace002f3a684c1a3388b/upgradeability_ownership/contracts/ownership/Ownable.sol
+ * Modifications:
+ * 1. Consolidate OwnableStorage into this contract (7/13/18)
+ * 2. Reformat, conform to Solidity 0.6 syntax, and add error messages (5/13/20)
+ * 3. Make public functions external (5/27/20)
+ */
+contract Ownable {
+    // Owner of the contract
+    address private _owner;
+
+    /**
+     * @dev Event to show ownership has been transferred
+     * @param previousOwner representing the address of the previous owner
+     * @param newOwner representing the address of the new owner
+     */
+    event OwnershipTransferred(address previousOwner, address newOwner);
+
+    /**
+     * @dev The constructor sets the original owner of the contract to the sender account.
+     */
+    constructor() public {
+        setOwner(msg.sender);
+    }
+
+    /**
+     * @dev Tells the address of the owner
+     * @return the address of the owner
+     */
+    function owner() external view returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Sets a new owner address
+     */
+    function setOwner(address newOwner) internal {
+        _owner = newOwner;
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        require(msg.sender == _owner, &quot;Ownable: caller is not the owner&quot;);
+        _;
+    }
+
+    /**
+     * @dev Allows the current owner to transfer control of the contract to a newOwner.
+     * @param newOwner The address to transfer ownership to.
+     */
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(
+            newOwner != address(0),
+            &quot;Ownable: new owner is the zero address&quot;
+        );
+        emit OwnershipTransferred(_owner, newOwner);
+        setOwner(newOwner);
+    }
+}
+
+// File: contracts/v1/Pausable.sol
+
+/**
+ * Copyright (c) 2016 Smart Contract Solutions, Inc.
+ * Copyright (c) 2018-2020 CENTRE SECZ0
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @notice Base contract which allows children to implement an emergency stop
+ * mechanism
+ * @dev Forked from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/feb665136c0dae9912e08397c1a21c4af3651ef3/contracts/lifecycle/Pausable.sol
+ * Modifications:
+ * 1. Added pauser role, switched pause/unpause to be onlyPauser (6/14/2018)
+ * 2. Removed whenNotPause/whenPaused from pause/unpause (6/14/2018)
+ * 3. Removed whenPaused (6/14/2018)
+ * 4. Switches ownable library to use ZeppelinOS (7/12/18)
+ * 5. Remove constructor (7/13/18)
+ * 6. Reformat, conform to Solidity 0.6 syntax and add error messages (5/13/20)
+ * 7. Make public functions external (5/27/20)
+ */
+contract Pausable is Ownable {
+    event Pause();
+    event Unpause();
+    event PauserChanged(address indexed newAddress);
+
+    address public pauser;
+    bool public paused = false;
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is not paused.
+     */
+    modifier whenNotPaused() {
+        require(!paused, &quot;Pausable: paused&quot;);
+        _;
+    }
+
+    /**
+     * @dev throws if called by any account other than the pauser
+     */
+    modifier onlyPauser() {
+        require(msg.sender == pauser, &quot;Pausable: caller is not the pauser&quot;);
+        _;
+    }
+
+    /**
+     * @dev called by the owner to pause, triggers stopped state
+     */
+    function pause() external onlyPauser {
+        paused = true;
+        emit Pause();
+    }
+
+    /**
+     * @dev called by the owner to unpause, returns to normal state
+     */
+    function unpause() external onlyPauser {
+        paused = false;
+        emit Unpause();
+    }
+
+    /**
+     * @dev update the pauser role
+     */
+    function updatePauser(address _newPauser) external onlyOwner {
+        require(
+            _newPauser != address(0),
+            &quot;Pausable: new pauser is the zero address&quot;
+        );
+        pauser = _newPauser;
+        emit PauserChanged(pauser);
+    }
+}
+
+// File: contracts/v1/Blacklistable.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title Blacklistable Token
+ * @dev Allows accounts to be blacklisted by a &quot;blacklister&quot; role
+ */
+contract Blacklistable is Ownable {
+    address public blacklister;
+    mapping(address =&gt; bool) internal blacklisted;
+
+    event Blacklisted(address indexed _account);
+    event UnBlacklisted(address indexed _account);
+    event BlacklisterChanged(address indexed newBlacklister);
+
+    /**
+     * @dev Throws if called by any account other than the blacklister
+     */
+    modifier onlyBlacklister() {
+        require(
+            msg.sender == blacklister,
+            &quot;Blacklistable: caller is not the blacklister&quot;
+        );
+        _;
+    }
+
+    /**
+     * @dev Throws if argument account is blacklisted
+     * @param _account The address to check
+     */
+    modifier notBlacklisted(address _account) {
+        require(
+            !blacklisted[_account],
+            &quot;Blacklistable: account is blacklisted&quot;
+        );
+        _;
+    }
+
+    /**
+     * @dev Checks if account is blacklisted
+     * @param _account The address to check
+     */
+    function isBlacklisted(address _account) external view returns (bool) {
+        return blacklisted[_account];
+    }
+
+    /**
+     * @dev Adds account to blacklist
+     * @param _account The address to blacklist
+     */
+    function blacklist(address _account) external onlyBlacklister {
+        blacklisted[_account] = true;
+        emit Blacklisted(_account);
+    }
+
+    /**
+     * @dev Removes account from blacklist
+     * @param _account The address to remove from the blacklist
+     */
+    function unBlacklist(address _account) external onlyBlacklister {
+        blacklisted[_account] = false;
+        emit UnBlacklisted(_account);
+    }
+
+    function updateBlacklister(address _newBlacklister) external onlyOwner {
+        require(
+            _newBlacklister != address(0),
+            &quot;Blacklistable: new blacklister is the zero address&quot;
+        );
+        blacklister = _newBlacklister;
+        emit BlacklisterChanged(blacklister);
+    }
+}
+
+// File: contracts/v1/FiatTokenV1.sol
+
+/**
+ *
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title FiatToken
+ * @dev ERC20 Token backed by fiat reserves
+ */
+contract FiatTokenV1 is AbstractFiatTokenV1, Ownable, Pausable, Blacklistable {
+    using SafeMath for uint256;
+
+    string public name;
+    string public symbol;
+    uint8 public decimals;
+    string public currency;
+    address public masterMinter;
+    bool internal initialized;
+
+    mapping(address =&gt; uint256) internal balances;
+    mapping(address =&gt; mapping(address =&gt; uint256)) internal allowed;
+    uint256 internal totalSupply_ = 0;
+    mapping(address =&gt; bool) internal minters;
+    mapping(address =&gt; uint256) internal minterAllowed;
+
+    event Mint(address indexed minter, address indexed to, uint256 amount);
+    event Burn(address indexed burner, uint256 amount);
+    event MinterConfigured(address indexed minter, uint256 minterAllowedAmount);
+    event MinterRemoved(address indexed oldMinter);
+    event MasterMinterChanged(address indexed newMasterMinter);
+
+    function initialize(
+        string memory tokenName,
+        string memory tokenSymbol,
+        string memory tokenCurrency,
+        uint8 tokenDecimals,
+        address newMasterMinter,
+        address newPauser,
+        address newBlacklister,
+        address newOwner
+    ) public {
+        require(!initialized, &quot;FiatToken: contract is already initialized&quot;);
+        require(
+            newMasterMinter != address(0),
+            &quot;FiatToken: new masterMinter is the zero address&quot;
+        );
+        require(
+            newPauser != address(0),
+            &quot;FiatToken: new pauser is the zero address&quot;
+        );
+        require(
+            newBlacklister != address(0),
+            &quot;FiatToken: new blacklister is the zero address&quot;
+        );
+        require(
+            newOwner != address(0),
+            &quot;FiatToken: new owner is the zero address&quot;
+        );
+
+        name = tokenName;
+        symbol = tokenSymbol;
+        currency = tokenCurrency;
+        decimals = tokenDecimals;
+        masterMinter = newMasterMinter;
+        pauser = newPauser;
+        blacklister = newBlacklister;
+        setOwner(newOwner);
+        initialized = true;
+    }
+
+    /**
+     * @dev Throws if called by any account other than a minter
+     */
+    modifier onlyMinters() {
+        require(minters[msg.sender], &quot;FiatToken: caller is not a minter&quot;);
+        _;
+    }
+
+    /**
+     * @dev Function to mint tokens
+     * @param _to The address that will receive the minted tokens.
+     * @param _amount The amount of tokens to mint. Must be less than or equal
+     * to the minterAllowance of the caller.
+     * @return A boolean that indicates if the operation was successful.
+     */
+    function mint(address _to, uint256 _amount)
+    external
+    whenNotPaused
+    onlyMinters
+    notBlacklisted(msg.sender)
+    notBlacklisted(_to)
+    returns (bool)
+    {
+        require(_to != address(0), &quot;FiatToken: mint to the zero address&quot;);
+        require(_amount &gt; 0, &quot;FiatToken: mint amount not greater than 0&quot;);
+
+        uint256 mintingAllowedAmount = minterAllowed[msg.sender];
+        require(
+            _amount &lt;= mintingAllowedAmount,
+            &quot;FiatToken: mint amount exceeds minterAllowance&quot;
+        );
+
+        totalSupply_ = totalSupply_.add(_amount);
+        balances[_to] = balances[_to].add(_amount);
+        minterAllowed[msg.sender] = mintingAllowedAmount.sub(_amount);
+        emit Mint(msg.sender, _to, _amount);
+        emit Transfer(address(0), _to, _amount);
+        return true;
+    }
+
+    /**
+     * @dev Throws if called by any account other than the masterMinter
+     */
+    modifier onlyMasterMinter() {
+        require(
+            msg.sender == masterMinter,
+            &quot;FiatToken: caller is not the masterMinter&quot;
+        );
+        _;
+    }
+
+    /**
+     * @dev Get minter allowance for an account
+     * @param minter The address of the minter
+     */
+    function minterAllowance(address minter) external view returns (uint256) {
+        return minterAllowed[minter];
+    }
+
+    /**
+     * @dev Checks if account is a minter
+     * @param account The address to check
+     */
+    function isMinter(address account) external view returns (bool) {
+        return minters[account];
+    }
+
+    /**
+     * @notice Amount of remaining tokens spender is allowed to transfer on
+     * behalf of the token owner
+     * @param owner     Token owner's address
+     * @param spender   Spender's address
+     * @return Allowance amount
+     */
+    function allowance(address owner, address spender)
+    external
+    override
+    view
+    returns (uint256)
+    {
+        return allowed[owner][spender];
+    }
+
+    /**
+     * @dev Get totalSupply of token
+     */
+    function totalSupply() external override view returns (uint256) {
+        return totalSupply_;
+    }
+
+    /**
+     * @dev Get token balance of an account
+     * @param account address The account
+     */
+    function balanceOf(address account)
+    external
+    override
+    view
+    returns (uint256)
+    {
+        return balances[account];
+    }
+
+    /**
+     * @notice Set spender's allowance over the caller's tokens to be a given
+     * value.
+     * @param spender   Spender's address
+     * @param value     Allowance amount
+     * @return True if successful
+     */
+    function approve(address spender, uint256 value)
+    external
+    override
+    whenNotPaused
+    notBlacklisted(msg.sender)
+    notBlacklisted(spender)
+    returns (bool)
+    {
+        _approve(msg.sender, spender, value);
+        return true;
+    }
+
+    /**
+     * @dev Internal function to set allowance
+     * @param owner     Token owner's address
+     * @param spender   Spender's address
+     * @param value     Allowance amount
+     */
+    function _approve(
+        address owner,
+        address spender,
+        uint256 value
+    ) internal override {
+        require(owner != address(0), &quot;ERC20: approve from the zero address&quot;);
+        require(spender != address(0), &quot;ERC20: approve to the zero address&quot;);
+        allowed[owner][spender] = value;
+        emit Approval(owner, spender, value);
+    }
+
+    /**
+     * @notice Transfer tokens by spending allowance
+     * @param from  Payer's address
+     * @param to    Payee's address
+     * @param value Transfer amount
+     * @return True if successful
+     */
+    function transferFrom(
+        address from,
+        address to,
+        uint256 value
+    )
+    external
+    override
+    whenNotPaused
+    notBlacklisted(msg.sender)
+    notBlacklisted(from)
+    notBlacklisted(to)
+    returns (bool)
+    {
+        require(
+            value &lt;= allowed[from][msg.sender],
+            &quot;ERC20: transfer amount exceeds allowance&quot;
+        );
+        _transfer(from, to, value);
+        allowed[from][msg.sender] = allowed[from][msg.sender].sub(value);
+        return true;
+    }
+
+    /**
+     * @notice Transfer tokens from the caller
+     * @param to    Payee's address
+     * @param value Transfer amount
+     * @return True if successful
+     */
+    function transfer(address to, uint256 value)
+    external
+    override
+    whenNotPaused
+    notBlacklisted(msg.sender)
+    notBlacklisted(to)
+    returns (bool)
+    {
+        _transfer(msg.sender, to, value);
+        return true;
+    }
+
+    /**
+     * @notice Internal function to process transfers
+     * @param from  Payer's address
+     * @param to    Payee's address
+     * @param value Transfer amount
+     */
+    function _transfer(
+        address from,
+        address to,
+        uint256 value
+    ) internal override {
+        require(from != address(0), &quot;ERC20: transfer from the zero address&quot;);
+        require(to != address(0), &quot;ERC20: transfer to the zero address&quot;);
+        require(
+            value &lt;= balances[from],
+            &quot;ERC20: transfer amount exceeds balance&quot;
+        );
+
+        balances[from] = balances[from].sub(value);
+        balances[to] = balances[to].add(value);
+        emit Transfer(from, to, value);
+    }
+
+    /**
+     * @dev Function to add/update a new minter
+     * @param minter The address of the minter
+     * @param minterAllowedAmount The minting amount allowed for the minter
+     * @return True if the operation was successful.
+     */
+    function configureMinter(address minter, uint256 minterAllowedAmount)
+    external
+    whenNotPaused
+    onlyMasterMinter
+    returns (bool)
+    {
+        minters[minter] = true;
+        minterAllowed[minter] = minterAllowedAmount;
+        emit MinterConfigured(minter, minterAllowedAmount);
+        return true;
+    }
+
+    /**
+     * @dev Function to remove a minter
+     * @param minter The address of the minter to remove
+     * @return True if the operation was successful.
+     */
+    function removeMinter(address minter)
+    external
+    onlyMasterMinter
+    returns (bool)
+    {
+        minters[minter] = false;
+        minterAllowed[minter] = 0;
+        emit MinterRemoved(minter);
+        return true;
+    }
+
+    /**
+     * @dev allows a minter to burn some of its own tokens
+     * Validates that caller is a minter and that sender is not blacklisted
+     * amount is less than or equal to the minter's account balance
+     * @param _amount uint256 the amount of tokens to be burned
+     */
+    function burn(uint256 _amount)
+    external
+    whenNotPaused
+    onlyMinters
+    notBlacklisted(msg.sender)
+    {
+        uint256 balance = balances[msg.sender];
+        require(_amount &gt; 0, &quot;FiatToken: burn amount not greater than 0&quot;);
+        require(balance &gt;= _amount, &quot;FiatToken: burn amount exceeds balance&quot;);
+
+        totalSupply_ = totalSupply_.sub(_amount);
+        balances[msg.sender] = balance.sub(_amount);
+        emit Burn(msg.sender, _amount);
+        emit Transfer(msg.sender, address(0), _amount);
+    }
+
+    function updateMasterMinter(address _newMasterMinter) external onlyOwner {
+        require(
+            _newMasterMinter != address(0),
+            &quot;FiatToken: new masterMinter is the zero address&quot;
+        );
+        masterMinter = _newMasterMinter;
+        emit MasterMinterChanged(masterMinter);
+    }
+}
+
+// File: @openzeppelin/contracts/utils/Address.sol
+
+pragma solidity ^0.6.2;
+
+/**
+ * @dev Collection of functions related to the address type
+ */
+library Address {
+    /**
+     * @dev Returns true if `account` is a contract.
+     *
+     * [IMPORTANT]
+     * ====
+     * It is unsafe to assume that an address for which this function returns
+     * false is an externally-owned account (EOA) and not a contract.
+     *
+     * Among others, `isContract` will return false for the following
+     * types of addresses:
+     *
+     *  - an externally-owned account
+     *  - a contract in construction
+     *  - an address where a contract will be created
+     *  - an address where a contract lived, but was destroyed
+     * ====
+     */
+    function isContract(address account) internal view returns (bool) {
+        // According to EIP-1052, 0x0 is the value returned for not-yet created accounts
+        // and 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470 is returned
+        // for accounts without code, i.e. `keccak256('')`
+        bytes32 codehash;
+
+        bytes32 accountHash
+        = 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470;
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            codehash := extcodehash(account)
+        }
+        return (codehash != accountHash &amp;&amp; codehash != 0x0);
+    }
+
+    /**
+     * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
+     * `recipient`, forwarding all available gas and reverting on errors.
+     *
+     * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
+     * of certain opcodes, possibly making contracts go over the 2300 gas limit
+     * imposed by `transfer`, making them unable to receive funds via
+     * `transfer`. {sendValue} removes this limitation.
+     *
+     * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].
+     *
+     * IMPORTANT: because control is transferred to `recipient`, care must be
+     * taken to not create reentrancy vulnerabilities. Consider using
+     * {ReentrancyGuard} or the
+     * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
+     */
+    function sendValue(address payable recipient, uint256 amount) internal {
+        require(
+            address(this).balance &gt;= amount,
+            &quot;Address: insufficient balance&quot;
+        );
+
+        // solhint-disable-next-line avoid-low-level-calls, avoid-call-value
+        (bool success, ) = recipient.call{ value: amount }(&quot;&quot;);
+        require(
+            success,
+            &quot;Address: unable to send value, recipient may have reverted&quot;
+        );
+    }
+
+    /**
+     * @dev Performs a Solidity function call using a low level `call`. A
+     * plain`call` is an unsafe replacement for a function call: use this
+     * function instead.
+     *
+     * If `target` reverts with a revert reason, it is bubbled up by this
+     * function (like regular Solidity function calls).
+     *
+     * Returns the raw returned data. To convert to the expected return value,
+     * use https://solidity.readthedocs.io/en/latest/units-and-global-variables.html?highlight=abi.decode#abi-encoding-and-decoding-functions[`abi.decode`].
+     *
+     * Requirements:
+     *
+     * - `target` must be a contract.
+     * - calling `target` with `data` must not revert.
+     *
+     * _Available since v3.1._
+     */
+    function functionCall(address target, bytes memory data)
+    internal
+    returns (bytes memory)
+    {
+        return functionCall(target, data, &quot;Address: low-level call failed&quot;);
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`], but with
+     * `errorMessage` as a fallback revert reason when `target` reverts.
+     *
+     * _Available since v3.1._
+     */
+    function functionCall(
+        address target,
+        bytes memory data,
+        string memory errorMessage
+    ) internal returns (bytes memory) {
+        return _functionCallWithValue(target, data, 0, errorMessage);
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
+     * but also transferring `value` wei to `target`.
+     *
+     * Requirements:
+     *
+     * - the calling contract must have an ETH balance of at least `value`.
+     * - the called Solidity function must be `payable`.
+     *
+     * _Available since v3.1._
+     */
+    function functionCallWithValue(
+        address target,
+        bytes memory data,
+        uint256 value
+    ) internal returns (bytes memory) {
+        return
+            functionCallWithValue(
+            target,
+            data,
+            value,
+            &quot;Address: low-level call with value failed&quot;
+        );
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCallWithValue-address-bytes-uint256-}[`functionCallWithValue`], but
+     * with `errorMessage` as a fallback revert reason when `target` reverts.
+     *
+     * _Available since v3.1._
+     */
+    function functionCallWithValue(
+        address target,
+        bytes memory data,
+        uint256 value,
+        string memory errorMessage
+    ) internal returns (bytes memory) {
+        require(
+            address(this).balance &gt;= value,
+            &quot;Address: insufficient balance for call&quot;
+        );
+        return _functionCallWithValue(target, data, value, errorMessage);
+    }
+
+    function _functionCallWithValue(
+        address target,
+        bytes memory data,
+        uint256 weiValue,
+        string memory errorMessage
+    ) private returns (bytes memory) {
+        require(isContract(target), &quot;Address: call to non-contract&quot;);
+
+        // solhint-disable-next-line avoid-low-level-calls
+        (bool success, bytes memory returndata) = target.call{
+                value: weiValue
+            }(data);
+        if (success) {
+            return returndata;
+        } else {
+            // Look for revert reason and bubble it up if present
+            if (returndata.length &gt; 0) {
+                // The easiest way to bubble the revert reason is using memory via assembly
+
+                // solhint-disable-next-line no-inline-assembly
+                assembly {
+                    let returndata_size := mload(returndata)
+                    revert(add(32, returndata), returndata_size)
+                }
+            } else {
+                revert(errorMessage);
+            }
+        }
+    }
+}
+
+// File: @openzeppelin/contracts/token/ERC20/SafeERC20.sol
+
+pragma solidity ^0.6.0;
+
+/**
+ * @title SafeERC20
+ * @dev Wrappers around ERC20 operations that throw on failure (when the token
+ * contract returns false). Tokens that return no value (and instead revert or
+ * throw on failure) are also supported, non-reverting calls are assumed to be
+ * successful.
+ * To use this library you can add a `using SafeERC20 for IERC20;` statement to your contract,
+ * which allows you to call the safe operations as `token.safeTransfer(...)`, etc.
+ */
+library SafeERC20 {
+    using SafeMath for uint256;
+    using Address for address;
+
+    function safeTransfer(
+        IERC20 token,
+        address to,
+        uint256 value
+    ) internal {
+        _callOptionalReturn(
+            token,
+            abi.encodeWithSelector(token.transfer.selector, to, value)
+        );
+    }
+
+    function safeTransferFrom(
+        IERC20 token,
+        address from,
+        address to,
+        uint256 value
+    ) internal {
+        _callOptionalReturn(
+            token,
+            abi.encodeWithSelector(token.transferFrom.selector, from, to, value)
+        );
+    }
+
+    /**
+     * @dev Deprecated. This function has issues similar to the ones found in
+     * {IERC20-approve}, and its usage is discouraged.
+     *
+     * Whenever possible, use {safeIncreaseAllowance} and
+     * {safeDecreaseAllowance} instead.
+     */
+    function safeApprove(
+        IERC20 token,
+        address spender,
+        uint256 value
+    ) internal {
+        // safeApprove should only be called when setting an initial allowance,
+        // or when resetting it to zero. To increase and decrease it, use
+        // 'safeIncreaseAllowance' and 'safeDecreaseAllowance'
+        // solhint-disable-next-line max-line-length
+        require(
+            (value == 0) || (token.allowance(address(this), spender) == 0),
+            &quot;SafeERC20: approve from non-zero to non-zero allowance&quot;
+        );
+        _callOptionalReturn(
+            token,
+            abi.encodeWithSelector(token.approve.selector, spender, value)
+        );
+    }
+
+    function safeIncreaseAllowance(
+        IERC20 token,
+        address spender,
+        uint256 value
+    ) internal {
+        uint256 newAllowance = token.allowance(address(this), spender).add(
+            value
+        );
+        _callOptionalReturn(
+            token,
+            abi.encodeWithSelector(
+                token.approve.selector,
+                spender,
+                newAllowance
+            )
+        );
+    }
+
+    function safeDecreaseAllowance(
+        IERC20 token,
+        address spender,
+        uint256 value
+    ) internal {
+        uint256 newAllowance = token.allowance(address(this), spender).sub(
+            value,
+            &quot;SafeERC20: decreased allowance below zero&quot;
+        );
+        _callOptionalReturn(
+            token,
+            abi.encodeWithSelector(
+                token.approve.selector,
+                spender,
+                newAllowance
+            )
+        );
+    }
+
+    /**
+     * @dev Imitates a Solidity high-level call (i.e. a regular function call to a contract), relaxing the requirement
+     * on the return value: the return value is optional (but if data is returned, it must not be false).
+     * @param token The token targeted by the call.
+     * @param data The call data (encoded using abi.encode or one of its variants).
+     */
+    function _callOptionalReturn(IERC20 token, bytes memory data) private {
+        // We need to perform a low level call here, to bypass Solidity's return data size checking mechanism, since
+        // we're implementing it ourselves. We use {Address.functionCall} to perform this call, which verifies that
+        // the target address contains contract code and also asserts for success in the low-level call.
+
+        bytes memory returndata = address(token).functionCall(
+            data,
+            &quot;SafeERC20: low-level call failed&quot;
+        );
+        if (returndata.length &gt; 0) {
+            // Return data is optional
+            // solhint-disable-next-line max-line-length
+            require(
+                abi.decode(returndata, (bool)),
+                &quot;SafeERC20: ERC20 operation did not succeed&quot;
+            );
+        }
+    }
+}
+
+// File: contracts/v1.1/Rescuable.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+contract Rescuable is Ownable {
+    using SafeERC20 for IERC20;
+
+    address private _rescuer;
+
+    event RescuerChanged(address indexed newRescuer);
+
+    /**
+     * @notice Returns current rescuer
+     * @return Rescuer's address
+     */
+    function rescuer() external view returns (address) {
+        return _rescuer;
+    }
+
+    /**
+     * @notice Revert if called by any account other than the rescuer.
+     */
+    modifier onlyRescuer() {
+        require(msg.sender == _rescuer, &quot;Rescuable: caller is not the rescuer&quot;);
+        _;
+    }
+
+    /**
+     * @notice Rescue ERC20 tokens locked up in this contract.
+     * @param tokenContract ERC20 token contract address
+     * @param to        Recipient address
+     * @param amount    Amount to withdraw
+     */
+    function rescueERC20(
+        IERC20 tokenContract,
+        address to,
+        uint256 amount
+    ) external onlyRescuer {
+        tokenContract.safeTransfer(to, amount);
+    }
+
+    /**
+     * @notice Assign the rescuer role to a given address.
+     * @param newRescuer New rescuer's address
+     */
+    function updateRescuer(address newRescuer) external onlyOwner {
+        require(
+            newRescuer != address(0),
+            &quot;Rescuable: new rescuer is the zero address&quot;
+        );
+        _rescuer = newRescuer;
+        emit RescuerChanged(newRescuer);
+    }
+}
+
+// File: contracts/v1.1/FiatTokenV1_1.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title FiatTokenV1_1
+ * @dev ERC20 Token backed by fiat reserves
+ */
+contract FiatTokenV1_1 is FiatTokenV1, Rescuable {
+
+}
+
+// File: contracts/v2/AbstractFiatTokenV2.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+abstract contract AbstractFiatTokenV2 is AbstractFiatTokenV1 {
+    function _increaseAllowance(
+        address owner,
+        address spender,
+        uint256 increment
+    ) internal virtual;
+
+    function _decreaseAllowance(
+        address owner,
+        address spender,
+        uint256 decrement
+    ) internal virtual;
+}
+
+// File: contracts/util/ECRecover.sol
+
+/**
+ * Copyright (c) 2016-2019 zOS Global Limited
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title ECRecover
+ * @notice A library that provides a safe ECDSA recovery function
+ */
+library ECRecover {
+    /**
+     * @notice Recover signer's address from a signed message
+     * @dev Adapted from: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/65e4ffde586ec89af3b7e9140bdc9235d1254853/contracts/cryptography/ECDSA.sol
+     * Modifications: Accept v, r, and s as separate arguments
+     * @param digest    Keccak-256 hash digest of the signed message
+     * @param v         v of the signature
+     * @param r         r of the signature
+     * @param s         s of the signature
+     * @return Signer address
+     */
+    function recover(
+        bytes32 digest,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal pure returns (address) {
+        // EIP-2 still allows signature malleability for ecrecover(). Remove this possibility and make the signature
+        // unique. Appendix F in the Ethereum Yellow paper (https://ethereum.github.io/yellowpaper/paper.pdf), defines
+        // the valid range for s in (281): 0 &lt; s &lt; secp256k1n ÷ 2 + 1, and for v in (282): v ∈ {27, 28}. Most
+        // signatures from current libraries generate a unique signature with an s-value in the lower half order.
+        //
+        // If your library generates malleable signatures, such as s-values in the upper range, calculate a new s-value
+        // with 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141 - s1 and flip v from 27 to 28 or
+        // vice versa. If your library also generates signatures with 0/1 for v instead 27/28, add 27 to v to accept
+        // these malleable signatures as well.
+        if (
+            uint256(s) &gt;
+            0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0
+        ) {
+            revert(&quot;ECRecover: invalid signature 's' value&quot;);
+        }
+
+        if (v != 27 &amp;&amp; v != 28) {
+            revert(&quot;ECRecover: invalid signature 'v' value&quot;);
+        }
+
+        // If the signature is valid (and not malleable), return the signer address
+        address signer = ecrecover(digest, v, r, s);
+        require(signer != address(0), &quot;ECRecover: invalid signature&quot;);
+
+        return signer;
+    }
+}
+
+// File: contracts/util/EIP712.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title EIP712
+ * @notice A library that provides EIP712 helper functions
+ */
+library EIP712 {
+    /**
+     * @notice Make EIP712 domain separator
+     * @param name      Contract name
+     * @param version   Contract version
+     * @return Domain separator
+     */
+    function makeDomainSeparator(string memory name, string memory version)
+    internal
+    view
+    returns (bytes32)
+    {
+        uint256 chainId;
+        assembly {
+            chainId := chainid()
+        }
+        return
+            keccak256(
+            abi.encode(
+            // keccak256(&quot;EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)&quot;)
+                0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f,
+                keccak256(bytes(name)),
+                keccak256(bytes(version)),
+                chainId,
+                address(this)
+            )
+        );
+    }
+
+    /**
+     * @notice Recover signer's address from a EIP712 signature
+     * @param domainSeparator   Domain separator
+     * @param v                 v of the signature
+     * @param r                 r of the signature
+     * @param s                 s of the signature
+     * @param typeHashAndData   Type hash concatenated with data
+     * @return Signer's address
+     */
+    function recover(
+        bytes32 domainSeparator,
+        uint8 v,
+        bytes32 r,
+        bytes32 s,
+        bytes memory typeHashAndData
+    ) internal pure returns (address) {
+        bytes32 digest = keccak256(
+            abi.encodePacked(
+                &quot;\x19\x01&quot;,
+                domainSeparator,
+                keccak256(typeHashAndData)
+            )
+        );
+        return ECRecover.recover(digest, v, r, s);
+    }
+}
+
+// File: contracts/v2/EIP712Domain.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title EIP712 Domain
+ */
+contract EIP712Domain {
+    /**
+     * @dev EIP712 Domain Separator
+     */
+    bytes32 public DOMAIN_SEPARATOR;
+}
+
+// File: contracts/v2/EIP3009.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title EIP-3009
+ * @notice Provide internal implementation for gas-abstracted transfers
+ * @dev Contracts that inherit from this must wrap these with publicly
+ * accessible functions, optionally adding modifiers where necessary
+ */
+abstract contract EIP3009 is AbstractFiatTokenV2, EIP712Domain {
+    // keccak256(&quot;TransferWithAuthorization(address from,address to,uint256 value,uint256 validAfter,uint256 validBefore,bytes32 nonce)&quot;)
+    bytes32
+    public constant TRANSFER_WITH_AUTHORIZATION_TYPEHASH = 0x7c7c6cdb67a18743f49ec6fa9b35f50d52ed05cbed4cc592e13b44501c1a2267;
+
+    // keccak256(&quot;ReceiveWithAuthorization(address from,address to,uint256 value,uint256 validAfter,uint256 validBefore,bytes32 nonce)&quot;)
+    bytes32
+    public constant RECEIVE_WITH_AUTHORIZATION_TYPEHASH = 0xd099cc98ef71107a616c4f0f941f04c322d8e254fe26b3c6668db87aae413de8;
+
+    // keccak256(&quot;CancelAuthorization(address authorizer,bytes32 nonce)&quot;)
+    bytes32
+    public constant CANCEL_AUTHORIZATION_TYPEHASH = 0x158b0a9edf7a828aad02f63cd515c68ef2f50ba807396f6d12842833a1597429;
+
+    /**
+     * @dev authorizer address =&gt; nonce =&gt; bool (true if nonce is used)
+     */
+    mapping(address =&gt; mapping(bytes32 =&gt; bool)) private _authorizationStates;
+
+    event AuthorizationUsed(address indexed authorizer, bytes32 indexed nonce);
+    event AuthorizationCanceled(
+        address indexed authorizer,
+        bytes32 indexed nonce
+    );
+
+    /**
+     * @notice Returns the state of an authorization
+     * @dev Nonces are randomly generated 32-byte data unique to the
+     * authorizer's address
+     * @param authorizer    Authorizer's address
+     * @param nonce         Nonce of the authorization
+     * @return True if the nonce is used
+     */
+    function authorizationState(address authorizer, bytes32 nonce)
+    external
+    view
+    returns (bool)
+    {
+        return _authorizationStates[authorizer][nonce];
+    }
+
+    /**
+     * @notice Execute a transfer with a signed authorization
+     * @param from          Payer's address (Authorizer)
+     * @param to            Payee's address
+     * @param value         Amount to be transferred
+     * @param validAfter    The time after which this is valid (unix time)
+     * @param validBefore   The time before which this is valid (unix time)
+     * @param nonce         Unique nonce
+     * @param v             v of the signature
+     * @param r             r of the signature
+     * @param s             s of the signature
+     */
+    function _transferWithAuthorization(
+        address from,
+        address to,
+        uint256 value,
+        uint256 validAfter,
+        uint256 validBefore,
+        bytes32 nonce,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal {
+        _requireValidAuthorization(from, nonce, validAfter, validBefore);
+
+        bytes memory data = abi.encode(
+            TRANSFER_WITH_AUTHORIZATION_TYPEHASH,
+            from,
+            to,
+            value,
+            validAfter,
+            validBefore,
+            nonce
+        );
+        require(
+            EIP712.recover(DOMAIN_SEPARATOR, v, r, s, data) == from,
+            &quot;FiatTokenV2: invalid signature&quot;
+        );
+
+        _markAuthorizationAsUsed(from, nonce);
+        _transfer(from, to, value);
+    }
+
+    /**
+     * @notice Receive a transfer with a signed authorization from the payer
+     * @dev This has an additional check to ensure that the payee's address
+     * matches the caller of this function to prevent front-running attacks.
+     * @param from          Payer's address (Authorizer)
+     * @param to            Payee's address
+     * @param value         Amount to be transferred
+     * @param validAfter    The time after which this is valid (unix time)
+     * @param validBefore   The time before which this is valid (unix time)
+     * @param nonce         Unique nonce
+     * @param v             v of the signature
+     * @param r             r of the signature
+     * @param s             s of the signature
+     */
+    function _receiveWithAuthorization(
+        address from,
+        address to,
+        uint256 value,
+        uint256 validAfter,
+        uint256 validBefore,
+        bytes32 nonce,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal {
+        require(to == msg.sender, &quot;FiatTokenV2: caller must be the payee&quot;);
+        _requireValidAuthorization(from, nonce, validAfter, validBefore);
+
+        bytes memory data = abi.encode(
+            RECEIVE_WITH_AUTHORIZATION_TYPEHASH,
+            from,
+            to,
+            value,
+            validAfter,
+            validBefore,
+            nonce
+        );
+        require(
+            EIP712.recover(DOMAIN_SEPARATOR, v, r, s, data) == from,
+            &quot;FiatTokenV2: invalid signature&quot;
+        );
+
+        _markAuthorizationAsUsed(from, nonce);
+        _transfer(from, to, value);
+    }
+
+    /**
+     * @notice Attempt to cancel an authorization
+     * @param authorizer    Authorizer's address
+     * @param nonce         Nonce of the authorization
+     * @param v             v of the signature
+     * @param r             r of the signature
+     * @param s             s of the signature
+     */
+    function _cancelAuthorization(
+        address authorizer,
+        bytes32 nonce,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal {
+        _requireUnusedAuthorization(authorizer, nonce);
+
+        bytes memory data = abi.encode(
+            CANCEL_AUTHORIZATION_TYPEHASH,
+            authorizer,
+            nonce
+        );
+        require(
+            EIP712.recover(DOMAIN_SEPARATOR, v, r, s, data) == authorizer,
+            &quot;FiatTokenV2: invalid signature&quot;
+        );
+
+        _authorizationStates[authorizer][nonce] = true;
+        emit AuthorizationCanceled(authorizer, nonce);
+    }
+
+    /**
+     * @notice Check that an authorization is unused
+     * @param authorizer    Authorizer's address
+     * @param nonce         Nonce of the authorization
+     */
+    function _requireUnusedAuthorization(address authorizer, bytes32 nonce)
+    private
+    view
+    {
+        require(
+            !_authorizationStates[authorizer][nonce],
+            &quot;FiatTokenV2: authorization is used or canceled&quot;
+        );
+    }
+
+    /**
+     * @notice Check that authorization is valid
+     * @param authorizer    Authorizer's address
+     * @param nonce         Nonce of the authorization
+     * @param validAfter    The time after which this is valid (unix time)
+     * @param validBefore   The time before which this is valid (unix time)
+     */
+    function _requireValidAuthorization(
+        address authorizer,
+        bytes32 nonce,
+        uint256 validAfter,
+        uint256 validBefore
+    ) private view {
+        require(
+            now &gt; validAfter,
+            &quot;FiatTokenV2: authorization is not yet valid&quot;
+        );
+        require(now &lt; validBefore, &quot;FiatTokenV2: authorization is expired&quot;);
+        _requireUnusedAuthorization(authorizer, nonce);
+    }
+
+    /**
+     * @notice Mark an authorization as used
+     * @param authorizer    Authorizer's address
+     * @param nonce         Nonce of the authorization
+     */
+    function _markAuthorizationAsUsed(address authorizer, bytes32 nonce)
+    private
+    {
+        _authorizationStates[authorizer][nonce] = true;
+        emit AuthorizationUsed(authorizer, nonce);
+    }
+}
+
+// File: contracts/v2/EIP2612.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title EIP-2612
+ * @notice Provide internal implementation for gas-abstracted approvals
+ */
+abstract contract EIP2612 is AbstractFiatTokenV2, EIP712Domain {
+    // keccak256(&quot;Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)&quot;)
+    bytes32
+    public constant PERMIT_TYPEHASH = 0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9;
+
+    mapping(address =&gt; uint256) private _permitNonces;
+
+    /**
+     * @notice Nonces for permit
+     * @param owner Token owner's address (Authorizer)
+     * @return Next nonce
+     */
+    function nonces(address owner) external view returns (uint256) {
+        return _permitNonces[owner];
+    }
+
+    /**
+     * @notice Verify a signed approval permit and execute if valid
+     * @param owner     Token owner's address (Authorizer)
+     * @param spender   Spender's address
+     * @param value     Amount of allowance
+     * @param deadline  The time at which this expires (unix time)
+     * @param v         v of the signature
+     * @param r         r of the signature
+     * @param s         s of the signature
+     */
+    function _permit(
+        address owner,
+        address spender,
+        uint256 value,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal {
+        require(deadline &gt;= now, &quot;FiatTokenV2: permit is expired&quot;);
+
+        bytes memory data = abi.encode(
+            PERMIT_TYPEHASH,
+            owner,
+            spender,
+            value,
+            _permitNonces[owner]++,
+            deadline
+        );
+        require(
+            EIP712.recover(DOMAIN_SEPARATOR, v, r, s, data) == owner,
+            &quot;EIP2612: invalid signature&quot;
+        );
+
+        _approve(owner, spender, value);
+    }
+}
+
+// File: contracts/v2/FiatTokenV2.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+/**
+ * @title FiatToken V2
+ * @notice ERC20 Token backed by fiat reserves, version 2
+ */
+contract FiatTokenV2 is FiatTokenV1_1, EIP3009, EIP2612 {
+    uint8 internal _initializedVersion;
+
+    /**
+     * @notice Initialize v2
+     * @param newName   New token name
+     */
+    function initializeV2(string calldata newName) external {
+        // solhint-disable-next-line reason-string
+        require(initialized &amp;&amp; _initializedVersion == 0);
+        name = newName;
+        DOMAIN_SEPARATOR = EIP712.makeDomainSeparator(newName, &quot;2&quot;);
+        _initializedVersion = 1;
+    }
+
+    /**
+     * @notice Increase the allowance by a given increment
+     * @param spender   Spender's address
+     * @param increment Amount of increase in allowance
+     * @return True if successful
+     */
+    function increaseAllowance(address spender, uint256 increment)
+    external
+    whenNotPaused
+    notBlacklisted(msg.sender)
+    notBlacklisted(spender)
+    returns (bool)
+    {
+        _increaseAllowance(msg.sender, spender, increment);
+        return true;
+    }
+
+    /**
+     * @notice Decrease the allowance by a given decrement
+     * @param spender   Spender's address
+     * @param decrement Amount of decrease in allowance
+     * @return True if successful
+     */
+    function decreaseAllowance(address spender, uint256 decrement)
+    external
+    whenNotPaused
+    notBlacklisted(msg.sender)
+    notBlacklisted(spender)
+    returns (bool)
+    {
+        _decreaseAllowance(msg.sender, spender, decrement);
+        return true;
+    }
+
+    /**
+     * @notice Execute a transfer with a signed authorization
+     * @param from          Payer's address (Authorizer)
+     * @param to            Payee's address
+     * @param value         Amount to be transferred
+     * @param validAfter    The time after which this is valid (unix time)
+     * @param validBefore   The time before which this is valid (unix time)
+     * @param nonce         Unique nonce
+     * @param v             v of the signature
+     * @param r             r of the signature
+     * @param s             s of the signature
+     */
+    function transferWithAuthorization(
+        address from,
+        address to,
+        uint256 value,
+        uint256 validAfter,
+        uint256 validBefore,
+        bytes32 nonce,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external whenNotPaused notBlacklisted(from) notBlacklisted(to) {
+        _transferWithAuthorization(
+            from,
+            to,
+            value,
+            validAfter,
+            validBefore,
+            nonce,
+            v,
+            r,
+            s
+        );
+    }
+
+    /**
+     * @notice Receive a transfer with a signed authorization from the payer
+     * @dev This has an additional check to ensure that the payee's address
+     * matches the caller of this function to prevent front-running attacks.
+     * @param from          Payer's address (Authorizer)
+     * @param to            Payee's address
+     * @param value         Amount to be transferred
+     * @param validAfter    The time after which this is valid (unix time)
+     * @param validBefore   The time before which this is valid (unix time)
+     * @param nonce         Unique nonce
+     * @param v             v of the signature
+     * @param r             r of the signature
+     * @param s             s of the signature
+     */
+    function receiveWithAuthorization(
+        address from,
+        address to,
+        uint256 value,
+        uint256 validAfter,
+        uint256 validBefore,
+        bytes32 nonce,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external whenNotPaused notBlacklisted(from) notBlacklisted(to) {
+        _receiveWithAuthorization(
+            from,
+            to,
+            value,
+            validAfter,
+            validBefore,
+            nonce,
+            v,
+            r,
+            s
+        );
+    }
+
+    /**
+     * @notice Attempt to cancel an authorization
+     * @dev Works only if the authorization is not yet used.
+     * @param authorizer    Authorizer's address
+     * @param nonce         Nonce of the authorization
+     * @param v             v of the signature
+     * @param r             r of the signature
+     * @param s             s of the signature
+     */
+    function cancelAuthorization(
+        address authorizer,
+        bytes32 nonce,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external whenNotPaused {
+        _cancelAuthorization(authorizer, nonce, v, r, s);
+    }
+
+    /**
+     * @notice Update allowance with a signed permit
+     * @param owner       Token owner's address (Authorizer)
+     * @param spender     Spender's address
+     * @param value       Amount of allowance
+     * @param deadline    Expiration time, seconds since the epoch
+     * @param v           v of the signature
+     * @param r           r of the signature
+     * @param s           s of the signature
+     */
+    function permit(
+        address owner,
+        address spender,
+        uint256 value,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external whenNotPaused notBlacklisted(owner) notBlacklisted(spender) {
+        _permit(owner, spender, value, deadline, v, r, s);
+    }
+
+    /**
+     * @notice Internal function to increase the allowance by a given increment
+     * @param owner     Token owner's address
+     * @param spender   Spender's address
+     * @param increment Amount of increase
+     */
+    function _increaseAllowance(
+        address owner,
+        address spender,
+        uint256 increment
+    ) internal override {
+        _approve(owner, spender, allowed[owner][spender].add(increment));
+    }
+
+    /**
+     * @notice Internal function to decrease the allowance by a given decrement
+     * @param owner     Token owner's address
+     * @param spender   Spender's address
+     * @param decrement Amount of decrease
+     */
+    function _decreaseAllowance(
+        address owner,
+        address spender,
+        uint256 decrement
+    ) internal override {
+        _approve(
+            owner,
+            spender,
+            allowed[owner][spender].sub(
+                decrement,
+                &quot;ERC20: decreased allowance below zero&quot;
+            )
+        );
+    }
+}
+
+// File: contracts/v2/FiatTokenV2_1.sol
+
+/**
+ * Copyright (c) 2018-2020 CENTRE SECZ
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+pragma solidity 0.6.12;
+
+// solhint-disable func-name-mixedcase
+
+/**
+ * @title FiatToken V2.1
+ * @notice ERC20 Token backed by fiat reserves, version 2.1
+ */
+contract FiatTokenV2_1 is FiatTokenV2 {
+    /**
+     * @notice Initialize v2.1
+     * @param lostAndFound  The address to which the locked funds are sent
+     */
+    function initializeV2_1(address lostAndFound) external {
+        // solhint-disable-next-line reason-string
+        require(_initializedVersion == 1);
+
+        uint256 lockedAmount = balances[address(this)];
+        if (lockedAmount &gt; 0) {
+            _transfer(address(this), lostAndFound, lockedAmount);
+        }
+        blacklisted[address(this)] = true;
+
+        _initializedVersion = 2;
+    }
+
+    /**
+     * @notice Version string for the EIP712 domain separator
+     * @return Version string
+     */
+    function version() external view returns (string memory) {
+        return &quot;2&quot;;
+    }
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-8003_TariUseCases.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="deprecated.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-8003_TariUseCases.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="deprecated.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

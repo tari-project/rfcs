@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0121: Consensus encoding - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html" class="active"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0121consensus-encoding"><a class="header" href="#rfc-0121consensus-encoding">RFC-0121/Consensus Encoding</a></h1>
+<h2 id="consensus-encoding"><a class="header" href="#consensus-encoding">Consensus Encoding</a></h2>
+<p><img src="theme/images/status-deprecated.svg" alt="status: deprecated" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/sdbondi">Stanley Bondi</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2022 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, 
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in 
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as 
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>The aim of this Request for Comment (RFC) is to describe the encoding used for various consensus-critical data types, as well as the construction of hash pre-images and 
+signature challenges used in base-layer consensus. </p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="RFC-0120_Consensus.html">RFC-0120: Consensus</a></li>
+</ul>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<p>A Tari base node must validate each block containing a <a href="#block-header" title="Block header">block header</a> as well as set of transaction inputs, transaction outputs and transaction kernels,
+each containing a number of fields pertinent to their function within the [base layer]. The data contained within these structures needs to be consistently encoded
+(represented as bytes) across platforms and implementations so that the network can agree on a single correct state.</p>
+<p>This RFC defines the low-level specification for how these data types MUST be encoded to construct a valid hash and signature on the Tari network.</p>
+<h3 id="consensus-encoding-1"><a class="header" href="#consensus-encoding-1">Consensus Encoding</a></h3>
+<p>The primary goal of consensus encoding is to provide a consistent data format that is committed to in hashes and signatures.</p>
+<p>Consensus encoding defines what &quot;raw&quot; data is included in the encoding, the order in which it should appear and the length for variable length elements.
+To keep encoding as simple as possible, no type information, field names etc. are catered for in the format as this is always statically known. 
+This is particularly appropriate for hashes and signatures where many fields must be consistently represented and concatenated together.</p>
+<p>The rest of this section defines some encodings for common primitives used in the Tari codebase.</p>
+<h4 id="unsigned-integer-encoding"><a class="header" href="#unsigned-integer-encoding">Unsigned integer encoding</a></h4>
+<p>Varint encoding is used for integer fields greater than 1 byte. Describing varint is out of scope for this RFC but there are many resources online
+to understand this fairly basic encoding. The only rule we apply is that the encoding has a limit of 10 bytes, a little more than
+what is required to store a 64-bit integer.</p>
+<h4 id="dynamically-sized-vec-encoding"><a class="header" href="#dynamically-sized-vec-encoding">Dynamically-sized vec encoding</a></h4>
+<p>This type refers to a contiguous block of data of any length. Because the size is dynamic, the size is included in the encoding.</p>
+<pre><code class="language-text">|len(data)| data for type | data for type | ...
+</code></pre>
+<h4 id="fixed-size-arrays"><a class="header" href="#fixed-size-arrays">Fixed size arrays</a></h4>
+<p>If the size of the array is constant (static). The length is omitted and the data is encoded.</p>
+<pre><code class="language-text">| data for type | ...
+</code></pre>
+<h4 id="optional-or-nullable-encoding"><a class="header" href="#optional-or-nullable-encoding">Optional or nullable encoding</a></h4>
+<p>An optional field starts with a 0x00 byte to indicate the value is not provided (<code>None</code>, <code>null</code>, <code>nil</code> etc) or a 0x01 byte 
+to indicate that the value is provided followed by the encoding of the value.</p>
+<pre><code class="language-text">| 0 or 1 | encoding for type |
+</code></pre>
+<h4 id="ristretto-keys"><a class="header" href="#ristretto-keys">Ristretto Keys</a></h4>
+<p><code>RistrettoPublicKey</code> and <code>RistrettoPrivateKey</code> types defined in the <code>tari_crypto</code> crate both have 32-byte canonical formats
+and are encoded as a 32-byte fixed array.</p>
+<p>The <a href="https://github.com/tari-project/tari-crypto"><code>tari_crypto</code></a> Rust crate provides an FFI interface that allows
+generating of the canonical byte formats in any language that supports FFI.</p>
+<h4 id="commitment"><a class="header" href="#commitment">Commitment</a></h4>
+<p>A commitment is a <a href="#ristretto-keys">RistrettoPublicKey</a> and so has identical encoding.</p>
+<h4 id="schnorr-signature"><a class="header" href="#schnorr-signature">Schnorr Signature</a></h4>
+<p>See the <a href="https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures">TLU on Schnorr Signatures</a></p>
+<p>A Schnorr signature tuple is <code>&lt;R, s&gt;</code> where <code>R</code> is a <a href="#ristretto-keys">RistrettoPublicKey</a> and <code>s</code> is a the signature scalar wrapped in <a href="#ristretto-keys">RistrettoPrivateKey</a>.</p>
+<p>The encoding is fixed at 64-bytes:</p>
+<pre><code class="language-text">| 32-byte public key | 32-byte scalar |
+</code></pre>
+<h4 id="signature"><a class="header" href="#signature">Signature</a></h4>
+<p>A signature tuple consists of a <code>&lt;R, s&gt;</code> where <code>R</code> is the public nonce and <code>s</code> is the signature scalar.</p>
+<p>The encoding is fixed at 64-bytes:</p>
+<pre><code class="language-text">| 32-byte commitment (R) | 32-byte scalar (s) |
+</code></pre>
+<h4 id="commitment-signature"><a class="header" href="#commitment-signature">Commitment Signature</a></h4>
+<p>A commitment signature tuple consists of a <code>&lt;R, u, v&gt;</code> where <code>R</code> is the <a href="./Glossary.html#commitment">Pederson commitment</a> \(r_u.G + r_v.H\)
+for the signature scalars <code>u</code> and <code>v</code>.</p>
+<p>The encoding is fixed at 96-bytes:</p>
+<pre><code class="language-text">| 32-byte commitment (R) | 32-byte scalar (u) | 32-byte scalar (v) |
+</code></pre>
+<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<p>Given the following data and types:</p>
+<pre><code class="language-javascript">{
+  // Type: Fixed array of 5 bytes
+  short_id: [1,2,3,4,5],
+  // Type: variable length bytes
+  name: Buffer.from(&quot;Case&quot;),
+  // Type: unsigned integer
+  age: 40,
+  // Type: struct
+  details: {
+      // Type: variable length bytes
+      kind: Buffer.from(&quot;Hacker&quot;),
+  },
+  // Type: nullable varint
+  dob: null
+}
+</code></pre>
+<p>Encoded (hex) as follows:</p>
+<div class="table-wrapper"><table><thead><tr><th>short id</th><th>len</th><th>name</th><th>age</th><th>len</th><th>kind</th><th>null?</th><th>dob</th></tr></thead><tbody>
+<tr><td>0102030405</td><td>04</td><td>43617365</td><td>28</td><td>05</td><td>4861636b6572</td><td>00</td><td></td></tr>
+</tbody></table>
+</div>
+<p>Note that nested structs are flattened and the order must be preserved to allow decoding.
+The <code>00</code> null byte is important so that for e.g. the <code>kind</code> bytes cannot be manipulated to 
+produce the same encoding as non-null <code>dob</code>.</p>
+<h3 id="block-header"><a class="header" href="#block-header">Block Header</a></h3>
+<p>The block hash pre-image is constructed by first constructing the merge mining hash. Each encoding is concatenated in order as follows:</p>
+<ol>
+<li><code>version</code> - 1 byte</li>
+<li><code>height</code> - varint</li>
+<li><code>prev_hash</code> - fixed 32-bytes </li>
+<li><code>timestamp</code> - varint</li>
+<li><code>input_mr</code> - fixed 32-bytes</li>
+<li><code>output_mr</code> - fixed 32-bytes</li>
+<li><code>output_mmr_size</code> - varint</li>
+<li><code>witness_mr</code> - fixed 32-bytes</li>
+<li><code>kernel_mr</code> - fixed 32-bytes</li>
+<li><code>kernel_mmr_size</code> - `varint</li>
+<li><code>total_kernel_offset</code> - 32-byte Scalar, see <a href="#ristretto-keys">RistrettoPrivateKey</a></li>
+<li><code>total_script_offset</code> - 32-byte Scalar, see <a href="#ristretto-keys">RistrettoPrivateKey</a></li>
+</ol>
+<p>This pre-image is hashed and block hash is constructed, in order, as follows:</p>
+<ol>
+<li><code>merge_mining_hash</code> - As above</li>
+<li><code>pow_algo</code> - enumeration of types of PoW as a single unsigned byte, where <code>Monero = 0x00</code> and <code>Sha3 = 0x01</code></li>
+<li><code>pow_data</code> - raw variable bytes (no length varint)</li>
+<li><code>nonce</code> - the PoW nonce, <code>u64</code> converted to a fixed 8-byte array (little endian)</li>
+</ol>
+<h4 id="output-features"><a class="header" href="#output-features">Output Features</a></h4>
+<pre><code class="language-rust ignore">pub struct OutputFeatures {
+  pub version: OutputFeaturesVersion,
+  pub maturity: u64,
+  pub flags: OutputFlags,
+  pub metadata: Vec&lt;u8&gt;,
+  pub unique_id: Option&lt;Vec&lt;u8&gt;&gt;,
+  pub parent_public_key: Option&lt;PublicKey&gt;,
+  pub asset: Option&lt;AssetOutputFeatures&gt;,
+  pub mint_non_fungible: Option&lt;MintNonFungibleFeatures&gt;,
+  pub sidechain_checkpoint: Option&lt;SideChainCheckpointFeatures&gt;,
+}</code></pre>
+<p>Output features consensus encoding is defined as follows (in order):</p>
+<ol>
+<li><code>version</code> - 1 unsigned byte. This should always be <code>0x00</code> but is reserved for future proofing.</li>
+<li><code>maturity</code> - <a href="#unsigned-integer-encoding">varint</a></li>
+<li><code>flags</code> - 1 unsigned byte</li>
+<li><code>metadata</code> - <a href="#dynamically-sized-vec-encoding">dynamic vector</a></li>
+<li><code>unique_id</code> - <a href="#optional-or-nullable-encoding">nullable</a> + <a href="#dynamically-sized-vec-encoding">dynamic vector</a></li>
+<li><code>parent_public_key</code> - <a href="#optional-or-nullable-encoding">nullable</a> + 32-byte compressed public key </li>
+<li><code>asset</code> - <a href="#optional-or-nullable-encoding">nullable</a> + <a href="#assetoutputfeatures">AssetOutputFeatures</a></li>
+<li><code>mint_non_fungible</code> - <a href="#optional-or-nullable-encoding">nullable</a> + <a href="#mintnonfungiblefeatures">MintNonFungibleFeatures</a></li>
+<li><code>sidechain_checkpoint</code> - <a href="#optional-or-nullable-encoding">nullable</a> + <a href="#sidechaincheckpointfeatures">SideChainCheckpointFeatures</a></li>
+</ol>
+<h5 id="assetoutputfeatures"><a class="header" href="#assetoutputfeatures">AssetOutputFeatures</a></h5>
+<ul>
+<li><code>public_key</code> - <a href="#ristretto-keys">RistrettoPublicKey</a> </li>
+<li><code>template_ids</code> - <a href="#dynamically-sized-vec-encoding">dynamic vector</a> + <a href="#unsigned-integer-encoding">varint</a></li>
+<li><code>template_parameters</code> - <a href="#dynamically-sized-vec-encoding">dynamic vector</a></li>
+</ul>
+<h5 id="mintnonfungiblefeatures"><a class="header" href="#mintnonfungiblefeatures">MintNonFungibleFeatures</a></h5>
+<ul>
+<li><code>asset_public_key</code> - <a href="#ristretto-keys">RistrettoPublicKey</a> </li>
+<li><code>asset_owner_commitment</code> - <a href="#ristretto-keys">RistrettoPublicKey</a> </li>
+</ul>
+<h5 id="sidechaincheckpointfeatures"><a class="header" href="#sidechaincheckpointfeatures">SideChainCheckpointFeatures</a></h5>
+<ul>
+<li><code>merkle_root</code> - <a href="#fixed-size-arrays">fixed sized array</a></li>
+<li><code>committee</code> - <a href="#dynamically-sized-vec-encoding">dynamic vector</a> + <a href="#ristretto-keys">RistrettoPublicKey</a></li>
+</ul>
+<h4 id="transaction-output"><a class="header" href="#transaction-output">Transaction Output</a></h4>
+<pre><code class="language-rust ignore">pub struct TransactionOutput {
+    pub version: TransactionInputVersion,
+    pub features: OutputFeatures,
+    pub commitment: Commitment,
+    pub proof: RangeProof,
+    pub script: TariScript,
+    pub sender_offset_public_key: PublicKey,
+    pub metadata_signature: ComSignature,
+    pub covenant: Covenant,
+}</code></pre>
+<p>The canonical output hash is appended to the output Merkle tree and commits to the common data between an output 
+and the input spending that output i.e. <code>output_hash = Hash(version | features | commitment | script | covenant)</code>. </p>
+<p>The encoding is defined as follows:</p>
+<ul>
+<li><code>version</code> - 1 byte</li>
+<li><code>features</code> - <a href="#output-features">OutputFeatures</a></li>
+<li><code>commitment</code> - <a href="#ristretto-keys">RistrettoPublicKey</a></li>
+<li><code>script</code> - byte length as <a href="#unsigned-integer-encoding">varint</a> + <a href="https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/op_codes.rs#L101">TariScript</a></li>
+<li><code>covenant</code> - byte length as <a href="#unsigned-integer-encoding">varint</a> + <a href="RFC-0250_Covenants.html">Covenant</a></li>
+</ul>
+<h5 id="witness-hash"><a class="header" href="#witness-hash">Witness hash</a></h5>
+<p>The witness hash is appended to the witness Merkle tree.</p>
+<ul>
+<li><code>proof</code> - Raw proof bytes encoded using <a href="#dynamically-sized-vec-encoding">dynamic vector</a> encoding</li>
+<li><code>metadata_signature</code> - [CommitmentSignature]</li>
+</ul>
+<h5 id="metadata-signature-challenge"><a class="header" href="#metadata-signature-challenge">Metadata signature challenge</a></h5>
+<p>See <a href="./Glossary.html#metadata-signature">Metadata Signature</a> for details.</p>
+<ul>
+<li><code>public_commitment_nonce</code> - <a href="#ristretto-keys">RistrettoPublicKey</a></li>
+<li><code>script</code> - byte length as <a href="#unsigned-integer-encoding">varint</a> + <a href="https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/op_codes.rs#L101">TariScript</a></li>
+<li><code>features</code> - <a href="#output-features">OutputFeatures</a></li>
+<li><code>sender_offset_public_key</code> - <a href="#ristretto-keys">RistrettoPublicKey</a></li>
+<li><code>commitment</code> - <a href="#ristretto-keys">RistrettoPublicKey</a></li>
+<li><code>covenant</code>- byte length as <a href="#unsigned-integer-encoding">varint</a> + <a href="RFC-0250_Covenants.html">Covenant</a></li>
+</ul>
+<h3 id="transaction-input"><a class="header" href="#transaction-input">Transaction Input</a></h3>
+<p>The following struct represents the full transaction input data for reference. The actual input struct does not duplicate the output data
+to optimise storage and transmission of the input. </p>
+<pre><code class="language-rust ignore">pub struct TransactionInput {
+  pub version: u8,
+  pub input_data: ExecutionStack,
+  pub script_signature: ComSignature,
+  pub output_version: TransactionOutputVersion,
+  pub features: OutputFeatures,
+  pub commitment: Commitment,
+  pub script: TariScript,
+  pub sender_offset_public_key: PublicKey,
+  pub covenant: Covenant, 
+}</code></pre>
+<p>The transaction input canonical hash pre-image is constructed as follows:</p>
+<ul>
+<li><code>input_version</code> - 1 byte</li>
+<li><code>output_hash</code> - See [TransactionOutput]</li>
+<li><code>sender_offset_public_key</code> - <a href="#ristretto-keys">RistrettoPublicKey</a></li>
+<li><code>input_data</code> - <a href="https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/stack.rs#L51">TariScript Stack</a></li>
+<li><code>script_signature</code> - [CommitmentSignature]</li>
+</ul>
+<h3 id="transaction-kernel"><a class="header" href="#transaction-kernel">Transaction Kernel</a></h3>
+<p>The following struct represents the full transaction input data for reference. The actual input struct does not duplicate the output data
+to optimise storage and transmission of the input.</p>
+<pre><code class="language-rust ignore">pub struct TransactionKernel {
+    pub version: TransactionKernelVersion,
+    pub features: KernelFeatures,
+    pub fee: MicroTari,
+    pub lock_height: u64,
+    pub excess: Commitment,
+    pub excess_sig: Signature,
+}</code></pre>
+<p>The transaction kernel is encoded as follows:</p>
+<ul>
+<li><code>input_version</code> - 1 byte</li>
+<li><code>features</code> - <a href="#output-features">OutputFeatures</a></li>
+<li><code>fee</code> - <a href="#ristretto-keys">RistrettoPublicKey</a></li>
+<li><code>lock_height</code> - <a href="https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/stack.rs#L51">TariScript Stack</a></li>
+<li><code>excess</code> - <a href="#commitment">Commitment</a></li>
+<li><code>excess_sig</code> - [Signature]</li>
+</ul>
+<p>The canonical hash pre-image is constructed from this encoding.</p>
+<h4 id="script-challenge"><a class="header" href="#script-challenge">Script Challenge</a></h4>
+<p>For details see <a href="./RFC-0201_TariScript.html">RFC-0201_TariScript.md</a>.</p>
+<p>The script challenge is constructed as follows:</p>
+<ul>
+<li><code>nonce_commitment</code> - <a href="#commitment">Commitment</a></li>
+<li><code>script</code> - <a href="https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/op_codes.rs#L101">TariScript</a></li>
+<li><code>input_data</code> - <a href="https://github.com/tari-project/tari-crypto/blob/09cc52787272ced3a1a8c9f2edc1e0221f9d8faa/src/script/stack.rs#L51">TariScript Stack</a></li>
+<li><code>script_public_key</code> - <a href="#ristretto-keys">RistrettoPublicKey</a></li>
+<li><code>commitment</code> - <a href="#commitment">Commitment</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFCD-0010_CodeStructure.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFCD-0130_Mining.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFCD-0010_CodeStructure.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFCD-0130_Mining.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

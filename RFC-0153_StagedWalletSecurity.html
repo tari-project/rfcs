@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0153: Staged Wallet Security - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html" class="active"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0153stagedwalletsecurity"><a class="header" href="#rfc-0153stagedwalletsecurity">RFC-0153/StagedWalletSecurity</a></h1>
+<h2 id="staged-wallet-security"><a class="header" href="#staged-wallet-security">Staged Wallet Security</a></h2>
+<p><img src="theme/images/status-stable.svg" alt="status: stable" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2021 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;,
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>This Request for Comment (RFC) aims to describe Tari's ergonomic approach to securing funds in a hot wallet.
+The focus is on mobile wallets, but the strategy described here is equally applicable to console or desktop wallets.</p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="RFC-0150_Wallets.html">RFC-0150: Wallets</a></li>
+</ul>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<h3 id="rationale"><a class="header" href="#rationale">Rationale</a></h3>
+<p>A major UX hurdle when users first interact with a crypto wallet is the friction they experience with the first user
+experience.</p>
+<p>A common theme: I want to play with some new wallet X that I saw advertised somewhere, so I download it and run it.
+But first I get several screens that</p>
+<ul>
+<li>ask me to review my seed phrase,</li>
+<li>ask me to write down my seed phrase,</li>
+<li>prevent typical &quot;skip this&quot; tricks like taking a screenshot,</li>
+<li>ask to confirm if I've written down my seed phrase,</li>
+<li>force me to write a test, either by supplying a random sample of my seed phrase, or by getting me to type in the
+whole thing.</li>
+</ul>
+<p>After all this, I play with the wallet a bit, and then typically, I uninstall it.</p>
+<p>The goal of this RFC is to <strong>get the user playing with the wallet as quickly as possible</strong>. <em>Without</em> sacrificing
+security whatsoever.</p>
+<h3 id="a-staged-approach"><a class="header" href="#a-staged-approach">A staged approach</a></h3>
+<p>This RFC proposes a smart, staged approach to wallet security. One that maximises user experience without compromising
+safety.</p>
+<p>Each step enforces more stringent security protocols on the user than the previous step.</p>
+<p>The user moves from one step to another based on criteria that</p>
+<ol>
+<li>the user configures based on her preferences, or</li>
+<li>uses sane predefined defaults.</li>
+</ol>
+<p>The criteria are generally based on the value of the wallet balance.</p>
+<p>Once a user moves to a stage, the wallet does <em>not</em> move to a lower stage if the requirements for the stage are no longer
+met.</p>
+<p>Users may also jump to any more advanced stage from their wallet settings / configuration at any time.</p>
+<h4 id="stage-zero---zero-balance"><a class="header" href="#stage-zero---zero-balance">Stage zero - zero balance</a></h4>
+<p>When the user has a <em>zero balance</em>, there's no risk in letting them skip securing their wallet.</p>
+<p>Therefore, Tari wallets SHOULD just skip the whole seed phrase ritual and let the user jump right into the action.</p>
+<h4 id="stage-1a---a-reminder-to-write-down-your-seed-phrase"><a class="header" href="#stage-1a---a-reminder-to-write-down-your-seed-phrase">Stage 1a - a reminder to write down your seed phrase</a></h4>
+<p>Once the user's balance exceeds the <code>MINIMUM_STAGE_ONE_BALANCE</code>, they will be prompted to review and write down their
+seed phrase. The <code>MINIMUM_STAGE_ONE_BALANCE</code> is any non-zero balance by default.</p>
+<p>After the transaction that causes the balance to exceed <code>MINIMUM_STAGE_ONE_BALANCE</code> is confirmed, the user is presented
+with a friendly message: </p>
+<pre><code class="language-text">You now have _real_ money in your wallet. If you accidentally delete your wallet app or lose
+your device, your funds are lost, and there is no way to recover them unless you have safely kept a copy of your
+`seed phrase` safe somewhere. Click 'Ok' to review and save the phrase now, or 'Do it later' to do it at a more
+convenient time.
+</code></pre>
+<p>If the user elects <em>not</em> to save the phrase, the message pops up again periodically. Once per day, or when the balance
+increases -- whichever is less frequent -- is sufficient without being too intrusive.</p>
+<h4 id="stage-1b---simple-wallet-backups"><a class="header" href="#stage-1b---simple-wallet-backups">Stage 1b - simple wallet backups</a></h4>
+<p>Users are used to storing their data in the cloud. Although this practice is frowned upon by crypto purists, for small
+balances (the type you often keep in a hot wallet), using secure cloud storage for wallet backups is a fair
+compromise between keeping the keys safe from attackers and protecting users from themselves.</p>
+<p>The simple wallet backup saves the spending keys and values of the user's wallet to a personal cloud space (e.g. Google Drive,
+Apple iCloud, Dropbox).</p>
+<p>This solution does not require any additional input from the user besides providing authorisation to store in the cloud.
+This can be done using the standard APIs and Authentication flows that each cloud provider publishes for their platform.</p>
+<p>In particular, we do not ask for a password to encrypt the commitment data. The consequence is that anyone who gains
+access to this data -- by stealing the user's cloud credentials -- <em>could</em> steal the user's funds.</p>
+<p>Therefore, the threshold for moving from this stage to Stage 2, <code>STAGE_TWO_THRESHOLD_BALANCE</code> is relatively low;
+somewhere in the region of \$10 to \$50.</p>
+<p>The seed phrase MUST NOT be stored on the cloud in Stage 1b. Doing so would result in all <em>future</em> funds of the user being
+lost if the backup were ever compromised. Since the backup is unencrypted in Stage 1b, we store the minimum amount of data
+needed to recover the funds and limit the potential loss of funds in case of a breach to just that found in the commitments in the
+backup, which should not be more than \$50.</p>
+<p>Therefore, stage 1b backups are really just exporting and importing of UTXO data. The consequence of this is 
+that restoring from a 1b backup does not restore the emoji id. On the other hand, you can easily import into any 
+other wallet (e.g. into another wallet on another device owned by the same user).</p>
+<p>Backups MUST be authorised by the user when the first cloud backup is made and SHOULD be automatically updated after each
+transaction is confirmed.</p>
+<p>Wallet authors MAY choose to exclude Stage 1b from the staged security protocol.</p>
+<p>As usual, the user MUST be able to configure <code>STAGE_TWO_THRESHOLD_BALANCE</code> to suit their particular needs.</p>
+<p>When this threshold is reached, the user SHOULD be prompted with a call to back-up their data:</p>
+<pre><code class="language-text">Your wallet now holds a fair amount of value, which you probably don't want to lose. Unlike a physical wallet's 
+notes, it's possible to make a copy of your wallet's contents that you can use to recover your funds in case you 
+lose them.
+ 
+You should think about making a copy of your wallet's coins, which we will keep up date date after every transaction.
+
+If you have a copy of your seed phrase saved somewhere safe, and don't want to back up your coins into the cloud, you 
+can skip this step.
+</code></pre>
+<p>The user can pick between <code>backup my coins</code> or <code>I have my seed phrase. Skip backups for now</code>.</p>
+<p>If the user chooses to skip the backup, do not prompt them for stage 1b backups again.</p>
+<h4 id="stage-2---full-wallet-backups"><a class="header" href="#stage-2---full-wallet-backups">Stage 2 - full wallet backups</a></h4>
+<p>Once a user has a significant balance (over <code>STAGE_TWO_THRESHOLD_BALANCE</code>), Stage 2 is active. Stage 2 entails a full,
+encrypted backup of the user's wallet to the cloud. The user needs to provide a <strong>password</strong> to perform and secure the encryption.</p>
+<p>This makes the user's fund safer while at rest in the cloud. It also introduces an additional point of failure: the user
+can forget their wallet's encryption password.</p>
+<p>Stage 1b and 2 are similar in functionality but different in scope (Stage 2 allows us to store all the wallet
+metadata, rather than just the commitments). For this reason, Stage 1b is optional.</p>
+<p>Backups MUST be authorised by the user when the first cloud backup is made and SHOULD be automatically updated after each
+transaction.</p>
+<p>When migrating from Stage 1 to Stage 2, the Stage 1b backups SHOULD be deleted.</p>
+<p>Once the stage 2 threshold is reached, the user is again presented with a call-to-action:</p>
+<pre><code class="language-text">                   😎💰💰💰😎
+It's awesome that you're using [this Tari wallet] so much!
+You're a high-roller, so it's time to add another layer of security 
+to your wallet backups.
+
+Your funds will be safer if we encrypt your cloud backups with an 
+additional password of your own choosing. You need to make sure that 
+this password is very string and that YOU DO NOT FORGET it!
+
+(Whatever happens, you can always restore from your seed phrase, so 
+make sure you're still keeping this safe and secreted away).
+
+As an added benefit, password-encrypted backups allow us to backup your 
+transaction history as well!            
+</code></pre>
+<p>The user can choose to <code>Upgrade my backups</code>, <code>do this later</code>, <code>check my backup settings</code>. </p>
+<p>The latter option takes the user to the wallet settings, where they can configure the various thresholds and 
+manually decide which backup strategy they want to pursue.</p>
+<p>They should be prompted periodically (once per day is sufficient) if they choose to defer the upgrade.</p>
+<h4 id="stage-3---sweep-to-cold-wallet"><a class="header" href="#stage-3---sweep-to-cold-wallet">Stage 3 - Sweep to cold wallet</a></h4>
+<p><strong>Pending hardware wallet support</strong></p>
+<p>Above a given limit -- user-defined, or the default <code>MAX_HOT_WALLET_BALANCE</code>, the user should be prompted to transfer
+funds into a cold wallet. The amount to sweep can be calculated as <code>MAX_HOT_WALLET_BALANCE</code> - <code>SAFE_HOT_WALLET_BALANCE</code>.</p>
+<p>If the user ignores the prompt, they SHOULD be reminded one week later. From the second prompt onward, users SHOULD be given
+an option to re-configure the values for <code>MAX_HOT_WALLET_BALANCE</code> and <code>SAFE_HOT_WALLET_BALANCE</code>.</p>
+<p>Assuming one-sided payments are live, the user SHOULD be able to configure a <code>COLD_WALLET_ADDRESS</code> in the wallet.</p>
+<p>For security reasons, a user SHOULD be asked for their 2FA confirmation, if it is configured, before broadcasting the
+sweep transaction to the blockchain.</p>
+<p>A suitable prompt for the user once the <code>MAX_HOT_WALLET_BALANCE</code> threshold is reached is:</p>
+<pre><code class="language-text">🐋🐋🐋🐋🐋🐋🐋🐋  ❗❗❗ Whale Alert ❗❗❗  🐋🐋🐋🐋🐋🐋🐋🐋
+Your mobile wallet holds way more funds than would normally be 
+considered safe to walk around with in your pocket.
+
+You should really consider sweeping most of your balance into a 
+cold- or hardware wallet.   
+</code></pre>
+<p>Possible actions from this prompt include:</p>
+<ul>
+<li><code>Set up my cold wallet address</code>, if the cold wallet address has not been configured.</li>
+<li><code>Transfer funds to my cold wallet</code>, if the cold wallet <em>has</em> been set up. The usual transaction confirmation flow 
+SHOULD be followed here, and a stealth one-sided payment SHOULD be the default transaction type.</li>
+<li><code>I'll deal with this myself</code>, which takes the user to their backup settings.</li>
+</ul>
+<p>To avoid spamming the user, do not fire this prompt more than once every three days.</p>
+<h4 id="security-hygiene"><a class="header" href="#security-hygiene">Security hygiene</a></h4>
+<ul>
+<li>From stage 1 onwards Users should be asked periodically whether they still have their seed phrase written down.
+Once every two months is sufficient.</li>
+</ul>
+<h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
+<tr><td style="text-align: left">2022-11-10</td><td style="text-align: left">Initial stable</td><td style="text-align: left">Adrian Truszczyński</td></tr>
+<tr><td style="text-align: left">2022-12-12</td><td style="text-align: left">Update user messages</td><td style="text-align: left">CjS77</td></tr>
+<tr><td style="text-align: left">2022-12-20</td><td style="text-align: left">Fix typo</td><td style="text-align: left">CjS77</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0141_Sparse_Merkle_Trees.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0154_DeepLinksConvencion.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0141_Sparse_Merkle_Trees.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0154_DeepLinksConvencion.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

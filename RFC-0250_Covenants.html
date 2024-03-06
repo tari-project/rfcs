@@ -1,0 +1,504 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0250: Covenants - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html" class="active"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0250covenants"><a class="header" href="#rfc-0250covenants">RFC-0250/Covenants</a></h1>
+<h2 id="covenants"><a class="header" href="#covenants">Covenants</a></h2>
+<p><img src="theme/images/status-stable.svg" alt="status: stable" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/sdbondi">Stanley Bondi</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2022 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;NOT
+RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all
+capitals, as shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update without
+notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>This Request for Comment (RFC) presents a proposal for introducing <em>covenants</em> into the Tari base layer protocol. Tari
+Covenants aims to provide restrictions on the <em>future</em> spending of subsequent transactions to enable a number of powerful
+use-cases, such as</p>
+<ul>
+<li><a href="https://hackingdistributed.com/2016/02/26/how-to-implement-secure-bitcoin-vaults/">vaults</a></li>
+<li>side-chain checkpointing transactions,</li>
+<li>commission on NFT transfers, and</li>
+<li>many others not thought of here.</li>
+</ul>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="BaseLayerExtensions.html">RFC-0200: Base Layer Extensions</a></li>
+<li><a href="RFCD-0300_DAN.html">RFC-0300: The Tari Digital Assets Network</a></li>
+</ul>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p>The Tari protocol already provides programmable consensus, through <a href="./Glossary.html#tariscript">TariScript</a>, that restricts whether a <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a>
+may be included as an input to a transaction (a.k.a spent). The scope of information within <a href="./Glossary.html#tariscript">TariScript</a> is inherently limited,
+by the <a href="./RFC-0202_TariScriptOpcodes.html">TariScript Opcodes</a> and the input data provided by a spender. Once the requirements of the script are met,
+a spender may generate <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a>s of their choosing, within the constraints of <a href="./Glossary.html#mimblewimble">MimbleWimble</a>.</p>
+<p>This RFC expands the capabilities of Tari protocol by adding <em>additional requirements</em>, called covenants
+that allow the owner(s) of a <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a> to control the composition of a <em>subsequent</em> transaction.</p>
+<p>Covenants are not a new idea and have been proposed and implemented in various forms by others.</p>
+<p>For example,</p>
+<ul>
+<li><a href="https://maltemoeser.de/paper/covenants.pdf">Bitcoin-NG covenants</a> put forward the <code>CheckOutputVerify</code> script opcode.</li>
+<li><a href="https://handshake.org/files/handshake.txt">Handshake</a> has implemented covenants to add the <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a> state of their auctioning process.</li>
+<li><a href="https://blockstream.com/2016/11/02/en-covenants-in-elements-alpha/">Elements Covenants</a></li>
+</ul>
+<h2 id="covenants-in-mimblewimble"><a class="header" href="#covenants-in-mimblewimble">Covenants in MimbleWimble</a></h2>
+<p>In blockchains like Bitcoin, a block contains discrete transactions containing inputs and outputs. A covenant
+in Bitcoin would be able to interrogate those outputs <em>belonging to the input</em> to ensure that they adhere to rules.</p>
+<p>In <a href="./Glossary.html#mimblewimble">MimbleWimble</a>, the body of a block and transaction can be expressed in an identical data structure. This
+is indeed the case in the <a href="https://github.com/tari-project/tari">Tari codebase</a>, which defines a structure called <code>AggregateBody</code> containing inputs
+and outputs (and kernels) for transactions and blocks. This is innate to <a href="./Glossary.html#mimblewimble">MimbleWimble</a>, so even if we were
+to put a &quot;box&quot; around these inputs/outputs there is nothing to stop someone from including inputs and
+outputs from other boxes as long as balance is maintained.</p>
+<p>This results in an interesting dilemma: how do we allow rules that dictate how future outputs look only armed with
+the knowledge that the rule must apply to one or more outputs?</p>
+<p>In this RFC, we detail a covenant scheme that allows the <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a> originator to express a <em>filter</em> that must be
+satisfied for a subsequent spending transaction to be considered valid.</p>
+<h2 id="assumptions"><a class="header" href="#assumptions">Assumptions</a></h2>
+<p>The following assumptions are made:</p>
+<ol>
+<li>Duplicate commitments within a block are disallowed by consensus <em>prior</em> to covenant execution,</li>
+<li>all outputs in the output set are valid, and</li>
+<li>all inputs are valid spends, save for covenant checks.</li>
+</ol>
+<h2 id="protocol-modifications"><a class="header" href="#protocol-modifications">Protocol modifications</a></h2>
+<p>Modifications to the existing protocol and consensus are as follows:</p>
+<ul>
+<li>the covenant is recorded in the transaction <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a>,</li>
+<li>the covenant is committed to in the output and input hashes to prevent malleability,</li>
+<li>transactions with covenants entering the mempool MUST be validated, and</li>
+<li>each covenant in a block must be validated before being included in the block chain.</li>
+</ul>
+<h3 id="transaction-input-and-output-changes"><a class="header" href="#transaction-input-and-output-changes">Transaction input and output changes</a></h3>
+<p>A <code>covenant</code> field would need to be added to the <code>TransactionOutput</code> and <code>TransactionInput</code> structs
+and committed to in their hashes.</p>
+<h3 id="covenant-definition"><a class="header" href="#covenant-definition">Covenant definition</a></h3>
+<p>We define a clear notation for covenants that mirrors the <a href="https://medium.com/blockstream/miniscript-bitcoin-scripting-3aeff3853620">miniscript</a> project.</p>
+<h4 id="execution-context-and-scope"><a class="header" href="#execution-context-and-scope">Execution Context and Scope</a></h4>
+<p>Covenants execute within a limited read-only context and scope. This is both to reduce complexity (and therefore
+the possibility of bugs) and maintain reasonable performance.</p>
+<p>A covenant's context is limited to:</p>
+<ul>
+<li>an immutable reference to the current input,</li>
+<li>a vector of immutable <em>references</em> to outputs in the current block/transaction (called the output set),</li>
+<li>the current input's mined height, and</li>
+<li>the current block height.</li>
+</ul>
+<p>Each output's covenant is executed with this context, filtering on the output set and returning the result.
+The output set given to each covenant at execution MUST be the same set for all covenants and MUST never be
+influenced by other covenants. The stateless and immutable nature of this scheme has the benefit of being
+able to execute covenants in parallel.</p>
+<p>A covenant passes if at least one output in the set is matched. Allowing more than one output to match allows for
+covenants that restrict the characteristics of multiple outputs. A covenant that matches zero outputs <em>fails</em>
+which invalidates the transaction/block.</p>
+<p>If a covenant is empty (zero bytes) the <code>identity</code> operation is implied and therefore, no actual execution need occur.</p>
+<h4 id="argument-types"><a class="header" href="#argument-types">Argument types</a></h4>
+<pre><code class="language-rust ignore">enum CovenantArg {
+    // byte code: 0x01
+    // data size: 32 bytes
+    Hash([u8; 32]),
+    // byte code: 0x02
+    // data size: 32 bytes
+    PublicKey(RistrettoPublicKey),
+    // byte code: 0x03
+    // data size: 32 bytes
+    Commitment(PedersonCommitment),
+    // byte code: 0x04
+    // data size: variable
+    TariScript(TariScript),
+    // byte code: 0x05
+    // data size: &lt;= 4096 bytes
+    Covenant(Covenant),
+    // byte cide: 0x06
+    // data size: variable
+    Uint(u64),
+    // byte cide: 0x07
+    // data size: variable
+    OutputField(OutputField),
+    // byte cide: 0x08
+    // data size: variable
+    OutputFields(OutputFields),
+    // byte cide: 0x09
+    // data size: variable
+    Bytes(Vec&lt;u8&gt;),
+    // byte cide: 0x0a
+    // data size: 1 bytes
+    OutputType(OutputType),
+}</code></pre>
+<h5 id="output-field-tags"><a class="header" href="#output-field-tags">Output field tags</a></h5>
+<p>Fields from each output in the output set may be brought into a covenant filter.
+The available fields are defined as follows:</p>
+<div class="table-wrapper"><table><thead><tr><th>Tag Name</th><th>Byte Code</th><th>Returns</th></tr></thead><tbody>
+<tr><td><code>field::commitment</code></td><td>0x00</td><td>output.commitment</td></tr>
+<tr><td><code>field::script</code></td><td>0x01</td><td>output.script</td></tr>
+<tr><td><code>field::sender_offset_public_key</code></td><td>0x02</td><td>output.sender_offset_public_key</td></tr>
+<tr><td><code>field::covenant</code></td><td>0x03</td><td>output.covenant</td></tr>
+<tr><td><code>field::features</code></td><td>0x04</td><td>output.features</td></tr>
+<tr><td><code>field::features_output_type</code></td><td>0x05</td><td>output.features.output_type</td></tr>
+<tr><td><code>field::features_maturity</code></td><td>0x06</td><td>output.features.maturity</td></tr>
+<tr><td><code>field::features_metadata</code></td><td>0x07</td><td>output.features.metadata</td></tr>
+<tr><td><code>field::features_sidechain_features</code></td><td>0x08</td><td>output.features.sidechain_features</td></tr>
+</tbody></table>
+</div>
+<p>Each field tag returns a consensus encoded byte representation of the value contained in the field.
+How those bytes are interpreted depends on the covenant. For instance, <code>filter_fields_hashed_eq</code> will
+concatenate the bytes and hash the result whereas <code>filter_field_eq</code> will interpret the bytes as a
+little-endian 64-bit unsigned integer.</p>
+<h4 id="set-operations"><a class="header" href="#set-operations">Set operations</a></h4>
+<h5 id="identity"><a class="header" href="#identity">identity()</a></h5>
+<p>The output set is returned unaltered. This rule is implicit for an empty (0 byte) covenant.</p>
+<p>op_byte: 0x20<br>
+args: []</p>
+<h5 id="anda-b"><a class="header" href="#anda-b">and(A, B)</a></h5>
+<p>The intersection (\(A \cap B\)) of the resulting output set for covenant rules \(A\) and \(B\).</p>
+<p>op_byte: 0x21<br>
+args: [Covenant, Covenant]</p>
+<h5 id="ora-b"><a class="header" href="#ora-b">or(A, B)</a></h5>
+<p>The union (\(A \cup B\)) of the resulting output set for covenant rules \(A\) and \(B\).</p>
+<p>op_byte: 0x22<br>
+args: [Covenant, Covenant]</p>
+<h5 id="xora-b"><a class="header" href="#xora-b">xor(A, B)</a></h5>
+<p>The symmetric difference (\(A \triangle B\)) of the resulting output set for covenant rules \(A\) and \(B\).
+This is, outputs that match either \(A\) or \(B\) but not both.</p>
+<p>op_byte: 0x23<br>
+args: [Covenant, Covenant]</p>
+<h5 id="nota"><a class="header" href="#nota">not(A)</a></h5>
+<p>Returns the compliment of <code>A</code>. That is, all the elements of <code>A</code> are removed from the
+resultant output set.</p>
+<p>op_byte: 0x24<br>
+args: [Covenant]</p>
+<h4 id="filters"><a class="header" href="#filters">Filters</a></h4>
+<h5 id="filter_output_hash_eqhash"><a class="header" href="#filter_output_hash_eqhash">filter_output_hash_eq(hash)</a></h5>
+<p>Filters for a single output that matches the hash. This filter only returns zero or one outputs.</p>
+<p>op_byte: 0x30<br>
+args: [Hash]</p>
+<h5 id="filter_fields_preservedfields"><a class="header" href="#filter_fields_preservedfields">filter_fields_preserved(fields)</a></h5>
+<p>Filter for outputs where all given fields in the input are preserved in the output.</p>
+<p>op_byte: 0x31<br>
+args: [Fields]</p>
+<h5 id="filter_fields_hashed_eqfields-hash"><a class="header" href="#filter_fields_hashed_eqfields-hash">filter_fields_hashed_eq(fields, hash)</a></h5>
+<p>op_byte: 0x32<br>
+args: [Fields, VarInt]</p>
+<h5 id="filter_field_eqfield-int"><a class="header" href="#filter_field_eqfield-int">filter_field_eq(field, int)</a></h5>
+<p>Filters for outputs whose field value matches the given integer value. If the given field cannot be cast
+to an unsigned 64-bit integer, the transaction/block is rejected.</p>
+<p>op_byte: 0x33<br>
+args: [Field, VarInt]</p>
+<h5 id="filter_absolute_heightheight"><a class="header" href="#filter_absolute_heightheight">filter_absolute_height(height)</a></h5>
+<p>Checks the block height that the current <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a> (i.e. the current input) is greater than or
+equal to the <code>HEIGHT</code> block height. If so, the <code>identity()</code> is returned.</p>
+<p>op_byte: 0x34<br>
+args: [VarInt]</p>
+<h4 id="encoding--decoding"><a class="header" href="#encoding--decoding">Encoding / Decoding</a></h4>
+<p>Covenants can be encoded to/decoded from bytes as a token stream. Each token is consumed and interpreted serially
+before being executed.</p>
+<p>For instance,</p>
+<pre><code class="language-ignore">xor(
+    filter_output_hash_eq(Hash(0e0411c70df0ea4243a363fcbf161ebe6e2c1f074faf1c6a316a386823c3753c)),
+    filter_relative_height(10),
+)
+</code></pre>
+<p>is represented in hex bytes as <code>23 30 01 a8b3f48e39449e89f7ff699b3eb2b080a2479b09a600a19d8ba48d765fe5d47d 35 07 0a</code>.
+Let's unpack that as follows:</p>
+<pre><code class="language-ignore">23 // xor - consume two covenant args
+30 // filter_output_hash_eq - consume a hash arg
+01 // 32-byte hash
+a8b3f48e39449e89f7ff699b3eb2b080a2479b09a600a19d8ba48d765fe5d47d // data
+// end filter_output_hash_eq
+35 // 2nd covenant - filter_absolute_height
+07 // varint
+0A // 10
+// end varint, filter_absolute_height, xor
+</code></pre>
+<p>Some functions can take any number of arguments, such as <code>filter_fields_hashed_eq</code> which defines the <code>Fields</code> type.
+This type is encoded first by its byte code <code>34</code> followed by a varint encoded number that indicates the number
+of field identifiers to consume. To mitigate misuse, the maximum allowed arguments are limited.</p>
+<h3 id="covenant-validation"><a class="header" href="#covenant-validation">Covenant Validation</a></h3>
+<p>A covenant and therefore the block/transaction MUST be regarded as invalid if:</p>
+<ol>
+<li>an unrecognised bytecode is encountered</li>
+<li>the end of the byte stream is reached unexpectedly</li>
+<li>there are bytes remaining on the stream after interpreting</li>
+<li>an invalid argument type is encountered</li>
+<li>the <code>Fields</code> type encounters more than 9 arguments (i.e. the number of fields tags available)</li>
+<li>the depth of the calls exceeds 16.</li>
+</ol>
+<h3 id="consensus-changes"><a class="header" href="#consensus-changes">Consensus changes</a></h3>
+<p>The covenant is executed once all other validations, including <a href="./Glossary.html#tariscript">TariScript</a>, are complete. This ensures that
+invalid transactions in a block cannot influence the results.</p>
+<h2 id="considerations"><a class="header" href="#considerations">Considerations</a></h2>
+<h3 id="complexity"><a class="header" href="#complexity">Complexity</a></h3>
+<p>This introduces additional validation complexity. We avoid stacks, loops, and conditionals (covenants are basically
+one conditional), there are overheads both in terms of complexity and performance as a trade-off for the
+power given by covenants.</p>
+<p>The worst case complexity for covenant validation is <code>O(num_inputs*num_outputs)</code>, although as mentioned above
+validation for each input can be executed in parallel. To compensate for the additional workload the network
+encounters, use of covenants should incur heavily-weighted fees to discourage needlessly using them.</p>
+<h3 id="cut-through"><a class="header" href="#cut-through">Cut-through</a></h3>
+<p>The same arguments made in the <a href="./RFC-0201_TariScript.html#cut-through">TariScript RFC</a> for the need to prevent
+<a href="https://tlu.tarilabs.com/protocols/grin-protocol-overview/MainReport.html#cut-through">cut-through</a> apply to covenants.</p>
+<h3 id="chain-analysis"><a class="header" href="#chain-analysis">Chain analysis</a></h3>
+<p>The same arguments made in the <a href="./RFC-0201_TariScript.html#fodder-for-chain-analysis">TariScript RFC</a> apply.</p>
+<h3 id="security"><a class="header" href="#security">Security</a></h3>
+<p>As all outputs in a block are in the scope of an input to be checked, any unrelated/malicious output in a block
+<em>could</em> pass an unrelated covenant rule if given the chance. A secure covenant is one that <em>uniquely</em> identifies
+one or more outputs.</p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="now-or-never"><a class="header" href="#now-or-never">Now or never</a></h3>
+<p>Spend by block 10 or burn</p>
+<pre><code class="language-ignore">not(filter_absolute_height(10))
+</code></pre>
+<p>Note, this covenant may be valid when submitted to the mempool, but invalid by the time it is put in a block for
+the miner.</p>
+<h3 id="side-chain-checkpointing"><a class="header" href="#side-chain-checkpointing">Side-chain checkpointing</a></h3>
+<pre><code class="language-ignore">and(
+   filter_field_eq(field::feature_flags, 16) // SIDECHAIN CHECKPOINT = 16
+   filter_fields_preserved([field::features, field::covenant, field::script])
+)
+</code></pre>
+<h3 id="restrict-spending-to-a-particular-commitment-if-not-spent-by-block-100"><a class="header" href="#restrict-spending-to-a-particular-commitment-if-not-spent-by-block-100">Restrict spending to a particular commitment if not spent by block 100</a></h3>
+<pre><code class="language-ignore">or(
+   not(filter_absolute_height(100)),
+   filter_fields_hashed_eq([field::commmitment], Hash(xxxx))
+)
+</code></pre>
+<h3 id="output-must-preserve-covenant-features-and-script-or-be-burnt"><a class="header" href="#output-must-preserve-covenant-features-and-script-or-be-burnt">Output must preserve covenant, features and script or be burnt</a></h3>
+<pre><code class="language-ignore">xor(
+    filter_fields_preserved([field::features, field::covenant, field::script]),
+    and(
+        filter_field_eq(field::features_flags, 128), // FLAG_BURN = 128
+        filter_fields_hashed_eq([field::commitment, field::script], Hash(...)),
+    ),
+)
+</code></pre>
+<h3 id="commission-for-nft-transfer"><a class="header" href="#commission-for-nft-transfer">Commission for NFT transfer</a></h3>
+<pre><code class="language-ignore">// Must be different outputs
+xor(
+    and(
+        // Relavant input fields preserved in subsequent output
+        filter_fields_preserved([fields::features, fields::covenant, fields::script]),
+        // The spender must obtain the covenent for the subsequent output
+        filter_fields_hashed_eq([fields::covenant], Hash(xxxx)),
+    ),
+    // The spender must obtain and submit the output that matches this hash
+    filter_output_hash_eq(Hash(xxxx)),
+)
+</code></pre>
+<h3 id="other-potential-covenants"><a class="header" href="#other-potential-covenants">Other potential covenants</a></h3>
+<ul>
+<li><code>filter_script_eq(script)</code></li>
+<li><code>filter_covenant_eq(covenant)</code></li>
+<li><code>filter_script_match(&lt;pattern&gt;)</code></li>
+<li><code>filter_covenant_match(&lt;pattern&gt;)</code></li>
+</ul>
+<h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
+<tr><td style="text-align: left">17 Oct 2021</td><td style="text-align: left">First draft</td><td style="text-align: left">sbondi</td></tr>
+<tr><td style="text-align: left">08 Oct 2022</td><td style="text-align: left">Stable update</td><td style="text-align: left">brianp</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0205_HardwareTransactions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0303_DanOverview.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0205_HardwareTransactions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0303_DanOverview.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

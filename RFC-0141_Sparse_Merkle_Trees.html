@@ -1,0 +1,722 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0141: Sparse Merkle Tees - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html" class="active"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0141sparsemerkletrees"><a class="header" href="#rfc-0141sparsemerkletrees">RFC-0141/SparseMerkleTrees</a></h1>
+<h2 id="sparse-merkle-trees-a-mutable-data-structure-for-txo-commitments"><a class="header" href="#sparse-merkle-trees-a-mutable-data-structure-for-txo-commitments">Sparse Merkle Trees: A mutable data structure for TXO commitments</a></h2>
+<p><img src="theme/images/status-draft.svg" alt="status: draft" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">CjS77</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2023 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, 
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in 
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as 
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>This Request for Comment (RFC) proposes replacing the current Mutable Merkle Mountain Range (MMMR) data structure 
+used for tracking the commitment to the UTXO set, with a Sparse Merkle tree (SMT).</p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="RFC-0110_BaseNodes.html">RFC-0110: Base Nodes</a></li>
+</ul>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<h3 id="sparse-merkle-trees"><a class="header" href="#sparse-merkle-trees">Sparse Merkle trees</a></h3>
+<p>A sparse Merkle tree (<a href="https://eprint.iacr.org/2016/683.pdf" title="Original paper">SMT</a>) is a Merkle-type structure, except the contained data is indexed, and each datapoint is 
+placed at the leaf that corresponds to that datapoint’s index. Empty nodes are represented by a predefined &quot;null&quot; value.</p>
+<p>Since every empty node has the same hash, and the tree is sparse, it is possible to prune the tree in a way such 
+that only the non-zero leaf nodes and placeholders marking the empty sub-trees are stored. Therefore, SMTs are 
+relatively compact. </p>
+<p>A major feature of SMTs is that they are truly mutable. The current UTXO Merkle root in Tari is calculated using a 
+Merkle Mountain Range (MMR). This has some drawbacks: </p>
+<ol>
+<li>MMRs are <em>immutable</em> data structures, and therefore as a workaround (some would say, hack), a bitmap is appended 
+to the MMR to mark the spent outputs. In Tari's implementation, a roaring bitmap is used, which takes 
+advantage of compression, but even so, it is still fairly large and will grow indefinitely.</li>
+<li>The Merkle tree must keep a record of all TXOs forever, and mark them as they are spent. The blockchain cannot 
+prune STXOs from the set.</li>
+<li>The root is path-dependent. Let's say that the UTXO merkle root currently has a value <code>R1</code>. When you add a UTXO 
+to the set, to giving a new Merkle root <code>R2</code>, say, and then immediately remove the UTXO, the Merkle root will now be 
+some <code>R3</code> and <em>not</em> <code>R1</code> as you might expect. This path dependence also extends to the order of adding UTXOs. 
+Adding UTXO <code>A</code> then <code>B</code> yields a different root to <code>B</code> then <code>A</code>.</li>
+</ol>
+<p>SMTs are true mutable data structures and do not have these drawbacks. </p>
+<ol>
+<li>No tracking bitmap is needed. When a UTXO is spent, it can be deleted from the tree.</li>
+<li>It is possible to prune STXOs from the UTXO set to calculate the Merkle root.</li>
+<li>Adding and removing UTXOs in any order will always yield the same Merkle root. Adding and then deleting a UTXO 
+from the set will result in the same Merkle root as before the UTXO was added.</li>
+</ol>
+<h3 id="inclusion-and-exclusion-proofs"><a class="header" href="#inclusion-and-exclusion-proofs">Inclusion and exclusion proofs</a></h3>
+<p>Inclusion proofs for the current MMMR structure are possible but clunky, since the entire bitmap state must be 
+included with the Merkle tree proof.</p>
+<p>Exclusion proofs are not possible in the current MMMR implementation, unless an output happens to be a spent output. 
+In this &quot;STXO proof&quot;, the form of the proof is identical to the inclusion proof, with the verifier checking that 
+the bit corresponding to the TXO is set, rather than unset.</p>
+<p>SMTs support inclusion <em>and</em> exclusion proofs, and they are both succinct, O(log n), representations of the tree.</p>
+<h3 id="space-savings"><a class="header" href="#space-savings">Space savings</a></h3>
+<p>In terms of space, the SMT is more efficient than MMMRs and the advantage grows with time.</p>
+<p>For an SMT, to calculate the root of the UTXO set, all you need is the UTXO set itself, assuming the commitment is 
+used as the tree index.</p>
+<p>Consider some representative numbers:</p>
+<p>Let's assume there are 1,000,000 UTXOs, with another 2,000,000 UTXOs having being spent over the lifetime of the
+project. A busy blockchain might achieve this level of traffic in a few days.</p>
+<p>If each commitment-UTXO hash pair is 64 bytes, you need serialize 64MB to recreate the Merkle root for the SMT.</p>
+<p>For the MMMR, even though you only need the UTXO hash, you need all 3,000,000 values (96MB) plus approximately 1MB 
+for every million hashes in a bitmap to indicate which hashes have  been deleted (3 MB) for a total of 99MB.</p>
+<p>This only gets worse with time. Over a period of a year, a busy blockchain might have 100,000,000 spent transaction 
+outputs. However, the UTXO set will grow far more slowly, and perhaps only 10x in size to 10 million outputs.</p>
+<p>The SMT requires serialising 640MB of data to recreate the root, whereas the MMMR now requires 3.6GB of data.</p>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>The proposed implementation assumes that a key-value store for the data exists. The Merkle tree is only 
+concerned with the index and the value hash, as opposed to the value itself.</p>
+<p>When constructing a new tree, a hashing algorithm is specified. As 
+indicated, the &quot;values&quot; provided to the tree must already be a hash, and should have been generated from a different 
+hashing algorithm to the one driving the tree, in order to prevent second pre-image attacks.</p>
+<p>To insert a new leaf, the key is used to derive a path through the tree. Starting with the most significant bit, you 
+move down the left branch if the bit is zero, or take the right branch if the bit is equal to one. Once a terminal 
+node is reached, the node is replaced with a new sub-tree with the existing terminal node and the new leaf node forming the 
+children of the last branch node in the sub-tree. The depth of the sub-tree is determined by the number of matching 
+bits of the respective keys of the two nodes.</p>
+<p>To delete a node, the procedure above is reversed. This entails that a significant portion of the tree may be pruned 
+when deleting a node in a highly sparse region of the tree.</p>
+<p>The null hashes representing the empty sub-trees are treated identically to the leaf nodes. 
+Thus branch hashes are calculated in the usual way, <em>inter alia</em>, <code>H_branch = H(Branch marker, H_left, H_right)</code>, 
+irrespective of whether the left or right nodes are empty or not. </p>
+<p>Domain separation SHOULD be used to distinguish branch nodes from leaf nodes. This also mitigates second pre-image 
+attacks if the advice above is not followed and the values are hashed with the same algorithm as the tree. </p>
+<p>For leaf node hashes, the key MUST be included in the hash. This prevents leaf node spoofing of the pruned tree. 
+Therefore, leaf node hashes are of the form <code>H_leaf = H(Leaf marker, H_key, H_value)</code>.</p>
+<p>A proof of concept implementation has been written and submitted for review in 
+<a href="https://github.com/tari-project/tari/pull/5457">PR #5457</a>. The examples that follow assume this implementation.</p>
+<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<p>Let's create a SMT with four nodes.</p>
+<p>If we insert the nodes at</p>
+<ul>
+<li>A: 01001111 (79 in decimal)</li>
+<li>B: 01011111 (95 in decimal)</li>
+<li>C: 11100000 (224 in decimal)</li>
+<li>D: 11110000 (240 in decimal)</li>
+</ul>
+<p>you will notice that the first two diverge at the fourth bit, while the first and last pairs differ at the
+first bit. This results in a SMT that looks like this:</p>
+<div style="line-height: 1em" class="hljs">
+<pre>
+            ┌──────┐
+      ┌─────┤ root ├─────┐
+      │     └──────┘     │
+     ┌┴┐0               ┌┴┐1
+  ┌──┤ ├──┐          ┌──┤ ├───┐
+  │  └─┘  │          │  └─┘   │
+ ┌┴┐00   ┌┴┐01      ┌┴┐10    ┌┴┐11
+ │0│  ┌──┤ ├──┐     │0│    ┌─┤ ├─┐
+ └─┘  │  └─┘  │     └─┘    │ └─┘ │
+     ┌┴┐010  ┌┴┐011     110┌┴┐   ┌┴┐111
+   ┌─┤ ├─┐   │0│          │0│ ┌─┤ ├─┐
+   │ └─┘ │   └─┘          └─┘ │ └─┘ │
+  ┌┴┐   ┌┴┐                  ┌┴┐   ┌┴┐
+  │A│   │B│                  │D│   │C│
+  └─┘   └─┘                  └─┘   └─┘
+</pre>
+</div>
+<p><em>Figure 1: An example sparse Merkle tree.</em></p>
+<p>The merkle root is calculated by hashing nodes in the familiar way.</p>
+<p>Of note is that when we <em>delete</em> all the nodes, the SMT hash is <code>000...</code>, as expected. The MMMR
+will never have a hash that's the same after adding, and then deleting the same node because of the bitmap tracking
+deleted entries.</p>
+<p>So even though the SMT is slower, it is still fast enough. The bandwidth
+savings are substantial and the privacy benefits are significant.</p>
+<h3 id="benchmarks"><a class="header" href="#benchmarks">Benchmarks</a></h3>
+<h3 id="details"><a class="header" href="#details">Details</a></h3>
+<p>The SMT implementation is faster than <code>MutableMMR</code> up to around 10,000 nodes, and then the average depth starts to 
+affect it. By 1,000,000  nodes, it is significantly slower than MMR.</p>
+<p>This makes sense since MMR is basically O(1) for inserts, while SMT is O(log(n)).</p>
+<p>A rudimentary benchmark test yielded the following results</p>
+<pre><code class="language-text">Starting: SMT: Inserting 1000000 keys
+Finished: SMT: Inserting 1000000 keys - 1.921310493s
+Starting: SMT: Calculating root hash
+Tree size: 1000000. Root hash: 3e42ca40df366db52464c19b6ba71428976a56d7b120bc3c882fc29bf05dc1d7
+Finished: SMT: Calculating root hash - 644.226062ms
+Starting: SMT: Deleting 500000 keys
+Finished: SMT: Deleting 500000 keys - 863.873761ms
+Starting: SMT: Calculating root hash
+Tree size: 500000. Root hash: 2a7b51f114a17c229f1067feb4ba5b6aad975689160a5eab0d90f89a3bcf09f8
+Finished: SMT: Calculating root hash - 207.30907ms
+Starting: SMT: Deleting another 500000 keys
+Finished: SMT: Deleting another 500000 keys - 850.606501ms
+Starting: SMT: Calculating root hash
+Tree size: 0. Root hash: 0000000000000000000000000000000000000000000000000000000000000000
+Finished: SMT: Calculating root hash - 3.892µs
+Starting: MMR: Inserting 1000000 keys
+Finished: MMR: Inserting 1000000 keys - 741.641704ms
+Starting: SMT: Calculating root hash
+Tree size: 1000000. Root hash: da6135ccaabf146024cae1b0e7ad6ba7e9dad79724fb9199b721d4cd243ba999
+Finished: SMT: Calculating root hash - 8.649µs
+Starting: MMR: Deleting 500000 keys
+Finished: MMR: Deleting 500000 keys - 6.525858ms
+Starting: SMT: Calculating root hash
+Tree size: 500000. Root hash: fd60e168f27acba374109de9b8231e7252f0cfdf385f87dbfd92873d4956c995
+Finished: SMT: Calculating root hash - 50.276µs
+Starting: MMR: Deleting another 500000 keys
+Finished: MMR: Deleting another 500000 keys - 6.862469ms
+Starting: SMT: Calculating root hash
+Tree size: 0. Root hash: 5d70f3177a0b46ea1b853c58d5e3f7d6e78cbc4149d71592bb6cea63d50ed96c
+Finished: SMT: Calculating root hash - 93.618µs
+</code></pre>
+<p>The SMT is taking 1.92s to insert 1 mil nodes, or 1.9us per node on average on a 2018 Intel i9 Macbook Pro.</p>
+<p>This is still sufficiently fast for our purposes and the benefits of having a truly mutable data structure, succinct 
+inclusion and exclusion proofs, and significant serialisation savings far outweigh the performance costs. </p>
+<h2 id="specification"><a class="header" href="#specification">Specification</a></h2>
+<p>Define the following constants:</p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Value</th></tr></thead><tbody>
+<tr><td>EMPTY_NODE_HASH</td><td>bytes</td><td>[0; 32]</td></tr>
+<tr><td>LEAF_PREFIX</td><td>bytes</td><td>b&quot;V&quot;</td></tr>
+<tr><td>BRANCH_PREFIX</td><td>bytes</td><td>b&quot;B&quot;</td></tr>
+<tr><td>KEY_LENGTH_BYTES</td><td>integer</td><td>32</td></tr>
+</tbody></table>
+</div>
+<h3 id="node-types"><a class="header" href="#node-types">Node types</a></h3>
+<p>Each <code>Node</code> in the tree is either, <code>Empty</code>, a <code>Leaf</code>, or a <code>Branch</code>. Every node in the tree is associated with a 
+hash function, <code>H</code> that has a digest output length of <code>KEY_LENGTH_BYTES</code>.</p>
+<p>Leaf nodes store the key and value in their data property. Leaf nodes are immutable, and MAY cache the hash value 
+for efficiency.</p>
+<p>Branch nodes contain two <code>Node</code> instances, referring to the left and right child nodes respectively.  Branch nodes 
+MAY store additional data, such as the height of the node in the tree, the key prefix and the node's hash value, for 
+performance and efficiency purposes.</p>
+<p>Default empty nodes always have a constant hash, <code>EMPTY_NODE_HASH</code>.</p>
+<p>In summary, the nodes are defined as:</p>
+<pre><code class="language-rust noplayground ignore">pub struct LeafNode&lt;H&gt; {
+    key: NodeKey,
+    hash: NodeHash,
+    value: ValueHash,
+    hash_type: PhantomData&lt;H&gt;,
+}
+
+pub struct EmptyNode {}
+
+impl EmptyNode {
+    pub fn hash(&amp;self) -&gt; &amp;'static NodeHash {
+        &amp;EMPTY_NODE_HASH
+    }
+}
+
+pub struct BranchNode&lt;H&gt; {
+    // The height of the branch. It is also the number of bits that all keys below this branch share.
+    height: usize,
+    // Only the first `height` bits of the key are relevant for this branch.
+    key: NodeKey,
+    hash: NodeHash,
+    // Flag to indicate that the tree hash changed somewhere below this branch. and that the hash should be
+    // recalculated.
+    is_hash_stale: bool,
+    left: Box&lt;Node&lt;H&gt;&gt;,
+    right: Box&lt;Node&lt;H&gt;&gt;,
+    hash_type: PhantomData&lt;H&gt;,
+}</code></pre>
+<h3 id="leaf-node-values"><a class="header" href="#leaf-node-values">Leaf node values</a></h3>
+<p>This specification outsources hashing the value data to an external service. 'Value' data in terms of the 
+specification refers to the hash of the value data. The hashing algorithm used to hash the data SHOULD be different 
+from <code>H</code>, to prevent second preimage attacks. </p>
+<p>The digest length of the value hashes does not need to be <code>KEY_LENGTH_BYTES</code>, but it MUST be a constant predefined 
+length.</p>
+<h3 id="node-hashes"><a class="header" href="#node-hashes">Node hashes</a></h3>
+<h4 id="empty-nodes"><a class="header" href="#empty-nodes">Empty nodes</a></h4>
+<p>As described above, empty nodes always return <code>EMPTY_NODE_HASH</code> as the hash value.</p>
+<h4 id="leaf-nodes"><a class="header" href="#leaf-nodes">Leaf nodes</a></h4>
+<p>The definition of a leaf node's hash is</p>
+<pre><code class="language-text">    H::digest(LEAF_PREFIX || KEY(32-bytes) || VALUE_HASH)
+</code></pre>
+<p>The key MUST be included in the hash. Imagine every leaf node has the same value. If the key was not hashed, there 
+would be many different tree structures that would yield the same tree root. Specifically, any tree could replace a 
+leaf node with a different leaf node with the same key prefix corresponding to the height of the original leaf node 
+without changing the root hash.</p>
+<h4 id="branch-nodes"><a class="header" href="#branch-nodes">Branch nodes</a></h4>
+<p>The definition of a branch node's hash is</p>
+<pre><code class="language-text">    H::digest(BRANCH_PREFIX || height || key_prefix || left_child_hash || right_child_hash)
+</code></pre>
+<p>where</p>
+<ul>
+<li><code>height</code> is the height of the branch in the tree, where the root node is height 0.</li>
+<li><code>key_prefix</code> is the common prefix that the key of <em>every</em> descendent node of this branch will begin with. 
+<code>key_prefix</code> is <code>KEY_LENGTH_BYTES</code> long, and every bit after the prefix MUST be set to zero. This means that key 
+prefixes are not unique. For example, every key prefix for the left-most path down the tree will always have a 
+prefix of <code>[0; 32]</code>. The height parameter helps disambiguate this.</li>
+<li><code>left_child_hash</code> and <code>right_child_hash</code> are the hashes of the left and right child noes respectively, and have 
+length <code>KEY_LENGTH_BYTES</code>. </li>
+</ul>
+<h3 id="tree-structure"><a class="header" href="#tree-structure">Tree structure</a></h3>
+<p>The Merkle tree is built on top of an underlying dataset consisting of a set of (key, value) tuples. 
+The key fixes the position of each dataset element in the tree: starting from the root, each digit in the binary 
+expansion  indicates whether we should follow the left child (next digit is 0) or the right child (next digit is 1), 
+see Figure 1. The length of the key (in bytes) is a fixed constant of the tree, <code>KEY_LENGTH_BYTES</code>, larger than 0.</p>
+<p>Rather than explicitly creating a full tree, we simulate it by inserting only non-zero leaves into the tree whenever 
+a new key-value pair is added to the dataset, using the two optimizations:</p>
+<ol>
+<li>Each subtree with exactly one non-empty leaf is replaced by the leaf itself.</li>
+<li>Each subtree containing only empty nodes is replaced by a constant node with hash value equal to <code>EMPTY_HASH</code>.</li>
+</ol>
+<h3 id="root-hash-calculation"><a class="header" href="#root-hash-calculation">Root Hash Calculation</a></h3>
+<p>The Merkle root of a dataset is computed as follows:</p>
+<ol>
+<li>The Merkle root of an empty dataset is set to the constant value <code>EMPTY_HASH</code>.</li>
+<li>The Merkle root of a dataset with a single element is set to the leaf hash of that element.</li>
+<li>Otherwise, the Merkle root is the hash of the branch node occupying the root position. The child hashes are 
+calculated recursively using the definitions above.</li>
+</ol>
+<h3 id="adding-or-updating-a-key-value-pair"><a class="header" href="#adding-or-updating-a-key-value-pair">Adding or updating a key-value pair</a></h3>
+<p>Adding a new node or updating an existing one follows the same logic. Therefore, a single function, <code>upsert</code> is 
+defined. The borrow semantics of Rust requires a slightly different approach to managing the tree than one might 
+take in other languages (e.g. <a href="https://github.com/LiskHQ/lips/blob/main/proposals/lip-0039.md" title="LIP-0039: Introduce sparse Merkle trees">LIP39</a>).</p>
+<pre><code class="language-rust noplayground ignore">    pub fn upsert(&amp;mut self, key: NodeKey, value: ValueHash) -&gt; Result&lt;UpdateResult, SMTError&gt; {
+        let new_leaf = LeafNode::new(key, value);
+        if self.is_empty() {
+            self.root = Node::Leaf(new_leaf);
+            return Ok(UpdateResult::Inserted);
+        } else if self.root.is_leaf() {
+            return self.upsert_root(new_leaf);
+        }
+        // Traverse the tree until we find either an empty node or a leaf node.
+        let mut terminal_branch = self.find_terminal_branch(new_leaf.key())?;
+        let result = terminal_branch.insert_or_update_leaf(new_leaf)?;
+        Ok(result)
+    }
+    
+    /// Look at the height-th most significant bit and returns Left of it is a zero and Right if it is a one 
+    fn traverse_direction(height: usize, child: &amp;NodeKey) -&gt; TraverseDirection {...}
+    
+    // Finds the branch node above the terminal node. The case of an empty or leaf root node must be handled elsewhere 
+    fn find_terminal_branch(&amp;mut self, child_key: &amp;NodeKey) -&gt; Result&lt;TerminalBranch&lt;'_, H&gt;, SMTError&gt; {
+        let mut parent_node = &amp;mut self.root;
+        let mut empty_siblings = Vec::new();
+        if !parent_node.is_branch() {
+            return Err(SMTError::UnexpectedNodeType);
+        }
+        let mut done = false;
+        let mut traverse_dir = TraverseDirection::Left;
+        while !done {
+            let branch = parent_node.as_branch_mut().unwrap();
+            traverse_dir = traverse_direction(branch.height(), child_key)?;
+            let next = match traverse_dir {
+                TraverseDirection::Left =&gt; {
+                    empty_siblings.push(branch.right().is_empty());
+                    branch.left()
+                },
+                TraverseDirection::Right =&gt; {
+                    empty_siblings.push(branch.left().is_empty());
+                    branch.right()
+                },
+            };
+            if next.is_branch() {
+                parent_node = match traverse_dir {
+                    TraverseDirection::Left =&gt; parent_node.as_branch_mut().unwrap().left_mut(),
+                    TraverseDirection::Right =&gt; parent_node.as_branch_mut().unwrap().right_mut(),
+                };
+            } else {
+                done = true;
+            }
+        }
+        let terminal = TerminalBranch {
+            parent: parent_node,
+            direction: traverse_dir,
+            empty_siblings,
+        };
+        Ok(terminal)
+    }</code></pre>
+<pre><code class="language-rust noplayground ignore">struct TerminalBranch&lt;'a, H&gt; {
+    parent: &amp;'a mut Node&lt;H&gt;,
+    direction: TraverseDirection,
+    empty_siblings: Vec&lt;bool&gt;,
+}
+
+impl&lt;'a, H: Digest&lt;OutputSize = U32&gt;&gt; TerminalBranch&lt;'a, H&gt; {
+    /// Returns the terminal node of the branch
+    pub fn terminal(&amp;self) -&gt; &amp;Node&lt;H&gt; {
+        let branch = self.parent.as_branch().unwrap();
+        branch.child(self.direction)
+    }
+
+    // When inserting a new leaf node, there might be a slew of branch nodes to create depending on where the keys
+    // of the existing leaf and new leaf node diverge. E.g. if a leaf node of key `1101` is being inserted into a
+    // tree with a single leaf node of key `1100` then we must create branches at `1...`, `11..`, and `110.` with
+    // the leaf nodes `1100` and `1101` being the left and right branches at height 4 respectively.
+    //
+    // This function handles this case, as well the simple update case, and the simple insert case, where the target
+    // node is empty.
+    fn insert_or_update_leaf(&amp;mut self, leaf: LeafNode&lt;H&gt;) -&gt; Result&lt;UpdateResult, SMTError&gt; {
+        let branch = self.parent.as_branch_mut().ok_or(SMTError::UnexpectedNodeType)?;
+        let height = branch.height();
+        let terminal = branch.child_mut(self.direction);
+        match terminal {
+            Empty(_) =&gt; {
+                let _ = [Set terminal to the new leaf (Insert)]
+                Ok(UpdateResult::Inserted)
+            },
+            Leaf(old_leaf) if old_leaf.key() == leaf.key() =&gt; {
+                let old_value = [Replace of leaf with new leaf (Update)]
+                Ok(UpdateResult::Updated(old_value))
+            },
+            Leaf(_) =&gt; {
+                let branch = // Create a new sub-tree with the old and new leaf being children of a branch at the height
+                             // of the common key-prefixes
+                Ok(UpdateResult::Inserted)
+            },
+            _ =&gt; unreachable!(),
+        }
+    }</code></pre>
+<h3 id="removing-a-leaf-node"><a class="header" href="#removing-a-leaf-node">Removing a Leaf Node</a></h3>
+<p>A certain key-value pair can be removed from the tree by deleting the corresponding leaf node and rearranging the 
+affected nodes in the tree. The following protocol can be used to remove a key <code>k</code> from the tree.</p>
+<pre><code class="language-rust noplayground ignore">    /// Attempts to delete the value at the location `key`. If the tree contains the key, the deleted value hash is
+    /// returned. Otherwise, `KeyNotFound` is returned.
+    pub fn delete(&amp;mut self, key: &amp;NodeKey) -&gt; Result&lt;DeleteResult, SMTError&gt; {
+        if self.is_empty() {
+            return Ok(DeleteResult::KeyNotFound);
+        }
+        if self.root.is_leaf() {
+            return self.delete_root(key);
+        }
+        let mut path = self.find_terminal_branch(key)?;
+        let result = match path.classify_deletion(key)? {
+            PathClassifier::KeyDoesNotExist =&gt; DeleteResult::KeyNotFound,
+            PathClassifier::TerminalBranch =&gt; {
+                let deleted = // prune tree placing sibling at correct place upstream
+                DeleteResult::Deleted(deleted)
+            },
+            PathClassifier::NonTerminalBranch =&gt; {
+                let deleted_hash = path.delete()?;
+                DeleteResult::Deleted(deleted_hash)
+            },
+        };
+        Ok(result)
+    }</code></pre>
+<h3 id="proof-construction"><a class="header" href="#proof-construction">Proof Construction</a></h3>
+<p>Proofs are constructed in a straightforward manner. Unlike other SMT implementations (e.g. <a href="https://github.com/LiskHQ/lips/blob/main/proposals/lip-0039.md" title="LIP-0039: Introduce sparse Merkle trees">LIP39</a>), if a
+sibling node is empty, then <code>EMPTY_NODE_HASH</code> is included as the sibling hash, rather than building a bitmap of
+non-empty siblings.</p>
+<p>Both inclusion and exclusion proofs use a common algorithm, <code>build_proof_candidate</code> for traversing the tree to the 
+desired proof key,<br />
+collecting hashes of every sibling node. The terminal node for where the proof key should reside is also noted:</p>
+<pre><code class="language-rust noplayground ignore">pub struct ExclusionProof&lt;H&gt; {
+    siblings: Vec&lt;NodeHash&gt;,
+    // The terminal node of the tree proof, or `None` if the the node is `Empty`.
+    leaf: Option&lt;LeafNode&lt;H&gt;&gt;,
+    phantom: std::marker::PhantomData&lt;H&gt;,
+}
+
+impl&lt;H: Digest&lt;OutputSize = U32&gt;&gt; SparseMerkleTree&lt;H&gt; {
+    /// Construct the data structures needed to generate the Merkle proofs. Although this function returns a struct
+    /// of type `ExclusionProof` it is not really a valid (exclusion) proof. The constructors do additional
+    /// validation before passing the structure on. For this reason, this method is `private` outside of the module.
+    pub(crate) fn build_proof_candidate(&amp;self, key: &amp;NodeKey) -&gt; Result&lt;ExclusionProof&lt;H&gt;, SMTError&gt; {
+        let mut siblings = Vec::new();
+        let mut current_node = &amp;self.root;
+        while current_node.is_branch() {
+            let branch = current_node.as_branch().unwrap();
+            let dir = traverse_direction(branch.height(), key)?;
+            current_node = match dir {
+                TraverseDirection::Left =&gt; {
+                    siblings.push(branch.right().hash().clone());
+                    branch.left()
+                },
+                TraverseDirection::Right =&gt; {
+                    siblings.push(branch.left().hash().clone());
+                    branch.right()
+                },
+            };
+        }
+        let leaf = current_node.as_leaf().cloned();
+        let candidate = ExclusionProof::new(siblings, leaf);
+        Ok(candidate)
+    }
+}</code></pre>
+<h4 id="inclusion-proof"><a class="header" href="#inclusion-proof">Inclusion proof</a></h4>
+<p>An inclusion proof is valid if the terminal node found in <code>build_proof_candidate</code> matches the key and value provided 
+in the proof request. Equivalently, the leaf node's hash must match the hash of a new leaf node generated with the 
+key and value given in the proof request.</p>
+<p>The final proof consists of the vector of sibling hashes. </p>
+<pre><code class="language-rust noplayground ignore">pub struct InclusionProof&lt;H&gt; {
+    siblings: Vec&lt;NodeHash&gt;,
+    phantom: std::marker::PhantomData&lt;H&gt;,
+}
+
+impl&lt;H: Digest&lt;OutputSize = U32&gt;&gt; InclusionProof&lt;H&gt; {
+    /// Generates an inclusion proof for the given key and value hash from the given tree. If the key does not exist in
+    /// tree, or the key does exist, but the value hash does not match, then `from_tree` will return a
+    /// `NonViableProof` error.
+    pub fn from_tree(tree: &amp;SparseMerkleTree&lt;H&gt;, key: &amp;NodeKey, value_hash: &amp;ValueHash) -&gt; Result&lt;Self, SMTError&gt; {
+        let proof = tree.build_proof_candidate(key)?;
+        match proof.leaf {
+            Some(leaf) =&gt; {
+                let node_hash = LeafNode::&lt;H&gt;::hash_value(key, value_hash);
+                if leaf.hash() != &amp;node_hash {
+                    return Err(SMTError::NonViableProof);
+                }
+            },
+            None =&gt; return Err(SMTError::NonViableProof),
+        }
+        Ok(Self::new(proof.siblings))
+    }
+}</code></pre>
+<h4 id="exclusion-proof"><a class="header" href="#exclusion-proof">Exclusion proof</a></h4>
+<p>An exclusion proof request only requires a key value. A proof is valid if the leaf node returned by 
+<code>build_proof_candidate</code> does not have the same key as the proof request.</p>
+<p>The proof consists of the sibling hashes and a copy of the terminal leaf node.</p>
+<pre><code class="language-rust noplayground ignore">impl&lt;H: Digest&lt;OutputSize = U32&gt;&gt; ExclusionProof&lt;H&gt; {
+    /// Generates an exclusion proof for the given key from the given tree. If the key exists in the tree then
+    /// `from_tree` will return a `NonViableProof` error.
+    pub fn from_tree(tree: &amp;SparseMerkleTree&lt;H&gt;, key: &amp;NodeKey) -&gt; Result&lt;Self, SMTError&gt; {
+        let proof = tree.build_proof_candidate(key)?;
+        // If the keys match, then we cannot provide an exclusion proof, since the key *is* in the tree
+        if let Some(leaf) = &amp;proof.leaf {
+            if leaf.key() == key {
+                return Err(SMTError::NonViableProof);
+            }
+        }
+        Ok(proof)
+    }</code></pre>
+<h3 id="proof-verification"><a class="header" href="#proof-verification">Proof Verification</a></h3>
+<p>To check an exclusion proof, the Verifier calls the <code>ExclusionProof::validate(&amp;self, keys, root)</code> function. This 
+function is not a method of the tree, and can be run just by holding the Merkle root.</p>
+<p>The function reconstructs the tree using the expected key and places the leaf node provided in the proof at the terminal 
+position. It then calculates the root hash. </p>
+<p>Validation succeeds if the calculated root hash matches the given root hash, and the leaf node is
+empty, or the existing leaf node has a different key to the expected key.</p>
+<pre><code class="language-rust noplayground ignore">    pub fn validate(&amp;self, expected_key: &amp;NodeKey, expected_root: &amp;NodeHash) -&gt; bool {
+        let leaf_hash = match &amp;self.leaf {
+            Some(leaf) =&gt; leaf.hash().clone(),
+            None =&gt; (EmptyNode {}).hash().clone(),
+        };
+        let root = self.calculate_root_hash(expected_key, leaf_hash);
+        // For exclusion proof, roots must match AND existing leaf must be empty, or keys must not match
+        root == *expected_root &amp;&amp;
+            match &amp;self.leaf {
+                Some(leaf) =&gt; leaf.key() != expected_key,
+                None =&gt; true,
+            }
+    }</code></pre>
+<p>Verifying inclusion proofs is similar, except that the terminal leaf node will be constructed from the key and value 
+hash provided by the verifier.</p>
+<pre><code class="language-rust noplayground ignore">    pub fn validate(&amp;self, expected_key: &amp;NodeKey, expected_value: &amp;ValueHash, expected_root: &amp;NodeHash) -&gt; bool {
+        // calculate expected leaf node hash
+        let leaf_hash = LeafNode::&lt;H&gt;::hash_value(expected_key, expected_value);
+        let calculated_root = self.calculate_root_hash(expected_key, leaf_hash);
+        calculated_root == *expected_root
+    }</code></pre>
+<h2 id="backwards-compatibility"><a class="header" href="#backwards-compatibility">Backwards Compatibility</a></h2>
+<p>If the UTXO Merkle root is replaced by a sparse Merkle tree, this change would require a <strong>hard fork</strong>, 
+since it fundamentally alters how the UTXO Merkle root is calculated. </p>
+<h1 id="references"><a class="header" href="#references">References</a></h1>
+<ol>
+<li>Dahlberg et. al., &quot;Efficient Sparse Merkle Trees&quot;, <a href="https://eprint.iacr.org/2016/683.pdf" title="Original paper">SMT</a></li>
+<li>A. Ricottone, &quot;LIP-0039: Introduce sparse Merkle trees&quot;, <a href="https://github.com/LiskHQ/lips/blob/main/proposals/lip-0039.md" title="LIP-0039: Introduce sparse Merkle trees">LIP39</a></li>
+</ol>
+<h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
+<div class="table-wrapper"><table><thead><tr><th>Date</th><th>Change</th><th>Author</th></tr></thead><tbody>
+<tr><td>10 Jul 2023</td><td>First draft</td><td>CjS77</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0123_One_sided_replay_attacks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0153_StagedWalletSecurity.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0123_One_sided_replay_attacks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0153_StagedWalletSecurity.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

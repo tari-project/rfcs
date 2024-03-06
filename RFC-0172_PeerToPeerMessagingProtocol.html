@@ -1,0 +1,650 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0172: Peer to Peer Messaging Protocol - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html" class="active"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0172peertopeermessaging"><a class="header" href="#rfc-0172peertopeermessaging">RFC-0172/PeerToPeerMessaging</a></h1>
+<h2 id="peer-to-peer-messaging-protocol"><a class="header" href="#peer-to-peer-messaging-protocol">Peer to Peer Messaging Protocol</a></h2>
+<p><img src="theme/images/status-stable.svg" alt="status: stable" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/sdbondi">Stanley Bondi</a>, <a href="https://github.com/CjS77">Cayle Sharrock</a>, <a href="https://github.com/stringhandler">Stringhandler</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2019 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, 
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in 
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as 
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>The aim of this Request for Comment (RFC) is to describe the peer-to-peer messaging protocol for <a href="Glossary.html#communication-node">communication node</a>s 
+and <a href="Glossary.html#communication-client">communication client</a>s on the Tari network.</p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="rfc-0170_NetworkCommunicationProtocol.html">RFC-0170: NetworkCommunicationProtocol</a></li>
+<li><a href="RFC-0171_MessageSerialisation.html">RFC-0171: MessageSerialization</a></li>
+</ul>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<h3 id="assumptions"><a class="header" href="#assumptions">Assumptions</a></h3>
+<ul>
+<li>All wire messages are de/serialized as per <a href="RFC-0171_MessageSerialisation.html#wire-message-format">RFC-0171: Message Serialisation</a>.</li>
+<li>All peer's public identities are based on <a href="https://ristretto.group/">Ristretto</a> <a href="https://tlu.tarilabs.com/cryptography/elliptic-curves">prime order elliptic curves</a>.</li>
+</ul>
+<h3 id="broad-requirements"><a class="header" href="#broad-requirements">Broad Requirements</a></h3>
+<p>Tari network peer communication must facilitate secure, private and efficient communication
+between peers. Broadly, a <a href="Glossary.html#communication-node">communication node</a> or <a href="Glossary.html#communication-client">communication client</a> MUST be capable of:</p>
+<ul>
+<li>bidirectional communication between multiple connected peers;</li>
+<li>encrypted, authenticated over-the-wire communication;</li>
+<li>understanding and constructing Tari messages;</li>
+<li>gracefully reestablishing dropped connections; and (optionally)</li>
+<li>either: 
+<ul>
+<li>communicating to a SOCKS5 proxy (e.g. connections over Tor).</li>
+<li>or have a static public IPv4 address.</li>
+</ul>
+</li>
+</ul>
+<p>Additionally, communication nodes MUST be capable of performing the following tasks:</p>
+<ul>
+<li>maintaining a list of known and available peers in the form of a peer list;</li>
+<li>forwarding directed messages to neighbouring peers; and</li>
+<li>broadcasting messages to neighbouring peers.</li>
+</ul>
+<h3 id="overall-architectural-design"><a class="header" href="#overall-architectural-design">Overall Architectural Design</a></h3>
+<p>The Tari communication layer has a modular design to allow for the various communicating nodes and clients to
+use the same infrastructure code.</p>
+<p>Peer connection state is monitored by the <code>ConnectionManager</code> component. The <code>ConnectionManager</code> emits events to allow 
+other components to subscribe to connection state changes. </p>
+<ul>
+<li><code>ConnectionManager</code> - manages peer connections and connection state monitoring.</li>
+<li><code>PeerConnection</code> - manages the sending and receiving of messages for a single peer connection.</li>
+<li><code>NetAddress</code> - <a href="https://multiformats.io/multiaddr/">multiaddr</a> describing the public address and transport for a peer-to-peer connection.</li>
+<li><code>Messaging Protocol</code> - defines the Tari wire message format and message types.</li>
+<li><code>Connection Multiplexer</code> - allows multiple substreams to be established over a single transport-level connection.</li>
+</ul>
+<h4 id="netaddress"><a class="header" href="#netaddress">NetAddress</a></h4>
+<p>A <code>NetAddress</code> is a publicly-accessible address for a peer. A peer may have one or more <code>NetAddress</code>es. </p>
+<p>A good <code>NetAddress</code> format should:</p>
+<ul>
+<li>have an efficient binary representation;</li>
+<li>have a human-readable representation with a simple syntax;</li>
+<li>support many transport protocols; and</li>
+<li>be self-describing</li>
+</ul>
+<p>For these reasons, we select the <a href="https://multiformats.io/multiaddr/">multiaddr</a> format for all peer-to-peer addresses.</p>
+<p>For example,</p>
+<ul>
+<li><code>/ip4/123.123.123.123/tcp/12345</code> - IPv4 address with TCP transport on port 12345.</li>
+<li><code>/onion3/abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrst:12345</code> - Tor onion address </li>
+</ul>
+<h4 id="supported-transports"><a class="header" href="#supported-transports">Supported Transports</a></h4>
+<p>The following transports are supported by the Tari communication layer:</p>
+<ul>
+<li>TCP/IP - A publicly accessible IPv4 address.</li>
+<li>SOCKS5 - Allows a SOCKS5 proxy to be configured for inbound and outbound connections.</li>
+<li>Tor - A specialisation of the SOCKS5 transport that facilitates connections over the Tor network.</li>
+</ul>
+<h4 id="establishing-a-connection"><a class="header" href="#establishing-a-connection">Establishing a Connection</a></h4>
+<p>Every participating <a href="Glossary.html#communication-node">communication node</a> SHOULD listen on at least one of the supported transports, accessible from a
+public address, to allow remote peers to establish peer connections. </p>
+<p>A peer wishing to establish a peer connection should attempt a connection to one of the remote peer's public 
+<a href="#netaddress">NetAddresses</a> using the transport described in the <a href="#netaddress">NetAddress</a>. </p>
+<p>The peer that is initiating the <em>outbound</em> connection is referred to as <em>the initiator</em> and the peer that accepts the
+<em>inbound</em> connection is referred to as <em>the responder</em> for the remainder of this section. </p>
+<p>We describe the following socket upgrade procedures for an encrypted peer-to-peer connection on the Tari network.</p>
+<ol>
+<li>The Wire Mode Byte</li>
+</ol>
+<p>The wire mode indicates the intention of the initiator. It is up to the application domain to dictate what byte is acceptable
+however a common configuration is to use the wire mode to indicate which network (mainnet, testnet etc) the initiator is 
+attempting to use allowing the responder to accept/reject the connection early on in the connection procedure.</p>
+<p><em>The initiator</em> MUST send a single byte indicating the wire mode within <code>WIRE_MODE_TIMEOUT</code>.
+<em>The responder</em> SHOULD to accept or reject (close) the connection based on the initiator's wire mode byte.
+<em>The responder</em> SHOULD reject (close) the connection if no byte is received within <code>WIRE_MODE_TIMEOUT</code>.</p>
+<p>Once the byte is sent, the initiator may immediately proceed to the next procedure.</p>
+<ol start="2">
+<li>The <a href="http://www.noiseprotocol.org/">Noise Protocol</a></li>
+</ol>
+<p>The <a href="http://www.noiseprotocol.org/">Noise Protocol</a> framework is a set of related crypto protocols that support mutual authentication and ephemeral 
+encryption key exchange amongst other features. </p>
+<p>We list the following characteristics and requirements for encrypted peer-to-peer connections on the Tari network:</p>
+<ul>
+<li>Mutual authentication of the initiator and responder;</li>
+<li><em>the responder</em> need not know <em>the initiator's</em> public identity prior to the connection;</li>
+<li>the public identity of each participant is hidden to any observer; </li>
+<li>forward secrecy; and,</li>
+<li>for efficiency, has a minimal round trip time.</li>
+</ul>
+<p>For these reasons we select the single round-trip <code>Noise_IX_25519_ChaChaPoly_BLAKE2b</code> protocol, that is, the Noise IX 
+handshake pattern using Curve25519 for ephemeral and static identities, ChaChaPoly encryption and a HKDF using BLAKE2b.</p>
+<p>If successful, an authenticated encrypted socket connection is established between the peers.</p>
+<ol start="3">
+<li>Identity Exchange</li>
+</ol>
+<p>At this point the initiator and responder are aware of each other's public identity keys, however, some additional
+information is required to fully &quot;introduce&quot; the participants to each other.</p>
+<p>Both the initiator and responder simultaneously transmit a message containing their up-to-date public addresses, 
+the peer feature flags, protocols supported by the peer, a timestamp of the last time these details changed 
+and a signature that signs the public addresses, feature flags and update timestamp. Peers may store and share 
+these details with other peers, who can check the authenticity of the provided information by verifying the signature.</p>
+<ol start="4">
+<li>Multiplexing</li>
+</ol>
+<p>Now that these procedures are complete, we have an active PeerConnection. There is no explicit protocol message required 
+to initiate multiplexing as both sides implicitly agree to send <a href="https://github.com/hashicorp/yamux/blob/master/spec.md">yamux</a> protocol messages. Light-weight <a href="https://github.com/hashicorp/yamux/blob/master/spec.md">Yamux</a> 
+substreams are opened lazily as/when required by the application.</p>
+<p>Multiplexing allows a single socket connection to be used simultaneously by multiple components as if each had their own
+dedicated channel, in a very similar way that your browser can perform many HTTP2 requests over a single server connection.
+In <a href="https://github.com/hashicorp/yamux/blob/master/spec.md">yamux</a>, these dedicated channels are called substreams. The details of the <a href="https://github.com/hashicorp/yamux/blob/master/spec.md">yamux</a> protocol are out of scope for this
+RFC.</p>
+<h3 id="protocol-negotiation"><a class="header" href="#protocol-negotiation">Protocol Negotiation</a></h3>
+<p>To begin any protocol, an initiator MUST open a new <a href="https://github.com/hashicorp/yamux/blob/master/spec.md">yamux</a> substream and begin protocol negotiation.
+Protocol negotiation ensures that both sides of the exchange are speaking the same language. 
+Protocols are identified by a unique string identifier given by the author of the protocol.
+A protocol name can technically be any string, but it is defined in the Tari protocol as <code>t/{protocol-ident}/{version}</code>,
+where <code>t</code> is short for Tari, for example the messaging protocol is <code>t/msg/0.1</code>.</p>
+<p>To begin, the initiator MUST send a protocol negotiation message consisting of 1 length byte, 
+1 bitflag byte and the protocol identifier string. The length byte MUST be equal to the length of the protocol identifier.</p>
+<p>The bitflags are defined as follows:</p>
+<ul>
+<li><code>0x01</code> - <code>OPTIMISTIC</code></li>
+<li><code>0x02</code> - <code>TERMINATE</code></li>
+<li><code>0x04</code> - <code>PROTOCOL_NOT_SUPPORTED</code> (response)</li>
+<li><code>0x08 - 0x128</code> - Future use (ignored)</li>
+</ul>
+<p>If the <code>OPTIMISTIC</code> flag is set, the initiator considers the negotiation complete as it is optimistic that the responder 
+supports it. It can assume this because the peer gave a list of supported protocols in the <a href="#identity-exchange">Identity Exchange</a> 
+procedure. If the responder does not support the protocol, it can simply close the substream.</p>
+<p>In general, peers will use <code>OPTIMISTIC</code> negatation and never wait for a response, as they have a full list of supported 
+protocols. However, if the initiator wishes to negotiate a protocol not in the protocol list, it may leave the <code>OPTIMISTIC</code> 
+flag unset in the initial message.</p>
+<p>If the responder supports the protocol, it SHOULD respond with the name of the supported protocol and all flags unset and
+immediately proceed with the agreed upon protocol.
+If not, it SHOULD respond with the <code>PROTOCOL_NOT_SUPPORTED</code> flag set and an empty protocol name and wait for more messages.
+The initiator MAY send another protocol negotiation message or close the substream.</p>
+<p>A responder MAY set the <code>TERMINATE</code> flag at any time and close the substream. In practise, this is used to indicate to the 
+initiator that it has exceeded the maximum number of protocol negotiation queries (5) and should give up.</p>
+<h4 id="peer"><a class="header" href="#peer">Peer</a></h4>
+<p>A single peer that can communicate on the Tari network.</p>
+<p>Fields include:</p>
+<ul>
+<li><code>public_key</code> - The <a href="https://ristretto.group/">Ristretto</a> public key identity of the peer.</li>
+<li><code>addresses</code> - a list of <a href="#netaddress">NetAddress</a>es associated with the peer, perhaps accompanied by some bookkeeping metadata, such
+as preferred address;</li>
+<li><code>peer_features</code> - bitflags with the following flags
+<ul>
+<li><code>MESSAGE_PROPAGATION = 0x01</code> - peer is able to propagate/route messages</li>
+<li><code>DHT_STORE_FORWARD = 0x02</code> - peer provides message storage and can respond to <code>SafRequestMessages</code></li>
+<li>A <code>COMMUNICATION_NODE</code> is defined as <code>0x03</code> (<code>MESSAGE_PROPAGATION | DHT_STORE_FORWARD</code>)</li>
+<li>A <code>COMMUNICATION_CLIENT</code> is defined as <code>0x00</code></li>
+</ul>
+</li>
+<li><code>last_seen</code> - a timestamp of the last time a message has been sent/received from this peer;</li>
+<li><code>banned_until</code> - an optional timestamp indicating the peer is banned;</li>
+<li><code>offline_at</code> - an optional timestamp indicating at which time a peer was marked as offline due to multiple failed attempts to contact the peer.</li>
+</ul>
+<p>A peer may also contain reputation metrics (e.g. rejected_message_count, avg_latency) to be used to decide
+if a peer should be banned. This mechanism is yet to be decided.</p>
+<h4 id="peermanager"><a class="header" href="#peermanager">PeerManager</a></h4>
+<p>The PeerManager is responsible for managing the list of peers with which the node has previously interacted.
+This list is called a routing table and is made up of <a href="#peer">Peer</a>s.</p>
+<p>The PeerManager can</p>
+<ul>
+<li>add a peer to the routing table;</li>
+<li>search for a peer given a node ID, public key or <a href="#netaddress">NetAddress</a>;</li>
+<li>delete a peer from the list;</li>
+<li>persist the peer list using a storage backend;</li>
+<li>restore the peer list from the storage backend;</li>
+<li>maintain lightweight views of peers, using a filter criterion, e.g. a list of peers that have been banned, i.e. a denylist; and</li>
+<li>prune the routing table based on a filter criterion, e.g. last date seen.</li>
+</ul>
+<h3 id="general-purpose-messaging-protocol"><a class="header" href="#general-purpose-messaging-protocol">General-purpose Messaging Protocol</a></h3>
+<p>The messaging protocol is a simple fire-and-forget protocol where arbitrary messages can be sent between peers.
+If Alice wants to send a message to Bob, she will open a new <a href="https://github.com/hashicorp/yamux/blob/master/spec.md">yamux</a> substream and <a href="#protocol-negotiation">negotiate</a> the 
+<code>t/msg/0.1</code> protocol. If Bob wants to send a message to Alice, he will do the same. This means that two substreams (one per direction)
+are open for bi-directional message sending as required. </p>
+<p>Message frames are length delimited (see <a href="https://docs.rs/tokio-util/latest/tokio_util/codec/length_delimited/">Tokio's LengthDelimitedCodec</a>).
+At this level, no structure apart from the length-delimited framing is imposed on the message protocol allowing that 
+to be fully determined by domain-level components.</p>
+<h4 id="tari-dht-and-base-layer-messaging-protocol"><a class="header" href="#tari-dht-and-base-layer-messaging-protocol">Tari DHT and Base-Layer Messaging Protocol</a></h4>
+<p>The following illustrates the structure of a Tari message:</p>
+<pre><code class="language-text">+----------------------------------------+
+|              DhtEnvelope               |
+|  +----------------------------------+  |
+|  |             DhtHeader            |  |
+|  +----------------------------------+  |
+|  +----------------------------------+  |
+|  |         EnvelopeBody             |  |
+|  | (multipart, optionally encrypted)|  |
+|  | +------------------------------+ |  |
+|  | |   +-----------------------+  | |  |
+|  | |   |    1. MessageHeader   |  | |  |
+|  | |   +-----------------------+  | |  |
+|  | |   +-----------------------+  | |  |
+|  | |   |    2. MessageBody     |  | |  |
+|  | |   +-----------------------+  | |  |
+|  | +------------------------------+ |  |
+|  +----------------------------------+  |
++----------------------------------------+
+</code></pre>
+<p>Each Tari message is wrapped in a <code>DhtEnvelope</code> which contains a <code>DhtHeader</code> and an <code>EnvelopeBody</code>.</p>
+<p>The <code>DhtHeader</code> is a protobuf message with these fields:</p>
+<ul>
+<li>
+<p><code>version: u32</code> </p>
+<p>The major message header version. A peer MAY discard the message if the version is not supported.</p>
+</li>
+<li>
+<p><code>message_signature: 64 bytes</code> </p>
+<p>The raw representation of a Schnorr signature committing to: </p>
+<ul>
+<li>sender public key</li>
+<li>signature public nonce</li>
+<li>and Blake2b hash of:
+<ul>
+<li>&quot;comms.dht.v1.message_signature&quot;</li>
+<li>version </li>
+<li>destination </li>
+<li>msg_type </li>
+<li>flags </li>
+<li>expiry </li>
+<li>ephemeral_public_key </li>
+<li>body </li>
+</ul>
+</li>
+</ul>
+<p>This is required if the <code>ENCRYPTED</code> flag is set.</p>
+</li>
+<li>
+<p><code>ephemeral_public_key: 32 bytes</code></p>
+<p>Ephemeral public key component of the ECDH shared key. MUST be specified if the ENCRYPTED flag is set.</p>
+</li>
+<li>
+<p><code>dht_message_type: i32</code></p>
+<p>Enumeration of the type of message.</p>
+<ul>
+<li>None = 0 - Domain-level message</li>
+<li>Join = 1 - Join/Announce</li>
+<li>Discovery = 2 - Discovery request</li>
+<li>DiscoveryResponse = 3 - Response to a discovery request</li>
+<li>SafRequestMessages = 20 - Request stored messages from a node</li>
+<li>SafStoredMessages = 21 - Stored messages response</li>
+</ul>
+</li>
+<li>
+<p><code>flags: u32</code> - bitflags <code>0x01 - ENCRYPTED</code> </p>
+</li>
+<li>
+<p><code>message_tag: u64</code> - Message trace ID. This can be omitted or any value and is used for debug tracing.</p>
+</li>
+<li>
+<p><code>expires: Option&lt;prost_types::Timestamp&gt;</code></p>
+<p>Expiry timestamp for the message, if any. If specified any peer receiving the message after this time MAY discard it.</p>
+</li>
+<li>
+<p><code>destination: Option&lt;dht_header::Destination&gt;</code></p>
+<p>Enumeration of the message destination:</p>
+<ul>
+<li><code>UNKNOWN = 0</code> - the destination was not specified, this indicates that the message is destined for the receiver.</li>
+<li><code>PUBLICKEY(XXXXX) = 1</code> - destination is the specified public key. This MUST be provided when the <code>ENCRYPTED</code> flag is set.</li>
+</ul>
+</li>
+</ul>
+<h5 id="inbound-message-validation"><a class="header" href="#inbound-message-validation">Inbound Message Validation</a></h5>
+<p>The following validation rules MUST be applied to all incoming messages:</p>
+<ul>
+<li>If <code>ENCRYPTED</code> is set
+<ul>
+<li>The <code>destination</code> MUST be <code>PUBLICKEY(XXXXX)</code></li>
+<li>The <code>ephemeral_public_key</code> MUST be specified</li>
+<li>The <code>message_signature</code> MUST be non-empty</li>
+<li>If able to decrypt the message signature:
+<ul>
+<li>the signature MUST be valid</li>
+<li>the destination public key MUST match the local public key</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>If the <code>ENCRYPTED</code> flag is not set, indicating a cleartext message
+<ul>
+<li>The <code>message_signature</code> MAY be specified. If it is, it MUST be valid.</li>
+<li>Other fields relating to encryption e.g. <code>ephemeral_public_key</code> MAY be set but SHOULD be ignored.</li>
+</ul>
+</li>
+</ul>
+<p>If any of these rules fail the message SHOULD be discarded.</p>
+<h5 id="outbound-messaging"><a class="header" href="#outbound-messaging">Outbound Messaging</a></h5>
+<p>The protocol provides for the following outbound message broadcast strategies:</p>
+<ul>
+<li><code>Direct(Identity)</code> - Send the message directly to the destination peer. </li>
+<li><code>Flood(exclude)</code> - Send to all connected peers excluding <code>exclude</code> peers. If no peers are connected, no messages are sent.</li>
+<li><code>Random(n, exclude)</code> - Send to a random set of peers of size n that are Communication Nodes, excluding <code>exclude</code> peers.</li>
+<li><code>ClosestNodes({node_id, exclude, connected_only})</code> - Send to all n nearest Communication Nodes to the given node_id.</li>
+<li><code>DirectOrClosestNodes({node_id, exclude, connected_only})</code> - Send directly to destination if connected but otherwise send to all n nearest Communication Nodes</li>
+<li><code>Broadcast(excludes)</code>- Send to a random set of <em>connected</em> peers, excluding <code>excludes</code> peers. The number of peers selected at most equal to <code>propagation_factor</code>.</li>
+<li><code>SelectedPeers(peers)</code> - Send to the specified peers.</li>
+<li><code>Propagate(NodeDestination, Vec&lt;NodeId&gt;)</code> - Propagate to a set of <em>connected</em> peers closer to the destination. The number of peers selected at most equal to <code>propagation_factor</code>.</li>
+</ul>
+<p>A peer's node_id is defined as the 13-byte variable-length Blake2b hash of the public key. To determine if a peer identity 
+is &quot;closer&quot; to another peer we compare the XOR distance between peers as proposed by the <a href="https://www.scs.stanford.edu/~dm/home/papers/kpos.pdf">kademlia</a> paper.</p>
+<h5 id="dht-messages"><a class="header" href="#dht-messages">DHT Messages</a></h5>
+<ul>
+<li><code>Join</code></li>
+</ul>
+<p>Announces a peer's availability to the network. A routing node SHOULD propagate this message closer to the destination. 
+As it travels through the network, the peer information is stored in the peer list. Peers close to the newly 
+joined node MAY attempt to dial the node on receipt of this message.</p>
+<ul>
+<li><code>Discovery</code></li>
+</ul>
+<p>An encrypted discovery request containing the sender's contact details. A routing node SHOULD propagate this message closer to the destination.
+The destination peer will attempt to contact the sender and send a <code>DiscoveryResponse</code> message to reciprocate with its peer information.</p>
+<ul>
+<li><code>DiscoveryResponse</code></li>
+</ul>
+<p>Sent in response to a <code>Discovery</code> message. </p>
+<ul>
+<li><code>SafRequestMessages</code> / <code>SafStoredMessages</code></li>
+</ul>
+<p>Request and response messages for stored messages destined for the requester.</p>
+<h5 id="envelopebody"><a class="header" href="#envelopebody">EnvelopeBody</a></h5>
+<p>The <code>EnvelopeBody</code> is the &quot;payload&quot; of the message and consists of an arbitrary number of ordered opaque BLOBs.
+It may be encrypted for a particular destination. The contents of these BLOBs are decided by domain-level requirements.</p>
+<p>The Tari protocol inserts a <code>MessageHeader</code> at index 0 and <code>MessageBody</code> at index 1.</p>
+<p>A zero-sized encoding of <code>EnvelopeBody</code> is permitted as that is a valid proto3 encoding. When applying <a href="#message-encryption">message encryption</a>, 
+the body MUST be padded and, therefore, a message SHOULD be discarded if the encoded <code>EnvelopeBody</code> is zero-sized.</p>
+<h5 id="messageheader"><a class="header" href="#messageheader">MessageHeader</a></h5>
+<p>Every Tari message MUST have a payload header containing the following fields at index 0 in the <code>EnvelopeBody</code>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>message_type</td><td><code>u8</code></td><td>An enumeration of the message type of the body. Refer to message types below.</td></tr>
+<tr><td>nonce</td><td><code>u32</code></td><td>The optional message nonce.</td></tr>
+</tbody></table>
+</div>
+<p>MessageTypes are represented as an unsigned eight-bit integer denoting the expected contents of the <code>MessageBody</code>.</p>
+<div class="table-wrapper"><table><thead><tr><th>Category</th><th style="text-align: left">Name</th><th>Value</th><th>Description</th></tr></thead><tbody>
+<tr><td>Network</td><td style="text-align: left">PingPong</td><td>1</td><td>A PongPong message.</td></tr>
+<tr><td>Blockchain</td><td style="text-align: left">NewTransaction</td><td>65</td><td>Transaction submitted by a wallet or propagated by a base node.</td></tr>
+<tr><td>Blockchain</td><td style="text-align: left">NewBlock</td><td>66</td><td>Block propagated by a base node.</td></tr>
+<tr><td>Wallet</td><td style="text-align: left">SenderPartialTransaction</td><td>67</td><td>A partial MimbleWimble transaction submitted by a sender wallet to the receiver.</td></tr>
+<tr><td>Wallet</td><td style="text-align: left">ReceiverPartialTransactionReply</td><td>68</td><td>Reply to SenderPartialTransaction submitted by a receiver wallet to the sender.</td></tr>
+<tr><td>Blockchain</td><td style="text-align: left">BaseNodeRequest</td><td>69</td><td>Base node request message.</td></tr>
+<tr><td>Blockchain</td><td style="text-align: left">BaseNodeResponse</td><td>70</td><td>Base node response in reply to a BaseNodeRequest message.</td></tr>
+<tr><td>Blockchain</td><td style="text-align: left">MempoolRequest</td><td>71</td><td>Base node mempool request message.</td></tr>
+<tr><td>Blockchain</td><td style="text-align: left">MempoolResponse</td><td>72</td><td>Base node response in reply to a MempoolRequest message.</td></tr>
+<tr><td>Wallet</td><td style="text-align: left">TransactionFinalized</td><td>73</td><td>Finalized transaction message sent by a sender to receiver wallet.</td></tr>
+<tr><td>Wallet</td><td style="text-align: left">TransactionCancelled</td><td>74</td><td>A courtesy message sent by a wallet to inform the other that the transaction is cancelled.</td></tr>
+</tbody></table>
+</div>
+<p>All other message types are reserved for future use.</p>
+<h5 id="message-encryption"><a class="header" href="#message-encryption">Message Encryption</a></h5>
+<p>Encrypted messages may be routed across the Tari network such that only the destination node is able to decipher the 
+contents of the message. An encrypted message reveals to recipient but keeps the sender and contents private.</p>
+<p>To route an encrypted message, the following requirements MUST be met:</p>
+<ul>
+<li>The destination public key MUST be specified.</li>
+<li>The <code>message_signature</code> MUST be non-empty and SHOULD be encrypted.</li>
+<li>The <code>ephemeral_public_key</code> MUST be a valid <a href="https://ristretto.group/">Ristretto</a> public key.</li>
+<li>The <code>EnvelopeBody</code> MUST be non-empty, as message padding (described below) is required.</li>
+<li>If the message <code>expiry</code> is specified, a routing node MAY discard the message if the expiry time has passed.</li>
+</ul>
+<p>A message is encrypted using the following procedure:</p>
+<ul>
+<li>The <code>DhtEnvelopBody</code> is containing the <code>MessageHeader</code> and <code>MessageBody</code> is serialized using [protobuf].</li>
+<li>A CSRNG is used to generate the cipher nonce and this is prepended onto the message.</li>
+<li>The plaintext message is padded with '0x00' to a multiple of 6000 bytes.</li>
+<li>The message encryption key is generated as follows:
+<ul>
+<li>Key material <code>dh_key</code> is generated by Diffie-Hellman of the recipient public key and the ephemeral private key.</li>
+<li>The final message key is constructed: <code>message_key = Blake2b(&quot;comms.dht.v1.key_message&quot; || dh_key)</code> to produce a 32-byte key.</li>
+</ul>
+</li>
+<li>The message Schnorr signature is generated as follows:
+<ul>
+<li>A domain-separated Blake2b hash is generated with the challenge <code>message_challenge = Blake2b(&quot;comms.dht.v1.challenge&quot; || protocol_version || destination || dht_message_type || le_bytes(flags) || expiry || ephemeral_public_key || message_body)</code>.</li>
+<li>The signer signs the hashed challenge <code>&quot;comms.dht.v1.message_signature&quot; || signer_public_key || public_nonce || message_challenge</code> with the sender secret key.</li>
+<li>The signature is serialized and encrypted using the [ChaCha20Poly1305] AEAD cipher and the same <code>dh_key</code> constructed earlier.
+<ul>
+<li>The final signature key is constructed: <code>Blake2b(&quot;comms.dht.v1.key_signature&quot; || dh_key)</code> to produce a 32-byte key.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The <code>DhtEnvelopBody</code> is encrypted using the [ChaCha20Poly1305] AEAD cipher and <code>message_key</code>.</li>
+<li>The final message is a <code>DhtEnvelope</code> containing the plaintext <code>DhtHeader</code> and encrypted <code>DhtEnvelopeBody</code>.</li>
+</ul>
+<h5 id="message-routing"><a class="header" href="#message-routing">Message Routing</a></h5>
+<p>On receipt of a valid message with destination set to <code>PUBLIC_KEY(xxxx)</code>, a node SHOULD forward a message either
+directly to the peer, if able, or closer to the peer as per the XOR metric. If the message is invalid, the node
+SHOULD discard it.</p>
+<h5 id="store-and-forward"><a class="header" href="#store-and-forward">Store and Forward</a></h5>
+<p>Sometimes it may be desirable for messages to be sent without a destination node/client being online. This
+is especially important for a modern chat/messaging application as well as interactive Mimblewimble transactions.</p>
+<p>Each <a href="Glossary.html#communication-node">communication node</a> SHOULD allocate some disk space for storage of messages for offline recipients.
+A sender sends a message destined for a particular public identity to its closest peers, which forward the message
+to their closest peers, and so on. A peer is considered close enough by finding the farthest peer from the <code>n</code> closest 
+online and available peers to the storage node and comparing that to the XOR distance of the message destination.</p>
+<p>Eventually, the message will reach nodes that either know the destination or are very close to the destination.
+These nodes SHOULD store the message in some pending message storage for the destination. The maximum number of
+buckets and the size of each bucket SHOULD be sufficiently large as to be unlikely to overflow, but not so
+large as to approach disk space problems. Individual messages should be small and responsibilities for
+storage spread over the entire network.</p>
+<p>On receipt of a valid message with destination set to <code>PUBLIC_KEY(xxxx)</code>, and if the peer is sufficiently close to the destination,
+a node SHOULD store the message for a time and return it later to the peer in response to a <code>SafRequestMessages</code> message.</p>
+<p>If the [DhtEnvelopeBody] is encrypted, the type and contents of the message remain private.</p>
+<h5 id="message-deduplication"><a class="header" href="#message-deduplication">Message Deduplication</a></h5>
+<p>A peer propagating/routing a message may receive the same message after propagation from another peer as there is no way 
+for routing node to know which peers have seen the message before. To prevent infinite message propagation, message contents 
+should be hashed and stored in a <em>dedup cache</em>. On receiving a message, if the message hash is found, the message SHOULD be
+discarded and not propagated further.</p>
+<h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
+<tr><td style="text-align: left">13 Jun 2022</td><td style="text-align: left">Moved from tari repo</td><td style="text-align: left">sdbondi</td></tr>
+<tr><td style="text-align: left">9 Nov 2022</td><td style="text-align: left">Removed I2P and ZeroMQ</td><td style="text-align: left">stringhandler</td></tr>
+<tr><td style="text-align: left">17 Jan 2023</td><td style="text-align: left">Implementation parity updates</td><td style="text-align: left">sdbondi</td></tr>
+<tr><td style="text-align: left">25 Jan 2023</td><td style="text-align: left">Clarify empty body rules</td><td style="text-align: left">sdbondi</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0171_MessageSerialisation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0173_Versioning.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0171_MessageSerialisation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0173_Versioning.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

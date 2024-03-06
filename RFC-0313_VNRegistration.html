@@ -1,0 +1,473 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0313: Validator Node Registration - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html" class="active"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-313vn-registration"><a class="header" href="#rfc-313vn-registration">RFC-313/VN Registration</a></h1>
+<p><img src="theme/images/status-draft.svg" alt="status: draft" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/stringhandler">stringhandler</a>, <a href="https://github.com/SWvheerden">SW van heerden</a> and <a href="https://github.com/sdbondi">sdbondi</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2022 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, 
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in 
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as 
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>The goal of this RFC is to outline the <a href="RFC-0303_DanOverview.html">DAN</a> validator node registration requirements and define a set of procedures that allow permissionless participation
+in the <a href="RFC-0303_DanOverview.html">DAN</a>. This includes defining the interaction between the validator and base node, new base layer validations, and validator shard key allocation.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Building on the <a href="./RFC-0303_DanOverview.html">RFC-0303</a>, we define the mechanism that allows <a href="RFC-0303_DanOverview.html">DAN</a> validators to register on the <a href="RFC-0303_DanOverview.html">DAN</a> network.</p>
+<p>Each validator requires a connection to a trusted <a href="./Glossary.html#base-node">base-layer node</a> that provides a canonical view of the blockchain. The blockchain
+serves as a shared logical clock for the <a href="RFC-0303_DanOverview.html">DAN</a>. </p>
+<p>In this RFC, we will show that the validators can leverage the strong <em>liveness</em> guarantees of proof-of-work while providing a scheme that mitigates
+the effects of weak <em>safety</em> guarantees (namely, reorgs) on the <a href="Glossary.html#base-layer">base layer</a>.</p>
+<h2 id="requirements-and-definitions"><a class="header" href="#requirements-and-definitions">Requirements and Definitions</a></h2>
+<ol>
+<li>To participate in <a href="RFC-0303_DanOverview.html">DAN</a> BFT consensus, a validator node MUST be registered on the Layer 1 Tari blockchain.</li>
+<li>Each registration expires after a number of epochs, at which point the validator may no longer participate in <a href="RFC-0303_DanOverview.html">DAN</a> consensus.</li>
+<li>A validator MAY re-register before or after the expiration epoch is reached to allow continued participation in <a href="RFC-0303_DanOverview.html">DAN</a> consensus.</li>
+<li>A validator registration MUST be submitted as a base layer <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> signed by the <code>VN_Public_Key</code></li>
+<li>A validator MUST be assigned a deterministic but randomized <code>VN_Shard_Key</code> that can be verified at any epoch by other validators by inspecting the base layer.</li>
+<li>The <code>VN_Shard_Key</code> MUST be periodically reassigned/shuffled to prevent prolonged control over a particular <a href="RFC-0304-DanGlossarymd#Consensus-level">shard space</a>.</li>
+<li>A validator MUST be able to generate a Merkle proof that it is registered for the epoch that it is currently participating.</li>
+<li>The validator set for any given epoch MUST be unambiguous between validators or anyone observing the <a href="Glossary.html#base-layer">base layer</a> chain.</li>
+<li>Base layer reorgs MUST NOT negatively affect the <a href="RFC-0303_DanOverview.html">DAN</a> layer. </li>
+</ol>
+<p>We define the following validator variables:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Symbol</th><th style="text-align: left">Name</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: left">$V_i$</td><td style="text-align: left"><code>VN_Public_Key</code></td><td style="text-align: left">The $i$th public validator node key</td></tr>
+<tr><td style="text-align: left">$S_i$</td><td style="text-align: left"><code>VN_Shard_Key</code></td><td style="text-align: left">The $i$th 256-bit VN shard key.</td></tr>
+<tr><td style="text-align: left">$\epsilon_i$</td><td style="text-align: left"><code>Epoch</code></td><td style="text-align: left">The $i$th epoch. An epoch is <code>EpochLength</code> blocks.</td></tr>
+</tbody></table>
+</div>
+<p>An epoch $\epsilon$ is defined by the <a href="Glossary.html#base-layer">base layer</a> block height $h$, where $\epsilon_i = \lfloor \frac{h}{\text{EpochLength}} \rfloor$,
+and spans all blocks from the start of the epoch up to but excluding the start of the next epoch.</p>
+<p><em>Base layer consensus constants</em> (all values TBD):</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Name</th><th style="text-align: left">Value</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>EpochLength</code></td><td style="text-align: left">60 Blocks (~2h)</td><td style="text-align: left">The number of blocks in an epoch</td></tr>
+<tr><td style="text-align: left"><code>VNRegistrationValidityPeriod</code></td><td style="text-align: left">20 Epochs (~40hrs)</td><td style="text-align: left">The number of epochs that a validator node registration is valid</td></tr>
+<tr><td style="text-align: left"><code>VNRegDepositAmount</code></td><td style="text-align: left">TBD Tari</td><td style="text-align: left">The minimum amount that must be spent to create a valid <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a></td></tr>
+<tr><td style="text-align: left"><code>VNRegLockHeight</code></td><td style="text-align: left">10 Epochs</td><td style="text-align: left">The lock height that must be set on every <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a></td></tr>
+<tr><td style="text-align: left"><code>VNShardShuffleInterval</code></td><td style="text-align: left">100 Epochs</td><td style="text-align: left">The interval that a validator node shard key is shuffled</td></tr>
+</tbody></table>
+</div>
+<p><em>Validator node consensus constants:</em></p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Name</th><th style="text-align: left">Value</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>VNConfirmationPeriod</code></td><td style="text-align: left">1000 Blocks</td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<h2 id="validator-registration"><a class="header" href="#validator-registration">Validator Registration</a></h2>
+<p>A validator node operator wishing to participate in <a href="RFC-0303_DanOverview.html">DAN</a> consensus MUST generate a <a href="https://ristretto.group/">Ristretto</a> keypair <code>&lt;VN_Public_Key, VN_Secret_Key&gt;</code> that serves as a stable <a href="RFC-0303_DanOverview.html">DAN</a> identity and a signing key for L2 consensus messages.
+The <code>VN_Public_Key</code> MUST be registered on the base layer by submitting a <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> which allows the validator to participate in <a href="RFC-0303_DanOverview.html">DAN</a> consensus for <code>VNRegistrationValidityPeriod</code>.</p>
+<p>The published <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> has these requirements:</p>
+<ol>
+<li>MUST contain a valid <a href="https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures">Schnorr signature</a> that proves knowledge of the <code>VN_Secret_Key</code> 
+<ul>
+<li>The signature challenge is defined as $e = H(P \mathbin\Vert R \mathbin\Vert m)$</li>
+<li>$R$ is a public nonce, $P$ is the public <code>VN_Public_Key</code> </li>
+<li>$m$ is the <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> commitment</li>
+</ul>
+</li>
+<li>the <a href="Glossary.html#unspent-transaction-outputs">UTXO</a>'s <code>minimum_value</code> must be at least <code>VNRegDepositAmount</code> to mitigate spam/Sybil attacks,</li>
+<li>the <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> lock-height must be set to <code>VNRegLockHeight</code>.</li>
+<li>A script which burns the validator node registration funds if the validator does not reclaim it for a long period after the lock height expires.</li>
+</ol>
+<pre><code class="language-text">OP_PUSH_INT(N) OP_COMPARE_HEIGHT OP_LTE_ZERO OP_IF_THEN 
+    NOP
+OP_ELSE
+    OP_RETURN
+OP_END_IF
+</code></pre>
+<p>By submitting this <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> the validator node operator is committing to providing a highly-available node from the next epoch
+after the validator node registration was submitted to <code>VNRegistrationValidityPeriod</code> epochs after that.</p>
+<p>A validator node operator MAY re-register their <code>VN_Public_Key</code> before the <code>VNRegistrationValidityPeriod</code> epoch is reached, OPTIONALLY 
+spending the previous <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a>. If the previous <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> has not expired and
+a new <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> is submitted, the new <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> supersedes the previous one.</p>
+<blockquote>
+<p>The validator node may implement auto re-registration to ensure that the validator node continues 
+to be included in the current VN set without constant manual intervention.</p>
+</blockquote>
+<p>A validator MAY deregister by spending their <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a>. This will remove the validator from the current VN set
+in the next epoch.</p>
+<h3 id="base-layer-consensus"><a class="header" href="#base-layer-consensus">Base-layer consensus</a></h3>
+<p>The base layer performs the following additional validations for <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a>s:</p>
+<ol>
+<li>The <code>VN_Registration_Signature</code> MUST be valid for the given <code>VN_Public_Key</code> and challenge</li>
+<li>The <code>minimum_value</code> field MUST be at least <code>VNRegDepositAmount</code>. The existing <code>minumum_value</code> validation ensures the committed value is correct.</li>
+</ol>
+<p>Additionally, we introduce a new <a href="Glossary.html#block-header">block header</a> field <code>validator_node_mr</code> that contains a Merkle root committing to all validator 
+<code>Vn_Shard_Key</code>s in the current epoch.
+The <code>validator_node_mr</code> needs to be recalculated at every <code>EpochSize</code> blocks to account for departing and arriving nodes.
+The <code>validator_node_mr</code> MUST remain unchanged for blocks between epochs, that is, blocks that are not multiples of <code>EpochSize</code>.</p>
+<blockquote>
+<p>A validator generates a Merkle proof that proves its <code>VN_Shard_Key</code> is included in the validator set for any given epoch. This proof is provided in layer 2 Quorum Certificates.</p>
+</blockquote>
+<p>The <code>validator_node_mr</code> is calculated for each block as follows:</p>
+<ol>
+<li>if the current block height is a multiple of <code>EpochSize</code>
+<ul>
+<li>then fetch the VN set for the epoch</li>
+<li>build a merkle tree from the VN set, each node is $H(V_i \mathbin\Vert S_i)$</li>
+</ul>
+</li>
+<li>otherwise, fetch the previous block's <code>validator_node_mr</code> and return it</li>
+</ol>
+<h2 id="epoch-transitions"><a class="header" href="#epoch-transitions">Epoch transitions</a></h2>
+<p>The <a href="RFC-0303_DanOverview.html">DAN</a> BFT consensus protocol relies on a shared and consistent &quot;source of truth&quot; from the <a href="Glossary.html#base-layer">base layer</a> chain that defines
+the current epoch and validator set as well as <a href="./RFCD-0306_DANTemplateRegistration.html">templates</a>.</p>
+<p>As briefly mentioned in the <a href="#overview">overview</a>, any PoW <a href="Glossary.html#base-layer">base layer</a> chain is prone to <a href="Glossary.html#chain-reorganization">reorg</a>s. The question arises, how do we 
+achieve a shared, consistent view of the chain when the data can disappear from underneath you?</p>
+<p>We define a <code>VNConfirmationPeriod</code> as is a network-wide constant that specifies the number confirmations (blocks) that a block must have 
+before a validator will recognise it as final. The chosen value for <code>VNConfirmationPeriod</code> must be large enough to make reorgs beyond that 
+point practically impossible. Validators simply ignore <a href="Glossary.html#base-layer">base layer</a> <a href="Glossary.html#chain-reorganization">reorg</a>s with a depth <em>less than</em> <code>VNConfirmationPeriod</code> deep as the 
+data they have extracted is still valid. This means that the <em>point of finality</em> is not always <code>VNConfirmationPeriod</code> blocks away from the
+tip and is non-decreasing/monotonic which effectively negates <a href="Glossary.html#chain-reorganization">reorg</a> &quot;noise&quot; from the chain tip. </p>
+<p>However, this does not address <a href="Glossary.html#base-layer">base layer</a> latency delays where a single huge block or multi-block reorgs may take seconds to be received 
+and processed by all <a href="Glossary.html#base-node">base node</a>s. Moreover, the validators may poll the base layer only every few seconds, further increasing the latency for 
+validators to become aware of the state. This means a single strict validator epoch change-over point will almost always cause liveness failures at 
+and after the epoch transition.</p>
+<p>To address this, we define a <code>VNEpochGracePeriod</code> where both the previous and current epoch are accepted. This value, in blocks, must allow enough
+time for all validators to become aware of the <a href="Glossary.html#base-layer">base layer</a> state for the epoch.</p>
+<p>To illustrate, consider the following view of a <a href="Glossary.html#base-layer">base layer</a> chain. We mark 3 views of the chain.</p>
+<pre><code class="language-text">                                      (a) (b) (c)                
+                                       |   |   |                                         {noisy}
+------ | --x------------ | --x------------ | --x------------ | --x------------ | --- .... ------&gt; tip
+  |  ϵ10       |   |    ϵ11       |      ϵ12       |       ϵ13               ϵ14
+ V_1          V_2 V_3   V_4      V_5              V_6                      
+Key:
+x - Epoch transition point
+ϵn - Epoch n
+V_n - Validator registrations 
+</code></pre>
+<p>Point (a)</p>
+<ul>
+<li>the validator node set is incomplete for epoch 12.</li>
+<li>the active epoch is 11.</li>
+<li>the validator MUST reject instructions for epoch 12.</li>
+</ul>
+<p>Point (b) - the start of epoch 12: </p>
+<ul>
+<li>the validator node set is final for epoch 12.</li>
+<li>the active epoch remains at 11. This is because validators may not have reached epoch 12/point (b) and therefore will only accept epoch 11.</li>
+<li>a validator MUST accept instructions from epoch 11 and 12.</li>
+<li>a validator may receive a leader proposal for epoch 11 and 12, however a well-behaved validator MUST only vote for one of these proposals.</li>
+</ul>
+<p>Point (c) - the transition point for epoch 12:</p>
+<ul>
+<li>the active epoch is now 12</li>
+<li>the validator MUST reject instructions from 11.</li>
+<li>it is assumed at this point that almost all (at least $2f + 1$) nodes will accept epoch 12</li>
+</ul>
+<h4 id="validator-node-set-definition"><a class="header" href="#validator-node-set-definition">Validator Node Set Definition</a></h4>
+<p>The function $\text{get_vn_set}(\epsilon_\text{start}, \epsilon_\text{end}) \rightarrow \vec{S}$ that returns an ordered 
+vector $\vec{S}$ of <code>VN_Shard_Key</code>s that are registered for the epoch $\epsilon_n$. The validator node set is ordered by <code>VN_Shard_Key</code>.</p>
+<h5 id="data-indexes"><a class="header" href="#data-indexes">Data Indexes</a></h5>
+<p>The following additional indexes are recommended to allow efficient retrieval of the VN set, shard key mappings and to produce a valid <code>validator_node_mr</code>:</p>
+<ul>
+<li>$I_\text{primary} = \{ (h_i, V_i, C_i) \rightarrow (V_i, S_i) \}$ </li>
+<li>$I_\text{shard} = \{ (V_i, h_i, C_i) \rightarrow S_i \}$</li>
+<li>$C_i$ is the $i$th <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> commitment </li>
+</ul>
+<p>Database index $I_\text{primary}$ that maintains a mapping from the next epoch after the registration to all the 
+<code>&lt;VN_Public_Key, VN_Shard_Key&gt;</code> tuples for all <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a>s. This allows efficient retrieval 
+from a particular height onwards, optionally for a particular validator node public key.</p>
+<p>The index entry is <em>not</em> removed whenever the <code>ValidatorNodeRegistration</code> <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> is spent or expires. This is to allow
+state to be rewound for reorgs.
+If a validator adds two or more validator registration <a href="Glossary.html#unspent-transaction-outputs">UTXOS</a> in the same block, the index will order them by commitment, that is, 
+the same canonical ordering as the Tari block body. The <code>get_vn_set</code> function MUST return the last registration 
+public key and shard key tuple only, according to this canonical ordering.</p>
+<h4 id="algorithm"><a class="header" href="#algorithm">Algorithm</a></h4>
+<p>The function $\text{get_vn_set}$ is defined as follows:</p>
+<ol>
+<li>Iterate on index $I_\text{primary}$, starting from where the key is between (inclusive) the equivalent block height for 
+$\epsilon_\text{start}$ and $\epsilon_\text{end}$:
+<ul>
+<li>Add to the set, and</li>
+<li>if the validator node public key is already in the set, remove the previous entry.</li>
+</ul>
+</li>
+</ol>
+<p>For this example, we say that there have been no registrations prior to <code>V_1</code>; we define 
+<code>VNRegistrationValidityPeriod = 2 epochs</code>.</p>
+<pre><code class="language-text">                                    (a)            (b)            (c)
+                                     |              |              |                      {noisy}
+------ | --x------------ | --x------------ | --x------------ | --x------------ | --- .... ------&gt; tip
+  |   ϵ10       |   |    ϵ11       |      ϵ12  |    |       ϵ13               ϵ14
+ V_1           V_2 V_3  V_4       V_5         V_2  V_6         
+ 
+Key:
+x - Epoch transition point
+ϵn - Epoch n
+V_n - Validator Node Registration UTXO n
+</code></pre>
+<ul>
+<li>Point (a) $\text{get_vn_set}(\epsilon_11) -&gt; [V_1, V_2, V_3]$</li>
+<li>Point (b):
+<ul>
+<li>In: $[V_2, V_3, V_4, V_5]$, out: $[V_1]$</li>
+<li>$\text{get_vn_set}(\epsilon_12) -&gt; [V_2, V_3, V_4, V_5]$</li>
+</ul>
+</li>
+<li>Point (c):
+<ul>
+<li>In: $[V_6]$, out: $[]$</li>
+<li>$\text{get_vn_set}(\epsilon_13) -&gt; [V_2, V_4, V_5, V_6]$</li>
+</ul>
+</li>
+</ul>
+<h3 id="shard-key-and-shuffling"><a class="header" href="#shard-key-and-shuffling">Shard Key and Shuffling</a></h3>
+<p>The <code>VN_Shard_Key</code> is a deterministic 256-bit random number that is assigned to a validator node by the base layer for a given epoch, and
+maps onto the 256-bit <a href="RFC-0304-DanGlossarymd#Consensus-level">shard space</a>. </p>
+<p>The <a href="RFC-0303_DanOverview.html">DAN</a> network needs to agree on and maintain a mapping between each participant's <code>VN_Public_Key</code> and the corresponding <code>VN_Shard_Key</code> for the 
+current epoch. </p>
+<p>Over time, an adversary may gain excessive control over a particular shard space. To mitigate this, we introduce a shuffling mechanism that
+periodically and randomly reassigns <code>VN_Shard_Key</code>s within the network.</p>
+<p>We define the function $\text{generate_shard_key}(V_n, \eta) \rightarrow S$ that generates the <code>VN_Shard_Key</code> from the inputs.
+$S = H_\text{shard}(V_n \mathbin\Vert \eta)$ where $H_\text{shard}$ is a domain-separated <a href="https://github.com/tari-project/tari-crypto/blob/fa042e498be144d8d2af7b96efe805c5af0b2d4f/src/hash/blake2.rs">Blake256</a> hash function, $V_n$ is the public <code>VN_Public_Key</code> and $\eta$ is some entropy.</p>
+<p>And we define the function $\text{derive_shard_key}(S_{n-1}, V_n, \epsilon_n, \hat{B}) \rightarrow S$ that deterministically derives the <code>VN_Shard_Key</code> for
+epoch $\epsilon_n$ from the public <code>VN_Public_Key</code> $V_n$, $\hat{B}$ the block hash at height $\epsilon_n * \text{EpochSize} - 1$ (the block before the epoch block).</p>
+<p>The function $\text{derive_shard_key}$ is defined as follows:</p>
+<ol>
+<li>Given:
+<ul>
+<li>$S_{n-1}$ the previous <code>VN_Shard_Key</code> </li>
+<li>$V$ the <code>VN_Public_Key</code></li>
+<li>$\epsilon_n$ the epoch number to generate a <code>VN_Shard_Key</code> for</li>
+<li>$\hat{B}$ the previous block hash </li>
+</ul>
+</li>
+<li>If the previous shard key $S_{n-1}$ is not null, 
+<ul>
+<li>Check $(V + \epsilon_n) \bmod \text{ShufflePeriod} == 0$.</li>
+<li>If true, generate a new shard key using $\text{generate_shard_key}(V, \hat{B})$.</li>
+<li>If false, return $S_{n-1}$.</li>
+</ul>
+</li>
+<li>If the previous shard key $S_{n-1}$ is null, 
+<ul>
+<li>generate a new shard key using $\text{generate_shard_key}(V, \hat{B})$.</li>
+</ul>
+</li>
+</ol>
+<p>Only a random fraction of validators will be re-assigned shard keys per epoch and that fraction will not be shuffled again
+for <code>VNShardShuffleInterval</code> epochs. Although the exact number of validators that shuffle per epoch varies, on average 
+the <code>VNShardShuffleInterval</code> should aim to shuffle around 5% of the network at every epoch. This is to ensure that the
+number of shuffling validators is much less than $\frac{1}{3}$ of the validator set, as this could break liveness and safety 
+guarantees. </p>
+<p>The <code>prev_shard_key</code> is the last <code>VN_Shard_Key</code> that was assigned to the validator node within the <code>VNRegistrationValidityPeriod</code>.
+Should <code>VNRegistrationValidityPeriod</code> elapse without a renewed registration, a new <code>VN_Shard_Key</code> is assigned. 
+This means that a validator may be assigned a different <code>VN_Shard_Key</code> after each <code>VNRegistrationValidityPeriod</code>, 
+sooner than <code>VNShardShuffleInterval</code>. The validator has nothing to gain from this, on the contrary, they will have 
+to re-sync their state and spend time not participating in the network, losing out on fees.</p>
+<h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
+<tr><td style="text-align: left">12 Oct 2022</td><td style="text-align: left">First outline</td><td style="text-align: left">SWvHeerden</td></tr>
+<tr><td style="text-align: left">08 Nov 2022</td><td style="text-align: left">Updates</td><td style="text-align: left">sdbondi</td></tr>
+<tr><td style="text-align: left">18 Nov 2022</td><td style="text-align: left">Implementation updates</td><td style="text-align: left">sdbondi</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0303_DanOverview.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0320_TurbineModel.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0303_DanOverview.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0320_TurbineModel.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

@@ -1,0 +1,957 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0241: XMR Atomic swap - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html" class="active"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0241xmr-atomic-swap"><a class="header" href="#rfc-0241xmr-atomic-swap">RFC-0241/XMR Atomic Swap</a></h1>
+<p><img src="theme/images/status-draft.svg" alt="status: draft" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/SWvheerden">S W van Heerden</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2021 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;,
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>This Request for Comment (RFC) aims to describe how an Atomic swap between Tari and Monero will be created.</p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a></li>
+<li><a href="RFC-0202_TariScriptOpcodes.html">RFC-0202: TariScript Opcodes</a></li>
+</ul>
+<p>$$
+\newcommand{\script}{\alpha} % utxo script
+\newcommand{\input}{ \theta }
+\newcommand{\cat}{\Vert}
+\newcommand{\so}{\gamma} % script offset
+\newcommand{\hash}[1]{\mathrm{H}\bigl({#1}\bigr)}
+$$</p>
+<h2 id="comments"><a class="header" href="#comments">Comments</a></h2>
+<p>Any comments, changes or questions to this PR can be made in one of the following ways:</p>
+<ul>
+<li>Join the discussion on the <a href="https://github.com/tari-project/tari/discussions/3647">Github discussion page</a>.</li>
+<li>Create a new PR on the Tari project <a href="https://github.com/tari-project/tari/pulls">Github pull requests</a>.</li>
+<li>Create a new issue on the Tari project <a href="https://github.com/tari-project/tari/issues">Github issues</a>.</li>
+</ul>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<p>Doing atomic swaps with Monero is more complicated and requires a cryptographic dance to complete as Monero does not
+implement any form of HTLC's or the like. This means that when doing an atomic swap with Monero, most of the logic will
+have to be implemented on the Tari side. Atomic swaps between Monero and Bitcoin have been implemented by the <a href="https://github.com/farcaster-project/RFCs">Farcaster  project</a>
+and the <a href="https://github.com/comit-network/xmr-btc-swap">Comit team</a>. Due to the how TariScript works, we have a few
+advantages over Bitcoin script regarding <a href="https://tlu.tarilabs.com/cryptography/introduction-to-scriptless-scripts#adaptor-signatures">adaptor signatures</a>, as the <a href="Glossary.html#script-keypair">script key</a> was explicitly designed with <a href="https://tlu.tarilabs.com/cryptography/introduction-to-scriptless-scripts">scriptless scripts</a> in mind.</p>
+<h2 id="method"><a class="header" href="#method">Method</a></h2>
+<p>The primary, happy path outline of a Tari - Monero atomic swap is described here, and more detail will follow. We assume
+that Alice wants to trade her XTR for Bob's XMR.</p>
+<ul>
+<li>Negotiation - Both parties negotiate the value and other details of the Monero and Tari UTXO's.</li>
+<li>Commitment - Both parties commit to the keys, nonces, inputs, and outputs to use for the transaction.</li>
+<li>XTR payment - Alice makes the XTR payment to a UTXO containing a &quot;special&quot; script described below.</li>
+<li>XMR Payment - The Monero payment is made to a multiparty <a href="https://tlu.tarilabs.com/cryptography/introduction-to-scriptless-scripts">scriptless script</a> UTXO.</li>
+<li>Claim XTR - Bob redeems the XTR, and in doing so, reveals the XMR private key to Alice only.</li>
+<li>Claim XMR - Alice may claim the XMR using the revealed key.</li>
+</ul>
+<p>Please take note of the notation used in <a href="Glossary.html#tariscript">TariScript</a> and specifically notation used on the signatures on the <a href="RFC-0201_TariScript.html#transaction-input-changes">transaction inputs</a> and on the signatures on the <a href="RFC-0201_TariScript.html#transaction-output-changes">transaction outputs</a>.
+We will note other notations in the <a href="#notation">Notation</a> section.</p>
+<h2 id="tldr"><a class="header" href="#tldr">TL;DR</a></h2>
+<p>The scheme revolves around Alice, who wants to exchange her Tari for Bob's Monero. Because they don't trust each other, 
+they have to commit some information to do the exchange. And if something goes wrong here, we want to ensure that we can 
+refund both parties either in Monero or Tari.</p>
+<p>How this works is that Alice and Bob create a shared output on both chains. The Monero output is a simple aggregate key 
+to unlock the UTXO, while multiple keys are needed to unlock the Tari UTXO. An aggregate key locks this Monero UTXO that 
+neither Alice nor Bob knows, but they both know half of the key. The current Tari block height determines the unlocking 
+key for the Tari UTXO.</p>
+<p>The process is started by Alice and Bob exchanging and committing to some information. Alice is the first to publish a 
+transaction, which creates the Tari UTXO. If Bob is happy that the Tari UTXO has been mined and verifies all the 
+information, he will publish a transaction to create the Monero UTXO.</p>
+<p>The TariScript script on the UTXO ensures that they will have to reveal their portion of the Monero key when either 
+Alice or Bob spends this. This disclosure allows the other party to claim the Monero by being the only one to own the 
+complete Monero aggregate key.</p>
+<p>We can visualize the happy path flow with the image below. 
+<img src="assets/XTR_XMR_happy.png" alt="swap flow" /></p>
+<p>The script will ensure that at any point in time, at least someone can claim the Tari UTXO, and if that person does so, 
+the other party can claim the Monero UTXO by looking at the spending data. It has two lock heights, determining who can 
+claim the Tari UTXO if the happy path fails. Before the first lock height, only Bob can claim the Tari; we call this the 
+swap transaction.</p>
+<p>If Bob disappears after Alice has posted the Tari UTXO, Alice can claim the Tari after the first lock height and before 
+the second lock height; we call this the refund transaction. It ensures that Alice can reclaim her Tari if Bob 
+disappears, and if Bob reappears, he can reclaim his Monero.</p>
+<p>That leaves us with the scenario where Alice disappears after Bob posts the Monero transaction, in which case we need to 
+protect Bob. After the second lock height, only Bob can claim the Tari; we call this the lapse transaction. The lapse 
+transaction will reveal Bob's Monero key so that if Alice reappears, she can claim the Monero.</p>
+<p>The image below details the time flow of the Tari transactions spending the Tari UTXO. 
+<img src="assets/TXR_XMR_flow.png" alt="swap flow" /></p>
+<h2 id="heights-security-and-other-considerations"><a class="header" href="#heights-security-and-other-considerations">Heights, Security, and other considerations</a></h2>
+<p>We need to consider a few things for this to be secure, as there are possible scenarios that can reduce the security in the atomic swap. </p>
+<p>When looking at the two lock heights, the first lock height should be sufficiently large enough to give ample time for Alice to post the Tari UTXO transaction and for it to be mined with a safe number of confirmations,
+and for Bob to post the Monero transaction and for it to be mined with a safe number of confirmations. The second lock
+height should give ample time for Alice after the first lock height to re-claim her Tari. Larger heights here might make
+refunds slower, but it should be safer in giving more time to finalize this. </p>
+<p>Allowing both to claim the Tari after the second lock height is, on face value, a safer option. This can be done by enabling
+either party to claim the script with the lapse transaction. The counterparty can then claim the Monero. However, this
+will open up an attack vector to enable either party to claim the Monero while claiming the Tari. Either party could trivially
+pull off such a scheme by performing a front-running attack and having a bit of luck. The counterparty monitors all broadcast 
+transactions to base nodes. Upon identifying the lapse transaction, they do two things; in quick succession, broadcast 
+their lapse transaction and the transaction to claim the Monero, both with sufficiently high fees. Base nodes will 
+prefer to mine transactions with the higher fees, and thus the counterparty can walk away with both the Tari and the 
+Monero.</p>
+<p>It is also possible to prevent the transaction from being mined after being submitted to the mempool. This can be caused by a combination
+of a too busy network, not enough fees, or a too-small period in the time locks. When one of these atomic swap transactions gets published to a mempool, we effectively already have all the details exposed. For the atomic swaps, it means we already revealed part of the Monero key, although
+the actual Tari transaction has not been mined. But this is true for any HTLC or like script on any blockchain. But in the odd
+chance that this does happen whereby the fees are too little and time locks not enough, it should be possible to do a child-pays-for-parent
+transaction to bump up the fees on the transaction to get it mined and confirmed.</p>
+<h2 id="key-construction"><a class="header" href="#key-construction">Key construction</a></h2>
+<p>Using <a href="https://reyify.com/blog/flipping-the-scriptless-script-on-schnorr">multi-signatures</a> with Schnorr signatures, we
+need to ensure that the keys are constructed so that key cancellation attacks are not possible. To do this, we create new
+keys from the chosen public keys \(K_a'\) and \(K_b'\)</p>
+<p>$$
+\begin{aligned}
+K_a &amp;=  \hash{\hash{K_a' \cat K_b'} \cat K_a' } * K_a' \\
+k_a &amp;=  \hash{\hash{K_a' \cat K_b'} \cat K_a' } * k_a' \\
+K_b &amp;=  \hash{\hash{K_a' \cat K_b'} \cat K_b' } * K_b' \\
+k_b &amp;=  \hash{\hash{K_a' \cat K_b'} \cat K_b' } * k_b' \\
+\end{aligned}
+\tag{1}
+$$</p>
+<h2 id="key-equivalence"><a class="header" href="#key-equivalence">Key equivalence</a></h2>
+<p>Monero uses Ed25519, while Tari uses <a href="https://ristretto.group/">Ristretto</a> as its curve of choice. While Ristretto and Ed25519 both works on Curve25519 and the Edward
+points are the same, they differ when the points are encoded. In practice, this means the following:</p>
+<p>$$
+\begin{aligned}
+Xm &amp;= x \cdot G_m \\
+X &amp;= x \cdot G \\
+X &amp;\neq X_m \\
+\end{aligned}
+\tag{2}
+$$</p>
+<p>To use public keys across different implementations or curves, we must prove that the same private key created the &quot;different&quot; public keys. Because we exchange encoded points, we need some way of proving they are the same.
+<a href="https://projekter.aau.dk/projekter/files/260345149/Electronic_voting_application_based_on_public_verifiable_secret_sharing.pdf">Jepsen</a> designed a proof to prove Discrete Logarithm Equality (DLEQ) between two generator groups. But the proof here is not created for Elliptic Curve Cryptography (ECC) but can be adapted to ECC by:</p>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{K_1 \cat K_2 \cat R_{1} \cat R_{2}} \\
+s &amp;= r + e(k) \\
+R_{1} &amp;= r \cdot G \\
+R_{2} &amp;= r \cdot G_m \\
+K_{1} &amp;= k \cdot G \\
+K_{2} &amp;= k \cdot G_m \\
+\end{aligned}
+\tag{3}
+$$</p>
+<p>The verification is then:
+$$
+\begin{aligned}
+e &amp;= \hash{K_1 \cat K_2 \cat R_{1} \cat R_{2}} \\
+s \cdot G &amp;= R_{1} + e(K_1) \\
+s \cdot G_m &amp;= R_{2} + e(K_2) \\
+\end{aligned}
+\tag{4}
+$$</p>
+<p>But this method has a problem with ECC keys as they are always used as \(mod(n)\) where n is the group size. With ECC, we cannot always use the method; it can only be used when the two curves are of the same group
+size \(n\), or \(s &lt; n\). If this is not the case, a <a href="https://web.getmonero.org/resources/research-lab/pubs/MRL-0010.pdf">bit comparison</a> needs to be created to prove this.
+But luckily, we use Ristretto and Ed25519, both on Curve25519, because it’s the same curve, same generator point, and just
+different encodings. We can use this proof to know even though the encoded public keys do not match, they still share a private key</p>
+<h2 id="key-security"><a class="header" href="#key-security">Key security</a></h2>
+<p>The risk of publicly exposing part of the Monero private key is still secure because of how <a href="https://cryptobook.nakov.com/asymmetric-key-ciphers/elliptic-curve-cryptography-ecc#private-key-public-key-and-the-generator-point-in-ecc">ECC</a> works. We can
+add two secret keys together and share the public version of both. And at the same time, we know that no one can calculate
+the secret key with just one part.</p>
+<p>$$
+\begin{aligned}
+(k_a + k_b) \cdot G &amp;= k_a \cdot G + k_b \cdot G\\
+(k_a + k_b) \cdot G &amp;= K_a + K_b \\
+(k_a + k_b) \cdot G &amp;= K \\
+\end{aligned}
+\tag{5}
+$$</p>
+<p>We know that \(K\), \(K_a\), \(K_b\) are public. While \(k\), \(k_a\), \(k_b\) are all private.</p>
+<p>But if we expose \(k_b\), we can try to do the following:
+$$
+\begin{aligned}
+(k_a + k_b) \cdot G &amp;= K_a + K_b\\
+k_a \cdot G &amp;= (K_a + K_b - k_b \cdot G) \\
+k_a \cdot G &amp;= K_a \\
+\end{aligned}
+\tag{6}
+$$</p>
+<p>However, this is the Elliptic-Curve Discrete Logarithm Problem, and there is no easy solution to solve this on current computer
+hardware. Thus this is still secure even though we leaked part of the secret key \(k\).</p>
+<h2 id="method-1"><a class="header" href="#method-1">Method 1</a></h2>
+<h3 id="detail"><a class="header" href="#detail">Detail</a></h3>
+<p>This method relies purely on TariScript to enforce the exposure of the private Monero aggregate keys. Based on <a href="https://suredbits.com/payment-points-part-1/">Point Time Lock Contracts</a>, the script forces the spending party to supply their Monero
+private key part as input data to the script, evaluated via the operation <code>ToRistrettoPoint</code>. This TariScript operation will
+publicly reveal part of the aggregated Monero private key, but this is still secure: see <a href="#key-security">Key security</a>.</p>
+<p>The simplicity of this method lies therein that the spending party creates all transactions on their 
+own. Bob requires a pre-image from Alice to complete the swap transaction; Alice needs to verify that Bob published the 
+Monero transaction and that everything is complete as they have agreed. If she is happy, she will provide Bob with the 
+pre-image to claim the Tari UTXO.</p>
+<h3 id="tariscript"><a class="header" href="#tariscript">TariScript</a></h3>
+<p>The Script used for the Tari UTXO is as follows:</p>
+<pre><code class="language-TariScript ignore">   ToRistrettoPoint
+   CheckHeight(height_1)
+   LtZero
+   IFTHEN
+      PushPubkey(X_b)
+      EqualVerify
+      HashSha256 
+      PushHash(HASH256{pre_image})
+      EqualVerify
+      PushPubkey(K_{Sb})
+   Else
+      CheckHeight(height_2)
+      LtZero
+      IFTHEN
+         PushPubkey(X_a)
+         EqualVerify
+         PushPubkey(K_{Sa})
+      Else
+         PushPubkey(X_b)
+         EqualVerify
+         PushPubkey(K_{Sb})
+      ENDIF
+   ENDIF
+</code></pre>
+<p>Before <code>height_1</code>, Bob can claim the Tari UTXO by supplying <code>pre_image</code> and his private Monero key part <code>x_b</code>. After 
+<code>height_1</code> but before <code>height_2</code>, Alice can claim the Tari UTXO by supplying her private Monero key part <code>x_a</code>. After 
+<code>height_2</code>, Bob can claim the Tari UTXO by providing his private Monero key part <code>x_b</code>.</p>
+<h3 id="negotiation"><a class="header" href="#negotiation">Negotiation</a></h3>
+<p>Alice and Bob have to negotiate the exchange rate and the amount exchanged in the atomic swap. They also need to decide 
+how the two UTXO's will look on the blockchain. To accomplish this, the following needs to be finalized:</p>
+<ul>
+<li>Amount of Tari to swap for the amount of Monero</li>
+<li>Monero public key parts \(Xm_a\), \(Xm_b\) ,and its aggregate form \(Xm\)</li>
+<li>DLEQ proof of \(Xm_a\) and \(X_a\)</li>
+<li>Tari <a href="Glossary.html#script-keypair">script key</a> parts \(K_{Sa}\), \(K_{Sb}\) </li>
+<li>The <a href="Glossary.html#tariscript">TariScript</a> to be used in the Tari UTXO</li>
+<li>The blinding factor \(k_i\) for the Tari UTXO, which can be a Diffie-Hellman between their Tari addresses.</li>
+</ul>
+<h3 id="key-selection"><a class="header" href="#key-selection">Key selection</a></h3>
+<p>Using (1), we create the Monero keys as they are multi-party aggregate keys.
+The Monero key parts for Alice and Bob is constructed as follows:</p>
+<p>$$
+\begin{aligned}
+Xm_a' &amp;= xm_a' \cdot G_m \\
+Xm_b' &amp;= xm_b' \cdot G_m \\
+xm_a &amp;=  \hash{\hash{Xm_a' \cat Xm_b'} \cat Xm_a' } * xm_a' \\
+xm_b &amp;=  \hash{\hash{Xm_a' \cat Xm_b'} \cat Xm_b' } * xm_b' \\
+xm_a &amp;= x_a \\
+xm_b &amp;= x_b \\
+Xm_a &amp;=  \hash{\hash{Xm_a' \cat Xm_b'} \cat Xm_a' } * Xm_a' \\
+Xm_b &amp;=  \hash{\hash{Xm_a' \cat Xm_b'} \cat Xm_b' } * Xm_b' \\
+xm &amp;= xm_a + xm_b + k_i \\
+Xm &amp;= Xm_a + Xm_b + k_i \cdot G_m\\
+x &amp;= x_a + x_b + k_i \\
+X &amp;= X_a + X_b + k_i \cdot G\\
+\end{aligned}
+\tag{7}
+$$</p>
+<h3 id="commitment-phase"><a class="header" href="#commitment-phase">Commitment phase</a></h3>
+<p>This phase allows Alice and Bob to commit to using their keys.</p>
+<h4 id="starting-values"><a class="header" href="#starting-values">Starting values</a></h4>
+<p>Alice needs to provide Bob with the following:</p>
+<ul>
+<li>Script public key: \( K_{Sa}\)</li>
+<li>Monero public key \( Xm_a'\) with Ristretto encoding</li>
+</ul>
+<p>Bob needs to provide Alice with the following:</p>
+<ul>
+<li>Script public key: \( K_{Sb}\)</li>
+<li>Monero public key \( Xm_b'\) with Ristretto encoding</li>
+</ul>
+<p>Using the above equations in (7), Alice and Bob can calculate \(Xm\), \(Xm_a\), \(Xm_b\)</p>
+<h4 id="dleq-proof"><a class="header" href="#dleq-proof">DLEQ proof</a></h4>
+<p>Alice needs to provide Bob with:</p>
+<ul>
+<li>Monero public key \(X_a\) encoding on Ristretto</li>
+<li>DLEQ proof for \(Xm_a\) and \(X_a\): \((R_{ZTa}, R_{ZMa}, s_{Za})\)</li>
+</ul>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{X_a \cat Xm_a \cat R_{ZTa} \cat R_{ZMa}} \\
+s_{Za} &amp;= r + e(x_a) \\
+R_{ZTa} &amp;= r \cdot G \\
+R_{ZMa} &amp;= r \cdot G_m \\
+\end{aligned}
+\tag{8}
+$$</p>
+<p>Bob needs to provide Alice with:</p>
+<ul>
+<li>Monero public key \(X_b\) encoding on Ristretto</li>
+<li>DLEQ proof for \(Xm_b\) and \(X_b\): \((R_{ZTb}, R_{ZMb}, s_{Zb})\)</li>
+</ul>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{X_b \cat Xm_b \cat R_{ZTb} \cat R_{ZMb}} \\
+s_{Za} &amp;= r + e(x_b) \\
+R_{ZTa} &amp;= r \cdot G \\
+R_{ZMa} &amp;= r \cdot G_m \\
+\end{aligned}
+\tag{9}
+$$</p>
+<p>Alice needs to verify Bob's DLEQ proof with:</p>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{X_b \cat Xm_b \cat R_{ZTb} \cat R_{ZMb}} \\
+s_{Zb} \cdot G &amp;= R_{ZTb} + e(X_b) \\
+s_{Zb} \cdot G_m &amp;= R_{ZMb} + e(Xm_b) \\
+\end{aligned}
+\tag{10}
+$$</p>
+<p>Bob needs to verify Alice's DLEQ proof with:</p>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{X_a \cat Xm_a \cat R_{ZTa} \cat R_{ZMa}} \\
+s_{Za} \cdot G &amp;= R_{ZTa} + e(X_a) \\
+s_{Za} \cdot G_m &amp;= R_{ZMa} + e(Xm_a) \\
+\end{aligned}
+\tag{11}
+$$</p>
+<h3 id="xtr-payment"><a class="header" href="#xtr-payment">XTR payment</a></h3>
+<p>Alice will construct the Tari UTXO with the correct <a href="#tariscript">script</a> and publish the containing transaction to the 
+blockchain, knowing that she can reclaim her Tari if Bob vanishes or tries to break the agreement. This is done with 
+standard Mimblewimble rules and signatures.</p>
+<h3 id="xmr-payment"><a class="header" href="#xmr-payment">XMR payment</a></h3>
+<p>When Bob sees that the Tari UTXO that Alice created is mined on the Tari blockchain with the correct script, Bob can
+publish the Monero transaction containing the Monero UTXO with the aggregate key \(Xm = Xm_a + Xm_b + k_i \cdot G_m \).</p>
+<h3 id="claim-xtr"><a class="header" href="#claim-xtr">Claim XTR</a></h3>
+<p>When Alice sees that the Monero UTXO that Bob created is mined on the Monero blockchain containing the correct aggregate 
+key \(Xm\), she can provide Bob with the required <code>pre_image</code> to spend the Tari UTXO. She does not have the 
+missing key \(xm_b \) to claim the Monero yet, but it will be revealed when Bob claims the Tari. </p>
+<p>Bob can now supply the <code>pre_image</code> and his Monero private key as transaction input to unlock the script.</p>
+<h3 id="claim-xmr"><a class="header" href="#claim-xmr">Claim XMR</a></h3>
+<p>Alice can now see that Bob spent the Tari UTXO, and by examining the <code>input_data</code> required to satisfy the script, she 
+can learn Bob's secret Monero key. Although this private key \( xm_b \) is now public knowledge, her part of the Monero spend key 
+is still private, and thus only she knows the complete Monero spend key. She can use this knowledge to claim the Monero 
+UTXO.</p>
+<h3 id="the-refund"><a class="header" href="#the-refund">The refund</a></h3>
+<p>If something goes wrong and Bob never publishes the Monero or disappears, Alice needs to wait for the lock height
+<code>height_1</code> to pass. This will allow her to reclaim her Tari, but in doing so, she needs to publish her Monero secret key 
+as input to the script to unlock the Tari. When Bob comes back online, he can use this public knowledge to reclaim his 
+Monero, as only he knows both parts of the Monero UTXO spend key.</p>
+<h3 id="the-lapse-transaction"><a class="header" href="#the-lapse-transaction">The lapse transaction</a></h3>
+<p>If something goes wrong and Alice never gives Bob the required <code>pre_image</code>, Bob needs to wait for the lock height
+<code>height_2</code> to pass. This will allow him to claim the Tari he wanted all along, but in doing so, he needs to publish
+his Monero secret key as input to the script to unlock the Tari. When Alice comes back online, she can use this public 
+knowledge to claim the Monero she wanted all along as only she now knows both parts of the Monero UTXO spend key.</p>
+<h2 id="method-2"><a class="header" href="#method-2">Method 2</a></h2>
+<h3 id="detail-1"><a class="header" href="#detail-1">Detail</a></h3>
+<p>This method is based on work by the <a href="https://github.com/farcaster-project/RFCs">Farcaster project</a> and the <a href="https://github.com/comit-network/xmr-btc-swap">Comit team</a>. It utilizes adapter signatures and multi-party commitment signatures to ensure that
+the spending party leaks their private Monero key part. Because all keys are aggregates keys, we need to ensure that the refund
+and lapse transactions are negotiated and signed before Alice publishes the Tari UTXO. This will allow either Alice or Bob to
+claim the refund and lapse transactions, respectively, without the other party being online. </p>
+<h3 id="tariscript-1"><a class="header" href="#tariscript-1">TariScript</a></h3>
+<p>The Script used for the Tari UTXO is as follows:</p>
+<pre><code class="language-TariScript ignore">   CheckHeight(height_1)
+   LtZero
+   IFTHEN
+      PushPubkey(K_{Ss})
+   Else
+      CheckHeight(height_2)
+      LtZero
+      IFTHEN
+         PushPubkey(K_{Sr})
+      Else
+         PushPubkey(K_{Sl})
+      ENDIF
+   ENDIF
+</code></pre>
+<p>Before <code>height_1</code>, Bob can claim the Tari UTXO if Alice gives him the correct signature to complete the transaction.
+After <code>height_1</code> but before <code>height_2</code>, Alice can claim the Tari UTXO. After <code>height_2,</code> Bob can claim the Tari UTXO.</p>
+<h3 id="negotiation-1"><a class="header" href="#negotiation-1">Negotiation</a></h3>
+<p>Alice and Bob have to negotiate the exchange rate and the amount exchanged in the atomic swap. 
+They also need to decide how the two UTXO's will look on the blockchain. To accomplish this, the following needs to be finalized:</p>
+<ul>
+<li>Amount of Tari to swap for the amount of Monero</li>
+<li>Monero public key parts \(Xm_a\), \(Xm_b\), and its aggregate form \(X\)</li>
+<li>Tari <a href="Glossary.html#script-keypair">script key</a> parts \(K_{Ssa}\), \(K_{Ssb}\), and its aggregate form \(K_{Ss}\) for the swap transaction</li>
+<li>Tari <a href="Glossary.html#script-keypair">script key</a> parts \(K_{Sra}\), \(K_{Srb}\), and its aggregate form \(K_{Sr}\) for the refund transaction</li>
+<li>Tari <a href="Glossary.html#script-keypair">script key</a> parts \(K_{Sla}\), \(K_{Slb}\), and its aggregate form \(K_{Sl}\) for the lapse transaction</li>
+<li>Tari <a href="Glossary.html#sender-offset-keypair">sender offset key</a> parts  \(K_{Osa}\), \(K_{Osb}\), and its aggregate form \(K_{Os}\) for the swap transaction</li>
+<li>Tari <a href="Glossary.html#sender-offset-keypair">sender offset key</a> parts  \(K_{Ora}\), \(K_{Orb}\), and its aggregate form \(K_{Or}\) for the refund transaction</li>
+<li>Tari <a href="Glossary.html#sender-offset-keypair">sender offset key</a> parts  \(K_{Ola}\), \(K_{Olb}\), and its aggregate form \(K_{Ol}\) for the lapse transaction</li>
+<li>All of the nonces used in the script signature creation and Metadata signature for the swap, refund, and lapse transactions</li>
+<li>The <a href="Glossary.html#script-offset">script offset</a> used in both the swap, refund, and lapse transactions</li>
+<li>The <a href="Glossary.html#tariscript">TariScript</a> to be used in the Tari UTXO</li>
+<li>The blinding factor \(k_i\) for the Tari UTXO, which can be a Diffie-Hellman between their addresses.</li>
+</ul>
+<h3 id="key-selection-1"><a class="header" href="#key-selection-1">Key selection</a></h3>
+<p>Using (1), we create the Monero keys as they are multi-party aggregate keys.</p>
+<p>The <a href="Glossary.html#script-keypair">script key</a> parts for Alice and Bob is constructed as follows:</p>
+<p>$$
+\begin{aligned}
+k_{Ssa} &amp;=  \hash{\hash{K_{Ssa}' \cat K_{Ssb}'} \cat K_{Ssa}' } * k_{Ssa}' \\
+k_{Ssb} &amp;=  \hash{\hash{K_{Ssa}' \cat K_{Ssb}'} \cat K_{Ssb}' } * k_{Ssb}' \\
+k_{Ss} &amp;= k_{Ssa} + k_{sb} \\
+k_{Sra} &amp;=  \hash{\hash{K_{Sra}' \cat K_{Srb}'} \cat K_{Sra}' } * k_{Sra}' \\
+k_{Srb} &amp;=  \hash{\hash{K_{Sra}' \cat K_{Srb}'} \cat K_{Srb}' } * k_{Srb}' \\
+k_{Sr} &amp;= k_{Sra} + k_{Srb} \\
+k_{Sla} &amp;=  \hash{\hash{K_{Sla}' \cat K_{Slb}'} \cat K_{Sla}' } * k_{Sla}' \\
+k_{Slb} &amp;=  \hash{\hash{K_{Sla}' \cat K_{Slb}'} \cat K_{Slb}' } * k_{Slb}' \\
+k_{Sl} &amp;= k_{Sla} + k_{Slb} \\
+\end{aligned}
+\tag{12}
+$$</p>
+<p>The <a href="Glossary.html#sender-offset-keypair">sender offset key</a> parts for Alice and Bob is constructed as follows:</p>
+<p>$$
+\begin{aligned}
+k_{Osa} &amp;=  \hash{\hash{K_{Osa}' \cat K_{Osb}'} \cat K_{Osa}' } * k_{Osa}' \\
+k_{Osb} &amp;=  \hash{\hash{K_{Osa}' \cat K_{Osb}'} \cat K_{Osb}' } * k_{Osb}' \\
+k_{Os} &amp;= k_{Osa} + k_{Ssb} \\
+k_{Ora} &amp;=  \hash{\hash{K_{Ora}' \cat K_{Orb}'} \cat K_{Ora}' } * k_{Ora}' \\
+k_{Orb} &amp;=  \hash{\hash{K_{Ora}' \cat K_{Orb}'} \cat K_{Orb}' } * k_{Orb}' \\
+k_{Or} &amp;= k_{Ora} + k_{Srb} \\
+k_{Ola} &amp;=  \hash{\hash{K_{Ola}' \cat K_{Olb}'} \cat K_{Ola}' } * k_{Ola}' \\
+k_{Olb} &amp;=  \hash{\hash{K_{Ola}' \cat K_{Olb}'} \cat K_{Olb}' } * k_{Olb}' \\
+k_{Ol} &amp;= k_{Ola} + k_{Slb} \\
+\end{aligned}
+\tag{13}
+$$</p>
+<p>The Monero key parts for Alice and Bob is constructed as follows:</p>
+<p>$$
+\begin{aligned}
+xm_a' &amp;= x_a' \\
+xm_b' &amp;= x_b' \\
+Xm_a' &amp;= x_a' \cdot G_m \\
+Xm_b' &amp;= x_b' \cdot G_m \\
+X_a' &amp;= x_a' \cdot G \\
+X_b' &amp;= x_b' \cdot G \\
+x_a &amp;=  \hash{\hash{X_a' \cat X_b'} \cat X_a' } * x_a' \\
+x_b &amp;=  \hash{\hash{X_a' \cat X_b'} \cat X_b' } * x_b' \\
+x &amp;= x_a + x_b + k_i \\
+Xm &amp;= Xm_a + Xm_b + k_i \cdot G_m \\
+X &amp;= X_a + X_b + k_i \cdot G\\
+\end{aligned}
+\tag{14}
+$$</p>
+<h3 id="commitment-phase-1"><a class="header" href="#commitment-phase-1">Commitment phase</a></h3>
+<p>Similar to method 1, this phase allows Alice and Bob to commit to using their keys and requires more than one round to 
+complete. Some of the information that needs to be committed depends on previous knowledge. </p>
+<h4 id="starting-values-1"><a class="header" href="#starting-values-1">Starting values</a></h4>
+<p>Alice needs to provide Bob with the following:</p>
+<ul>
+<li>Output commitment \(C_r\) of the refund transaction's output</li>
+<li>Output features  \( F_r\) of the refund transaction's output</li>
+<li>Output script  \( \script_r\) of the refund transaction's output</li>
+<li>Output commitment \(C_l\) of the lapse transaction's output</li>
+<li>Output features  \( F_l\) of the lapse transaction's output</li>
+<li>Output script  \( \script_l\) of the lapse transaction's output</li>
+<li>Public keys: \( K_{Ssa}'\), \( K_{Sra}'\), \( K_{Sla}'\), \( K_{Osa}'\), \( K_{Ora}'\), \( K_{Ola}'\), \( X_a'\)</li>
+<li>Nonces: \( R_{Ssa}\), \( R_{Sra}\), \( R_{Sla}\), \( R_{Msa}\), \( R_{Mra}\), \( R_{Mla}\)</li>
+</ul>
+<p>Bob needs to provide Alice with the following:</p>
+<ul>
+<li>Output commitment \(C_s\) of the swap transaction's output</li>
+<li>Output features  \( F_s\) of the swap transaction's output</li>
+<li>Output script  \( \script_s\) of the swap transaction's output</li>
+<li>Public keys: \( K_{Ssb}'\), \( K_{Srb}'\), \( K_{Slb}'\), \( K_{Osb}'\), \( K_{Orb}'\), \( K_{Olb}'\), \( X_b'\)</li>
+<li>Nonces: \( R_{Ssb}\), \( R_{Srb}\), \( R_{Slb}\), \( R_{Msb}\), \( R_{Mrb}\), \( R_{Mlb}\)</li>
+</ul>
+<p>After Alice and Bob have exchanged the variables, they start trading calculated values. </p>
+<h4 id="construct-adaptor-signatures-and-dleq-proofs"><a class="header" href="#construct-adaptor-signatures-and-dleq-proofs">Construct adaptor signatures and DLEQ proofs</a></h4>
+<p>Alice needs to provide Bob with the following values:</p>
+<ul>
+<li>Adaptor signature part \(b_{Sra}'\) for \(b_{Sra}\)</li>
+<li>Signature part \(a_{Sra}\)</li>
+<li>Monero public key \(X_a\) encoded with Ristretto </li>
+<li>Monero public key \(Xm_a\) encoded with ed25519</li>
+<li>DLEQ proof for \(Xm_a\) and \(X_a\): \((R_{ZTa}, R_{ZMa}, s_{Za})\)</li>
+</ul>
+<p>Alice constructs the <strong>adaptor signature</strong> of the <a href="RFC-0201_TariScript.html#transaction-input-changes">input script signature</a> 
+parts for the refund transaction ( \(a_{Sra}\) and \(b_{Sra}'\) ) with:</p>
+<p>$$
+\begin{aligned}
+a_{Sra} &amp;= r_{Sra_a} +  e_r(v_{i}) \\
+b_{Sra}' &amp;= r_{Sra_b} +  e_r(k_{Sra}+k_i) \\
+e_r &amp;= \hash{ (R_{Sr} + (X_a)) \cat \alpha_r \cat \input_r \cat (K_{Sra} + K_{Srb}) \cat C_i} \\
+R_{Sr} &amp;= r_{Sra_a} \cdot H + r_{Sra_b} \cdot G + R_{Srb} \\
+X_a &amp;= x_a \cdot G \\
+\end{aligned}
+\tag{15}
+$$</p>
+<p>Alice constructs the DLEQ proof:</p>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{X_a \cat Xm_a \cat R_{ZTa} \cat R_{ZMa}} \\
+s_{Za} &amp;= r + e(x_a) \\
+R_{ZTa} &amp;= r \cdot G \\
+R_{ZMa} &amp;= r \cdot G_m \\
+\end{aligned}
+\tag{16}
+$$</p>
+<p>Bob needs to provide Alice with the following values:</p>
+<ul>
+<li>Adaptor signature part \(b_{Ssb}'\) for \(b_{Ssb}\)</li>
+<li>Signature part \(a_{Ssb}\)</li>
+<li>Adaptor signature part \(b_{Slb}'\) for \(b_{Slb}\)</li>
+<li>Signature part \(a_{Slb}\)</li>
+<li>Monero public key \(X_b\) encoded with Ristretto </li>
+<li>Monero public key \(Xm_b\) encoded with ed25519</li>
+<li>DLEQ proof for \(Xm_b\) and \(X_b\): \((R_{ZTb}, R_{ZMb}, s_{Zb})\)</li>
+</ul>
+<p>Bob constructs the <strong>adaptor signatures</strong> of the <a href="RFC-0201_TariScript.html#transaction-input-changes">input script signature</a> 
+parts for the swap transaction ( \(a_{Ssb}\), \(b_{Ssb}'\) ) and the lapse transaction 
+( \(a_{Slb}\) and \(b_{Slb}'\) ) with</p>
+<p>$$
+\begin{aligned}
+a_{Ssb} &amp;= r_{Ssb_a} +  e_s(v_{i}) \\
+b_{Ssb}' &amp;= r_{Ssb_b} +  e_s(k_{Ssb}+k_i) \\
+e_s &amp;= \hash{ (R_{Sr} + (X_b)) \cat \alpha_i \cat \input_i \cat (K_{Ssa} + K_{Ssb}) \cat C_i} \\
+R_{Ss} &amp;= r_{Ssb_a} \cdot H + r_{Ssb_b} \cdot G + R_{Ssa} \\
+a_{Slb} &amp;= r_{Slb_a} +  e_l(v_{i}) \\
+b_{Slb}' &amp;= r_{Slb_b} +  e_l(k_{Slb}+k_i) \\
+e_l &amp;= \hash{ (R_{Sl} + (X_b)) \cat \alpha_i \cat \input_i \cat (K_{Sla} + K_{Slb}) \cat C_i} \\
+R_{Sl} &amp;= r_{Slb_a} \cdot H + r_{Slb_b} \cdot G + R_{Sla} \\
+X_b &amp;= x_b \cdot G \\
+\end{aligned}
+\tag{17}
+$$</p>
+<p>Bob constructs the DLEQ proof:</p>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{X_b \cat Xm_b \cat R_{ZTb} \cat R_{ZMb}} \\
+s_{Zb} &amp;= r + e(x_b) \\
+R_{ZTb} &amp;= r \cdot G \\
+R_{ZMb} &amp;= r \cdot G_m \\
+\end{aligned}
+\tag{18}
+$$</p>
+<h4 id="verify-adaptor-signatures-and-dleq-proofs"><a class="header" href="#verify-adaptor-signatures-and-dleq-proofs">Verify adaptor signatures and DLEQ proofs</a></h4>
+<p>Alice needs to verify Bob's adaptor signatures with:</p>
+<p>$$
+\begin{aligned}
+a_{Ssb} \cdot H + b_{Ssb}' \cdot G &amp;= R_{Ssb} + (C_i+K_{Ssb})*e_s \\
+a_{Slb} \cdot H + b_{Slb}' \cdot G &amp;= R_{Slb} + (C_i+K_{Slb})*e_l \\
+\end{aligned}
+\tag{19}
+$$</p>
+<p>Alice needs to verify Bob's Monero public keys using the zero-knowledge proof:</p>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{X_b \cat Xm_b \cat R_{ZTb} \cat R_{ZMb}} \\
+s_{Zb} \cdot G &amp;= R_{ZTb} + e(X_b) \\
+s_{Zb} \cdot G_m &amp;= R_{ZMb} + e(Xm_b) \\
+\end{aligned}
+\tag{20}
+$$</p>
+<p>Bob needs to verify Alice's adaptor signature with:</p>
+<p>$$
+\begin{aligned}
+a_{Sra} \cdot H + b_{Sra}' \cdot G &amp;= R_{Sra} + (C_i+K_{Sra})*e_r \\
+\end{aligned}
+\tag{21}
+$$</p>
+<p>Bob needs to verify Alice's Monero public keys using the zero-knowledge proof:</p>
+<p>$$
+\begin{aligned}
+e &amp;= \hash{X_a \cat XM_a \cat R_{ZTa} \cat R_{ZMa}} \\
+s_{Za} \cdot G &amp;= R_{ZTa} + e(X_a) \\
+s_{Za} \cdot G_m &amp;= R_{ZMa} + e(Xm_a) \\
+\end{aligned}
+\tag{22}
+$$</p>
+<h4 id="swap-out-refund-and-lapse-transactions"><a class="header" href="#swap-out-refund-and-lapse-transactions">Swap out refund and lapse transactions</a></h4>
+<p>If Alice and Bob are happy with the verification, they need to swap out refund and lapse transactions.</p>
+<p>Alice needs to provide Bob with the following:</p>
+<ul>
+<li><a href="RFC-0201_TariScript.html#transaction-input-changes">Input script signature</a> for lapse transaction (\( (a_{Sla}, b_{Sla}), R_{Sla}\) )</li>
+<li><a href="RFC-0201_TariScript.html#transaction-output-changes">Output metadata signature</a> for lapse transaction (\( b_{Mla}, R_{Mla}\) )</li>
+<li><a href="RFC-0201_TariScript.html#script-offset">Script offset</a> for lapse transaction \( \so_{la} \)</li>
+</ul>
+<p>Alice constructs for the lapse transaction signatures.
+$$
+\begin{aligned}
+a_{Sla} &amp;= r_{Sla_a} +  e_l(v_{i}) \\
+b_{Sla} &amp;= r_{Sla_b} +  e_l(k_{Sla}) \\
+e_l &amp;= \hash{ (R_{Sl} + (X_b)) \cat \alpha_i \cat \input_i \cat (K_{Sla} + K_{Slb}) \cat C_i} \\
+R_{Sl} &amp;= r_{Sla_a} \cdot H + r_{Sla_b} \cdot G + R_{Slb}\\
+b_{Mla} &amp;= r_{Mla_b} + e(k_{Ola}) \\
+R_{Mla} &amp;= b_{Mla} \cdot G \\
+e &amp;= \hash{ (R_{Mla} + R_{Mlb}) \cat \script_l \cat F_l \cat (K_{Ola} + K_{Olb}) \cat C_l} \\
+\so_{la} &amp;= k_{Sla} - k_{Ola} \\
+\end{aligned}
+\tag{23}
+$$</p>
+<p>Bob needs to provide Alice with the following:</p>
+<ul>
+<li><a href="RFC-0201_TariScript.html#transaction-input-changes">Input script signature</a> for refund transaction (\( (a_{Srb}, b_{Srb}), R_{Srb}\) )</li>
+<li><a href="RFC-0201_TariScript.html#transaction-output-changes">Output metadata signature</a> for refund transaction (\( b_{Mrb}, R_{Mrb}\) )</li>
+<li><a href="RFC-0201_TariScript.html#script-offset">Script offset</a> for refund transaction \( \so_{rb} \)</li>
+</ul>
+<p>Bob constructs for the refund transaction signatures.
+$$
+\begin{aligned}
+a_{Srb} &amp;= r_{Srb_a} +  e_r(v_{i}) \\
+b_{Srb} &amp;= r_{Srb_b} +  e_r(k_{Srb}) \\
+e_r &amp;= \hash{ (R_{Sr} + (X_a)) \cat \alpha_i \cat \input_i \cat (K_{Sra} + K_{Srb}) \cat C_i} \\
+R_{Sl} &amp;= r_{Srb_a} \cdot H + r_{Srb_b} \cdot G + R_{Sra}\\
+b_{Mrb} &amp;= r_{Mrb_b} + e(k_{Orb}) \\
+R_{Mrb} &amp;= b_{Mrb} \cdot G \\
+e &amp;= \hash{ (R_{Mra} + R_{Mrb}) \cat \script_r \cat F_r \cat (K_{Ora} + K_{Orb}) \cat C_r} \\
+\so_{rb} &amp;= k_{Srb} - k_{Orb} \\
+\end{aligned}
+\tag{24}
+$$</p>
+<p>Although the script validation on output \(C_i\)  will not pass due to the lock height, both Alice and Bob need to
+verify that the total aggregated signatures and script offset for the refund and lapse transaction are valid should they
+need to publish them at a future date without the other party’s presence.</p>
+<h3 id="xtr-payment-1"><a class="header" href="#xtr-payment-1">XTR payment</a></h3>
+<p>If Alice and Bob are happy with all the committed values, Alice will construct the Tari UTXO with the correct 
+<a href="#tariscript">script</a> and publish the containing transaction to the blockchain. Because Bob already gave her the 
+required signatures for his part of the refund transaction, Alice can easily compute the required aggregated signatures 
+by adding the parts together. She has all the knowledge to spend this after the lock expires. </p>
+<h3 id="xmr-payment-1"><a class="header" href="#xmr-payment-1">XMR Payment</a></h3>
+<p>When Bob sees that the Tari UTXO that Alice created is mined on the Tari blockchain with the correct script, he can go 
+ahead and publish the Monero UTXO with the aggregate key \(Xm = Xm_a + Xm_b \).</p>
+<h3 id="claim-xtr-1"><a class="header" href="#claim-xtr-1">Claim XTR</a></h3>
+<p>When Alice sees that the Monero UTXO that Bob created is mined on the Monero blockchain containing the correct aggregate 
+key \(Xm\), she can provide Bob with the following allowing him to spend the Tari UTXO:</p>
+<ul>
+<li>Script signature for the swap transaction \((a_{Ssa}\, b_{Ssa}), R_{Ssa}\)</li>
+<li>Metadata signature for swap transaction \((b_{Msa}, R_{Msa})\)</li>
+<li>Script offset for swap transaction \( \so_{sa} \)</li>
+</ul>
+<p>She does not have the missing key \(x_b \) to claim the Monero yet, but it will be revealed when Bob claims the Tari. </p>
+<p>Alice constructs for the swap transaction.
+$$
+\begin{aligned}
+a_{Ssa} &amp;= r_{Ssa_a} +  e_s(v_{i}) \\
+b_{Ssa} &amp;= r_{Ssa_b} +  e_s(k_{Ssa}) \\
+e_s &amp;= \hash{ (R_{Ss} + (X_b)) \cat \alpha_i \cat \input_i \cat (K_{Ssa} + K_{Ssb}) \cat C_i} \\
+R_{Ss} &amp;= r_{Ssa_a} \cdot H + r_{Ssa_b} \cdot G + R_{Ssb}\\
+b_{Msa} &amp;= r_{Msa_b} + e(k_{Osa}) \\
+R_{Msa} &amp;= b_{Msa} \cdot G \\
+e &amp;= \hash{ (R_{Msa} + R_{Msb}) \cat \script_s \cat F_s \cat (K_{Osa} + K_{Osb}) \cat C_s} \\
+\so_{sa} &amp;= k_{Ssa} - k_{Osa} \\
+\end{aligned}
+\tag{25}
+$$</p>
+<p>Bob constructs the swap transaction.
+$$
+\begin{aligned}
+a_{Ssb} &amp;= r_{Ssb_a} +  e_s(v_{i}) \\
+b_{Ssb} &amp;= r_{Ssb_b} + x_b + e_s(k_{Ssb} + k_i) \\
+e_s &amp;= \hash{ (R_{Ss} + (X_b)) \cat \alpha_i \cat \input_i \cat (K_{Ssa} + K_{Ssb}) \cat C_i} \\
+a_{Ss} &amp;= a_{Ssa} + a_{Ssb} \\
+b_{Ss} &amp;= b_{Ssa} + b_{Ssb} \\
+R_{Ss} &amp;= r_{Ssa_b} \cdot H + r_{Ssb_b} \cdot G + R_{Ssa}\\
+a_{Msb} &amp;= r_{Msb_a} + e(v_{s}) \\
+b_{Msb} &amp;= r_{Msb_b} + e(k_{Osb}+k_s) \\
+R_{Msb} &amp;= a_{Msb} \cdot H + b_{Msb} \cdot G \\
+e &amp;= \hash{ (R_{Msa} + R_{Msb}) \cat \script_s \cat F_s \cat (K_{Osa} + K_{Osb}) \cat C_s} \\
+R_{Ms} &amp;= R_{Msa} + R_{Msb} \\
+\so_{sb} &amp;= k_{Ssb} - k_{Osb} \\
+\so_{s} &amp;= \so_{sa} +\so_{sb} \\
+\end{aligned}
+\tag{26}
+$$</p>
+<p>Bob's transaction now has all the required signatures to complete the transaction. He will then publish the transaction.</p>
+<h3 id="claim-xmr-1"><a class="header" href="#claim-xmr-1">Claim XMR</a></h3>
+<p>Because Bob has now published the transaction on the Tari blockchain, Alice can calculate the missing Monero key \(x_b\)
+as follows:</p>
+<p>$$
+\begin{aligned}
+b_{Ss} &amp;= b_{Ssa} + b_{Ssb} \\
+b_{Ss} - b_{Ssa} &amp;= b_{Ssb} \\
+b_{Ssb} &amp;= r_{Ssb_b} + x_b + e_s(k_{Ssb} + k_i) \\
+b_{Ssb} - b_{Ssb}' &amp;= r_{Ssb_b} + x_b + e_s(k_{Ssb} + k_i) -(r_{Ssb_b} +  e_s(k_{Ssb}+k_i))\\
+b_{Ssb} - b_{Ssb}' &amp;= x_b \\
+\end{aligned}
+\tag{27}
+$$</p>
+<p>With \(x_b\) in hand, she can calculate \(X = x_a + x_b\), and with this, she claims the Monero.</p>
+<h3 id="the-refund-1"><a class="header" href="#the-refund-1">The refund</a></h3>
+<p>If something goes wrong and Bob never publishes the Monero, Alice needs to wait for the lock height
+<code>height_1</code> to pass. This will allow her to create the refund transaction to reclaim her Tari.</p>
+<p>Alice constructs the refund transaction with</p>
+<p>$$
+\begin{aligned}
+a_{Sra} &amp;= r_{Sra_a} +  e_s(v_{i}) \\
+b_{Sra} &amp;= r_{Sra_b} + x_a + e_s(k_{Sra} + k_i) \\
+e_r &amp;= \hash{ (R_{Sr} + (X_a)) \cat \alpha_i \cat \input_i \cat (K_{Sra} + K_{Srb}) \cat C_i} \\
+a_{Sr} &amp;= a_{Sra} + a_{Srb} \\
+b_{Sr} &amp;= b_{Sra} + b_{Srb} \\
+R_{Sr} &amp;= r_{Sra_a} \cdot H + r_{Sra_b} \cdot G + R_{Srb}\\
+a_{Mra} &amp;= r_{Mra_a} + e(v_{r}) \\
+b_{Mra} &amp;= r_{Mra_b} + e(k_{Ora}+k_r) \\
+R_{Mra} &amp;= a_{Mra} \cdot H + b_{Mra} \cdot G \\
+e &amp;= \hash{ (R_{Mra} + R_{Mrb}) \cat \script_s \cat F_s \cat (K_{Ora} + K_{Orb}) \cat C_r} \\
+R_{Mr} &amp;= R_{Mra} + R_{Mrb} \\
+\so_{ra} &amp;= k_{Sra} - k_{Ora} \\
+\so_{r} &amp;= \so_{ra} +\so_{rb} \\
+\end{aligned}
+\tag{28}
+$$</p>
+<p>This allows Alice to claim back her Tari, but it also exposes her Monero key \(x_a\)
+This means if Bob did publish the Monero UTXO, he could calculate \(X\) using:
+$$
+\begin{aligned}
+b_{Sr} &amp;= b_{Sra} + b_{Srb} \\
+b_{Sr} - b_{Sra} &amp;= b_{Sra} \\
+b_{Sra} &amp;= r_{Sra_b} + x_a + e_r(k_{Sra} + k_i) \\
+b_{Sra} - b_{Sra}' &amp;= r_{Sra_b} + x_a + e_r(k_{Sra} + k_i) -(r_{Sra_b} +  e_r(k_{Sra}+k_i))\\
+b_{Sra} - b_{Sra}' &amp;= x_a \\
+\end{aligned}
+\tag{29}
+$$</p>
+<h3 id="the-lapse-transaction-1"><a class="header" href="#the-lapse-transaction-1">The lapse transaction</a></h3>
+<p>If something goes wrong and Alice never publishes her refund transaction, Bob needs to wait for the
+lock height <code>height_2</code> to pass. This will allow him to create the lapse transaction to claim the Tari. </p>
+<p>Bob constructs the lapse transaction with
+$$
+\begin{aligned}
+a_{Slb} &amp;= r_{Slb_a} +  e_l(v_{i}) \\
+b_{Slb} &amp;= r_{Slb_b} + x_b + e_l(k_{Slb} + k_i) \\
+e_l &amp;= \hash{ (R_{Sl} + (X_b)) \cat \alpha_i \cat \input_i \cat (K_{Sla} + K_{Slb}) \cat C_i} \\
+a_{Sl} &amp;= a_{Sla} + a_{Slb} \\
+b_{Sl} &amp;= b_{Sla} + b_{Slb} \\
+R_{Sl} &amp;= r_{Slb_a} \cdot H + r_{Slb_b} \cdot G + R_{Sla}\\
+a_{Mlb} &amp;= r_{Mlb_a} + e(v_{l}) \\
+b_{Mlb} &amp;= r_{Mlb_b} + e(k_{Olb}+k_l) \\
+R_{Mlb} &amp;= a_{Mlb} \cdot H + b_{Mlb} \cdot G \\
+e &amp;= \hash{ (R_{Mla} + R_{Mlb}) \cat \script_l \cat F_l \cat (K_{Ola} + K_{Olb}) \cat C_l} \\
+R_{Ml} &amp;= R_{Mla} + R_{Mlb} \\
+\so_{lb} &amp;= k_{Slb} - k_{Olb} \\
+\so_{r} &amp;= \so_{la} +\so_{lb} \\
+\end{aligned}
+\tag{30}
+$$</p>
+<p>This allows Bob to claim the Tari he originally wanted, but it also exposes his Monero key \(x_b\)
+This means if Alice ever comes back online, she can calculate \(X\) and claim the Monero she wanted all along using:
+$$
+\begin{aligned}
+b_{Sl} &amp;= b_{Slb} + b_{Slb} \\
+b_{Sl} - b_{Slb} &amp;= b_{Slb} \\
+b_{Slb} &amp;= r_{Slb_b} + x_a + e_r(k_{Slb} + k_i) \\
+b_{Slb} - b_{Slb}' &amp;= r_{Slb_b} + x_b + e_r(k_{Slb} + k_i) -(r_{Slb_b} +  e_r(k_{Slb}+k_i))\\
+b_{Slb} - b_{Slb}' &amp;= x_b \\
+\end{aligned}
+\tag{31}
+$$</p>
+<h2 id="notation"><a class="header" href="#notation">Notation</a></h2>
+<p>Where possible, the &quot;usual&quot; notation is used to denote terms commonly found in cryptocurrency literature. Lower case 
+characters are used as private keys, while uppercase characters are used as public keys. New terms introduced here are 
+assigned greek lowercase letters in most cases. Some terms used here are noted down in <a href="Glossary.html#tariscript">TariScript</a>. </p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Name</th><th>Symbol</th><th>Definition</th></tr></thead><tbody>
+<tr><td style="text-align: left">subscript s</td><td>\( _s \)</td><td>The swap transaction</td></tr>
+<tr><td style="text-align: left">subscript r</td><td>\( _r \)</td><td>The refund transaction</td></tr>
+<tr><td style="text-align: left">subscript l</td><td>\( _l \)</td><td>The lapse transaction</td></tr>
+<tr><td style="text-align: left">subscript a</td><td>\( _a \)</td><td>Belongs to Alice</td></tr>
+<tr><td style="text-align: left">subscript b</td><td>\( _b \)</td><td>Belongs to Bob</td></tr>
+<tr><td style="text-align: left">Monero key</td><td>\( X \)</td><td>Aggregate Monero public key encoded with Ristretto</td></tr>
+<tr><td style="text-align: left">Alice's Monero key</td><td>\( X_a \)</td><td>Alice's partial  Monero public key encoded with Ristretto</td></tr>
+<tr><td style="text-align: left">Bob's Monero key</td><td>\( X_b \)</td><td>Bob's partial  Monero public key encoded with Ristretto</td></tr>
+<tr><td style="text-align: left">Monero key</td><td>\( Xm \)</td><td>Aggregate Monero public key encoded with Ed25519</td></tr>
+<tr><td style="text-align: left">Alice's Monero key</td><td>\( Xm_a \)</td><td>Alice's partial  Monero public key encoded with Ed25519</td></tr>
+<tr><td style="text-align: left">Bob's Monero key</td><td>\( Xm_b \)</td><td>Bob's partial  Monero public key encoded with Ed25519</td></tr>
+<tr><td style="text-align: left">Script key</td><td>\( K_s \)</td><td>The <a href="Glossary.html#script-keypair">script key</a> of the utxo</td></tr>
+<tr><td style="text-align: left">Alice's Script key</td><td>\( K_sa \)</td><td>Alice's partial <a href="Glossary.html#script-keypair">script key</a></td></tr>
+<tr><td style="text-align: left">Bob's Script key</td><td>\( K_sb \)</td><td>Bob's partial <a href="Glossary.html#script-keypair">script key</a></td></tr>
+<tr><td style="text-align: left">Alice's adaptor signature</td><td>\( b'_{Sa} \)</td><td>Alice's adaptor signature for the signature \( b_{Sa} \) of the script_signature of the utxo</td></tr>
+<tr><td style="text-align: left">Bob's adaptor signature</td><td>\( b'_{Sb} \)</td><td>Bob's adaptor signature for the \( b_{Sb} \) of the script_signature of the utxo</td></tr>
+<tr><td style="text-align: left">Ristretto G generator</td><td>\(k \cdot G  \)</td><td>Value k over Curve25519 G generator encoded with Ristretto</td></tr>
+<tr><td style="text-align: left">Ristretto H generator</td><td>\(k \cdot H  \)</td><td>Value k over Tari H generator encoded with Ristretto</td></tr>
+<tr><td style="text-align: left">ed25519 G generator</td><td>\(k \cdot G_m  \)</td><td>Value k over Curve25519 G generator encoded with Ed25519</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0240_AtomicSwap.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0310_SubmarineSwaps.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0240_AtomicSwap.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0310_SubmarineSwaps.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

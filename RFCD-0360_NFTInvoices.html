@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0360: NFT sale using MimbleWimble Invoice - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html" class="active"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0360nftinvoices"><a class="header" href="#rfc-0360nftinvoices">RFC-0360/NFTInvoices</a></h1>
+<h2 id="nft-sale-via-mimblwimble-invoice"><a class="header" href="#nft-sale-via-mimblwimble-invoice">NFT sale via Mimblwimble Invoice</a></h2>
+<p><img src="theme/images/status-deprecated.svg" alt="status: deprecated" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/stringhandler">Stringhandler</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2021 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, 
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in 
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as 
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>The aim of this Request for Comment (RFC) is to describe a formulation of a <a href="Glossary.html#mimblewimble">Mimblewimble</a> <a href="Glossary.html#transaction">transaction</a> negotiation process
+to allow for the sale of an <a href="Glossary.html#nft">Non Fungible Token</a> (NFT) by a Seller to a Buyer. The Seller will initiate the transaction negotiation by
+specifying which [NFT] containing <a href="Glossary.html#unspent-transaction-outputs">UTXO</a> they are offering for sale and how much Tari they expect in return. Having the party
+that will receive the funds specify the funds they wish to receive is termed an Invoice. The Buyer will then provide their payment 
+input and resulting change output to the transaction and provide a partial signature. The final step will be the Seller 
+completing the final signature to produce a complete transaction.</p>
+<p>The process must be completely atomic. At no point should the data included in the negotiation be malleable by the other party
+or allow for one party to change the elements provided by the counterparty without making the transaction invalid.</p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a></li>
+<li><a href="RFCD-0300_DAN.html">RFCD-0300: Digital Assets Network</a></li>
+</ul>
+<p>$$
+\newcommand{\hash}[1]{\mathrm{H}\bigl({#1}\bigr)}
+$$</p>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<p>The standard interactive <a href="Glossary.html#mimblewimble">Mimblewimble</a> transaction is usually initiated by a party, the Sender, that is going to send 
+funds to a Receiver. The Sender selects a number of input UTXOs from which the sent funds and fees will come from, they
+build a change UTXO to receive any remaining funds and calculate the excess of these inputs and change output. The 
+Receiver is then told how many Tari they will receive and provides the aggregated public excess and public nonce of the 
+Sender's portion of the transaction signature. The Receiver builds a commitment with the specified value and their 
+private spending key and then provides their partial signature for their UTXO and the excess. This gets sent back to the 
+Sender who then completes the transaction by providing their partial signature and aggregating it with the Receiver's 
+partial signature.</p>
+<p>In the standard Mimblewimble negotiation there are two main elements that make the process trustless for the Sender and
+Receiver. Firstly, for the Sender, whose inputs are being spent, has the final say in whether to complete the transaction
+by producing the final signature. For the Receiver there is little risk because they have not provided any inputs at all
+and are just receiving funds, so they have nothing to lose if the process is compromised. Furthermore, their partial signature
+means that the Sender cannot change anything about the Receiver's output in the final stage of negotiation.</p>
+<p>When it comes to the sale of a token using a <a href="Glossary.html#mimblewimble">Mimblewimble</a> style transaction the risk profile for both the Seller and the
+Buyer is a bit more complicated.</p>
+<ol>
+<li>The Seller has to prove that they own a given token UTXO and provide some partial signature committing to the terms of 
+the sale without the Buyer being able to use that data to build a new transaction transferring ownership of the token
+with different terms to what the Seller specified.</li>
+<li>The Buyer has to provide inputs into the transaction before the finalization step in such a way that those inputs are 
+committed but not at risk of the Seller being able to claim the inputs without completing the agreed upon transaction in full.</li>
+</ol>
+<p>So the ultimate goal must be a negotiation process where the Seller and Buyer can interact completely trustlessly to build
+this transaction to the agreed terms. This must be done while each party's contributions to the negotiation are not 
+malleable by the other party and the entire process must be atomic. It either results in a valid transaction built as both
+parties expect or not at all.</p>
+<h2 id="transaction-negotiation"><a class="header" href="#transaction-negotiation">Transaction Negotiation</a></h2>
+<h3 id="assumptions"><a class="header" href="#assumptions">Assumptions:</a></h3>
+<ul>
+<li>The UTXOs containing the token data have a value of zero (This has not been decided yet in the RFCs regarding token UTXOs).</li>
+<li>The Buyer is going to pay the fees.</li>
+<li>The Buyer will select a single input for payment purposes whose value will cover the requested payment and fees.</li>
+<li>In the following notation a Transaction Input/Output will be represented by \( C_x \) and when used in equations
+will represent a Pederson Commitment but when sent to the counterparty will include all the addition metadata as described in
+<a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a></li>
+</ul>
+<p>In the following equations the capital letter subscripts, <em>S</em> and <em>B</em> refer to a token <em>Seller</em> and <em>Buyer</em> respectively.</p>
+<p>The transaction that is constructed by this process will need to produce an output <a href="Glossary.html#metadata-signature">metadata signature</a> for the Transaction Output
+the Buyer will receive the token in and also the Transaction Output the Seller will receive their payment in. These signatures
+will be aggregated <a href="https://eprint.iacr.org/2020/061.pdf">Commitment Signature</a>s that are described in detail in <a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a>.</p>
+<p><a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a> is written from the perspective of a standard Mimblewimble transaction where
+only the Sender has Transaction Inputs and the Receiver only has a single Transaction Output. The case this RFC discusses 
+both parties receive a Transaction Output and both parties supply a Transaction Input. This results in the requirement of an
+extra round of communication between the parties. However, the negotiation described below allows for a transaction to be 
+built that can be validated exactly the same was as is described in <a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a>.</p>
+<h3 id="negotiation"><a class="header" href="#negotiation">Negotiation</a></h3>
+<h4 id="round-1"><a class="header" href="#round-1">Round 1</a></h4>
+<p>The Seller initiates the negotiation by collecting and calculating the following:</p>
+<div class="table-wrapper"><table><thead><tr><th>Terms</th><th>Description</th></tr></thead><tbody>
+<tr><td>\( C_{St} = 0 \cdot H  + k_{St} \cdot G \)</td><td>Select the Seller's token Transaction Input to be offered</td></tr>
+<tr><td>\( C_{Sp} = v_p \cdot H + k_{Sp} \cdot G \)</td><td>Choose a value to be requested from Buyer and select a spending key for the payment Transaction Output to be received</td></tr>
+<tr><td>\( R_{Sk} = r_{Sk} \cdot G \)</td><td>Choose a excess signature nonce</td></tr>
+<tr><td>\( R_{SMSt} = r_{SMSt_a} \cdot H + r_{SMSt_b} \cdot G \)</td><td>Choose a Seller commitment signature nonce for the Buyer's token output</td></tr>
+<tr><td>\( K_{SO} = k_{SO} \cdot G \)</td><td>Choose a Seller Offset to be used in the Buyer's received token output <a href="Glossary.html#metadata-signature">metadata signature</a></td></tr>
+<tr><td>\( x_S = k_{Sp} - k_{St} \)</td><td>Seller's private Excess</td></tr>
+<tr><td>\( X_S = x_S \cdot G \)</td><td>Seller's public Excess</td></tr>
+<tr><td>\( s_{St} \)</td><td>A <a href="https://eprint.iacr.org/2020/061.pdf">Commitment Signature</a> using \( C_{St} \) signing the message \( e = (X_S \Vert v_p \Vert R_S) \)</td></tr>
+</tbody></table>
+</div>
+<p>The Seller now sends the following to the Buyer</p>
+<div class="table-wrapper"><table><thead><tr><th>Items</th><th>Description</th></tr></thead><tbody>
+<tr><td>\( C_{St} \)</td><td>The Seller's token Transaction Input to be offered</td></tr>
+<tr><td>\( C_{Sp} \)</td><td>Seller's payment Transaction Output to be received</td></tr>
+<tr><td>\( v_p \)</td><td>The value the Seller is requesting as part of this offer</td></tr>
+<tr><td>\( R_{Sk} \)</td><td>Seller's public excess signature nonce</td></tr>
+<tr><td>\( R_{SMSt}\)</td><td>Seller's public metadata signature nonce for the Buyer's token UTXO</td></tr>
+<tr><td>\( K_{SO}\)</td><td>Seller Offset public key</td></tr>
+<tr><td>\( s_{St} \)</td><td>A <a href="https://eprint.iacr.org/2020/061.pdf">Commitment Signature</a> using \( C_{St} \) signing the message \( e = (X_S \Vert v_p \Vert R_s) \)</td></tr>
+</tbody></table>
+</div>
+<h4 id="round-2"><a class="header" href="#round-2">Round 2</a></h4>
+<p>The commitment signature is provided to the Buyer to show that the Seller does indeed own the token UTXO \( C_{St} \). 
+The Buyer's wallet should verify on the base layer that this UTXO is for the token they are being offered.</p>
+<p>The Buyer will construct the Seller's public Excess, \( X_s \) from the provided components:
+\( X_s = C_{Sp} - C_{St} - v_p \cdot H \)
+This operation confirms that the only commitments that form part of the Seller's excess are the token input and a commitment 
+with the value of the requested payment. To ensure that there is no malleability in the Seller's payment output the Buyer
+will also provide the Seller with an offset public key so that the Seller can produce an output <a href="Glossary.html#metadata-signature">metadata signature</a>.</p>
+<p>The Buyer will now calculate/choose the following:</p>
+<div class="table-wrapper"><table><thead><tr><th>Terms</th><th>Description</th></tr></thead><tbody>
+<tr><td>\( C_{Bp} = v_{Bp} \cdot H  + k_{Bp} \cdot G \)</td><td>Buyer's selected Transaction Input from which the payment is drawn</td></tr>
+<tr><td>\( C_{Bc} = (v_{Bp} - v_p - \text{fees}) \cdot H + k_{Bc} \cdot G \)</td><td>Buyer's change Transaction Output accounting for the amount to pay to seller and the fees</td></tr>
+<tr><td>\( C_{Bt} = 0 \cdot H + k_{Bt} \cdot G \)</td><td>Buyer's token Transaction Output that he will own if the transaction is completed</td></tr>
+<tr><td>\( x_B = k_{Bt} + k_{Bc} - k_{Bp} \)</td><td>Buyers's private Excess</td></tr>
+<tr><td>\( X_B = x_B \cdot G \)</td><td>Buyers's public Excess</td></tr>
+<tr><td>\( R_B = r_B \cdot G \)</td><td>Choose an excess signature nonce</td></tr>
+<tr><td>\( s_{B} = r_B + e_k x_B \)</td><td>A partial excess signature signing the message \( e_k = (R_S + R_B \Vert X_S + X_B \Vert \text{metadata} \Vert \text{fees} ) \)</td></tr>
+<tr><td>\( R_{BMSt} = r_{BMSt_a} \cdot H + r_{BMSt_b} \cdot G \)</td><td>Choose a Buyer commitment signature nonce for the Buyer's token output</td></tr>
+<tr><td>\( e_{Bt} = \hash{ (R_{SMSt} + R_{BMSt}) \Vert \alpha_{Bt} \Vert F_{Bt} \Vert K_{SO} \Vert C_{Bt}} \)</td><td>Buyer's token output metadata signature challenge where \( \alpha_{Bt} \) is the Buyer's token UTXO script and \( F_{Bt} \) is the Buyer's token UTXO output features</td></tr>
+<tr><td>\( s_{BMSt} = (a_{BMSt}, b_{BMSt}, R_{BMSt} ) \)</td><td>A partial metadata commitment signature for \( C_{Bt} \) signing message \( e_{Bt} \)</td></tr>
+<tr><td>\( R_{BMSp} = r_{BMSp_a} \cdot H + r_{BMSp_b} \cdot G \)</td><td>Buyer's public metadata signature nonce for use by the Seller to calculate their payment output <a href="Glossary.html#metadata-signature">metadata signature</a></td></tr>
+<tr><td>\( K_{BO} = k_{BO} \cdot G \)</td><td>Choose a Buyer Offset to be used in the Sellers's received payment output <a href="Glossary.html#metadata-signature">metadata signature</a></td></tr>
+</tbody></table>
+</div>
+<p>The Buyer will then return the following to the Seller:</p>
+<div class="table-wrapper"><table><thead><tr><th>Items</th><th>Description</th></tr></thead><tbody>
+<tr><td>\( C_{Bp} \)</td><td>Buyer's Transaction Input that the payment will come from</td></tr>
+<tr><td>\( C_{Bc} \)</td><td>Buyer's change Transaction Output</td></tr>
+<tr><td>\( C_{Bt} \)</td><td>Buyer's token Transaction Input that will be received if the sale is completed</td></tr>
+<tr><td>\( R_B \)</td><td>Buyers's public Excess</td></tr>
+<tr><td>\( \text{fees &amp; metadata} \)</td><td>The fees and Mimblewimble transaction metadata</td></tr>
+<tr><td>\( s_{B} \)</td><td>The Buyer's partial excess signature</td></tr>
+<tr><td>\( R_{SMSt}\)</td><td>Buyer's public metadata signature nonce for use in the Seller's payment output <a href="Glossary.html#metadata-signature">metadata signature</a></td></tr>
+<tr><td>\( K_{BO}\)</td><td>Buyer Offset to be used in the Sellers's received payment output <a href="Glossary.html#metadata-signature">metadata signature</a></td></tr>
+<tr><td>\( s_{BMSt} \)</td><td>A partial metadata commitment signature for \( C_{Bt} \)</td></tr>
+</tbody></table>
+</div>
+<h4 id="round-3"><a class="header" href="#round-3">Round 3</a></h4>
+<p>The Seller can calculate the Buyer's excess as follows:</p>
+<p>\( X_B = C_{Bt} + C_{Bc} - C_{Bp} + (v_p + \text{fees}) \cdot H  \)</p>
+<p>The Seller will now calculate/choose the following:</p>
+<div class="table-wrapper"><table><thead><tr><th>Terms</th><th>Description</th></tr></thead><tbody>
+<tr><td>\( s_{S} = r_S + e x_S \)</td><td>Sellers's partial excess signature</td></tr>
+<tr><td>\( s = s_S + s_B, R = R_S + R_B \)</td><td>Seller's aggregates the excess signatures to produce the final excess signature</td></tr>
+<tr><td>\( b_{SMSt} = r_{SMSt_b} + e_{Bt}(k_SO) \)</td><td>Seller's partial metadata signature for the Buyer's token output</td></tr>
+<tr><td>\( s_{MSt} = (a_{BMSt}, b_{SMSt} + b_{BMSt}, R_{SMSt} + R_{BMSt} \)</td><td>Aggregated <a href="Glossary.html#metadata-signature">metadata signature</a> for Buyer's token Transaction Output</td></tr>
+<tr><td>\( R_{SMS} = r_{SMSp_a} \cdot H + r_{SMSp_b} \cdot G \)</td><td>Choose a Seller commitment signature nonce for the Seller's payment output</td></tr>
+<tr><td>\( e_{Sp} = \hash{ (R_{SMSpt} + R_{BMSp}) \Vert \alpha_{Sp} \Vert F_{Sp} \Vert K_{BO} \Vert C_{Sp}} \)</td><td>where \( \alpha_{Sp} \) is the Sellers's payment UTXO script and \( F_{Sp} \) is the Seller's payment UTXO output features</td></tr>
+<tr><td>\( s_{SMSp} = (a_{SMSp}, b_{SMSp}, R_{SMSp} ) \)</td><td>A partial metadata commitment signature for \( C_{Sp} \) signing message \( e_{Sp} \)</td></tr>
+<tr><td>\( \gamma_S = k_Sst - k_SO \)</td><td>The Seller's portion of the Script Offset constructed using the script key from \(C_St\), \( k_Sst \), and the private Seller Offset</td></tr>
+</tbody></table>
+</div>
+<p>The Seller can almost fully complete the transaction construction now. However, while the Seller can complete their portion 
+of the final <a href="Glossary.html#script-offset">script offset</a> they cannot complete the entire offset because the Buyer also has input's in the transaction. 
+This means we need one extra round of communication where the Seller returns the almost complete transaction to the Buyer
+who will complete there portion of the final <a href="Glossary.html#script-offset">script offset</a> to complete the transaction.</p>
+<p>The Seller sends the following back to the Buyer:</p>
+<div class="table-wrapper"><table><thead><tr><th>Items</th><th>Description</th></tr></thead><tbody>
+<tr><td>\( C_{St} \)</td><td>Seller's token Transaction Input</td></tr>
+<tr><td>\( C_{Sp} \)</td><td>Seller's payment Transaction Output</td></tr>
+<tr><td>\( C_{Bp} \)</td><td>Buyer's Transaction Input that the payment will come from</td></tr>
+<tr><td>\( C_{Bc} \)</td><td>Buyer's change Transaction Output</td></tr>
+<tr><td>\( C_{Bt} \)</td><td>Buyer's token Transaction Output that will be received if the sale is completed</td></tr>
+<tr><td>\( X_S + X_B \)</td><td>Public Excess</td></tr>
+<tr><td>\( s \)</td><td>Aggregated Excess Signature</td></tr>
+<tr><td>\( s_{MSt} \)</td><td>Aggregated <a href="Glossary.html#metadata-signature">metadata signature</a> for Buyer's token Transaction Output</td></tr>
+<tr><td>\( s_{SMSp} \)</td><td>Partial metadata commitment signature for \( C_{Sp} \)</td></tr>
+<tr><td>\( \gamma_S \)</td><td>The Seller's portion of the Script Offset</td></tr>
+</tbody></table>
+</div>
+<h3 id="round-4"><a class="header" href="#round-4">Round 4</a></h3>
+<p>The final step will be for the Buyer to complete their portion of the <a href="Glossary.html#metadata-signature">metadata signature</a> for the Seller's payment Transaction
+Output and complete their portion of the Script Offset.</p>
+<div class="table-wrapper"><table><thead><tr><th>Terms</th><th>Description</th></tr></thead><tbody>
+<tr><td>\( b_{BMSp} = r_{BMSp_b} + e_{Sp}(k_BO) \)</td><td>Buyers's partial metadata signature for the Seller's payment output</td></tr>
+<tr><td>\( s_{MSp} = (a_{SMSp}, b_{SMSp} + b_{BMSp}, R_{SMSp} + R_{BMSp} \)</td><td>Aggregated <a href="Glossary.html#metadata-signature">metadata signature</a> for Seller's payment Transaction Output</td></tr>
+<tr><td>\( \gamma_B = k_Bsp - k_BO \)</td><td>The Seller's portion of the Script Offset constructed using the script key from \(C_Bp\), \( k_Bsp \), and the private Buyer Offset</td></tr>
+<tr><td>\( \gamma = \gamma_B + \gamma_S \)</td><td>The final <a href="Glossary.html#script-offset">script offset</a> for the completed transaction.</td></tr>
+</tbody></table>
+</div>
+<p>The Buyer's change Transaction Output will be constructed fully by them including the <a href="Glossary.html#metadata-signature">metadata signature</a> which will be included in the final \( \gamma \) value.</p>
+<h3 id="validation"><a class="header" href="#validation">Validation</a></h3>
+<p>A <a href="Glossary.html#base-node">Base Node</a> will validate this transaction in the exact same way as described in <a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a>.</p>
+<p>In addition to the standard Mimblewimble and TariScript validation operations the consensus rules required for assets and
+tokens must also be applied. The most important is to confirm that the <code>unique_id</code> of the token being sold in this transaction
+exists only once as an input and once as an output and the metadata is correctly transfered.</p>
+<h3 id="security-concerns"><a class="header" href="#security-concerns">Security concerns</a></h3>
+<p>For this negotiation to be secure it must not be possible for the following to occur:</p>
+<ol>
+<li>For the Buyer to use the information provided by the Seller during the first round to construct a valid transaction 
+spending the Seller's token UTXO without the requested payment being fulfilled.</li>
+<li>For the Seller to take the information provided by the Buyer in the second round and construct a valid transaction 
+where the ownership of the token is not transferred even if the Mimblewimble arithmetic balances out.</li>
+</ol>
+<p>These points should both be taken care of by the aggregated excess signature and the respective output [metadata signatures]. 
+These signatures prevent the counterparty from changing anything about the Transaction Outputs without the cooperation of the
+other party.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFCD-0345_AssetLifeCycle.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFCD-0500_PaymentChannels.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFCD-0345_AssetLifeCycle.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFCD-0500_PaymentChannels.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

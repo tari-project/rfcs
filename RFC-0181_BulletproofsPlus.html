@@ -1,0 +1,404 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0181: Bulletproofs+ range proving - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html" class="active"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0181bulletproofsplus"><a class="header" href="#rfc-0181bulletproofsplus">RFC-0181/BulletproofsPlus</a></h1>
+<h2 id="bulletproofs-range-proving"><a class="header" href="#bulletproofs-range-proving">Bulletproofs+ range proving</a></h2>
+<p><img src="theme/images/status-stable.svg" alt="status: stable" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/AaronFeickert">Aaron Feickert</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2022 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;NOT
+RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all
+capitals, as shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update without
+notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>This Request for Comment (RFC) describes Tari-specific implementation details for Bulletproofs+ range proving and verifying, in addition to giving an outline of comparative performance.</p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="./RFC-0150_Wallets.html">RFC-0150: Wallets</a></li>
+<li><a href="./RFCD-0180_BulletproofRewinding.html">RFC-0180: BulletproofRewinding</a></li>
+</ul>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p>The Tari implementation of the <a href="https://eprint.iacr.org/2020/735">Bulletproofs+</a> range proving system makes several changes and optimizations that we describe here.
+In particular, it supports the following useful features:</p>
+<ul>
+<li>Commitments can be <em>extended</em>; that is, they can commit to a value using multiple masks.</li>
+<li>Range proofs can be <em>aggregated</em>; that is, a single range proof can assert valid range for multiple commitments in an efficient way.</li>
+<li>A set of arbitrary range proofs can be verified in a <em>batch</em>; that is, the verifier can check the validity of all proofs in the set at once in an efficient way.</li>
+<li>The prover can assert a nonzero minimum value bound to a commitment.</li>
+<li>The prover can delegate to certain verifiers the ability to recover the masks used for the extended commitment in a non-aggregated proof.</li>
+</ul>
+<p>The Bulletproofs+ preprint does not address extended commitments, as it only defines its range proving system using Pedersen commitments.
+However, a later preprint for <a href="https://eprint.iacr.org/2021/1478">Zarcanum</a> updates the algorithms and security proofs to accommodate one additional mask, and the reasoning extends generally.
+Aggregation of range assertions using Pedersen commitments is described in the Bulletproofs+ preprint, and the Zarcanum preprint describes the corresponding changes for extended commitments.
+Batch verification is described only informally in the Bulletproofs+ preprint, and in an incomplete fashion.
+Minimum value assertion is not addressed in the preprint.
+An approach to mask and value recovery was <a href="https://github.com/mimblewimble/grin-wallet/issues/105">used by Grin</a> for the Bulletproofs range proving system, implemented as described by the deprecated <a href="RFCD-0180_BulletproofRewinding.html">RFC-0180</a>, and can be modified to support Bulletproofs+ range proofs with extended commitments.</p>
+<h2 id="notation"><a class="header" href="#notation">Notation</a></h2>
+<p>To reduce confusion in our description and more closely match implementation libraries, we use additive notation and uppercase letters for group elements, and otherwise generally assume notation from the preprints.
+Denote the commitment value generator by $G_c$ and the commitment mask generator vector by $\vec{H}_c$.
+Because the preprint uses the notation $A$ differently in the weighted inner product and range proving protocols, we rename it to $A'$ in the weighted inner product protocol.</p>
+<p>We assume that a range proof aggregates $m$ range assertions, each of which is to an $n$-bit range.
+We further assume that each value commitment uses $p$ masks; that is, a standard Pedersen commitment would have $p = 1$.</p>
+<p>A specific definition of note relates to that of the vector $\vec{d}$ introduced in the preprint.
+This vector is defined as
+\[
+\vec{d} = \sum_{j=0}^{m-1} z^{2(j+1)} \vec{d}_j \tag{1}
+\]
+where each
+\[
+\vec{d}_j = (\underbrace{0,\ldots,0}_{jn}, \vec{2}^n, \underbrace{0,\ldots,0}_{(m-j-1)n}) \tag{2}
+\]
+contains only powers of two.
+In particular, this means we can express individual elements of $\vec{d}$ as $d_{jn+i} = z^{2(j+1)} 2^i$ for $0 \leq i &lt; n$ and $0 \leq j &lt; m$.</p>
+<p>Finally, we note one additional unfortunate notation change that applies to the implementation.
+Both the Bulletproofs+ and Zarcanum preprints use $G$ as the commitment value generator, and either $H$ or $\vec{H}_c$ (in our notation) for masking.
+However, in the Tari protocol (as in other similar protocols), this notation is switched!
+This is because of how generators are defined and used elsewhere in the protocol and elliptic curve library implementation.
+The only resulting change is a switch in generator notation in the Tari implementation: $H$ for the value component generator, and $\vec{G}_c$ (in our notation) for masking.</p>
+<h2 id="minimum-value-assertion"><a class="header" href="#minimum-value-assertion">Minimum value assertion</a></h2>
+<p>We first briefly note how to achieve minimum value assertion.
+Let $0 \leq v_{\text{min}} \leq v \leq v_{\text{max}}$, where $v_{\text{min}}$ is a minimum value specified by the prover, $v$ is the value bound to the prover's commitment $V$, and $v_{\text{max}}$ is a globally-fixed maximum value.
+When generating the proof, the prover uses $v - v_{\text{min}}$ as the value witness, and additionally binds $v_{\text{min}}$ into the Fiat-Shamir transcript.
+When verifying the proof, the verifier uses $V - v_{\text{min}} G_c$ as the commitment (but binds the original commitment $V$ in the transcript).
+This asserts that $v_{\text{min}} \leq v \leq v_{\text{min}} + v_{\text{max}}$.
+While this approach modifies the upper bound allowed for value binding, it does not pose problems in practice, as the intent of range proving is to ensure no overflow when performing balance computations elsewhere in the Tari protocol.</p>
+<h2 id="extended-commitments-and-aggregation"><a class="header" href="#extended-commitments-and-aggregation">Extended commitments and aggregation</a></h2>
+<p>We now describe how to reduce verification of a single aggregated range proof using extended commitments to a single multiscalar multiplication operation.
+A partial approach is described in the Bulletproofs+ preprint.
+The single multiscalar multiplication used to verify an aggregated range proof (given in Section 6.1 of the Bulletproofs+ preprint) can be written more explicitly in our case by accounting for the extra steps used to support extended commitments, and by noting that the $P$ input term to the weighted inner product argument (given in Figure 1 of the Bulletproofs+ preprint and Figure D.1 of the Zarcanum preprint) is replaced by the term $\widehat{A}$ defined in the overall range proving protocol (given in Figure 3 of the Bulletproofs+ preprint and Figure D.3 of the Zarcanum preprint).</p>
+<p>Suppose we index the inner product generator vectors $\vec{G}$ and $\vec{H}$ using $i$, the inner product recursion generator vectors $\vec{L}$ and $\vec{R}$ using $j$, the aggregated commitment vector $\vec{V}$ by $k$, and the extended commitment mask generator vector $\vec{H}_c$ by $l$.
+We assume indexing starts at zero unless otherwise noted.
+Single aggregated proof verification reduces (by suitable modification of the equation given in Section 6.1 of the Bulletproofs+ preprint) to checking that the following equation holds:
+\[
+\sum_{i=0}^{mn-1} (r'es_i) G_i + \sum_{i=0}^{mn-1} (s'es_i') H_i + \sum_{l=0}^{p-1} \delta_l' H_{c,l} = e^2 \widehat{A} + \sum_{j=0}^{\operatorname{lg}(mn)-1} (e^2e_j^2) L_j + \sum_{j=0}^{\operatorname{lg}(mn)-1} (e^2e_j^{-2}) R_j + e A' + B
+\]
+But we also have (from suitable modification of the definition given in Figure 3 of the Bulletproofs+ preprint) that
+\[
+\widehat{A} = A - \sum_{i=0}^{mn-1} z G_i + \sum_{i=0}^{mn-1} (z + d_iy^{mn-i}) H_i + x G_c + y^{mn+1}\sum_{k=0}^{m-1} z^{2(k+1)} (V_k - v_{\text{min},k} G_c)
+\]
+defined by the range proving system outside of the inner product argument.
+Here
+\[
+\begin{align*}
+x &amp;= \langle \vec{1}^{mn}, \overrightarrow{y}^{mn} \rangle z - \langle \vec{1}^{mn}, \vec{d} \rangle y^{mn+1}z - \langle \vec{1}^{mn}, \overrightarrow{y}^{mn} \rangle z^2 \\
+&amp;= z\sum_{i=1}^{mn} y^i - y^{mn+1}z\sum_{i=0}^{mn-1}d_i - z^2\sum_{i=1}^{mn} y^i \tag{3}
+\end{align*}
+\]
+is a scalar defined entirely in terms of constants and challenge values from the proof.
+Grouping terms, we find that a single aggregated range proof can be verified by checking that the following equation holds:
+\[
+\begin{multline*}
+\sum_{i=0}^{mn-1} (r'es_i + e^2z) G_i + \sum_{i=0}^{mn-1} (s'es_i' - e^2(z + d_iy^{mn-i})) H_i + \left( r'ys' - e^2x + e^2y^{mn+1}\sum_{k=0}^{m-1} z^{2(k+1)}v_{\text{min},k} \right) G_c \\
++ \sum_{l=0}^{p-1} \delta_l' H_{c,i} - \sum_{k=0}^{m-1} (y^{mn+1}z^{2(k+1)}e^2) V_k - e^2 A - \sum_{j=0}^{\operatorname{lg}(mn)-1} (e^2e_j^2) L_j - \sum_{j=0}^{\operatorname{lg}(mn)-1} (e^2e_j^{-2}) R_j - e A' - B = 0 \tag{4}
+\end{multline*}
+\]</p>
+<h2 id="batch-verification"><a class="header" href="#batch-verification">Batch verification</a></h2>
+<p>To verify a batch of proofs, we apply a separate random multiplicative scalar weight $w \neq 0$ to each proof's verification equation, form a linear combination of these equations, and group like terms.
+Because each equation receives a separate random weight, successful evaluation of the resulting linear combination means that each constituent equation holds with high probability, and therefore that all proofs in the set are valid.
+If the linear combination evaluation fails, at least one included proof is invalid.
+The verifier must then test each proof in turn, or use a more efficient approach like binary search to identify each failure.
+This follows the general approach informally discussed in Section 6.1 of the Bulletproofs+ preprint.</p>
+<p>The reason for this rather convoluted algebra is twofold.
+First, grouping like terms means that each unique generator used across a batch is only evaluated in the resulting multiscalar multiplication once; since the generators $\vec{G}, \vec{H}, G_c, \vec{H}_c$ are globally fixed, this provides significant efficiency improvement.
+Second, the use of algorithms (like those of Straus and Pippenger and others) to evaluate the multiscalar multiplication scale slightly sublinearly, such that it is generally beneficial to minimize the number of multiscalar multiplications for a given set of generators.
+This means our approach to batch verification is effectively optimal.</p>
+<h2 id="designated-mask-recovery"><a class="header" href="#designated-mask-recovery">Designated mask recovery</a></h2>
+<p>It is possible for the prover to perform careful modifications to a non-aggregated range proof in order to allow a designated verifier to recover the masks used in the corresponding extended commitment.
+The construction we describe here does not affect the verification process for non-designated verifiers.
+Note that this construction requires a non-aggregated proof that contains a range assertion for only a single commitment.
+Unlike the approach used initially in <a href="RFCD-0180_BulletproofRewinding.html">RFC-0180</a>, it is not possible to embed additional data (like the commitment value) into a Bulletproofs+ range proof.</p>
+<p>The general approach is that the prover and designated verifier share a common nonce seed.
+The prover uses this value to determinstically derive and replace certain nonces used in the proof.
+During the verification process, the designated verifier performs the same deterministic derivation and is able to extract the commitment masks from the proof.
+Because the resulting proof is still special honest-verifier zero knowledge, as long as the nonce seed is sampled uniformly at random, a non-designated verifier is not able to gain any information about the masks.</p>
+<p>After sampling a nonce seed, the prover passes it through an appropriate set of domain-separated hash functions with scalar output to generate the following nonces used in the proof:
+\[
+\{\eta_l\}, \{\delta_l\}, \{\alpha_l\}, \{d_{L,j,l}\}, \{d_{R,j,l}\}
+\]
+Here, as before, $0 \leq l &lt; p$ is indexed over the number of masks used in the extended commitment, and $0 \leq j &lt; \operatorname{lg}(mn)$ is indexed over the weighted inner product argument rounds.
+Let $\{\gamma_l\}$ be the masks used in the non-aggregated proof.</p>
+<p>By doing this, the prover effectively defines the proof element set $\{\delta_l'\}$ as follows:
+\[
+\delta_l' = \eta_l + \delta_le + e^2 \left( \alpha_l + \gamma_ly^{n+1}z^2 + \sum_{j=0}^{\operatorname{lg}(mn)-1}(e_j^2d_{L,j,l} + e_j^{-2}d_{R,j,l}) \right)
+\]</p>
+<p>When verifying the proof, the designated verifier uses the nonce seed to perform the same nonce derivation as the prover.
+It then computes the mask set $\{\gamma_l\}$ as follows:
+\[
+\gamma_l = \left( (\delta_l' - \eta_l - \delta_le)e^{-2} - \alpha_l - \sum_{j=0}^{\operatorname{lg}(mn)-1}(e_j^2d_{L,j,l} + e_j^{-2}d_{R,j,l}) \right) y^{-(n+1)}z^{-2}
+\]
+The recovered masks must then be checked against the extended commitment once the value is separately communicated to the verifier.
+Otherwise, if the verifier uses a different nonce seed than the prover did (or if the prover otherwise did not derive the nonces using a nonce seed at all), it will recover incorrect masks.
+If the verifier is able to construct the extended commitment from the value and recovered masks, the recovery succeeds; otherwise, the recovery fails.</p>
+<h2 id="sum-optimization"><a class="header" href="#sum-optimization">Sum optimization</a></h2>
+<p>From Equation (3), the verifier must compute $\sum_i d_i$.
+Because the vector $\vec{d}$ contains $mn$ elements by Equations (1) and (2), computing the sum naively is a slow process.
+The implementation takes advantage of the fact that this sum can be expressed in terms of a partial sum of a geometric series to compute it much more efficiently; we describe this here.</p>
+<p>We first recall the following <a href="https://mathworld.wolfram.com/GeometricSeries.html">identity</a> for the partial sum of a geometric series for $r \neq 0$:
+\[
+\sum_{k=0}^{n-1} r^k = \frac{1 - r^n}{1 - r}
+\]</p>
+<p>Next, we note that from Equation (2), we have
+\[
+\sum_{i=0}^{mn-1} (d_j)_i = \sum_{k=0}^{n-1} 2^k
+\]
+for all $0 \leq j &lt; m$.</p>
+<p>Given these facts, we can express the required sum of the elements of $\vec{d}$ as follows:
+\[
+\begin{align*}
+\langle \vec{1}^{mn}, \vec{d} \rangle &amp;= \sum_{i=0}^{mn-1} d_i \\
+&amp;= \sum_{i=0}^{mn-1} \left( \sum_{j=0}^{m-1} z^{2(j+1)} (d_j)_i \right) \\
+&amp;= \sum_{j=0}^{m-1} z^{2(j+1)} \left( \sum_{i=0}^{mn-1} (d_j)_i \right) \\
+&amp;= \sum_{j=0}^{m-1} z^{2(j+1)} \left( \sum_{k=0}^{n-1} 2^k \right) \\
+&amp;= (2^n - 1) \sum_{j=0}^{m-1} z^{2(j+1)}
+\end{align*}
+\]
+This requires a sum of only $m$ even powers of $z$, which can be computed iteratively.</p>
+<h2 id="comparative-performance"><a class="header" href="#comparative-performance">Comparative performance</a></h2>
+<p>We now compare Bulletproofs+ performance to that of the <a href="https://eprint.iacr.org/2017/1066">Bulletproofs</a> range proving system.</p>
+<h3 id="size"><a class="header" href="#size">Size</a></h3>
+<p>Bulletproofs+ range proofs, like Bulletproofs, scale logarithmically in size.
+In each case, a proof consists of the following:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Proving system</th><th style="text-align: left">Group elements</th><th style="text-align: left">Scalars</th></tr></thead><tbody>
+<tr><td style="text-align: left">Bulletproofs</td><td style="text-align: left">$2 \operatorname{lg}(nm) + 4$</td><td style="text-align: left">$5$</td></tr>
+<tr><td style="text-align: left">Bulletproofs+</td><td style="text-align: left">$2 \operatorname{lg}(nm) + 3$</td><td style="text-align: left">$p + 2$</td></tr>
+</tbody></table>
+</div>
+<p>That is, both the range bit length $n$ and aggregation factor $m$ contribute logarithmically to the proof size.
+In the case of the Tari-specific implementation of Bulletproofs+, the number of masks contributes linearly to the proof size.</p>
+<p>Regardless of the bit length $n$ or aggregation factor $m$ used, a single-mask ($p = 1$) Bulletproofs+ range proof saves $1$ group element and $2$ scalars over the equivalent Bulletproofs range proof. For the <a href="https://ristretto.group/">Ristretto</a>-based Tari implementation, this amounts to $96$ bytes after group element and scalar encoding.</p>
+<p>We also note that while it is possible to encode an extra scalar of data in a Bulletproofs non-aggregated range proof (in addition to the mask) using nonce-based recovery techniques, this is not possible with Bulletproofs+ range proofs.</p>
+<h3 id="verification-efficiency"><a class="header" href="#verification-efficiency">Verification efficiency</a></h3>
+<p>Like in Bulletproofs+, it is possible to reduce verification of a batch of Bulletproofs range proofs to a single multiscalar multiplication operation.</p>
+<p>To compare this efficiency, we count unique generators used in the multiscalar multiplication operation in both cases.
+It is the case that scalar-only operations differ greatly between the two systems, but these operations are much faster than those involving group elements.</p>
+<p>Let $b$ be the batch size of such a verification; that is, the number of proofs to be verified together.
+This means single-proof verification has $b = 1$.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Proving system</th><th style="text-align: left">Operation size</th></tr></thead><tbody>
+<tr><td style="text-align: left">Bulletproofs</td><td style="text-align: left">$b[2\operatorname{lg}(mn) + m + 4] + 2mn + 2$</td></tr>
+<tr><td style="text-align: left">Bulletproofs+</td><td style="text-align: left">$b[2\operatorname{lg}(mn) + m + 3] + 2mn + p + 1$</td></tr>
+</tbody></table>
+</div>
+<p>Verification in Bulletproofs+ is slightly faster than in Bulletproofs in theory.</p>
+<p>In practice, verification of a single 64-bit range proof in the <a href="https://github.com/tari-project/bulletproofs-plus">Tari Bulletproofs+</a> implementation is comparable to an <a href="https://github.com/tari-project/bulletproofs">updated fork</a> of the <a href="https://github.com/dalek-cryptography/bulletproofs">Dalek Bulletproofs</a> implementation, though verification of an aggregated proof is notably slower.</p>
+<h3 id="proving-efficiency"><a class="header" href="#proving-efficiency">Proving efficiency</a></h3>
+<p>It is more challenging to compare proving efficiency, since generation of a range proof does not reduce cleanly to a single multiscalar multiplication evaluation for either Bulletproofs or Bulletproofs+ range proofs.
+However, we note that the overall complexity between the inner-product arguments in the proving systems is similar in terms of group operations; outside of these inner-product arguments, Bulletproofs+ requires fewer group operations.
+Overall efficiency is likely to depend on specific optimizations.</p>
+<p>In practice, generation of a single 64-bit range proof in the Tari Bulletproofs+ implementation is about 10% faster than in the Dalek Bulletproofs updated fork, with similar performance for aggregated proofs.</p>
+<h2 id="changelog"><a class="header" href="#changelog">Changelog</a></h2>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
+<tr><td style="text-align: left">7 Dec 2022</td><td style="text-align: left">First draft</td><td style="text-align: left">Aaron</td></tr>
+<tr><td style="text-align: left">13 Jan 2022</td><td style="text-align: left">Performance updates</td><td style="text-align: left">brianp</td></tr>
+<tr><td style="text-align: left">20 Jul 2023</td><td style="text-align: left">Sum optimization</td><td style="text-align: left">Aaron</td></tr>
+<tr><td style="text-align: left">31 Jul 2023</td><td style="text-align: left">Notation and efficiency</td><td style="text-align: left">Aaron</td></tr>
+<tr><td style="text-align: left">3 Aug 2023</td><td style="text-align: left">Proving efficiency note</td><td style="text-align: left">Aaron</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0174_Chat_Metadata.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0182_CommitmentSignatures.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0174_Chat_Metadata.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0182_CommitmentSignatures.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

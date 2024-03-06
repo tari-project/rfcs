@@ -1,0 +1,626 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0204: TariScript Examples - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html" class="active"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0204tariscriptexamples"><a class="header" href="#rfc-0204tariscriptexamples">RFC-0204/TariScriptExamples</a></h1>
+<p>$$
+\newcommand{\script}{\alpha} % utxo script
+\newcommand{\input}{ \theta }
+\newcommand{\cat}{\Vert}
+\newcommand{\so}{\gamma} % script offset
+\newcommand{\hash}[1]{\mathrm{H}\bigl({#1}\bigr)}
+$$</p>
+<h2 id="tariscript-examples"><a class="header" href="#tariscript-examples">TariScript Examples</a></h2>
+<p><img src="theme/images/status-stable.svg" alt="status: stable" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2020 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;NOT
+RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all
+capitals, as shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update without
+notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="tariscript-examples-1"><a class="header" href="#tariscript-examples-1">TariScript Examples</a></h2>
+<h3 id="standard-mw-transaction"><a class="header" href="#standard-mw-transaction">Standard MW transaction</a></h3>
+<p>For this use case we have Alice who sends Bob some Tari.
+Bob's wallet is  online and is able to countersign the transaction.</p>
+<p>Alice creates a new transaction spending \( C_a \) to a new output containing the commitment \( C_b \) (ignoring 
+fees for now).</p>
+<p>To spend \( C_a \), she provides:</p>
+<ul>
+<li>An input that contains \( C_a \).</li>
+<li>The script input, \( \input_a \).</li>
+<li>A valid script signature, \( s_{Si} \) as per (13),(14) proving that she owns the commitment 
+\( C_a \), knows the private key, \( k_{Sa} \), corresponding to \( K_{Sa} \), the public key left on the stack 
+after executing \( \script_a \) with \( \input_a \).</li>
+<li>A sender offset public key, \( K_{Ob} \).</li>
+<li>The sender portion of the public nonce, \( R_{MSi} )\, as per (10).</li>
+<li>The script offset, \( \so\) with:
+$$
+\begin{aligned}
+\so  = k_{Sa} - k_{Ob}
+\end{aligned}
+\tag{20}
+$$</li>
+</ul>
+<p>Alice sends the usual first round data to Bob, but now because of TariScript also includes \( K_{Ob} \) and 
+\( R_{MSi} \). Bob can then complete his side of the transaction as per the [standard Mimblewimble protocol] 
+providing the commitment \(C_b\), its public blinding factor, its rangeproof and the partial transaction signature.
+In addition, Bob also needs to provide a partial metadata signature as per (5) where he commits to all the transaction 
+output metadata with a commitment signature. Because Alice is creating the transaction, she can suggest the script 
+\( \script_b \) to use for Bob's output, similar to a [bitcoin transaction], but Bob can choose a different script 
+\(\script_b\). However, in most cases the parties will agree on using something akin to a <code>NOP</code> script 
+\(\script_b\). Bob has to return this consistent set of information back to Alice.</p>
+<p>Alice verifies the information received back from Bob, check if she agrees with the script \( \script_b \) Bob signed, 
+and calculates her portion of the <a href="Glossary.html#metadata-signature">metadata signature</a> \( s_{Mb} \) with: </p>
+<p>$$
+\begin{aligned}
+s_{Mb} = r_{mb} + k_{Ob} \hash{ \script_b \cat F_b \cat R_{Mb} }
+\end{aligned}
+\tag{21}
+$$</p>
+<p>Alice then constructs the final aggregated metadata signature \(s_{Mb}\) as per (12) and replaces Bob's partial 
+metadata signature in Bob's TransactionOutput.</p>
+<p>She completes the transaction as per [standard Mimblewimble protocol] and also adds the script offset \( \so \), after 
+which she sends the final transaction to Bob and broadcasts it to the network.</p>
+<h4 id="transaction-validation"><a class="header" href="#transaction-validation">Transaction validation</a></h4>
+<p>Base nodes validate the transaction as follows:</p>
+<ul>
+<li>They check that the usual Mimblewimble balance holds by summing inputs and outputs and validating against the excess
+signature. This check does not change nor do the other validation rules, such as confirming that all inputs are in
+the UTXO set etc.</li>
+<li>The metadata signature \(s_{Ma}\) on Bob's output,</li>
+<li>The input script must execute successfully using the provided input data; and the script result must be a valid 
+public key,</li>
+<li>The script signature on Alice's input is valid by checking:</li>
+</ul>
+<p>$$
+\begin{aligned}
+a_{Sa} \cdot H + b_{Sa} \cdot G = R_{Sa} + (C_a + K_{Sa})* \hash{ R_{Sa} \cat \alpha_a \cat \input_a \cat K_{Sa} \cat C_a}
+\end{aligned}
+\tag{22}
+$$</p>
+<ul>
+<li>The script offset is verified by checking that the balance holds:</li>
+</ul>
+<p>$$
+\begin{aligned}
+\so \cdot{G} = K_{Sa} - K_{Ob}
+\end{aligned}
+\tag{23}
+$$</p>
+<p>Finally, when Bob spends this output, he will use \( K_{Sb} \) as his script input and sign it with his script 
+private key \( k_{Sb} \). He will choose a new sender offset public key \( K_{Oc} \) to give to the recipient, and 
+he will construct the script offset, \( \so_b \) as follows:</p>
+<p>$$
+\begin{aligned}
+\so_b = k_{Sb} - k_{Oc}
+\end{aligned}
+\tag{24}
+$$</p>
+<h3 id="one-sided-payment"><a class="header" href="#one-sided-payment">One sided payment</a></h3>
+<p>In this example, Alice pays Bob, who is not available to countersign the transaction, so Alice initiates a one-sided 
+payment,</p>
+<p>$$
+C_a \Rightarrow  C_b
+$$</p>
+<p>Once again, transaction fees are ignored to simplify the illustration.</p>
+<p>Alice owns \( C_a \) and provides the required script to spend the UTXO as was described in the previous cases.</p>
+<p>Alice needs a public key from Bob, \( K_{Sb} \) to complete the one-sided transaction. This key can be obtained
+out-of-band, and might typically be Bob's wallet public key on the Tari network.</p>
+<p>Bob requires the value \( v_b \) and blinding factor \( k_b \) to claim his payment, but he needs to be able to 
+claim it without asking Alice for them.</p>
+<p>This information can be obtained by using Diffie-Hellman and Bulletproof rewinding. If the blinding factor \( k_b \) 
+was calculated with Diffie-Hellman using the sender offset keypair, (\( k_{Ob} \),\( K_{Ob} \)) as the sender 
+keypair and the script keypair, \( (k_{Sb} \),\( K_{Sb}) \) as the receiver keypair, the blinding factor 
+\( k_b \) can be securely calculated without communication.</p>
+<p>Alice uses Bob's public key to create a shared secret, \( k_b \) for the output commitment, \( C_b \), using
+Diffie-Hellman key exchange.</p>
+<p>Alice calculates \( k_b \) as</p>
+<p>$$
+\begin{aligned}
+k_b = k_{Ob} * K_{Sb}
+\end{aligned}
+\tag{25}
+$$</p>
+<p>Next Alice uses Bulletproof rewinding, see <a href="RFCD-0180_BulletproofRewinding.html">RFC 180</a>, to encrypt the value 
+\( v_b \) into the the Bulletproof for the commitment \( C_b \). For this she uses 
+\( k_{rewind} =  \hash{k_{b}} \) as the rewind_key and \( k_{blinding} =  \hash{\hash{k_{b}}} \) as the blinding 
+key.</p>
+<p>Alice knows the script-redeeming private key \( k_{Sa}\) for the transaction input.</p>
+<p>Alice will create the entire transaction, including generating a new sender offset keypair and calculating the 
+script offset,</p>
+<p>$$
+\begin{aligned}
+\so = k_{Sa} - k_{Ob}
+\end{aligned}
+\tag{26}
+$$</p>
+<p>She also provides a script that locks the output to Bob's public key, <code>PushPubkey(K_Sb)</code>.
+This will only be spendable if the spender can provide a valid signature as input that demonstrates proof
+of knowledge of \( k_{Sb}\) as well as the value and blinding factor of the output \(C_b\). Although Alice knowns 
+the value and blinding factor of the output \(C_b\) only Bob knows \( k_{Sb}\).</p>
+<p>Any base node can now verify that the transaction is complete, verify the signature on the script, and verify the 
+script offset.</p>
+<p>For Bob to claim his commitment he will scan the blockchain for a known script because he knowns that the script will 
+be <code>PushPubkey(K_Sb)</code>. In this case, the script is analogous to an address in Bitcoin or Monero. Bob's wallet can scan 
+the blockchain looking for scripts that he would know how to resolve.</p>
+<p>When Bob's wallet spots a known script, he requires the blinding factor, \( k_b \) and the value \( v_b \). First he 
+uses Diffie-Hellman to calculate \( k_b \). </p>
+<p>Bob calculates \( k_b \) as</p>
+<p>$$
+\begin{aligned}
+k_b = K_{Ob} * k_{Sb}
+\end{aligned}
+\tag{27}
+$$</p>
+<p>Next Bob's wallet calculates \( k_{rewind} \), using \( k_{rewind} = \hash{k_{b}}\) and 
+(\( k_{blinding} = \hash{\hash{k_{b}}} \), using those to rewind the Bulletproof to get the value \( v_b \). </p>
+<p>Because Bob's wallet already knowns the script private key \( k_{Sb} \), he now knows all the values required to 
+spend the commitment \( C_b \)</p>
+<p>For Bob's part, when he discovers one-sided payments to himself, he should spend them to new outputs using a traditional
+transaction to thwart any potential horizon attacks in the future.</p>
+<p>To summarise, the information required for one-sided transactions are as follows:</p>
+<div class="table-wrapper"><table><thead><tr><th>Transaction input</th><th>Symbols</th><th>Knowledge</th></tr></thead><tbody>
+<tr><td>commitment</td><td>\( C_a = k_a \cdot G + v \cdot H \)</td><td>Alice knows the blinding factor and value.</td></tr>
+<tr><td>features</td><td>\( F_a \)</td><td>Public</td></tr>
+<tr><td>script</td><td>\( \alpha_a \)</td><td>Public</td></tr>
+<tr><td>script input</td><td>\( \input_a \)</td><td>Public</td></tr>
+<tr><td>script signature</td><td>\( s_{Sa} \)</td><td>Alice knows \( k_{Sa},\, r_{Sa} \) and \( k_{a},\, v_{a} \) of the commitment \(C_a\).</td></tr>
+<tr><td>sender offset public key</td><td>\( K_{Oa} \)</td><td>Not used in this transaction.</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>Transaction output</th><th>Symbols</th><th>Knowledge</th></tr></thead><tbody>
+<tr><td>commitment</td><td>\( C_b = k_b \cdot G + v \cdot H \)</td><td>Alice and Bob know the blinding factor and value.</td></tr>
+<tr><td>features</td><td>\( F_b \)</td><td>Public</td></tr>
+<tr><td>script</td><td>\( \script_b \)</td><td>Script is public; only Bob knows the correct script input.</td></tr>
+<tr><td>range proof</td><td></td><td>Alice and Bob know opening parameters.</td></tr>
+<tr><td>sender offset public key</td><td>\( K_{Ob} \)</td><td>Alice knows \( k_{Ob} \).</td></tr>
+<tr><td>metadata signature</td><td>\( s_{Mb} \)</td><td>Alice knows \( k_{Ob} \), \( (k_{b},\, v) \) and the metadata.</td></tr>
+</tbody></table>
+</div>
+<h3 id="htlc-like-script"><a class="header" href="#htlc-like-script">HTLC-like script</a></h3>
+<p>In this use case we have a script that controls where it can be spent. The script is out of scope for this example, but
+has the following rules:</p>
+<ul>
+<li>Alice can spend the UTXO unilaterally after block <em>n</em>, <strong>or</strong></li>
+<li>Alice and Bob can spend it together.</li>
+</ul>
+<p>This would be typically what a lightning-type channel requires.</p>
+<p>Alice owns the commitment \( C_a \). She and Bob work together to create \( C_s\). But we don't yet know who can 
+spend the newly created \( C_s\) and under what conditions this will be.</p>
+<p>$$
+C_a \Rightarrow  C_s \Rightarrow  C_x
+$$</p>
+<p>Alice owns \( C_a\), so she knows the blinding factor \( k_a\) and the correct input for the script's spending 
+conditions. Alice also generates the sender offset keypair, \( (k_{Os}, K_{Os} )\).</p>
+<p>Now Alice and Bob proceed with the standard transaction flow.</p>
+<p>Alice ensures that the sender offset public key \( K_{Os}\) is part of the output metadata that contains commitment 
+\( C_s\). Alice will fill in the script with her \( k_{Sa}\) to unlock the commitment \( C_a\). Because Alice 
+owns \( C_a\) she needs to construct \( \so\) with:</p>
+<p>$$
+\begin{aligned}
+\so = k_{Sa} - k_{Os}
+\end{aligned}
+\tag{28}
+$$</p>
+<p>The blinding factor, \( k_s\) can be generated using a Diffie-Hellman construction. The commitment \( C_s\) needs to 
+be constructed with the script that Bob agrees on. Until it is mined, Alice could modify the script via double-spend and 
+thus Bob must wait until the transaction is confirmed before accepting the conditions of the smart contract between 
+Alice and himself.</p>
+<p>Once the UTXO is mined, both Alice and Bob possess all the knowledge required to spend the \( C_s \) UTXO. It's only
+the conditions of the script that will discriminate between the two.</p>
+<p>The spending case of either Alice or Bob claiming the commitment \( C_s\) follows the same flow described in the 
+previous examples, with the sender proving knowledge of \( k_{Ss}\) and &quot;unlocking&quot; the spending script.</p>
+<p>The case of Alice and Bob spending \( C_s \) together to a new multiparty commitment requires some elaboration.</p>
+<p>Assume that Alice and Bob want to spend  \( C_s \) co-operatively. This involves the script being executed in such a 
+way that the resulting public key on the stack is the sum of Alice and Bob's individual script keys, \( k_{SsA} \) and 
+\( k_{SaB} \).</p>
+<p>The script input needs to be signed by this aggregate key, and so Alice and Bob must each supply a partial signature 
+following the usual Schnorr aggregate mechanics, but one person needs to add in the signature of the blinding factor and 
+value.</p>
+<p>In an analogous fashion, Alice and Bob also generate an aggregate sender offset private key \( k_{Ox}\), each using
+their own \( k_{OxA} \) and \( k_{OxB}\).</p>
+<p>To be specific, Alice calculates her portion from</p>
+<p>$$
+\begin{aligned}
+\so_A = k_{SsA} - k_{OxA}
+\end{aligned}
+\tag{29}
+$$</p>
+<p>Bob will construct his part of the \( \so\) with:</p>
+<p>$$
+\begin{aligned}
+\so_B = k_{SsB} - k_{OxB}
+\end{aligned}
+\tag{30}
+$$</p>
+<p>And the aggregate \( \so\) is then:</p>
+<p>$$
+\begin{aligned}
+\so = \so_A + \so_B
+\end{aligned}
+\tag{31}
+$$</p>
+<p>Notice that in this case, both \( K_{Ss} \) and \( K_{Ox}\) are aggregate keys.</p>
+<p>Notice also that because the script resolves to an aggregate key \( K_s\) neither Alice nor Bob can claim the 
+commitment \( C_s\) without the other party's key. If either party tries to cheat by editing the input, the script 
+validation will fail.</p>
+<p>If either party tries to cheat by creating a new output, the script offset will not validate correctly as it locks 
+the output of the transaction.</p>
+<p>A base node validating the transaction will also not be able to tell this is an aggregate transaction as all keys are 
+aggregated Schnorr signatures. But it will be able to validate that the script input is correctly signed, thus the 
+output public key is correct and that the \( \so\) is correctly calculated, meaning that the commitment \( C_x\) is 
+the correct UTXO for the transaction.</p>
+<p>To summarise, the information required for creating a multiparty UTXO is as follows:</p>
+<div class="table-wrapper"><table><thead><tr><th>Transaction input</th><th>Symbols</th><th>Knowledge</th></tr></thead><tbody>
+<tr><td>commitment</td><td>\( C_a = k_a \cdot G + v \cdot H \)</td><td>Alice knows the blinding factor and value.</td></tr>
+<tr><td>features</td><td>\( F_a \)</td><td>Public</td></tr>
+<tr><td>script</td><td>\( \alpha_a \)</td><td>Public</td></tr>
+<tr><td>script input</td><td>\( \input_a \)</td><td>Public</td></tr>
+<tr><td>script signature</td><td>\( s_{Sa} \)</td><td>Alice knows \( k_{Sa},\, r_{Sa} \) and \( k_{a},\, v_{a} \) of the commitment \(C_a\).</td></tr>
+<tr><td>sender offset public key</td><td>\( K_{Oa} \)</td><td>Not used in this transaction.</td></tr>
+</tbody></table>
+</div><br>
+<div class="table-wrapper"><table><thead><tr><th>Transaction output</th><th>Symbols</th><th>Knowledge</th></tr></thead><tbody>
+<tr><td>commitment</td><td>\( C_s = k_s \cdot G + v \cdot H \)</td><td>Alice and Bob know the blinding factor and value.</td></tr>
+<tr><td>features</td><td>\( F_s \)</td><td>Public</td></tr>
+<tr><td>script</td><td>\( \script_s \)</td><td>Script is public; Alice and Bob only knows their part of the  correct script input.</td></tr>
+<tr><td>range proof</td><td></td><td>Alice and Bob know opening parameters.</td></tr>
+<tr><td>sender offset public key</td><td>\( K_{Os} = K_{OsA} + K_{OsB}\)</td><td>Alice knows \( k_{OsA} \), Bob knows \( k_{OsB} \), neither party knows \( k_{Os} \).</td></tr>
+<tr><td>metadata signature</td><td>\( (a_{Ms} , b_{Ms} , R_{Ms}) \)</td><td>Alice knows \( k_{OsA} \), Bob knows \( k_{OsB} \), both parties know \( (k_{s},\, v) \). Neither party knows \( k_{Os}\).</td></tr>
+</tbody></table>
+</div>
+<p>When spending the multi-party input:</p>
+<div class="table-wrapper"><table><thead><tr><th>Transaction input</th><th>Symbols</th><th>Knowledge</th></tr></thead><tbody>
+<tr><td>commitment</td><td>\( C_s = k_s \cdot G + v_s \cdot H \)</td><td>Alice and Bob know the blinding factor and value.</td></tr>
+<tr><td>features</td><td>\( F_s \)</td><td>Public</td></tr>
+<tr><td>script</td><td>\( \alpha_s \)</td><td>Public</td></tr>
+<tr><td>script input</td><td>\( \input_s \)</td><td>Public</td></tr>
+<tr><td>script signature</td><td>\( (a_{Ss} ,b_{Ss} , R_{Ss}) \)</td><td>Alice knows \( (k_{SsA},\, r_{SsA}) \), Bob knows \( (k_{SsB},\, r_{SsB}) \), both parties know \( (k_{s},\, v_{s}) \), neither party knows \( k_{Ss}\).</td></tr>
+<tr><td>sender offset public key</td><td>\( K_{Os} \)</td><td>As above, Alice and Bob each know part of the sender offset key.</td></tr>
+</tbody></table>
+</div>
+<h3 id="multi-party-considerations"><a class="header" href="#multi-party-considerations">Multi-party considerations</a></h3>
+<p>Multi-party in this context refers to <code>n-of-n</code> parties creating a single combined transaction output and <code>m-of-n</code> 
+parties spending a single combined transaction input. We have some options to do this:</p>
+<ul>
+<li>using the <a href="RFC-0202_TariScriptOpcodes.html#checkmultisigverifyaggregatepubkeym-n-public-keys-msg">m-of-n script</a> TariScript without sharding the spending key;</li>
+<li>combination of the <a href="RFC-0202_TariScriptOpcodes.html#checkmultisigverifyaggregatepubkeym-n-public-keys-msg">m-of-n script</a> TariScript and sharding the spending key;</li>
+<li>sharding the spending key combined with the <a href="RFC-0202_TariScriptOpcodes.html#noop">NoOp script</a> TariScript;</li>
+</ul>
+<p>If the spending key \( k_i \) is sharded for any of these options the commitment definition changes to:</p>
+<p>$$
+\begin{aligned}
+C_i = v_i \cdot H  + \sum_\psi (k_{i_\psi} \cdot G) \; \; \; \text{ for each receiver party } \psi
+\end{aligned}
+\tag{1b}
+$$</p>
+<p>The sender-receiver interaction can be categorized as follows, however, for simplicity we can assume that each
+multi-party side will have a single party acting as the dealer:</p>
+<ul>
+<li>Multi-party senders can create the single output and send it to a single receiver.</li>
+<li>A single sender can create the single output and send it to multi-party receivers.</li>
+<li>Multi-party senders can create the single output and send it to multi-party receivers.</li>
+</ul>
+<p>The multi-party impact on the transaction output, transaction input and script offset is discussed below.</p>
+<h4 id="multi-party-transaction-output"><a class="header" href="#multi-party-transaction-output">Multi-party transaction output</a></h4>
+<p>If multiple senders and receiver parties need to create an aggregate <code>metadata_signature</code> for a single multi-party
+transaction output, there are two secrets that warrant our attention; the script offset private key \( k_{Oi} \)
+controlled by the senders and the spending key \( k_i \) controlled by the receivers. Depending on the protocol
+design, one or both secrets may be sharded amongst all parties. </p>
+<p><u>Sharding the script offset private key:</u></p>
+<p>If the script offset private key \( k_{Oi} \) is sharded, the aggregate sender terms in (10) and (11) collected by 
+the sender's dealer change to:</p>
+<p>$$
+\begin{aligned}
+R_{MSi} &amp;= \sum_\omega (r_{{MSi_b}_\omega} \cdot G) \; \; \; \text{ for each sender party } \omega
+\end{aligned}
+\tag{10b}
+$$</p>
+<p>$$
+\begin{aligned}
+a_{MSi} &amp;= 0 \\
+b_{MSi} &amp;= \sum_\omega (r_{{MSi_b}_\omega} + e \cdot k_{{Oi}_\omega}) \; \; \; \text{ for each sender party } \omega
+\end{aligned}
+\tag{11b}
+$$</p>
+<p><u>Sharding the spending key:</u></p>
+<p>If the spending key \( k_i \) is sharded, the receiver's dealer needs to collect shards and combine them. The
+aggregate receiver terms in (3) and (5) collected by the receiver's dealer change to:</p>
+<p>$$
+\begin{aligned}
+R_{MRi} &amp;= r_{MRi_a} \cdot H + \sum_\psi ( r_{{MRi_b}_\psi} \cdot G ) \; \; \; \text{ for each receiver party } \psi
+\end{aligned}
+\tag{3b}
+$$</p>
+<p>$$
+\begin{aligned}
+a_{MRi} &amp;= r_{MRi_a} + e(v_{i}) \\
+b_{MRi} &amp;= \sum_\psi ( r_{{MRi_b}_\psi} + e \cdot k_{i_\psi} ) \; \; \; \text{ for each receiver party } \psi
+\end{aligned}
+\tag{5b}
+$$</p>
+<h4 id="multi-party-transaction-input"><a class="header" href="#multi-party-transaction-input">Multi-party transaction input</a></h4>
+<p>If multiple senders need to create an aggregate <code>script_signature</code> for a multi-party transaction input, again, there are
+two secrets that warrant our attention, the script private key \( k_{Si} \) and the spending key \( k_i \).
+Depending on the protocol design, one or both secrets may be sharded amongst all parties, with some limitations:</p>
+<ul>
+<li>Sharding the script private key will always be applicable for an <a href="RFC-0202_TariScriptOpcodes.html#checkmultisigverifyaggregatepubkeym-n-public-keys-msg">m-of-n script</a> TariScript.</li>
+<li>Sharding the script private key will never be applicable for a <a href="RFC-0202_TariScriptOpcodes.html#noop">NoOp script</a> TariScript.</li>
+</ul>
+<p><u>Sharding only the script private key:</u></p>
+<p>If only the script private key \( k_{Si} \) will be sharded the aggregate terms in (14) collected by the sender's 
+dealer change to:</p>
+<p>$$
+\begin{aligned}
+R_{Si} &amp;= r_{Si_a} \cdot H + \sum_\omega ( r_{{Si_b}_\omega} \cdot G ) \; \; \; \text{ for each sender party } \omega \\
+a_{Si}  &amp;= r_{Si_a} +  e(v_{i}) \\
+b_{Si} &amp;= \sum_\omega ( r_{{Si_b}_\omega} + e \cdot k_{{Si}_\omega} ) + e \cdot  k_i \; \; \; \text{ for each sender party } \omega \\
+e &amp;= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\
+\end{aligned}
+\tag{14b}
+$$</p>
+<p><u>Sharding the script private key and the spending key:</u></p>
+<p>If both the script private key \( k_{Si} \) and the spending key \( k_i \) will be sharded the aggregate terms
+in (14) collected by the sender's dealer change to:</p>
+<p>$$
+\begin{aligned}
+R_{Si} &amp;= r_{Si_a} \cdot H + \sum_\omega ( r_{{Si_b}_\omega} \cdot G ) \; \; \; \text{ for each sender party } \omega \\
+a_{Si}  &amp;= r_{Si_a} +  e(v_{i}) \\
+b_{Si} &amp;= \sum_\omega ( r_{{Si_b}_\omega} + e \cdot (k_{{Si}_\omega} +  k_{i_\omega}) ) \; \; \; \text{ for each sender party } \omega \\
+e &amp;= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\
+\end{aligned}
+\tag{14c}
+$$</p>
+<p>It is worth noting that <code>m-of-n</code> treatment of the script private key \( k_{Si} \) and the spending key \( k_i \)
+differs slightly. Only <code>m</code> of the original <code>n</code> parties need to create the script input, and the script will resolve to
+the correct \( K_{Si} \), but all <code>n</code> parties need to be present to recreate the original \( k_i \). This can be
+done with Pedersen Verifiable Secret Sharing (PVSS), similar to
+<a href="https://tlu.tarilabs.com/protocols/mimblewimble-mb-bp-utxo#mimblewimble--mtext-of-n--multiparty-bulletproof-utxo"><strong>this example</strong></a>.
+The dealer will reconstruct the \( k_{i_j} \) shards of the missing parties and add them to their shard before
+combining.</p>
+<p><u>Sharding only the spending key:</u></p>
+<p>If only the spending key \( k_i \) will be sharded the aggregate terms in (14) collected by the sender's dealer 
+change to:</p>
+<p>$$
+\begin{aligned}
+R_{Si} &amp;= r_{Si_a} \cdot H + \sum_\omega ( r_{{Si_b}_\omega} \cdot G ) \; \; \; \text{ for each sender party } \omega \\
+a_{Si}  &amp;= r_{Si_a} +  e(v_{i}) \\
+b_{Si} &amp;= \sum_\omega ( r_{{Si_b}_\omega} + e \cdot  k_{i_\omega} ) + e \cdot k_{Si} \; \; \; \text{ for each sender party } \omega \\
+e &amp;= \hash{ R_{Si} \cat \alpha_i \cat \input_i \cat K_{Si} \cat C_i} \\
+\end{aligned}
+\tag{14d}
+$$</p>
+<h4 id="multi-party-script-offset"><a class="header" href="#multi-party-script-offset">Multi-party script offset</a></h4>
+<p>For multiple senders, aggregate terms are collected by the sender's dealer and (16) changes according to which of the
+secrets have been sharded:</p>
+<p><u>Sharding only the script private key:</u></p>
+<p>$$
+\begin{aligned}
+\so = \sum_\omega \left( \sum_j\mathrm{k_{Sj}} \right) _\omega - \sum_i\mathrm{k_{Oi}} \; \; \text{for each input}, j,\, \text{and each output}, i \; \text{ for each sender party } \omega
+\end{aligned}
+\tag{16b}
+$$</p>
+<p><u>Sharding only the script offset private key:</u></p>
+<p>$$
+\begin{aligned}
+\so = \sum_j\mathrm{k_{Sj}} - \sum_\omega \left( \sum_i\mathrm{k_{Oi}} \right) _\omega \; \; \text{for each input}, j,\, \text{and each output}, i \; \text{ for each sender party } \omega
+\end{aligned}
+\tag{16c}
+$$</p>
+<p><u>Sharding the script private key and the script offset private key:</u></p>
+<p>$$
+\begin{aligned}
+\so = \sum_\omega \left( \sum_j\mathrm{k_{Sj}} - \sum_i\mathrm{k_{Oi}} \right) _\omega \; \; \text{for each input}, j,\, \text{and each output}, i \; \text{ for each sender party } \omega
+\end{aligned}
+\tag{16d}
+$$</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
+<tr><td style="text-align: left">11 Nov 2022</td><td style="text-align: left">Move out of RFC 0201</td><td style="text-align: left">stringhandler</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0202_TariScriptOpcodes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="RFC-0203_StealthAddresses.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0202_TariScriptOpcodes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="RFC-0203_StealthAddresses.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
