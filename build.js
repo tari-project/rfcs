@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-require('dotenv').config({ path: './mdbook.env'});
 const axios = require('axios');
 const fs = require('fs');
 const fsp = fs.promises;
@@ -8,7 +7,7 @@ const { exec } = require('child_process');
 const tar = require('tar');
 
 const VERSION = process.env.MDBOOK_VERSION || '0.4.37'; // replace with the version you want
-const MDBOOK_HASH = process.env.MDBOOK_HASH;
+const MDBOOK_HASH = process.env.MDBOOK_HASH || "93f9a98032be3f4b7b4bab42fdc97d58b5d69d81eef910a5c8fa68e03fbf8a8d";
 const url = `https://github.com/rust-lang/mdBook/releases/download/v${VERSION}/mdbook-v${VERSION}-x86_64-unknown-linux-gnu.tar.gz`;
 
 async function downloadFile(url, path) {
