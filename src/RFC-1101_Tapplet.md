@@ -58,22 +58,22 @@ The aim of this Request for Comment (RFC) is to propose the Tapplet concept. Tap
 
 ### Motivation
 
-The **Tapplet** is dedicated type of applet for the Tari blockchain and the fundamental part of the Tari Universe described in [RFC-1100](https://github.com/tari-project/rfcs/pull/134). The idea behind registered Tapplets is to solve the class of vulnerabilities of the Dapp model known as supply chain attacks. This covers a wide range of attacks like: injecting malware code, XSS, stealing domains, social engineering attacks, etc.
-The solution proposed by Tari uses the Tapplets Registry (another RFC will describe it) to register hashes of zip bundles of applications and sign them using the private key associated with Yat. The actual zip bundle can be hosted by https, but thanks to the registry commitment, the client can verify that the bundle hasn’t been tampered with.
+The **Tapplet** is dedicated type of applet for the Tari blockchain and the fundamental part of the Tari Universe described in [RFC-1100](https://github.com/tari-project/rfcs/pull/134). The idea behind registered tapplets is to solve the class of vulnerabilities of the Dapp model known as supply chain attacks. This covers a wide range of attacks like: injecting malware code, XSS, stealing domains, social engineering attacks, etc.
+The solution proposed by Tari uses the tapplets Registry (another RFC will describe it) to register hashes of zip bundles of applications and sign them using the private key associated with Yat. The actual zip bundle can be hosted by https, but thanks to the registry commitment, the client can verify that the bundle hasn’t been tampered with.
 Additionally the idea is to create an on-chain and association between smart contracts and their front end tapplets. This way, when a smart contract gets reused for a different purpose, it already comes with a ready tapplet that can be nested into other tapplets.
 
 ### Tapplets
 
-At first, it is proposed that Tapplets are npm packages published to the public npm registry, but in the future it may be extended also to other package managers. Npm is the first choice because it is widely used, so publishing a new Tapplet is as simple as publishing an npm package.
+At first, it is proposed that tapplets are npm packages published to the public npm registry, but in the future it may be extended also to other package managers. Npm is the first choice because it is widely used, so publishing a new Tapplet is as simple as publishing an npm package.
 
 Tapplets are separate packages and the file structure depends on its authors, however every package should contain a helpful readme file and must contain a manifest json file with Tapplet data.
-The following details are specific to Tapplets:
+The following details are specific to tapplets:
 
-- The version in package.json and tapplet.manifest.json should match.
-- The repository.url field in package.json should match the correct repository for the Tapplet.
-- The source.location.npm.packageName in tapplet.manifest.json should match the name in package.json.
-- The displayedName in tapplet.manifest.json should be a human-readable name
-- The image specified in logoPath in the manifest file is used as the logo displayed in Tapplets market. This logo should be a valid SVG.
+- The *version* string field in `package.json` and `tapplet.manifest.json` should match.
+- The *repository.url* field in `package.json` should match the correct repository for the Tapplet.
+- The *source.location.npm.packageName* in `tapplet.manifest.json` should match the name in `package.json`.
+- The *displayName* in `tapplet.manifest.json` should be a human-readable name
+- The image specified in *design.logoPath* in the manifest file is used as the logo displayed in tapplets market. This logo should be a valid SVG.
 
 After publishing the Tapplet, it is possible to connect to the Tapplet by using the Tapplet ID `npm:[packageName]`.
 
@@ -88,15 +88,15 @@ Proposed `tapplet.manifest.json` file:
 {
   "packageName": "@company-name/tapplet-name",
   "version": "1.2.3",
-  "displayedName": "Tapplet human readable name",
+  "displayName": "Tapplet human readable name",
   "status": "latest / verified / deprecated / vulnerable - anything like this",
   "about": {
     "summary": "Short (a few words) summary.",
     "description": "Longer (a few sentences) project description."
   },
   "design": {
-    "logoPath": "./assets/logo.png",
-    "backgroundPath": "./assets/background.png"
+    "logoPath": "./assets/logo.svg",
+    "backgroundPath": "./assets/background.svg"
   },
   "repository": {
     "type": "git",
