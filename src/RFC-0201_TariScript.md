@@ -91,7 +91,7 @@ minor) modifications and additions to the Mimblewimble protocol, which achieved 
 
 ## Scripting on Mimblewimble
 
-Other than Beam, none of the existing [Mimblewimble] projects have not employed a scripting language. 
+Other than Beam, none of the existing [Mimblewimble] projects have employed a scripting language. 
  
 [Grin](https://github.com/mimblewimble/grin) styles itself as a "Minimal implementation of the Mimblewimble protocol",
 so one might infer that this status is unlikely to change soon.
