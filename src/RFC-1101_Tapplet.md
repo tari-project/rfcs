@@ -1,18 +1,16 @@
-# <RFC-Number>-<Short Title>
+# RFC-1101/Tapplet
 
-## <Long title>
+## Tapplet
 
-![status: raw](theme/images/status-raw.svg)
+![status: draft](theme/images/status-draft.svg)
 
-Tracking issue: [assigned during WIP phase]()
-
-**Maintainer(s)**: <Maintainer name> <github username>
+**Maintainer(s)**: [karczuRF](https://github.com/karczuRF)
 
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
-Copyright <YEAR> <COPYRIGHT HOLDER | The Tari Development Community>
+Copyright 2024 The Tari Development Community
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 following conditions are met:
@@ -54,11 +52,13 @@ The aim of this Request for Comment (RFC) is to propose the Tapplet concept. Tap
 
 ## Related Requests for Comment
 
+[RFC-1100](https://github.com/tari-project/rfcs/pull/134)
+
 ## Description
 
 ### Motivation
 
-The idea behind registered Tapplets is to solve the class of vulnerabilities of the Dapp model known as supply chain attacks. This covers a wide range of attacks like: injecting malware code, XSS, stealing domains, social engineering attacks, etc. The common mode of these attacks is that an attacker convinces the user that he/she is interacting with different smart contracts than the user thinks. The attacker steals funds by causing the user to sign a transaction that calls to a different, fraudulent smart contract.
+The **Tapplet** is dedicated type of applet for the Tari blockchain and the fundamental part of the Tari Universe described in [RFC-1100](https://github.com/tari-project/rfcs/pull/134). The idea behind registered Tapplets is to solve the class of vulnerabilities of the Dapp model known as supply chain attacks. This covers a wide range of attacks like: injecting malware code, XSS, stealing domains, social engineering attacks, etc.
 The solution proposed by Tari uses the Tapplets Registry (another RFC will describe it) to register hashes of zip bundles of applications and sign them using the private key associated with Yat. The actual zip bundle can be hosted by https, but thanks to the registry commitment, the client can verify that the bundle hasn’t been tampered with.
 Additionally the idea is to create an on-chain and association between smart contracts and their front end tapplets. This way, when a smart contract gets reused for a different purpose, it already comes with a ready tapplet that can be nested into other tapplets.
 
@@ -68,13 +68,14 @@ At first, it is proposed that Tapplets are npm packages published to the public 
 
 Tapplets are separate packages and the file structure depends on its authors, however every package should contain a helpful readme file and must contain a manifest json file with Tapplet data.
 The following details are specific to Tapplets:
-* The version in package.json and tapplet.manifest.json should match.
-* The repository.url field in package.json should match the correct repository for the Tapplet.
-* The source.location.npm.packageName in tapplet.manifest.json should match the name in package.json.
-* The displayedName in tapplet.manifest.json should be a human-readable name
-* The image specified in logoPath in the manifest file is used as the logo displayed in Tapplets market. This logo should be a valid SVG.
 
-After publishing the Tapplet, it is possible to connect to the Tapplet by using the Tapplet ID npm:[packageName].
+- The version in package.json and tapplet.manifest.json should match.
+- The repository.url field in package.json should match the correct repository for the Tapplet.
+- The source.location.npm.packageName in tapplet.manifest.json should match the name in package.json.
+- The displayedName in tapplet.manifest.json should be a human-readable name
+- The image specified in logoPath in the manifest file is used as the logo displayed in Tapplets market. This logo should be a valid SVG.
+
+After publishing the Tapplet, it is possible to connect to the Tapplet by using the Tapplet ID `npm:[packageName]`.
 
 ### Manifest
 
