@@ -1,4 +1,4 @@
-# RFC-ABCD/TariUniverseOverview
+# RFC-1100/TariUniverseOverview
 
 ## Tari Universe overview
 
