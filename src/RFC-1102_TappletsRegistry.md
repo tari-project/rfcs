@@ -53,7 +53,7 @@ The aim of this Request for Comment (RFC) is to describe how the Tapplets Regist
 ## Related Requests for Comment
 
 - [RFC-1100](https://github.com/tari-project/rfcs/pull/134)
-- [RFC-1101](https://github.com/tari-project/rfcs/pulls)
+- [RFC-1101](https://github.com/tari-project/rfcs/pull/137)
 
 ## Description
 
