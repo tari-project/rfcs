@@ -1,0 +1,694 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RFC-0323: Tari throttle exploratory analysis - The Tari Network: RFC library</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The Tari network RFC library and documentation">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            }
+          });
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0Q69T0B1T4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-0Q69T0B1T4');
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = 'light';
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <img src="theme/images/tari-splash.png" class="tlu">
+
+            <ol class="chapter"><li class="chapter-item expanded affix "><a href="about.html">About the Tari RFC documents</a></li><li class="chapter-item expanded "><a href="RFC-0001_overview.html"><strong aria-hidden="true">1.</strong> RFC-0001: An overview of the Tari network</a></li><li class="chapter-item expanded "><a href="base_layer.html"><strong aria-hidden="true">2.</strong> The Tari Base Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0110_BaseNodes.html"><strong aria-hidden="true">2.1.</strong> RFC-0110: Base nodes</a></li><li class="chapter-item expanded "><a href="RFC-0111_BaseNodeArchitecture.html"><strong aria-hidden="true">2.2.</strong> RFC-0111: Base node architecture</a></li><li class="chapter-item expanded "><a href="RFC-0120_Consensus.html"><strong aria-hidden="true">2.3.</strong> RFC-0120: Consensus rules</a></li><li class="chapter-item expanded "><a href="RFC-0131_Mining.html"><strong aria-hidden="true">2.4.</strong> RFC-0131: Mining</a></li><li class="chapter-item expanded "><a href="RFC-0132_Merge_Mining_Monero.html"><strong aria-hidden="true">2.5.</strong> RFC-0132: Merge Mining Monero</a></li><li class="chapter-item expanded "><a href="RFC-0140_Syncing_and_seeding.html"><strong aria-hidden="true">2.6.</strong> RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes</a></li><li class="chapter-item expanded "><a href="RFC-0150_Wallets.html"><strong aria-hidden="true">2.7.</strong> RFC-0150: Wallets</a></li><li class="chapter-item expanded "><a href="RFC-0152_EmojiId.html"><strong aria-hidden="true">2.8.</strong> RFC-0152: Emoji ID</a></li><li class="chapter-item expanded "><a href="RFC-0160_BlockSerialization.html"><strong aria-hidden="true">2.9.</strong> RFC-0160: Block Binary Serialization</a></li><li class="chapter-item expanded "><a href="RFC-0170_NetworkCommunicationProtocol.html"><strong aria-hidden="true">2.10.</strong> RFC-0170: Network Communication Protocol</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0171_MessageSerialisation.html"><strong aria-hidden="true">2.10.1.</strong> RFC-0171: Message Serialisation</a></li><li class="chapter-item expanded "><a href="RFC-0172_PeerToPeerMessagingProtocol.html"><strong aria-hidden="true">2.10.2.</strong> RFC-0172: Peer to Peer Messaging Protocol</a></li><li class="chapter-item expanded "><a href="RFC-0173_Versioning.html"><strong aria-hidden="true">2.10.3.</strong> RFC-0173: Versioning</a></li><li class="chapter-item expanded "><a href="RFC-0174_Chat_Metadata.html"><strong aria-hidden="true">2.10.4.</strong> RFC-0174: Chat Metadata</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0181_BulletproofsPlus.html"><strong aria-hidden="true">2.11.</strong> RFC-0181: Bulletproofs+ range proving</a></li><li class="chapter-item expanded "><a href="RFC-0182_CommitmentSignatures.html"><strong aria-hidden="true">2.12.</strong> RFC-0182: Commitment signatures</a></li><li class="chapter-item expanded "><a href="RFC-0190_Mempool.html"><strong aria-hidden="true">2.13.</strong> RFC-0190: Mempool</a></li><li class="chapter-item expanded "><a href="BaseLayerExtensions.html"><strong aria-hidden="true">2.14.</strong> Tari-specific extensions to Mimblewimble</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0201_TariScript.html"><strong aria-hidden="true">2.14.1.</strong> RFC-0201: TariScript</a></li><li class="chapter-item expanded "><a href="RFC-0202_TariScriptOpcodes.html"><strong aria-hidden="true">2.14.2.</strong> RFC-0202: TariScript Opcodes</a></li><li class="chapter-item expanded "><a href="RFC-0204_TariScriptExamples.html"><strong aria-hidden="true">2.14.3.</strong> RFC-0204: TariScript Examples</a></li><li class="chapter-item expanded "><a href="RFC-0203_StealthAddresses.html"><strong aria-hidden="true">2.14.4.</strong> RFC-0203: Stealth Addresses</a></li><li class="chapter-item expanded "><a href="RFC-0205_HardwareTransactions.html"><strong aria-hidden="true">2.14.5.</strong> RFC-0205: Hardware Transactions</a></li><li class="chapter-item expanded "><a href="RFC-0250_Covenants.html"><strong aria-hidden="true">2.14.6.</strong> RFC-0250: Covenants</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="RFC-0303_DanOverview.html"><strong aria-hidden="true">3.</strong> RFC-0303: The Tari Digital Assets Network</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0313_VNRegistration.html"><strong aria-hidden="true">3.1.</strong> RFC-0313: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFC-0320_TurbineModel.html"><strong aria-hidden="true">3.2.</strong> RFC-0320: The turbine model</a></li><li class="chapter-item expanded "><a href="RFC-0350_TariVM.html"><strong aria-hidden="true">3.3.</strong> RFC-0350: The Tari Virtual Machine</a></li></ol></li><li class="chapter-item expanded "><a href="RFC-0305_Consensus.html"><strong aria-hidden="true">4.</strong> RFC-0305: The Tari Network Consensus Layer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0314_VNCSelection.html"><strong aria-hidden="true">4.1.</strong> RFC-0314: Validator node committee selection</a></li><li class="chapter-item expanded "><a href="RFC-0321_ProcessingForeignProposals.html"><strong aria-hidden="true">4.2.</strong> RFC-0321: Processing foreign proposals</a></li><li class="chapter-item expanded "><a href="RFC-0325_DanTimeManagement.html"><strong aria-hidden="true">4.3.</strong> RFC-0325: Epochs and time management</a></li><li class="chapter-item expanded "><a href="RFC-0330_Cerberus.html"><strong aria-hidden="true">4.4.</strong> RFC-0330: The Cerberus-Hotstuff consensus algorithm</a></li><li class="chapter-item expanded "><a href="RFC-0331_Indexers.html"><strong aria-hidden="true">4.5.</strong> RFC-0331: Indexers</a></li></ol></li><li class="chapter-item expanded "><a href="proposals.html"><strong aria-hidden="true">5.</strong> Proposals and Applications</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFC-0123_One_sided_replay_attacks.html"><strong aria-hidden="true">5.1.</strong> RFC-0123: Mitigating One-sided payment replay attacks</a></li><li class="chapter-item expanded "><a href="RFC-0141_Sparse_Merkle_Trees.html"><strong aria-hidden="true">5.2.</strong> RFC-0141: Sparse Merkle Tees</a></li><li class="chapter-item expanded "><a href="RFC-0153_StagedWalletSecurity.html"><strong aria-hidden="true">5.3.</strong> RFC-0153: Staged Wallet Security</a></li><li class="chapter-item expanded "><a href="RFC-0154_DeepLinksConvencion.html"><strong aria-hidden="true">5.4.</strong> RFC-0154: Deep links structure convention</a></li><li class="chapter-item expanded "><a href="RFC-0230_HTLC.html"><strong aria-hidden="true">5.5.</strong> RFC-0230: Hash time locked contracts</a></li><li class="chapter-item expanded "><a href="RFC-0240_AtomicSwap.html"><strong aria-hidden="true">5.6.</strong> RFC-0240: Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0241_AtomicSwapXMR.html"><strong aria-hidden="true">5.7.</strong> RFC-0241: XMR Atomic swap</a></li><li class="chapter-item expanded "><a href="RFC-0310_SubmarineSwaps.html"><strong aria-hidden="true">5.8.</strong> RFC-0310: Submarine swaps</a></li><li class="chapter-item expanded "><a href="RFC-0388_BearerTokens.html"><strong aria-hidden="true">5.9.</strong> RFC-0388: Bearer tokens</a></li><li class="chapter-item expanded "><a href="RFC-8001_MultiPartyTransactions.html"><strong aria-hidden="true">5.10.</strong> RFC-8001: Multi-party transactions</a></li><li class="chapter-item expanded "><a href="RFC-8002_TransactionProtocol.html"><strong aria-hidden="true">5.11.</strong> RFC-8002: Transaction protocol</a></li><li class="chapter-item expanded "><a href="RFC-8003_TariUseCases.html"><strong aria-hidden="true">5.12.</strong> RFC-8003: Tari Use Cases</a></li><li class="chapter-item expanded "><a href="RFC-0385_StableCoins.html"><strong aria-hidden="true">5.13.</strong> RFC-0385: Privacy-enabled Stablecoin contract design</a></li><li class="chapter-item expanded "><a href="RFC-0323_TariThrottle.html" class="active"><strong aria-hidden="true">5.14.</strong> RFC-0323: Tari throttle exploratory analysis</a></li></ol></li><li class="chapter-item expanded "><a href="deprecated.html"><strong aria-hidden="true">6.</strong> Deprecated RFCs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="RFCD-0010_CodeStructure.html"><strong aria-hidden="true">6.1.</strong> RFC-0010: Tari code structure and organization</a></li><li class="chapter-item expanded "><a href="RFCD-0121_ConsensusEncoding.html"><strong aria-hidden="true">6.2.</strong> RFC-0121: Consensus encoding</a></li><li class="chapter-item expanded "><a href="RFCD-0130_Mining.html"><strong aria-hidden="true">6.3.</strong> RFC-0130: Mining</a></li><li class="chapter-item expanded "><a href="RFCD-0180_BulletproofRewinding.html"><strong aria-hidden="true">6.4.</strong> RFC-0180: Bulletproof range proof rewinding</a></li><li class="chapter-item expanded "><a href="RFCD-0300_DAN.html"><strong aria-hidden="true">6.5.</strong> RFC-0300: The Digital Assets Network</a></li><li class="chapter-item expanded "><a href="RFCD-0301_NamespaceRegistration.html"><strong aria-hidden="true">6.6.</strong> RFC-0301: Namespace Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0302_ValidatorNodes.html"><strong aria-hidden="true">6.7.</strong> RFC-0302: Validator Nodes</a></li><li class="chapter-item expanded "><a href="RFCD-0304_VNCommittees.html"><strong aria-hidden="true">6.8.</strong> RFC-0304: Validator Node committee selection</a></li><li class="chapter-item expanded "><a href="RFCD-0306_DANTemplateRegistration.html"><strong aria-hidden="true">6.9.</strong> RFC-0306: DAN Template Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0311_AssetTemplates.html"><strong aria-hidden="true">6.10.</strong> RFC-0311: Digital Asset templates</a></li><li class="chapter-item expanded "><a href="RFCD-0312_DANHighLevelSpecification.html"><strong aria-hidden="true">6.11.</strong> RFC-0312: High level Digital Asset Network Specification</a></li><li class="chapter-item expanded "><a href="RFCD-0322_VNRegistration.html"><strong aria-hidden="true">6.12.</strong> RFC-0322: Validator Node Registration</a></li><li class="chapter-item expanded "><a href="RFCD-0340_VNConsensusOverview.html"><strong aria-hidden="true">6.13.</strong> RFC-0340: Validator Node Consensus</a></li><li class="chapter-item expanded "><a href="RFCD-0341_AssetRegistration.html"><strong aria-hidden="true">6.14.</strong> RFC-0341: Asset registration</a></li><li class="chapter-item expanded "><a href="RFCD-0345_AssetLifeCycle.html"><strong aria-hidden="true">6.15.</strong> RFC-0345: Asset Life cycle</a></li><li class="chapter-item expanded "><a href="RFCD-0360_NFTInvoices.html"><strong aria-hidden="true">6.16.</strong> RFC-0360: NFT sale using MimbleWimble Invoice</a></li><li class="chapter-item expanded "><a href="RFCD-0500_PaymentChannels.html"><strong aria-hidden="true">6.17.</strong> RFC-0500: Tari payment channels</a></li></ol></li><li class="chapter-item expanded "><a href="RFC_template.html"><strong aria-hidden="true">7.</strong> RFC template</a></li><li class="chapter-item expanded "><a href="Glossary.html"><strong aria-hidden="true">8.</strong> Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+                        <h1 class="menu-title"><img src="theme/images/tari-horizontal-logo.png"/> </h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rfc-0323tarithrottle"><a class="header" href="#rfc-0323tarithrottle">RFC-0323/TariThrottle</a></h1>
+<h2 id="the-tari-throttle-or-layer-2-burn-rate-controller"><a class="header" href="#the-tari-throttle-or-layer-2-burn-rate-controller">The Tari throttle, or Layer 2 burn rate controller</a></h2>
+<p><img src="theme/images/status-draft.svg" alt="status: draft" /></p>
+<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a></p>
+<h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
+<p>Copyright 2022 The Tari Development Community</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:</p>
+<ol>
+<li>Redistributions of this document must retain the above copyright notice, this list of conditions and the following
+disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission.</li>
+</ol>
+<p>THIS DOCUMENT IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;, AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<p>The keywords &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;,
+&quot;NOT RECOMMENDED&quot;, &quot;MAY&quot; and &quot;OPTIONAL&quot; in this document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/bcp14">BCP 14</a> (covering RFC2119 and RFC8174) when, and only when, they appear in all capitals, as
+shown here.</p>
+<h2 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h2>
+<p>This document and its content are intended for information purposes only and may be subject to change or update
+without notice.</p>
+<p>This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
+community. The release of this document is intended solely for review and discussion by the community of the
+technological merits of the potential system outlined herein.</p>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<p>This RFC provides an introductory exploratory analysis into the mechanisms behind a proposed Tari throttle: a Layer 
+2 controller for the L2 fee burn rate to control the Tari circulating supply. </p>
+<h2 id="related-requests-for-comment"><a class="header" href="#related-requests-for-comment">Related Requests for Comment</a></h2>
+<ul>
+<li><a href="RFC-0303_DanOverview.html">RFC-0303: The Digital Assets Network Overview</a></li>
+<li><a href="RFC-0320_TurbineModel.html">RFC-0320: The turbine model</a></li>
+</ul>
+<h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
+<ul>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#pid-controllers">PID controllers</a></li>
+<li><a href="#tari-throttle">Tari throttle</a>
+<ul>
+<li><a href="#controller-parameters">Controller parameters</a></li>
+<li><a href="#controller-inputs">Controller inputs</a>
+<ul>
+<li><a href="#fee-models">Fee models</a></li>
+<li><a href="#emission-model">Emission model</a></li>
+<li><a href="#miscellaneous-parameters">Miscellaneous parameters</a></li>
+<li><a href="#integer-control">Integer control</a></li>
+</ul>
+</li>
+<li><a href="#the-simulations">The simulations</a>
+<ul>
+<li><a href="#controller-parameters-1">Controller parameters</a></li>
+<li><a href="#target-supply">Target supply</a></li>
+<li><a href="#fee-models-1">Fee models</a></li>
+</ul>
+</li>
+<li><a href="#results">Results</a>
+<ul>
+<li><a href="#21-billion-tari-target-supply">21 billion Tari target supply</a></li>
+<li><a href="#18-billion-tari-target-supply">18 billion Tari target supply</a></li>
+<li><a href="#15-billion-tari-target-supply">15 billion Tari target supply</a></li>
+</ul>
+</li>
+<li><a href="#discussion">Discussion</a>
+<ul>
+<li><a href="#low-fees-growth">Low fees growth</a></li>
+<li><a href="#high-fees-growth">High fees growth</a></li>
+<li><a href="#unstable-fee-revenue">Unstable fee revenue</a></li>
+<li><a href="#slower-growth-with-tapering-fees">Slower growth with tapering fees</a></li>
+<li><a href="#strong-growth-with-tapering-fees">Strong growth with tapering fees</a></li>
+</ul>
+</li>
+<li><a href="#conclusions">Conclusions</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>TariThrottle is a simple process controller designed to modulate the layer two burn rate in order to achieve two 
+goals:</p>
+<ul>
+<li>Primarily, keep the emission and burn rate roughly balanced (ensuring the long-term sustainability of Tari), and</li>
+<li>Secondarily, to maintain the total circulating supply at a target value (satisfying an implicit assumption in 
+cryptocurrencies that token supplies are finite).</li>
+</ul>
+<p>A proof-of-concept controller has been implemented and tested in a simulation environment (<a href="https://github.com/tari-project/burn-sim" title="TariThrottle simulation repository">repository</a>). As the 
+results below attest, the controller logic is sufficient to achieve these goals, even under highly volatile layer 
+two fee conditions. </p>
+<p>However, the controller achieves the goals at the expense of a rapidly changing layer two burn rate, which may be 
+detrimental to the sustainability of validator nodes. </p>
+<p>At the risk of the tail wagging the dog, the primary conclusion of this study is that the TariThrottle controller 
+should likely <em>not</em> aim to maintain a supply target, but instead to ensure a sustainable layer two ecosystem, to 
+whit:</p>
+<ul>
+<li>maintain a constant demand gradient so that under normal circumstances there is <em>always</em> a demand for new Tari and 
+thus Minotari are constantly being burnt to satisfy this demand,</li>
+<li>marginal Validator Nodes are able to operate at or near break-even rates, while maintaining a healthy reserve of 
+capacity for surge demand, </li>
+<li>minimum transaction fees remain below $0.01 in today's money, and </li>
+<li>the supply of Minotari is sustainable over the long-term.</li>
+</ul>
+<p>Therefore, the conclusion of this study is not to abandon the original targets of the TariThrottle completely, 
+but to adjust the priority of the primary goal (a sustainable long-term balance), and make it subservient to the 
+primary goal of ensuring a constant demand gradient.</p>
+<p>A modified Tari throttle model that seeks to achieve these aims is outside of the scope of this RFC and is left for 
+a follow-up study.</p>
+<h2 id="pid-controllers"><a class="header" href="#pid-controllers">PID controllers</a></h2>
+<p>TariThrottle is based on a simple
+<a href="https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller">PID controller</a> design.</p>
+<p>PID controllers are a type of control system that uses feedback to maintain a system in a desired state.  They are 
+widely used in industrial control systems.</p>
+<p>The PID controller has three components:</p>
+<ul>
+<li>Proportional: This component is proportional to the error between the setpoint and the current value.  It is
+the primary component of the controller and is used to drive the system towards the setpoint.</li>
+<li>Integral: This component is proportional to the integral of the error over time.  It is used to eliminate
+steady-state error.</li>
+<li>Derivative: This component is proportional to the rate of change of the error.  It is used to reduce overshoot
+and oscillation.</li>
+</ul>
+<h2 id="tari-throttle"><a class="header" href="#tari-throttle">Tari throttle</a></h2>
+<p>The <code>burn-sim</code> <a href="https://github.com/tari-project/burn-sim" title="TariThrottle simulation repository">repository</a> was used to generate the results in this exploratory study.</p>
+<p>The primary module in the repository is the <code>TariThrottle</code> struct.</p>
+<p>This struct holds the following data:</p>
+<ul>
+<li>The <a href="#controller-parameters">controller parameters</a>,</li>
+<li>The output variable, <code>burn_rate</code>. The burn rate is defined as the fraction of fees collected on the layer 2 that 
+are burnt as exhaust (see the <a href="/RFC-0320_TurbineModel.html" title="Turbine model">turbine model</a>), and</li>
+<li>The three functions that describe how the controller responds to the input variables.</li>
+</ul>
+<h2 id="controller-parameters"><a class="header" href="#controller-parameters">Controller parameters</a></h2>
+<p>The controller parameters are used to tune the controller behaviour. They give operators the ability to fine-tune 
+the behaviour of the controller without having to change the underlying code.</p>
+<p>Specifically, the controller parameters are:</p>
+<ul>
+<li><code>kp</code>: determines the weight of the net burn component of the controller.  The net burn component is the difference
+between the emission and the current rate of L2 token burn. When emission equals burn, the total supply of Tari
+will remain constant.</li>
+<li><code>ki</code>: determines the weight of the integral component of the controller.  This is calculated as the difference
+between the current total supply and the target supply. If the total circulating supply is at the target value, 
+then this term will be zero.</li>
+<li><code>kd</code>: determines the weight of the derivative component of the controller.  This is currently not used, since the
+controller is able to adequately control supply with just the proportional and integral terms.</li>
+<li><code>target_supply</code>: the target circulating supply of Tari.</li>
+<li><code>trigger_at</code>: the block height at which the controller logic becomes active.</li>
+<li><code>max</code>: the maximum burn rate that the controller will allow.</li>
+<li><code>min</code>: the minimum burn rate that the controller will allow. The maximum and minimum are important parameters to 
+prevent extreme burn rates that could be detrimental to the sustainability of the network.</li>
+</ul>
+<h2 id="controller-inputs"><a class="header" href="#controller-inputs">Controller inputs</a></h2>
+<p>The controller operates over <code>periods</code>. A period is the number of blocks over which the controller will operate 
+without being able to change the burn rate. In practice, this is determined by the epoch length of the Layer two.</p>
+<p>The total quantity of fees collected across the entire network is only known at the end of every epoch. This is a 
+key input into the controller, and therefore we are limited to updating the burn rate at the end of each epoch as well.</p>
+<p>For this study, the period length is set to 720 blocks, or roughly one day.</p>
+<h3 id="fee-models"><a class="header" href="#fee-models">Fee models</a></h3>
+<p>Since we don't know what the Tari fees will be in the future, we can only carry out simulations based on various 
+<em>scenarios</em> of fee growth. For example, we can model a low fee environment, an exponential fee growth environment, a 
+highly volatile fee environment, and so on. </p>
+<p>In this study, we looked at the following fee models:</p>
+<ul>
+<li><code>Sigmoidal</code>: a sigmoidal growth model, which looks like an exponential growth model initially, but then levels off 
+as the fees approach a maximum value. This is the most likely pattern to appear in practice, since it incorporates 
+the idea that as fees become very high, the minimum transaction fee can be reduced so that total fee revenue 
+grows sustainably, even as the network usage (in terms of transactions per second) continues to grow.</li>
+<li><code>Exponential</code>: a simple exponential growth model. This model assumes a constant annual growth rate in network fees.</li>
+<li><code>Sinusoidal</code>: a highly volatile fee environment, where the fees oscillate between a minimum and maximum value. This 
+is the not likely scenario to appear in practice, but it is useful to test the robustness of the controller 
+logic.</li>
+</ul>
+<h3 id="emission-model"><a class="header" href="#emission-model">Emission model</a></h3>
+<p>The second input to the controller is the number of tokens emitted over the preceding period. This is straightforward 
+to model, since the emission curve is known <em>a priori</em>. The currently proposed Minotari mainnet emission curve 
+parameters were used to generate the emission inputs for this study, including a 30% premine and a 1% tail emission 
+inflation rate.</p>
+<h3 id="miscellaneous-parameters"><a class="header" href="#miscellaneous-parameters">Miscellaneous parameters</a></h3>
+<p>The <code>trigger_at</code> parameter was generally set to start the controller after the first year of operation, when we 
+expect the layer two to go live on mainnet.</p>
+<p>The <code>target_supply</code> parameter was set to 15, 18 and 21 billion Tari to determine the effect of different supply 
+targets.</p>
+<p>The <code>initital_value</code>was set to <code>min</code> to allow the circulating supply to approach the target supply as quickly as 
+possible.</p>
+<p>The <code>min</code> and <code>max</code> parameters were set to 5% and 50% fee burn rates respectively.</p>
+<p>THe <code>period</code> was set to 720 blocks, or roughly one day. The epoch length for Tari has not been finalised yet, but it 
+should not be wildly different from this value.</p>
+<h3 id="integer-based-division"><a class="header" href="#integer-based-division">Integer-based division</a></h3>
+<p>Typical PID controllers use floating-point math in their control algorithms. However, the TariThrottle controller 
+will be run on a distributed set of machines that may be operating under different models for floating-point 
+operations, since the IEEE leaves some aspects of floating-point math 
+<a href="https://randomascii.wordpress.com/2013/07/16/floating-point-determinism/">unspecified</a>.</p>
+<p>This is not permissible in Tari, and therefore an integer-based approach to control is implemented in the <code>tari-sim</code> 
+<a href="https://github.com/tari-project/burn-sim" title="TariThrottle simulation repository">repository</a>.</p>
+<p>Simply put, this involves scaling the error values by a constant to convert them to integers of roughly the same 
+order of magnitude, (via <code>error_i_scale</code>). The control parameters are also integers, expressed as &quot;parts per million&quot; 
+so that a value of 500,000 corresponds to 0.5 for example, while 10 corresponds to 0.00001. This give sufficient
+granularity to the control parameters to allow for effective tuning of the controller.</p>
+<h2 id="the-simulations"><a class="header" href="#the-simulations">The simulations</a></h2>
+<h3 id="controller-parameters-1"><a class="header" href="#controller-parameters-1">Controller parameters</a></h3>
+<p>A preliminary batch of simulations was run to set the controller parameters to values that roughly achieve the stated 
+goal above. These simulations are omitted for brevity, but the result indicate that the following parameter range 
+provide a good balance between robustness and responsiveness of the Tari throttle:</p>
+<ul>
+<li><code>kp</code> = 0.0001 - 0.0003. A value closer to 100ppm gives more weight to achieving the target supply, while a value 
+closer to 300ppm gives more weight to the net burn rate.  The simulations run scenarios for a <code>ki</code> values of 100,
+200 and 300 ppm.</li>
+<li><code>ki</code> = -0.00035. This value is negative, since if we're above the target supply, we must increase the burn rate, 
+and vice versa.</li>
+<li><code>kd</code> = 0. This value is not used in the current implementation, since the controller is able to adequately control 
+supply with just the proportional and integral terms.</li>
+</ul>
+<h3 id="target-supply"><a class="header" href="#target-supply">Target supply</a></h3>
+<p>The simulations were run for target circulating supplies of 15, 18 and 21 billion Tari. </p>
+<p>Target values other than the quoted &quot;initial supply&quot; of 21 billion Tari were used, because it is actually quite 
+difficult to achieve the 21 billion target in practice. This is because the earliest it is possible to even reach 
+this value (at ZERO burn rate) is after about 15 years. </p>
+<p>This offers very little flexibility to the control logic, and could easily introduce instability into the layer two 
+ecosystem.</p>
+<p>For this reason, simulations were run with alternative target supplies of 15 and 18 billion Tari to compare how the 
+controller reacts with more scope to adjust the burn rate.</p>
+<h3 id="fee-models-1"><a class="header" href="#fee-models-1">Fee models</a></h3>
+<p>Five different fee models scenarios were employed:</p>
+<ol>
+<li>&quot;Strong growth, tapering fees&quot;. This scenario describes strong fee growth in the network, reaching 5,000,000 
+Tari per day around 6 years after the launch of the layer 2. At a minimum fee of 0.01 Tari per transaction, this 
+corresponds to a network activity of around 5,800 tx/s, or roughly double the average activity of the Visa 
+network. The 'tapering fees' part of the scenario refers to the fact that this scenario does allow 
+the network to continue to grow, but that the total fee revenue grows at a modest 100,000 XTR/d per year. This 
+would be achieved by reducing the minimum transaction fee. This also matches the expectation that the price of 
+XMR increases with network activity, and so reducing the transaction fee maintains sub-penny transaction fees in 
+nominal USD terms.</li>
+<li>&quot;Slower growth, tapering fees&quot;. This scenario is identical to &quot;Strong growth, tapering fees&quot;, but with a lower 
+maximum fee rate of 1,000,000 Tari per day.</li>
+<li>&quot;25% annual fee growth&quot;. This scenario describes a network that grows at 25% per year, without 
+compensating by decreasing the minimum transaction fee.</li>
+<li>&quot;10% annual fee growth&quot;. This scenario describes a network that grows at 10% per year, without 
+compensating by decreasing the minimum transaction fee.</li>
+<li>&quot;Unstable fees, low frequency&quot;. This scenario describes a network that has volatile fees, 
+oscillating between 0 and 500,000 XTR per day over a 90-day period. This is not a realistic scenario, but it
+is useful to test the robustness of the controller logic.</li>
+<li>&quot;Unstable fees, high frequency&quot;. This scenario describes a network that has extremely volatile fees, 
+oscillating between 0 and 1,000,000 XTR per day over a 14-day period. This is not a very realistic scenario, but it
+is useful to test the robustness of the controller logic under extremely volatile conditions.</li>
+</ol>
+<h2 id="results"><a class="header" href="#results">Results</a></h2>
+<p>A simulation was run for every combination of the variations in <code>kp</code>, <code>target_supply</code>, and <code>fee_model</code>. The results
+of all 50+ simulation runs are given below.</p>
+<h3 id="21-billion-tari-target-supply"><a class="header" href="#21-billion-tari-target-supply">21 billion Tari target supply</a></h3>
+<p>All of the following simulations were run with a target supply of 21 billion Tari.</p>
+<h3 id="10-annual-fee-growth-low-fee-scenario"><a class="header" href="#10-annual-fee-growth-low-fee-scenario">10% annual fee growth (low fee scenario)</a></h3>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_10%25%20annual%20fee%20growth_0.000100.svg" alt="10% annual fee growth" /></p>
+<p>Figure 1. Supply target: 21 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_10%25%20annual%20fee%20growth_0.000200.svg" alt="10% annual fee growth" /></p>
+<p>Figure 2. Supply target: 21 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_10%25%20annual%20fee%20growth_0.000300.svg" alt="10% annual fee growth" /></p>
+<p>Figure 3. Supply target: 21 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="10-annual-fee-growth-high-fee-scenario"><a class="header" href="#10-annual-fee-growth-high-fee-scenario">10% annual fee growth (high fee scenario)</a></h3>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_25%25%20annual%20fee%20growth_0.000100.svg" alt="25% annual fee growth" /></p>
+<p>Figure 4. Supply target: 21 billion XTR. 25% annual fee growth fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_25%25%20annual%20fee%20growth_0.000300.svg" alt="25% annual fee growth" /></p>
+<p>Figure 5. Supply target: 21 billion XTR. 25% annual fee growth fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="slower-growth-tapering-fees"><a class="header" href="#slower-growth-tapering-fees">Slower growth, tapering fees</a></h3>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000100.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 6. Supply target: 21 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000200.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 7. Supply target: 21 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000300.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 8. Supply target: 21 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="strong-growth-tapering-fees"><a class="header" href="#strong-growth-tapering-fees">Strong growth, tapering fees</a></h3>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000100.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 9. Supply target: 21 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000200.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 10. Supply target: 21 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000300.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 11. Supply target: 21 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="unstable-fees-high-frequency"><a class="header" href="#unstable-fees-high-frequency">Unstable fees, high frequency</a></h3>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Unstable%20fees%2C%20high%20frequency_0.000100.svg" alt="Unstable fees, high frequency" /></p>
+<p>Figure 12. Supply target: 21 billion XTR. Unstable fees, high frequency fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Unstable%20fees%2C%20high%20frequency_0.000300.svg" alt="Unstable fees, high frequency" /></p>
+<p>Figure 13. Supply target: 21 billion XTR. Unstable fees, high frequency fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="unstable-fees-low-frequency"><a class="header" href="#unstable-fees-low-frequency">Unstable fees, low frequency</a></h3>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000100.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 14. Supply target: 21 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000200.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 15. Supply target: 21 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_21000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000300.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 16. Supply target: 21 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="18-billion-tari-target-supply"><a class="header" href="#18-billion-tari-target-supply">18 billion Tari target supply</a></h3>
+<p>All of the following simulations were run with a target supply of 18 billion Tari.</p>
+<h3 id="10-annual-fee-growth-low-fee-scenario-1"><a class="header" href="#10-annual-fee-growth-low-fee-scenario-1">10% annual fee growth (low fee scenario)</a></h3>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_10%25%20annual%20fee%20growth_0.000100.svg" alt="10% annual fee growth" /></p>
+<p>Figure 17. Supply target: 18 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_10%25%20annual%20fee%20growth_0.000200.svg" alt="10% annual fee growth" /></p>
+<p>Figure 18. Supply target: 18 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_10%25%20annual%20fee%20growth_0.000300.svg" alt="10% annual fee growth" /></p>
+<p>Figure 19. Supply target: 18 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="10-annual-fee-growth-high-fee-scenario-1"><a class="header" href="#10-annual-fee-growth-high-fee-scenario-1">10% annual fee growth (high fee scenario)</a></h3>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_25%25%20annual%20fee%20growth_0.000100.svg" alt="25% annual fee growth" /></p>
+<p>Figure 20. Supply target: 18 billion XTR. 25% annual fee growth fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_25%25%20annual%20fee%20growth_0.000200.svg" alt="25% annual fee growth" /></p>
+<p>Figure 21. Supply target: 18 billion XTR. 25% annual fee growth fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_25%25%20annual%20fee%20growth_0.000300.svg" alt="25% annual fee growth" /></p>
+<p>Figure 22. Supply target: 18 billion XTR. 25% annual fee growth fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="slower-growth-tapering-fees-1"><a class="header" href="#slower-growth-tapering-fees-1">Slower growth, tapering fees</a></h3>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000100.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 23. Supply target: 18 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000200.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 24. Supply target: 18 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000300.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 25. Supply target: 18 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="strong-growth-tapering-fees-1"><a class="header" href="#strong-growth-tapering-fees-1">Strong growth, tapering fees</a></h3>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000100.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 26. Supply target: 18 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000200.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 27. Supply target: 18 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000300.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 28. Supply target: 18 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="unstable-fees-high-frequency-1"><a class="header" href="#unstable-fees-high-frequency-1">Unstable fees, high frequency</a></h3>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Unstable%20fees%2C%20high%20frequency_0.000100.svg" alt="Unstable fees, high frequency" /></p>
+<p>Figure 29. Supply target: 18 billion XTR. Unstable fees, high frequency fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Unstable%20fees%2C%20high%20frequency_0.000200.svg" alt="Unstable fees, high frequency" /></p>
+<p>Figure 30. Supply target: 18 billion XTR. Unstable fees, high frequency fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Unstable%20fees%2C%20high%20frequency_0.000300.svg" alt="Unstable fees, high frequency" /></p>
+<p>Figure 31. Supply target: 18 billion XTR. Unstable fees, high frequency fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="unstable-fees-low-frequency-1"><a class="header" href="#unstable-fees-low-frequency-1">Unstable fees, low frequency</a></h3>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000100.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 32. Supply target: 18 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000200.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 33. Supply target: 18 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_18000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000300.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 34. Supply target: 18 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="15-billion-tari-target-supply"><a class="header" href="#15-billion-tari-target-supply">15 billion Tari target supply</a></h3>
+<p>All of the following simulations were run with a target supply of 15 billion Tari.</p>
+<h3 id="10-annual-fee-growth-low-fee-scenario-2"><a class="header" href="#10-annual-fee-growth-low-fee-scenario-2">10% annual fee growth (low fee scenario)</a></h3>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_10%25%20annual%20fee%20growth_0.000100.svg" alt="10% annual fee growth" /></p>
+<p>Figure 35. Supply target: 15 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_10%25%20annual%20fee%20growth_0.000200.svg" alt="10% annual fee growth" /></p>
+<p>Figure 36. Supply target: 15 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_10%25%20annual%20fee%20growth_0.000300.svg" alt="10% annual fee growth" /></p>
+<p>Figure 37. Supply target: 15 billion XTR. 10% annual fee growth fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="10-annual-fee-growth-high-fee-scenario-2"><a class="header" href="#10-annual-fee-growth-high-fee-scenario-2">10% annual fee growth (high fee scenario)</a></h3>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_25%25%20annual%20fee%20growth_0.000100.svg" alt="25% annual fee growth" /></p>
+<p>Figure 38. Supply target: 15 billion XTR. 25% annual fee growth fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_25%25%20annual%20fee%20growth_0.000300.svg" alt="25% annual fee growth" /></p>
+<p>Figure 39. Supply target: 15 billion XTR. 25% annual fee growth fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="slower-growth-tapering-fees-2"><a class="header" href="#slower-growth-tapering-fees-2">Slower growth, tapering fees</a></h3>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000100.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 40. Supply target: 15 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000200.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 41. Supply target: 15 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Slower%20growth%2C%20tapering%20fees_0.000300.svg" alt="Slower growth, tapering fees" /></p>
+<p>Figure 42. Supply target: 15 billion XTR. Slower growth, tapering fees fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="strong-growth-tapering-fees-2"><a class="header" href="#strong-growth-tapering-fees-2">Strong growth, tapering fees</a></h3>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000100.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 43. Supply target: 15 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000200.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 44. Supply target: 15 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Strong%20growth%2C%20tapering%20fees_0.000300.svg" alt="Strong growth, tapering fees" /></p>
+<p>Figure 45. Supply target: 15 billion XTR. Strong growth, tapering fees fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="unstable-fees-high-frequency-2"><a class="header" href="#unstable-fees-high-frequency-2">Unstable fees, high frequency</a></h3>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Unstable%20fees%2C%20high%20frequency_0.000100.svg" alt="Unstable fees, high frequency" /></p>
+<p>Figure 46. Supply target: 15 billion XTR. Unstable fees, high frequency fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Unstable%20fees%2C%20high%20frequency_0.000200.svg" alt="Unstable fees, high frequency" /></p>
+<p>Figure 47. Supply target: 15 billion XTR. Unstable fees, high frequency fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Unstable%20fees%2C%20high%20frequency_0.000300.svg" alt="Unstable fees, high frequency" /></p>
+<p>Figure 48. Supply target: 15 billion XTR. Unstable fees, high frequency fee model. <code>kp</code> = 0.000300.</p>
+<h3 id="unstable-fees-low-frequency-2"><a class="header" href="#unstable-fees-low-frequency-2">Unstable fees, low frequency</a></h3>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000100.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 49. Supply target: 15 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000100.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000200.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 50. Supply target: 15 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000200.</p>
+<p><img src="/assets/rfc-323/throttle_15000000000.000000%20T_Unstable%20fees%2C%20low%20frequency_0.000300.svg" alt="Unstable fees, low frequency" /></p>
+<p>Figure 51. Supply target: 15 billion XTR. Unstable fees, low frequency fee model. <code>kp</code> = 0.000300.</p>
+<h2 id="discussion"><a class="header" href="#discussion">Discussion</a></h2>
+<h3 id="low-fees-growth"><a class="header" href="#low-fees-growth">Low fees growth</a></h3>
+<p>Figures 1-3, 17-19, and 35-37 show the results of the simulations for the 10% annual fee growth scenario. None of
+these scenarios produce sufficient fees to reduce the circulating supply to the target within the 33-year simulation
+timeframe. The common feature of these simulations is that the controller hits the maximum burn rate of 50% and stays
+there for the remainder of the simulation. Increasing the <code>max</code> burn rate to a higher value might succeed in achieving
+the target supply, but this might mean that validator nodes cannot operate at break-even rates.</p>
+<p>Ultimately a poor growth in fee revenue -- in this model, never exceeding 30 tx/s over 30 years of operation, 
+represents a failure mode, not just of the controller, but of the network as a whole, since Tari adoption has never 
+taken off, and there's nothing a controller can do to fix that.</p>
+<h3 id="high-fees-growth"><a class="header" href="#high-fees-growth">High fees growth</a></h3>
+<p>At the other end of the spectrum, if Tari achieves runaway success, <em>and the minimum transaction fee is never 
+reduced to compensate</em>, then the controller will be able to maintain the target circulating supply of Tari during the 
+33-year simulation timeframe. </p>
+<p>This is shown in Figures 4 and 5.
+In Figures 20-21, and 38-39, the tapering of supply only begins towards the end of the simulation period.</p>
+<p>However, it should be noted that indefinite fee growth is not sustainable from a token supply point of view, <em>unless 
+the inflation rate of the emission curve is increased to compensate</em>. This is not evident in these charts, but if 
+the simulation were to continue for several more years, the fee growth would eventually set the burn rate to its 
+minimum of 5% and the total circulating supply would eventually fall to zero.</p>
+<p>So, a few things to note about this scenario:</p>
+<ul>
+<li>It's very unlikely to happen in practice that 25% network growth is achieved consistently for 30-40 years. 
+Therefore, this scenario is largely illustrative of the controller's ability to handle extreme fee growth. And 
+within fairly wide limits, we demonstrate that the throttle manages this very well.</li>
+<li>The minimum burn rate of 5% could be reduced further without negatively impacting validator node revenues (in fact 
+reducing the burn rate is beneficial for validator nodes).</li>
+<li>In practice, it is not unreasonable to expect that the price of Tari in nominal USD terms would increase as the 
+network usage increases, and so the minimum transaction fee would have to be reduced to maintain sub-penny 
+transaction fees -- keeping the Tari network cheap to use for the average user. This entails that the total fee 
+revenue would taper off, even as the network continues to grow. The Sigmoidal <a href="#fee-models">fee model</a> is a better 
+representation of this eventuality.</li>
+</ul>
+<h3 id="unstable-fee-revenue"><a class="header" href="#unstable-fee-revenue">Unstable fee revenue</a></h3>
+<p>Figures 12-16, 29-34, and 46-51 show the controller's response to various scenarios under which the fee revenue is 
+oscillating wildly. Under some scenarios, notably Figures 12 and 13, the target supply cannot be achieved even with the 
+controller at minimum burn rates. This is symptomatic of the point made previously that a target supply of 21 
+billion offers very little room for the controller to maneuver. </p>
+<p>In Figures 14-16, 32-34 and 46-51, the controller is able to maintain the supply target with very 
+small amounts of oscillation, by synchronising the fee oscillation with an oscillating burn rate.</p>
+<p>While this demonstrates that the throttle is able to achieve its design goals, one must question whether the
+wildly oscillating burn rates needed to achieve these goals are healthy for the network. </p>
+<p>To maintain a constant 
+supply, as the fees increase, the burn rate <em>decreases</em> to try and match the emission (which is roughly constant 
+over the oscillation period). From a validator node perspective, the portion of fees paid to them increases as fees 
+increase. That sounds great, but when fees decrease, they receive a <em>smaller</em> percentage of the shrinking pool of 
+fees, and so they are doubly disadvantaged. Marginal validator nodes will be hit twice as hard, and be forced off 
+the network due to unfavourable economics, reducing the overall network capacity. When fees pick up again, 
+additional capacity will come online, but the lag between the increased usage and capacity could well lead to a 
+degradation in the user experience.</p>
+<h3 id="slower-growth-with-tapering-fees"><a class="header" href="#slower-growth-with-tapering-fees">Slower growth with tapering fees</a></h3>
+<p>The previous scenarios provide valuable insights into the controller's ability to handle extremes in network demand 
+in terms of fee growth patterns. However, these scenarios are not likely to play out in reality, at least not for 
+extended multi-decade periods.</p>
+<p>The scenarios represented in the &quot;tapering fees&quot; series are more indicative of the long-term macro behaviour of the 
+Tari fee growth. The two specific scenarios in this category reflect an initial exponential growth period followed 
+by a more sustainable linear fee growth rate, corresponding to reducing the minimum transaction fee over time while the 
+network continues to grow.</p>
+<p>In the &quot;Slower growth&quot; variant, the fee revenue grows from zero to 1,000,000 XTR per day over 5 years, and then 
+increases by 100,000 XTR/d per year after that.</p>
+<p>Figures 6-8 are all quite similar. These all use 21 billion XTR as a target and differ only in the weighting applied 
+to trying to achieve the target supply, vs. balancing burn rate and emission. </p>
+<p>The slow growth rate allows the supply to reach the target value of 21 billion in about 20 years, at which point the 
+burn rate adjusts slightly to between 15% and 20% to maintain the target supply.</p>
+<p>Figures 23-25 shows what happens with a target supply of 18 billion XTR. Here the target is reached much sooner, 
+after around 9 years of mainnet operation. In these simulations, the effect of the controller is more pronounced, 
+since an additional 3 billion XTR must be burned to maintain the target supply compared to the scenario with a 21 
+billion XTR target.</p>
+<p>Figures 40-42 show the scenario with a target supply of 15 billion XTR. The lower target requires several years of 
+<code>max</code> burn with the supply overshooting the target before being pulled back onto the target. </p>
+<h3 id="strong-growth-with-tapering-fees"><a class="header" href="#strong-growth-with-tapering-fees">Strong growth with tapering fees</a></h3>
+<p>The &quot;Strong growth&quot; variant of the tapering fees scenario assumes a much higher adoption rate, with fees growing to 
+5,000,000 XTR/d over 3 years, and then growing by 100,000 XTR/d per year after that.</p>
+<p>Figures 9-11 show the results of the simulations with a target supply of 21 billion XTR. Here the controller cannot 
+meet the target supply since it would require a burn rate of under 5%. This is illustrated by the purple lines not 
+moving off the <code>min</code> burn rate level for the entirety of the simulation period.</p>
+<p>Figures 26-28 show the results of the simulations with a target supply of 18 billion XTR. Here the controller is 
+able to meet the target supply, but only just. The burn rate rises only slightly above the <code>min</code> burn rate level
+and is essentially &quot;just holding on&quot;.</p>
+<p>Finally, Figures 43-45 tell a similar but slightly more exaggerated version of the story.</p>
+<p>In practice, if the strong growth scenario were to play out, several interventions would be necessary to give the 
+controller room to maneuver. These would include reducing the <code>min</code> burn rate, and reucing the minimum transaction
+fee to maintain sub-penny transaction fees.</p>
+<h2 id="conclusions"><a class="header" href="#conclusions">Conclusions</a></h2>
+<p>This study shows that the TariThrottle controller is able to maintain a dual mandate of maintaining a target 
+circulating supply of Tari as well as a steady net burn rate over a wide range of fee growth scenarios.</p>
+<p>Some scenarios are unlikely to play out as described in practice. But they give valuable insights into how the 
+controller would respond in stressful situations, short-term shocks and deviations, and offer an indication of the 
+robustness of the controller algorithm.</p>
+<p>The most common instances of the controller failing to achieve its target was when the fee growth was so low that 
+the maximum burn rate was less than the tail emission. </p>
+<p>Under these conditions, the tokens that are emitted exceed the maximum that can be burnt. In practice, this 
+mode represents a failure of the Tari ecosystem as a whole and a limiting controller would not be the greatest 
+concern at this point.</p>
+<p>However, the biggest conclusion to draw from this study is that the stated dual mandate is ill-advised.</p>
+<p>There are several scenarios where maintaining a target supply is detrimental to the sustainability of 
+validator nodes and to the ability of the network to provide surge capacity during sudden high periods of network demand.</p>
+<p>The oscillating fee revenue scenarios are particularly illuminating, since they demonstrate that as fees are falling,
+the controller <em>increases</em> the burn rate to try and match the emission. This results in a double loss of revenue for
+validator nodes, since they're receiving a smaller slice of a shrinking pie. This will force them offline sooner 
+than they otherwise would have. When fees recover, it may take some time for those nodes to come back online, and as 
+a result, users experience lags in the network.</p>
+<p>Many scenarios illustrate that the controller can effectively do nothing for between 5 and 15 years while it waits 
+for the circulating supply to reach its target. This effectively means that the controller is powerless to do 
+anything to help with validator node profitability or excessive network fees during this period, because its 
+control mandate is misaligned with the health of the network.</p>
+<p>It's clear that some additional studies are needed. In particular, we need to identify and maximise for the health of 
+the network, rather than a fixed supply target. Sometimes these two goals will be aligned, but it behooves us to 
+remember which variables represent the tail, and which represent the dog.</p>
+<p>As a minimum, the following factors should be considered, since they directly relate to the health of the ecosystem, 
+in that they incentivise validation nodes to remain online and keep the Tari network affordable: </p>
+<ul>
+<li>There must be a <strong>near-constant</strong> driving force to burn Minotari and redeem them as Tari, similar to how a kite 
+must always have tension in the string for the operator to be able to fly the kite. Brief periods of slack, 
+corresponding to the price of Tari dropping below 1 XTR, are acceptable, since the operator can draw the slack 
+in to regain tension (by continuing to burn Tari with no new redemptions), but if the situation persists, the kite 
+will crash. </li>
+<li>Marginal validator nodes must be able to operate at break-even rates at approximately 50% utilisation. Marginal 
+VNs are those that can spin up very quickly to meet surge demand, but are more expensive to run because of this. 
+Typically, VNs running on spot EC2 instances fall into this category.</li>
+<li>Long-term validator nodes must be able to operate at break-even rates at approximately 20% utilisation. These 
+nodes are those that are always online, and are typically running on reserved EC2 instances or even cheaper server 
+infrastructure. The 20% value means that they will stay online all the time, whilst keeping 5x surge capacity 
+in reserve.</li>
+<li>The supply of Minotari never goes to zero.</li>
+<li>The minimum transaction fee should be under 1c in USD terms.</li>
+</ul>
+<p>A controller model that incorporates these target conditions will be the subject of future work.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="RFC-0385_StableCoins.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="deprecated.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a href="RFC-0385_StableCoins.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a href="deprecated.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src=" https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js "></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
