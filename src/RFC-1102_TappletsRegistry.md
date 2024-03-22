@@ -115,7 +115,7 @@ Approval should be done only if the tapplet is checked and verified
   3. Register the tapplet:
 
   - create pull request
-  - CLI provides the tapplet data (taken from package)
+  - CLI provides the tapplet data (taken from the package)
   - Github Actions verify - redo previous step to verify if provided data is valid
   - Add GitHub CODEOWNERS:
     - Allows the Tapplet’s contributor for future updates
@@ -132,8 +132,8 @@ Approval should be done only if the tapplet is checked and verified
   2. Publish to npm
   3. Register the tapplet
   - Github PR (GPG key used mandatory)
-  - CLI provides the tapplet data (taken from package)
-  - Github Actions verify - redo step b) to verify if provided data is ok
+  - CLI provides the tapplet data (taken from the package)
+  - Github Actions verify - redo previous step to verify if provided data is valid
   - Add GitHub CODEOWNERS:
     - Allows the Tapplet’s contributor for future updates
     - Restrict Tapplet Registry repo from being modified by tapplets contributors
@@ -162,6 +162,10 @@ Using the Tapplet Playground (inspired by [MM Snaps Simulator](https://metamask.
 | GitHub          | Great clarity and simplicity as repo is public and anyone can quickly verify checksum. Using GPG key. Easy to compare changes and approve new version. | Approving thousands of new PRs can be the bottleneck. |
 | Tari Blockchain | Registry immutability.                                                                                                                                 | Expensive and in some cases cumbersome.               |
 | npm registry    | Easy as npm package publishing. Proven and dedicated versioning tool. Clarity and simplicity.                                                          |                                                       |
+
+#### Suggested solution
+
+Based on the analysis of available solutions, particularly the three presented in this document, it is proposed to utilize the **npm registry for tapplets** and **GitHub as the Tapplet Registry**.
 
 ## Tapplets Registry manifest
 
