@@ -96,6 +96,8 @@ Tapplets themselfs are packages kept in any registry, like npm.
 Let [MetaMask Snaps](https://docs.metamask.io/snaps/learn/about-snaps/) serve as an example.
 Github repository is the place where docs, examples, manifest files and so on are stored. Let's assume that every tapplet is an npm package published for specified workspace as e.g. “tari-universe”.
 
+During the discussion about this RFC, it was correctly pointed out that one possible drawback of npm registry is the risk that dependencies will introduce vulnerabilities, which is known as *supply chain attack*. However, by design, tapplets must not have any dependencies required for installation (which should be checked in the add/update process) and must be prepared as production-ready bundles.
+
 To sum up:
 
 - npm stores tapplets
@@ -255,6 +257,7 @@ Example of `tappletsRegistry.manifest.json` file
 
 # Change Log
 
-| Date        | Change      | Author |
-| :---------- | :---------- | :----- |
-| 21 Mar 2024 | First draft | karczu |
+| Date        | Change        | Author |
+| :---------- | :------------ | :----- |
+| 25 Mar 2024 | npm deps info | karczu |
+| 21 Mar 2024 | First draft   | karczu |
