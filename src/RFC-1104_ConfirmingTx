@@ -1,6 +1,6 @@
 # RFC-1104/ConfirmingTx
 
-## Rules of confirming transactions.
+## Tari Universe: rules of confirming transactions
 
 ![status: draft](theme/images/status-draft.svg)
 
@@ -58,22 +58,46 @@ The aim of this Request for Comment (RFC) is to describe the rules of confirming
 ## Description
 
 For the moment the vast majority of dapps uses external wallets, like MetaMask, to allow users to interact with the dapp, confirm and sign transactions. The flow roughly looks like this:
-Init transaction with the data to be signed (e.g. by pressing a button)
-Metamask sign-in request window appears
-User press “sign” button to proceed a transaction
-If a transaction is done (succeeded or failed) another notification appears to inform an user about the tx result.
 
-Below a few scenarios showing how to confirm the transaction process within a tapplet should look like are presented.
+- Init transaction with the data to be signed (e.g. by pressing a button)
+- Metamask sign-in request window appears
+- User press “sign” button to proceed a transaction
+- If a transaction is done (succeeded or failed) another notification appears to inform an user about the tx result.
+
+At Tari Universe simplicity and security should go hand in hand, so below a few concepts of confirming transactions are presented to find the best one.
 
 1. “Metamask-like” flow
+
+   It is just a copy-paste solution widely used in web3. Tari Univers needs something more user-friendly and integrated with the application.
+
 2. No modal window for signing transactions at all
-3. “Mixed model” which is:
 
-- no-prompt if the transaction value is < x USD
-- modal window if the tx value > x USD (x should be determined if any)
+   This concept is rejected due to lack of security.
 
-4. Build-in signing window which is part of tapplet design
-5. Simulate the transaction and summarize the difference of user holdings in case the transaction is executed.
+3. “Mixed model”
+
+   This concept assumes that some tx can be done without explicit user confirmation. In this scenario _x_ (as USD value of transaction) should be defined:
+
+   - no-prompt if the tx value is less than _x_
+   - modal window if the tx value is greater than _x_
+
+   Rejected due to lack of clarity about what price level would be the limit and non-intuitiveness
+
+4. Build-in signing window which is part of Tari Univers/tapplet design
+
+   Transaction with presented data can be confirmed by clicking a button on a tapplet window, which appears or on top of a tapplet or is placed aside.
+
+5. Desirable from the point of view of readability and UX.
+
+   Simulate the transaction and summarize the difference of user holdings in case the transaction is executed. It can be done with transaction dry-run before submitting it to a validator node. For more details see [RFC-0350/TariVM](https://rfc.tari.com/RFC-0350_TariVM)
+
+#### Suggested solution
+
+As it was discussed, the security comes first, so definitely all transactions need to be confirmed before sending to the Tari Network. At the same time users shouldn’t be overwhelmed by the amount of information, especially not given just the “list of hashes” to sign, which are definitely not understandable for typical users. Therefore the idea is to show the transaction summary and quite a nice example of that is presented by [Radix Wallet](https://www.radixdlt.com/wallet).
+
+Transactions should be shown in a clear, simple and user-friendly way. They should give users complete visibility and control before signing, with a summary of a transaction and meaningful instructions of each step. It should be easy to see what inputs and outputs are, what’s the transaction cost and so on.
+
+Confirming transaction steps should be an inseparable part of the transaction flow, thus its summary should be presented not as a modal window (like MetaMask), but rather within the Tari Universe (on top of a tapplet or to a side of it) - designs need to be discussed and created accordingly.
 
 # Change Log
 
