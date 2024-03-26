@@ -52,17 +52,29 @@ This RFC gives the most top-level description of Tari Universe - a marketplace f
 
 # Why Tari Universe ?
 
-Present day dapps in ethereum are self-hosted web-apps that requires external wallet. This creates many opportunities for hostile actors to perform supply-chain attacks. This covers a wide range of attacks like: injecting malware code, XSS,
-stealing domains, social engineering attacks, etc.
+Present day dapps in ethereum are self-hosted web-apps that require an external wallet. This creates many opportunities for hostile actors to perform supply-chain attacks. This covers a wide range of attacks like: injecting malware code, XSS, stealing domains, social engineering attacks, etc.
 
-The common mode of these attacks is that an attacker convinces the user that he or she is interacting with different smart contracts than the user thinks. The attacker steals funds by
-causing the user to sign a transaction that calls to a different, fraudulent smart contract.
+The common mode of these attacks is that an attacker convinces the user that he or she is interacting with different smart contracts than the user thinks. The attacker steals funds by causing the user to sign a transaction that calls to a different, fraudulent smart contract.
+Wallet available on the ethereum ecosystem only present to the user raw data of transaction without any validation if committing the transaction drains user's assets.
 
-Creating a common marketplace for all tapplets (equivalent of ethereum dapps) will significantly increase security and also create a standard for all tapplet developers to follow.
+Creating a curated marketplace for tapplets (equivalent of ethereum dapps) will significantly increase security and also create a standard for all tapplet developers to follow.
+
+# Differences from current solutions
+
+What separates Tari Universe from other other apps like [dappRadar](https://dappradar.com/blog/what-is-dappradar) is stronger emphasis on decentralization and security which are achieved by:
+
+- Template registry where each template must be registered
+- Lack of central authority
+
+Unlike any other marketplace (let's say Steam of Google Play) anyone can register their tapplet by making a PR to the registry if the tapplet meets requirements. More on this in the [RFC-1102](https://github.com/tari-project/rfcs/pull/138)
 
 # Technical stack
 
-Tari universe is a desktop application built upon [Tauri](https://tauri.app/) which in many ways is similar to more popular [Electron](https://www.electronjs.org/). In our case the advantage of Tauri over electron is usage of Rust language which gives much better performance but most importantly it makes an easy way to interact with Tari DAN though already existing crates.
+Tari universe is a desktop application built upon [Tauri](https://tauri.app/) which in many ways is similar to more popular [Electron](https://www.electronjs.org/). The advantages of Tauri over Electron are:
+
+- Native Rust backend, providing improved performance,
+- A greater focus on [security](https://tauri.app/v1/references/architecture/security), and most importantly,
+- trivial interoperability with Tari DAN through existing Rust crates.
 
 ### Presentation Layer
 
@@ -103,6 +115,7 @@ Should present relevant details of the transaction it’s going to execute.
 
 # Change Log
 
-| Date        | Change | Author      |
-| :---------- | :----- | :---------- |
-| 21 Mar 2024 | Draft  | MCozhusheck |
+| Date        | Change  | Author      |
+| :---------- | :------ | :---------- |
+| 21 Mar 2024 | Draft   | MCozhusheck |
+| 26 Mar 2024 | Updates | MCozhusheck |
