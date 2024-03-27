@@ -66,16 +66,48 @@ Additionally the idea is to create an on-chain and association between smart con
 
 At first, it is proposed that tapplets are npm packages published to the public npm registry, but in the future it may be extended also to other package managers. Npm is the first choice because it is widely used, so publishing a new Tapplet is as simple as publishing an npm package.
 
-Tapplets are separate packages and the file structure depends on its authors, however every package should contain a helpful readme file and must contain a manifest json file with Tapplet data.
+#### Security
+
+Safety considerations are worth mentioning, because as it was rightly pointed out during the discussion, the _npm has such a dismal security record that it might hurt the perceived integrity of the product_.
+
+One of the options is to implement an additional security layer alongside npm, such as [The Update Framework](https://theupdateframework.com/).
+
+An alternative of the npm registry may be IPFS, however from the security point of view both options are similar, because they based on checking the checksum of each version. Only the codeowner of the tapplet can register the new version with given checksum and each version is stored separately in the registry. For more details see _Tapplet version management_ section.
+
+#### Tapplet package structure
+
+Tapplets are separate packages and the file structure depends on its authors, however every package must contain:
+
+- `package.json` file
+- `tapplet.manifest.json` file with tapplet’s data required for registration to Tari Universe
+- entrypoint file: `/dist/index.html`
+- (optionally) helpful `README.md`.
+
+The `package.json` file must adhere to [the requirements of npm](https://docs.npmjs.com/cli/v7/configuring-npm/package-json).
+
 The following details are specific to tapplets:
 
-- The *version* string field in `package.json` and `tapplet.manifest.json` should match.
-- The *repository.url* field in `package.json` should match the correct repository for the Tapplet.
-- The *source.location.npm.packageName* in `tapplet.manifest.json` should match the name in `package.json`.
-- The *displayName* in `tapplet.manifest.json` should be a human-readable name
-- The image specified in *design.logoPath* in the manifest file is used as the logo displayed in tapplets market. This logo should be a valid SVG.
+- The _packageName_ field in `package.json` and `tapplet.manifest.json` must match.
+- The _version_ string field in `package.json` and `tapplet.manifest.json` must match. _version_ must be a valid [SemVer](https://semver.org/) version string.
+- The _repository.url_ field in `package.json` must match the correct repository for the Tapplet.
+- The _source.location.npm.packageName_ in `tapplet.manifest.json` must match the name in `package.json`.
+- The _displayName_ in `tapplet.manifest.json` should be a human-readable string less than or equal to 214 characters to be consistent with the [npm package naming rules](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#name)
+- The image specified in _design.logoPath_ in the manifest file is used as the logo displayed in tapplets market. This logo should be a valid SVG.
+- The image specified in _design.backgroundPath_ in the manifest file is used as the background image displayed in tapplets market. This logo should be a valid SVG.
+- The `publisher` filed is a public key of the tapplet publisher. Publisher may be the author of the tapplet package.
 
 After publishing the Tapplet, it is possible to connect to the Tapplet by using the Tapplet ID `npm:[packageName]`.
+
+_Sample package structure. This diagram is non-normative._
+
+```
+- example-tapplet/
+  ├─ dist/
+  │  ├─ index.html
+  ├─ package.json
+  ├─ README.md
+  ├─ tapplet.manifest.json
+```
 
 ### Manifest
 
@@ -111,13 +143,19 @@ Proposed `tapplet.manifest.json` file:
       }
     }
   },
+  "publisher": "publisher-public-key"
   "manifestVersion": "1.2.3"
 }
 
 ```
 
+### Tapplet version management
+
+Step-by-step instructions on how to add, upgrade and remove/deprecate tapplets are precisely described in the [RFC-1102 Tapplets registry](https://github.com/tari-project/rfcs/pull/138) in the “Tapplet version management” section.
+
 # Change Log
 
-| Date        | Change      | Author |
-| :---------- | :---------- | :----- |
-| 21 Mar 2024 | First draft | karczu |
+| Date        | Change       | Author |
+| :---------- | :----------- | :----- |
+| 26 Mar 2024 | Second draft | karczu |
+| 21 Mar 2024 | First draft  | karczu |
