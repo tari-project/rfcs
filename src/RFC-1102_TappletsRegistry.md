@@ -62,14 +62,14 @@ The Tapplets Registry is the fundamental part of the Tari Universe described in 
 In this document three options are considered:
 
 - Github repository
-- Tari Blockchain - contract to store data onchain
+- Tari Network - contract to store data onchain
 - Npm package registry (based on MetaMask Snaps)
 
 In next sections different scenarios are discussed as usage examples. Pros and cons of each solution can be found and summarized.
 
 ## Github Repository
 
-Github repository is the solution which assumes that every tapplet's metadata is stored in a separate folder, each version in a subfolder. Tapplets themself are distributed az zip bundles, so the code is not stored in the folder. Tapplet Registry manifest file, named `tapplets-registry.manifest.json`, keeps metadata about verified and listed tapplets.
+Github repository is the solution which assumes that every tapplet's metadata is stored in a separate folder, each version in a subfolder. Tapplets themself are distributed as zip bundles, so the code is not stored in the folder. Tapplet Registry manifest file, named `tapplets-registry.manifest.json`, keeps metadata about verified and listed tapplets.
 
 ```
 tapplets/
@@ -86,9 +86,9 @@ tapplets/
 tapplets-registry.manifest.json
 ```
 
-## Tari Blockchain
+## Tari Network
 
-Tari Blockchain's Smart Contract (Template) as TappletRegistry. It contains mapping with hashed tapplet data, like shasum.
+Tari Network's Smart Contract (Template) as TappletRegistry. It contains mapping with hashed tapplet data, like shasum.
 Tapplets themselfs are packages kept in any registry, like npm.
 
 ## npm registry
@@ -96,7 +96,7 @@ Tapplets themselfs are packages kept in any registry, like npm.
 Let [MetaMask Snaps](https://docs.metamask.io/snaps/learn/about-snaps/) serve as an example.
 Github repository is the place where docs, examples, manifest files and so on are stored. Let's assume that every tapplet is an npm package published for specified workspace as e.g. “tari-universe”.
 
-During the discussion about this RFC, it was correctly pointed out that one possible drawback of npm registry is the risk that dependencies will introduce vulnerabilities, which is known as *supply chain attack*. However, by design, tapplets must not have any dependencies required for installation (which should be checked in the add/update process) and must be prepared as production-ready bundles.
+During the discussion about this RFC, it was correctly pointed out that one possible drawback of npm registry is the risk that dependencies will introduce vulnerabilities, which is known as _supply chain attack_. However, by design, tapplets must not have any dependencies required for installation (which should be checked in the add/update process) and must be prepared as production-ready bundles.
 
 To sum up:
 
@@ -123,10 +123,10 @@ Approval should be done only if the tapplet is checked and verified
     - Allows the Tapplet’s contributor for future updates
     - Restrict Tapplet Registry repo from being modified by tapplets contributors
 
-- Tari Blockchain flow
+- Tari Network flow
 
   1. Compress a tapplet project to zip file.
-  2. Generate checksum and and sign the blockchain transaction.
+  2. Generate checksum and and sign the Network transaction.
   3. Call contract's function, like registerTapplet() which verifies signature and add the checksum to the verified tapplets mapping.
 
 - npm package registry flow
@@ -159,15 +159,50 @@ Using the Tapplet Playground (inspired by [MM Snaps Simulator](https://metamask.
 
 ### Summary
 
-|                 | Pros                                                                                                                                                   | Cons                                                  |
-| :-------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------- |
-| GitHub          | Great clarity and simplicity as repo is public and anyone can quickly verify checksum. Using GPG key. Easy to compare changes and approve new version. | Approving thousands of new PRs can be the bottleneck. |
-| Tari Blockchain | Registry immutability.                                                                                                                                 | Expensive and in some cases cumbersome.               |
-| npm registry    | Easy as npm package publishing. Proven and dedicated versioning tool. Clarity and simplicity.                                                          |                                                       |
+|              | Pros                                                                                                                                                   | Cons                                                  |
+| :----------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------- |
+| GitHub       | Great clarity and simplicity as repo is public and anyone can quickly verify checksum. Using GPG key. Easy to compare changes and approve new version. | Approving thousands of new PRs can be the bottleneck. |
+| Tari Network | Registry immutability.                                                                                                                                 | Expensive and in some cases cumbersome.               |
+| npm registry | Easy as npm package publishing. Proven and dedicated versioning tool. Clarity and simplicity.                                                          |                                                       |
 
 #### Suggested solution
 
 Based on the analysis of available solutions, particularly the three presented in this document, it is proposed to utilize the **npm registry for tapplets** and **GitHub as the Tapplet Registry**.
+
+### Tapplet version management
+
+This section describes in detail version management in the suggested solution, which is the GitHub and npm registry.
+
+#### Tapplet Registration
+
+Tapplet is the npm package, so first of all the package needs to be created and published to the npm registry. Every package must contain
+`tapplet.manifest.json` file with tapplet’s data required for registration to Tari Universe
+
+Following steps are required to register a tapplet:
+
+1. Publisher creates a pull request to the Tapplet Registry repository.
+2. GitHub Actions runs CI workflow to:
+
+- install the tapplet without an error,
+- check if no dependencies are required to install (for security reasons tapplets must not install any npm dependencies),
+- check if required files are included in the package
+- checksum created from the tapplet code equals checksum given in the tapplet.manifest.json file by the publisher
+
+3. CI generates `tappletRegistry.manifest.json` file with extracted data from `tapplet.manifest.json` file
+4. Tapplet’s [CODEOWNER](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#about-code-owners) is registered and from now changes for this specific tapplet can be done only with commits signed by the codeowner.
+
+#### Tapplet Upgrade
+
+Each version of a tapplet needs to be registered separately. Once registered and listed in Tapplets Registry, this tapplet version must not be changed and upgrade must be done as a new pull request to the Tapplet Registry repository. Only codeowner of a specific tapplet can add a new version. Upgraded tapplet data is added to the `tappletRegistry.manifest.json` file by the CI which does the same things as for tapplet registration workflow.
+
+#### Tapplet removing/deprecating
+
+It may (and pretty sure will) happen that a specific version is not recommended for use because of a bug or a business decision. In that case following options are considered:
+
+1. Mark the version as “deprecated” - special optional tag like “status” can be used
+2. Update the Tapplet Registry and remove the tapplet from the list available ones
+
+In both cases the workflow is similar to adding and upgrading tapplets. A new pull request must be created with CI checking if this was done by the codeowner. If so, `tappletRegistry.manifest.json` file is again auto-generated. In this way tapplets can be deleted/deprecated only by its owners and the tapplet registry file can not be changed “by hand” by the repo maintainers without tapplet’s publisher knowledge.
 
 ## Tapplets Registry manifest
 
@@ -257,7 +292,8 @@ Example of `tappletsRegistry.manifest.json` file
 
 # Change Log
 
-| Date        | Change        | Author |
-| :---------- | :------------ | :----- |
-| 25 Mar 2024 | npm deps info | karczu |
-| 21 Mar 2024 | First draft   | karczu |
+| Date        | Change             | Author |
+| :---------- | :----------------- | :----- |
+| 26 Mar 2024 | version management | karczu |
+| 25 Mar 2024 | npm deps info      | karczu |
+| 21 Mar 2024 | First draft        | karczu |
