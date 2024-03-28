@@ -48,7 +48,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to describe the rules of confirming transactions by user.
+The aim of this Request for Comment (RFC) is to describe the rules for confirming transactions by the user.
 
 ## Related Requests for Comment
 
@@ -98,6 +98,54 @@ As it was discussed, the security comes first, so definitely all transactions ne
 Transactions should be shown in a clear, simple and user-friendly way. They should give users complete visibility and control before signing, with a summary of a transaction and meaningful instructions of each step. It should be easy to see what inputs and outputs are, what’s the transaction cost and so on.
 
 Confirming transaction steps should be an inseparable part of the transaction flow, thus its summary should be presented not as a modal window (like MetaMask), but rather within the Tari Universe (on top of a tapplet or to a side of it) - designs need to be discussed and created accordingly.
+
+### Sample transaction in Tari Network
+
+Tari Network [accounts transfer](https://github.com/tari-project/tari-dan/blob/86dd4f910e040cb98b118abaf66a5719b59c987f/applications/tari_dan_wallet_web_ui/src/api/hooks/useAccounts.tsx#L89) is the simplest transaction that can be used to analyze and extract transaction data. This is needed to know what data is available and should be shown to the user when interacting with the tapplet.
+At the time of writing this RFC, a transfer transaction has the following parameters:
+
+```
+export interface ConfidentialTransferRequest {
+  account: ComponentAddressOrName;
+  amount: Amount;
+  input_selection: ConfidentialTransferInputSelection;
+  resource_address: ResourceAddress;
+  destination_public_key: string;
+  max_fee: Amount;
+  output_to_revealed: boolean;
+  proof_from_badge_resource: string;
+  dry_run: boolean;
+}
+```
+
+And transaction response.
+
+```
+export interface ConfidentialTransferResponse {
+  transaction_id: string;
+  fee: Amount;
+  result: {
+      transaction_hash: Uint8Array;
+      events: Array<Event>;
+      logs: Array<LogEntry>;
+      execution_results: Array<InstructionResult>;
+      result: TransactionResult;
+      fee_receipt: FeeReceipt;
+  }
+}
+```
+
+The last parameter from the `ConfidentialTransferRequest` - `dry_run` - is used for gas calculation and at the same time is crucial for transaction simulation. Therefore it can be used to show transaction result before confirming it. From this the key values can be extracted and shown to the user in a simple and transparent way:
+
+```
+withdrawing from: <sender_account_name_or_hash>
+depositing to: <destination_account_name_or_hash>
+amount: <amount_parsed_to_decimal>
+fee: <fee_amount_parsed_to_decimal>
+status: <success/failed/pending/etc>
+```
+
+Appropriate designs must be created.
 
 # Change Log
 
