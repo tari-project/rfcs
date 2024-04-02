@@ -52,8 +52,10 @@ The aim of this Request for Comment (RFC) is to describe the rules for confirmin
 
 ## Related Requests for Comment
 
-- [RFC-1100 Tari Universe Overview](https://github.com/tari-project/rfcs/pull/134)
-- [RFC-1101 Tapplet](https://github.com/tari-project/rfcs/pull/137)
+- [RFC-1100: Tari Universe Overview](https://github.com/tari-project/rfcs/pull/134)
+- [RFC-1101: Tapplet](https://github.com/tari-project/rfcs/pull/137)
+- [RFC-0150: Base Layer Wallet Module](RFC-0150_Wallets.md)
+- [RFC-0153: Staged Wallet Security](RFC-0153_StagedWalletSecurity.md)
 
 ## Description
 
@@ -145,7 +147,9 @@ fee: <fee_amount_parsed_to_decimal>
 status: <success/failed/pending/etc>
 ```
 
-Appropriate designs must be created.
+Appropriate designs must be created. The simplest example may look like below.
+
+![Confirming Tx](./assets/confirm-tx.png)
 
 # Change Log
 
