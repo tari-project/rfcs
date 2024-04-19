@@ -58,29 +58,36 @@ The aim of this Request for Comment (RFC) is to describe the process of tapplet 
 
 ## Description
 
-Tablet installation process is important and crucial in two cases:
+The tapplet installation process is important and crucial in two cases:
 
 ### 1. Adding to the Tapplets Registry
 
-As it was described in the RFC-1102 Tapplet Registry, to add a new tapplet to the registry it needs to be verified first. To achieve that a given npm package with compressed tapplet is downloaded, extracted and checked if the provided checksum, data and files structure are valid. The process must be performed automatically, therefore GitHub Actions are needed to run the script responsible for a tapplet validation.
+As it was described in the [RFC-1102: Tapplet Registry](https://github.com/tari-project/rfcs/pull/138), to add a new tapplet to the registry it needs to be verified first. To achieve that a given npm package with compressed tapplet is downloaded, extracted and checked if the provided checksum, data and files structure are valid. The process must be performed automatically, therefore GitHub Actions are needed to run the script responsible for a tapplet validation.
+
+It is very important from a security point of view **_not_** to install packages using the `npm install` command, so as not to perform actions such as installing the dependencies of the tapplet package itself or running postinstall hooks.
 
 #### Verification Script
 
 The script should be written in Rust to be consistent with the chosen project’s technical stack. In particular the script should:
 
-- download the npm package using http (not npm install, because it is not desirable to install dependencies)
+- download the npm package using http (not `npm install` as explained above)
 - extract compressed file
 - check files structure and required files presence (like index.html or tapplet.manifest.json)
 - given checksum equals to the calculated one from the installed package
 
 ### 2. Installing and running a tapplet in the Tari Universe
 
-As it was described in the RFC-1100 Tari Universe is a marketplace, so its inherent feature is to download and run any registered tapplet. In this case the process should be similar to the one described above as the Verification Script. However some extra actions are required to successfully install and run a tapplet:
+As it was described in the [RFC-1100](https://github.com/tari-project/rfcs/pull/134) Tari Universe is a marketplace, so its inherent feature is to download and run any registered tapplet. In this case the process should be similar to the one described above as the Verification Script. However some extra actions are required to successfully install and run a tapplet:
 
 - defining the download folder path
 - defining the cache folder path
 
 Tauri provides well documented modules for working with file and directory paths. This package is simply called [path](https://tauri.app/v1/api/js/path).
+
+#### Reqwest
+
+The Reqwest is the Rust library built for fetching resources using the HTTP protocol.  
+Reqwest is a popular HTTP client for Rust, which helps to handle large file downloads.
 
 #### Download directory path
 
@@ -116,10 +123,20 @@ import { cacheDir } from '@tauri-apps/api/path';
 const cacheDirPath = await cacheDir();
 ```
 
+#### Tauri configuration
 
-#### Tauri configuration 
+Thanks to the [Tauri configuration object](https://tauri.app/v1/api/config/#file-formats) it is possible to customize the Tari Universe application and adjust directories paths. Therefore it is recommended to extract downloaded tapplet and keeps its data within separate folders.
 
-Thanks to the [Tauri configuration object](https://tauri.app/v1/api/config/#file-formats) it is possible to customize the Tari Universe application and adjust directories paths. Therefore it is recommended to extract downloaded tapplet and keeps its data within separate folders. 
+#### Tapplet rerun and archive file integrity
+
+The checks performed during tapplet installation are necessary for security reasons, especially checksum compliance. However, it is equally important to check whether the files already extracted from the archive and saved locally have not been changed during reruns of the tapplet. This is potentially another attack vector that should be carefully analyzed and eliminated.
+At this point, several solutions come to mind and the most worth considering are:
+
+1. The `tar --verify` command used to verify the integrity of a tar archive file after it has been extracted. The `--verify` option checks that the files extracted from the archive match the original files on the system.
+2. Remove the directory and reinstall the package with checksum revalidation.
+3. Keep downloaded tapplet package's checksum in the registry and compare if equals to the calculated one from the extracted files.
+
+Although the first option is more effective and elegant, it is not recommended due to platform differences. The latter is a bit cumbersome. It seems the third option is the best one since shasum can be locally calculated from the extracted files and then compare to the checksum given with the npm package and in tapplet manifest file. Anyway, more research needs to be done on this matter to make the best decision.
 
 # Change Log
 
