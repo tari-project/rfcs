@@ -1,6 +1,6 @@
 # RFC-1104/ConfirmingTx
 
-## Tari Universe: rules of confirming transactions
+## Tari Universe: User confirmation when submitting transactions
 
 ![status: draft](theme/images/status-draft.svg)
 
@@ -48,7 +48,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to describe the rules for confirming transactions by the user.
+The aim of this Request for Comment (RFC) is to describe the rules for user confirmation when submitting transactions.
 
 ## Related Requests for Comment
 
@@ -58,6 +58,14 @@ The aim of this Request for Comment (RFC) is to describe the rules for confirmin
 - [RFC-0153: Staged Wallet Security](RFC-0153_StagedWalletSecurity.md)
 
 ## Description
+
+#### Background
+
+Due to approvals in Ethereum contracts, there are a number of attacks where the user is tricked into signing a transaction granting access to the malicious user to act on their behalf. For example an attacker could create a phishing site and then trick the user to sign approval for an ERC20 to the attacker's public key.
+
+In Tari approvals and transactions happen differently, but there is still some things which can be done to prevent the user from falling victim to these attacks.
+
+#### Concepts of confirming transactions
 
 For the moment the vast majority of dapps uses external wallets, like MetaMask, to allow users to interact with the dapp, confirm and sign transactions. The flow roughly looks like this:
 
@@ -93,9 +101,13 @@ At Tari Universe simplicity and security should go hand in hand, so below a few 
 
    Simulate the transaction and summarize the difference of user holdings in case the transaction is executed. It can be done with transaction dry-run before submitting it to a validator node. For more details see [RFC-0350/TariVM](https://rfc.tari.com/RFC-0350_TariVM)
 
+#### Warning in the confirmation dialog
+
+An additional layer of security could be to add a warning to the confirmation dialog if there is something suspicious about the transaction the user is signing. This should be a clear warning that cannot be missed by the user, so the warning shouldn't be shown too often. Another idea is to disable the approval button for a number of seconds (like a countdown) to make sure the user can taken the time to see the warning.
+
 #### Suggested solution
 
-As it was discussed, the security comes first, so definitely all transactions need to be confirmed before sending to the Tari Network. At the same time users shouldn’t be overwhelmed by the amount of information, especially not given just the “list of hashes” to sign, which are definitely not understandable for typical users. Therefore the idea is to show the transaction summary and quite a nice example of that is presented by [Radix Wallet](https://www.radixdlt.com/wallet).
+As it was discussed, the security comes first, so definitely all transactions need to be confirmed **by the user** before sending to the Tari Network. At the same time users shouldn’t be overwhelmed by the amount of information, especially not given just the “list of hashes” to sign, which are definitely not understandable for typical users. Therefore the idea is to show the transaction summary and quite a nice example of that is presented by [Radix Wallet](https://www.radixdlt.com/wallet).
 
 Transactions should be shown in a clear, simple and user-friendly way. They should give users complete visibility and control before signing, with a summary of a transaction and meaningful instructions of each step. It should be easy to see what inputs and outputs are, what’s the transaction cost and so on.
 
@@ -147,12 +159,17 @@ fee: <fee_amount_parsed_to_decimal>
 status: <success/failed/pending/etc>
 ```
 
-Appropriate designs must be created. The simplest example may look like below.
+#### UX/UI
+
+The entire concept requires the creation of a well-thought-out and clear design. Particular attention should be paid to the issue of warnings, so that only really important threats are shown (kowever implementation can be left to a later date).
+
+The simplest example may look like below.
 
 ![Confirming Tx](./assets/confirm-tx.png)
 
 # Change Log
 
-| Date        | Change      | Author |
-| :---------- | :---------- | :----- |
-| 25 Mar 2024 | First draft | karczu |
+| Date        | Change                                 | Author |
+| :---------- | :------------------------------------- | :----- |
+| 23 Apr 2024 | 2nd draft: add a paragrapf on warnings | karczu |
+| 25 Mar 2024 | First draft                            | karczu |
