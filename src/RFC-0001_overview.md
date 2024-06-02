@@ -142,8 +142,8 @@ invented to allow the DAN to be built on top of Tari, but have found some great 
 
 #### Proof of Work
 
-Tari is mined using a hybrid approach. On average, 60% of block rewards come from [Monero merge-mining],
- while 40% come from the [Sha3x][RFC-131] algorithm. Blocks are produced every 2 minutes, on average.  
+Tari is mined using a hybrid approach. On average, 50% of block rewards come from [Monero merge-mining],
+ while 50% come from the [Sha3x][RFC-131] algorithm. Blocks are produced every 2 minutes, on average.
 
 ### The role of the base layer
 
