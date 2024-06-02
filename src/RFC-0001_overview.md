@@ -209,4 +209,4 @@ strength.
 | 22 Jun 2021 | Remove payment channel layer proposal                | SimianZa |
 | 14 Jan 2022 | Update image. Expound on Base layer responsibilities | CjS77    |
 | 10 Nov 2022 | Update overview for Cerberus                         | CjS77    |
-
+| 02 Jun 2024 | Update Randomx/Sha3x mining rewards split                         | z0rg0n   |
