@@ -57,9 +57,25 @@ None
 
 ## Description
 
-Tari [Communication Node]s are identified on the network via their [Node ID]; which in turn are derived from the node's
-public key. Both the node id and public key are simple large integer numbers. The communication private key should be kept
+Wallet addresses should give all the information necessary to send transactions to the wallet who's address it is. To start of a wallet needs to advertise its features that it supports as
+well as what network it on. To keep this human readable, we need independent identifiers for both the features and the network. 
+
+For normal interactive MW transactions it would need a public key to communicate to. The private key of this MUST be kept hidden by the node at all times to ensure that a node cannot be
+spoofed. Because this needs to be kept hidden we can use this as a spend key to derive the actual spend key for the UTXO. 
+
+As soon as we want to send non-interactive transactions, things get a bit more complicated. If the receiving wallet is a normal wallet it has access to all the nessasary
+information required to spend the transaction. But if the receiving wallet contains a Hardware device such as a ledger, the wallet cannot know the spending information,
+this introduces the need for a secondary view key. The wallet can give out the private key of this to another party to view the UTXOs. But this key cannot be used
+to spend the UTXO. 
+
+We can also enclude a checksum to detect errors when we encode this as bytes. This address can also be very easily encoded with emojis if we assign an emoji to each u8. 
+
+
+Tari [Communication Node]s are identified on the 
+network via their [Node ID]; which in turn are derived from the node's public key. Both the node id and public key are simple large integer numbers. The communication private key should be kept
 private by the node at all times to ensure that a node cannot be spoofed. 
+
+
 
 The most common practice for human beings to copy large numbers in cryptocurrency software is scanning a QR code or copying and pasting a value from one application to another. These numbers are typically encoded using hexadecimal or Base58
 encoding. The user will then typically scan (parts) of the string by eye to ensure that the value was transferred
@@ -74,7 +90,48 @@ For Tari, we propose encoding values, the node ID in particular and masking the 
 * Should be be able to detect if the address used belongs to the correct network. 
 ## The specification
 
-### Emoji map
+### Address
+
+Each address is divided into 4 parts: View key, Spend key, Network and Features.
+
+#### View key
+This is the key used by node to provide view access to its transactions. An entity possessing the private key of this key pair SHOULD be able to view all transactions
+a wallet has made. 
+
+#### Spend key
+This is the key used to calculate the spend key of a UTXO and communicate to the node over the network. This private key of this key pair SHOULD be kept
+secure and hidden at all costs.
+
+#### Features
+This is used to indicate features that the wallet supports or not supports. At current this is only used to indicate if the wallet supports interactive and or one-sided transactions.
+This is an encoded u8 with each bit indicating a feature. 
+
+#### Network
+This is the Tari network the wallet is on, for example: Esmeralda, Nextnet etc. 
+
+#### Checksum
+We only include the checksum when encoding the address as bytes, hex or emojis. For the checksum, we use: [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit checksum.
+
+### Encoding 
+
+#### Bytes
+When creating a byte representation of the wallet, the following is used:
+[0] - Network encoded into u8
+[1] - Features raw u8
+[2..33] - Public view key encoded as u8
+[35..65] - Public spend key encoded as u8
+[66] - DammSum checksum
+
+For nodes that do not have a view key, the view key and spend key is treated as being the same, their addresses can be encoded as follows:
+[0] - Network encoded into u8
+[1] - Features raw u8
+[2..33] - Public spend key encoded as u8
+[34] - DammSum checksum
+
+#### Hex
+Encode each byte in the byte representation as two hex characters.
+
+#### Emoji encoding
 An emoji alphabet of 256 characters is selected. Each emoji is assigned a unique index from 0 to 255 inclusive. The
 list of selected emojis is:
 
@@ -104,44 +161,14 @@ The emoji have been selected such that:
   Côte d'Ivoire flags look very similar, and both should be excluded.
 * Modified emoji (skin tones, gender modifiers) are excluded. Only the "base" emoji are considered.
 
-The selection of an alphabet with 256 symbols means there is a direct mapping between bytes and emoji.
+Encode each byte as emoji listed in the corresponding index
 
-### Encoding
-
- The emoji ID is calculated from a node public key `B` (serialized as 32 bytes) and a network identifier `N` (serialized as 8 bits) as follows:
-
-* Use the [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit checksum `C` using `B` as input.
-* Compute the masked checksum `C' = C XOR N`.
-* Encode `B` into an emoji string using the emoji map.
-* Encode `C'` into an emoji character using the emoji map.
-* Concatenate `B` and `C'` as the emoji ID.
-
-The result is 33 emoji characters.
-
-### Decoding
-
-The node public key is obtained from an emoji ID and a network identifier `N` (serialized to 8 bits) as follows:
-
-* Assert that the emoji ID contains exactly 33 valid emoji characters from the emoji alphabet. If not, return an error.
-* Decode the emoji ID as an emoji string by mapping each emoji character to a byte value using the emoji map, producing
-33 bytes. Let `B` be the first 32 bytes and `C'` be the last byte.
-* Compute the unmasked checksum `C = C' XOR N`.
-* Use the DammSum validation algorithm on `B` to assert that `C` is the correct checksum. If not, return an error.
-* Attempt to deserialize `B` as a public key. If this fails, return an error. If it succeeds, return the public key.
-
-#### Checksum effectiveness
-It is important to note that masking the checksum reduces its effectiveness.
-Namely, if an emoji ID is presented with a different network identifier, and if there is a transmission error, it is possible for the result to decode in a seemingly valid way with a valid checksum after unmasking.
-If both conditions occur randomly, the likelihood of this occurring is `n / 256` for `n` possible network identifiers.
-
-Since emoji ID will typically be copied digitally and therefore not particularly subject to transmission errors, so it seems unlikely for these conditions to coincide in practice.
 
 ## Change Log
 
 | Date         | Change                   | Author        |
 |:-------------|:-------------------------|:--------------|
-| 2022-11-10   | Initial stable           | SWvHeerden    |
-| 2022-11-11   | Algorithm improvements   | AaronFeickert |
+| 2024-05-31   | Initial stable           | SWvHeerden    |
 
 [Communication Node]: Glossary.md#communication-node
 [Node ID]: Glossary.md#node-id
