@@ -48,92 +48,69 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This document describes the specification for Tari Address. Tari Addresses are encoded wallet addresses used to verify wallet addresses, features and networks.
-This address should have human readable network and features identification. It should contain all information required to send transactions to a wallet owning an address. 
+This document outlines the specification for Tari Address, which are encoded wallet addresses used to verify wallet addresses, features, and networks. 
+The address should have human-readable network and feature identification and contain all information required to send transactions to a wallet owning an address.
 
 ## Related Requests for Comment
 
 None
 
 ## Description
+Wallet addresses should contain all the necessary information for sending transactions to the corresponding wallet. Initially, a wallet must declare its supported features and the network it
+operates on. To maintain readability, distinct identifiers are required for both the features and the network.
 
-Wallet addresses should give all the information necessary to send transactions to the wallet who's address it is. To start of a wallet needs to advertise its features that it supports as
-well as what network it on. To keep this human readable, we need independent identifiers for both the features and the network. 
+For typical interactive Mimblewimble (MW) transactions, a public key is necessary for communication. The private key associated with this MUST BE securely stored by the node to prevent spoofing.
+This private key functions as the spend key for deriving the actual spend key for the Unspent Transaction Output (UTXO).
 
-For normal interactive MW transactions it would need a public key to communicate to. The private key of this MUST be kept hidden by the node at all times to ensure that a node cannot be
-spoofed. Because this needs to be kept hidden we can use this as a spend key to derive the actual spend key for the UTXO. 
+However, when non-interactive transactions are initiated, the process becomes more complex. If the receiving wallet is a standard one, it possesses all the essential information for spending
+the transaction. Yet, if the recipient utilizes a hardware device like a ledger, the spending information is inaccessible to the wallet. Thus, a secondary view key becomes necessary.
+While the wallet can share the private key of this view key with another party for UTXO viewing purposes, it cannot be used for spending.
 
-As soon as we want to send non-interactive transactions, things get a bit more complicated. If the receiving wallet is a normal wallet it has access to all the nessasary
-information required to spend the transaction. But if the receiving wallet contains a Hardware device such as a ledger, the wallet cannot know the spending information,
-this introduces the need for a secondary view key. The wallet can give out the private key of this to another party to view the UTXOs. But this key cannot be used
-to spend the UTXO. 
+Additionally, a checksum can be included to detect errors when encoding the address as bytes. Emojis can also be easily incorporated into the encoding process by assigning each u8 an emoji.
 
-We can also enclude a checksum to detect errors when we encode this as bytes. This address can also be very easily encoded with emojis if we assign an emoji to each u8. 
-
-
-Tari [Communication Node]s are identified on the 
-network via their [Node ID]; which in turn are derived from the node's public key. Both the node id and public key are simple large integer numbers. The communication private key should be kept
-private by the node at all times to ensure that a node cannot be spoofed. 
-
-
-
-The most common practice for human beings to copy large numbers in cryptocurrency software is scanning a QR code or copying and pasting a value from one application to another. These numbers are typically encoded using hexadecimal or Base58
-encoding. The user will then typically scan (parts) of the string by eye to ensure that the value was transferred
-correctly.
-
-For Tari, we propose encoding values, the node ID in particular and masking the network identifier, for Tari, using emojis. The advantages of this approach are:
-
-* Emoji are more easily identifiable; and, if selected carefully, less prone to identification errors (e.g., mistaking an
-  O for a 0).
-* The alphabet can be considerably larger than hexadecimal (16) or Base58 (58), resulting in shorter character sequences
-  in the encoding.
-* Should be be able to detect if the address used belongs to the correct network. 
 ## The specification
 
 ### Address
 
-Each address is divided into 4 parts: View key, Spend key, Network and Features.
+Each address consists of four parts: View key, Spend key, Network, and Features.
 
 #### View key
-This is the key used by node to provide view access to its transactions. An entity possessing the private key of this key pair SHOULD be able to view all transactions
-a wallet has made. 
+This key allows a node to grant view access to its transactions. Possession of the private key in this key pair SHOULD enable an entity to view all transactions associated with a wallet.
 
 #### Spend key
-This is the key used to calculate the spend key of a UTXO and communicate to the node over the network. This private key of this key pair SHOULD be kept
-secure and hidden at all costs.
+Utilized to compute the spend key of a UTXO and communicate with the node over the network. The private key associated with this key pair must be securely kept hidden.
 
 #### Features
-This is used to indicate features that the wallet supports or not supports. At current this is only used to indicate if the wallet supports interactive and or one-sided transactions.
-This is an encoded u8 with each bit indicating a feature. 
+Indicates the supported features of the wallet, such as interactive and one-sided transactions. Currently, this is represented by an encoded u8, with each bit denoting a specific feature.
 
 #### Network
-This is the Tari network the wallet is on, for example: Esmeralda, Nextnet etc. 
+Specifies the Tari network the wallet operates on, e.g., Esmeralda, Nextnet, etc.
 
 #### Checksum
-We only include the checksum when encoding the address as bytes, hex or emojis. For the checksum, we use: [DammSum](https://github.com/cypherstack/dammsum) algorithm with `k = 8` and `m = 32` to compute an 8-bit checksum.
+The checksum is only included when encoding the address as bytes, hex, or emojis. For the checksum, the: [DammSum](https://github.com/cypherstack/dammsum) algorithm is employed,
+with `k = 8` and `m = 32`, resulting in an 8-bit checksum.
 
 ### Encoding 
-
 #### Bytes
-When creating a byte representation of the wallet, the following is used:
-[0] - Network encoded into u8
-[1] - Features raw u8
-[2..33] - Public view key encoded as u8
-[35..65] - Public spend key encoded as u8
-[66] - DammSum checksum
+When generating a byte representation of the wallet, the following format is used:
+[0]: Network encoded as u8
+[1]: Raw u8 representing features
+[2..33]: Public view key encoded as u8
+[35..65]: Public spend key encoded as u8
+[66]: DammSum checksum
 
-For nodes that do not have a view key, the view key and spend key is treated as being the same, their addresses can be encoded as follows:
-[0] - Network encoded into u8
-[1] - Features raw u8
-[2..33] - Public spend key encoded as u8
-[34] - DammSum checksum
+For nodes lacking a distinct view key, where the view key and spend key are identical, their addresses can be encoded as follows:
+[0]: Network encoded as u8
+[1]: Raw u8 representing features
+[2..33]: Public spend key encoded as u8
+[34]: DammSum checksum
 
 #### Hex
-Encode each byte in the byte representation as two hex characters.
+Each byte in the byte representation is encoded as two hexadecimal characters.
 
-#### Emoji encoding
-An emoji alphabet of 256 characters is selected. Each emoji is assigned a unique index from 0 to 255 inclusive. The
-list of selected emojis is:
+#### Emoji Encoding
+An emoji alphabet of 256 characters has been selected, each assigned a unique index from 0 to 255 inclusive.
+The list of chosen emojis is as follows:
 
 | | | | | | | | | | | | | | | | |
 |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
@@ -155,14 +132,13 @@ list of selected emojis is:
 |🚑|🚒|🚓|🛵|🚗|🚜|🚢|🚦|🚧|🚨|🚪|🚫|🚲|🚽|🚿|🧲|
 
 
+These emojis are selected to ensure:
 
-The emoji have been selected such that:
-* Similar-looking emoji are excluded from the map. For example, neither 😁 or 😄 should be included. Similarly, the Irish and
-  Côte d'Ivoire flags look very similar, and both should be excluded.
-* Modified emoji (skin tones, gender modifiers) are excluded. Only the "base" emoji are considered.
+* Exclusion of similar-looking emojis to avoid confusion.
+* Only the "base" emoji are considered; modified emojis (e.g., skin tones, gender modifiers) are excluded.
+* Match emoji's used by Yat.
 
-Encode each byte as emoji listed in the corresponding index
-
+Each byte is encoded using the emoji listed at the corresponding index.
 
 ## Change Log
 
