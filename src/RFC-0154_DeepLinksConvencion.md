@@ -90,7 +90,7 @@ Combining all three components, they will form a deep link with a structure pres
 tari://mainnet/profile
 tari://mainnet/profile/username
 tari://testnet/payments/send?amount=1.23&pubKey=01234556789abcde
-tari://nextnet/contacts/list[0][alias]=MrTari&list[0][hex]=01234556789abcde&list[1][alias]=AdamSmith&list[1][hex]=edcba9876543210
+tari://nextnet/contacts/list[0][alias]=MrTari&list[0][tariAddress]=01234556789abcde&list[1][alias]=AdamSmith&list[1][tariAddress]=edcba9876543210
 ```
 
 ### Deeplinks in use:
@@ -99,11 +99,11 @@ tari://nextnet/contacts/list[0][alias]=MrTari&list[0][hex]=01234556789abcde&list
    
 The data contains transaction information used in the send tokens process.
 
-| Value Name   | Value Type | Note                         |
-| ----------   | :--------: | ---------------------------- |
-| tariAddress  | String     | Receiver's Tari Address      |
-| amount       | UInt64?    | The amount in micro Tari     |
-| note         | String?    | Note passed with transaction |
+| Value Name  | Value Type | Note                             |
+| ----------  | :--------: | -------------------------------- |
+| tariAddress | String     | Receiver's Tari Address (base58) |
+| amount      | UInt64?    | The amount in micro Tari         |
+| note        | String?    | Note passed with transaction     |
 
 * `{network_name}/base_nodes/add`
 
@@ -124,23 +124,24 @@ List of contacts. This deep link is used to share multiple Tari contacts with an
 
 `Contact` object
 
-| Value Name | Value Type | Note                                                        |
-| ---------- | :--------: | ----------------------------------------------------------- |
-| alias      | String?    | Contact's name/alias                                        |
-| hex        | String     | Contact's Tari Address                                      | 
+| Value Name  | Value Type | Note                                                        |
+| ----------- | :--------: | ----------------------------------------------------------- |
+| alias       | String?    | Contact's name/alias                                        |
+| tariAddress | String     | Contact's Tari Address (base58)                             | 
 
 * `{network_name}/profile`
 
 User's profile card. It is used to initiate the transaction with a predefined receiver address and presented alias.
 
-| Value Name | Value Type | Note                                                        |
-| ---------- | :--------: | ----------------------------------------------------------- |
-| alias      | String     | User's name/alias                                           |
-| hex        | String     | User's Tari Address                                         | 
+| Value Name  | Value Type | Note                                                        |
+| ----------- | :--------: | ----------------------------------------------------------- |
+| alias       | String     | User's name/alias                                           |
+| tariAddress | String     | User's Tari Address (base58)                                | 
 
 # Change Log
 
-| Date        | Change                                                       | Author                                                  |
-|:------------|:-------------------------------------------------------------|:--------------------------------------------------------|
-| 19 Apr 2023 | First stable, replace public key with tari address           | [SWvHeerden](https://github.com/SWvheerden)             |
-| 06 Jun 2023 | Added descriptions for `/contacts` and `/profile` deep links | [Adrian Truszczyński](https://github.com/TruszczynskiA) |
+| Date        | Change                                                                                | Author                                                  |
+|:------------|:--------------------------------------------------------------------------------------|:--------------------------------------------------------|
+| 19 Apr 2023 | First stable, replace public key with tari address                                    | [SWvHeerden](https://github.com/SWvheerden)             |
+| 06 Jun 2023 | Added descriptions for `/contacts` and `/profile` deep links                          | [Adrian Truszczyński](https://github.com/TruszczynskiA) |
+| 17 Jul 2024 | Updated documentation for `transactions/send`, `/contacts`, and `/profile` deep links | [Adrian Truszczyński](https://github.com/TruszczynskiA) |
