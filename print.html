@@ -8464,7 +8464,7 @@ testnet/payments/request
 <pre><code class="language-ignore">tari://mainnet/profile
 tari://mainnet/profile/username
 tari://testnet/payments/send?amount=1.23&amp;pubKey=01234556789abcde
-tari://nextnet/contacts/list[0][alias]=MrTari&amp;list[0][hex]=01234556789abcde&amp;list[1][alias]=AdamSmith&amp;list[1][hex]=edcba9876543210
+tari://nextnet/contacts/list[0][alias]=MrTari&amp;list[0][tariAddress]=01234556789abcde&amp;list[1][alias]=AdamSmith&amp;list[1][tariAddress]=edcba9876543210
 </code></pre>
 <h3 id="deeplinks-in-use"><a class="header" href="#deeplinks-in-use">Deeplinks in use:</a></h3>
 <ul>
@@ -8472,7 +8472,7 @@ tari://nextnet/contacts/list[0][alias]=MrTari&amp;list[0][hex]=01234556789abcde&
 </ul>
 <p>The data contains transaction information used in the send tokens process.</p>
 <div class="table-wrapper"><table><thead><tr><th>Value Name</th><th style="text-align: center">Value Type</th><th>Note</th></tr></thead><tbody>
-<tr><td>tariAddress</td><td style="text-align: center">String</td><td>Receiver's Tari Address</td></tr>
+<tr><td>tariAddress</td><td style="text-align: center">String</td><td>Receiver's Tari Address (base58)</td></tr>
 <tr><td>amount</td><td style="text-align: center">UInt64?</td><td>The amount in micro Tari</td></tr>
 <tr><td>note</td><td style="text-align: center">String?</td><td>Note passed with transaction</td></tr>
 </tbody></table>
@@ -8497,7 +8497,7 @@ tari://nextnet/contacts/list[0][alias]=MrTari&amp;list[0][hex]=01234556789abcde&
 <p><code>Contact</code> object</p>
 <div class="table-wrapper"><table><thead><tr><th>Value Name</th><th style="text-align: center">Value Type</th><th>Note</th></tr></thead><tbody>
 <tr><td>alias</td><td style="text-align: center">String?</td><td>Contact's name/alias</td></tr>
-<tr><td>hex</td><td style="text-align: center">String</td><td>Contact's Tari Address</td></tr>
+<tr><td>tariAddress</td><td style="text-align: center">String</td><td>Contact's Tari Address (base58)</td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -8506,13 +8506,14 @@ tari://nextnet/contacts/list[0][alias]=MrTari&amp;list[0][hex]=01234556789abcde&
 <p>User's profile card. It is used to initiate the transaction with a predefined receiver address and presented alias.</p>
 <div class="table-wrapper"><table><thead><tr><th>Value Name</th><th style="text-align: center">Value Type</th><th>Note</th></tr></thead><tbody>
 <tr><td>alias</td><td style="text-align: center">String</td><td>User's name/alias</td></tr>
-<tr><td>hex</td><td style="text-align: center">String</td><td>User's Tari Address</td></tr>
+<tr><td>tariAddress</td><td style="text-align: center">String</td><td>User's Tari Address (base58)</td></tr>
 </tbody></table>
 </div>
 <h1 id="change-log-32"><a class="header" href="#change-log-32">Change Log</a></h1>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
 <tr><td style="text-align: left">19 Apr 2023</td><td style="text-align: left">First stable, replace public key with tari address</td><td style="text-align: left"><a href="https://github.com/SWvheerden">SWvHeerden</a></td></tr>
 <tr><td style="text-align: left">06 Jun 2023</td><td style="text-align: left">Added descriptions for <code>/contacts</code> and <code>/profile</code> deep links</td><td style="text-align: left"><a href="https://github.com/TruszczynskiA">Adrian Truszczyński</a></td></tr>
+<tr><td style="text-align: left">17 Jul 2024</td><td style="text-align: left">Updated documentation for <code>transactions/send</code>, <code>/contacts</code>, and <code>/profile</code> deep links</td><td style="text-align: left"><a href="https://github.com/TruszczynskiA">Adrian Truszczyński</a></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="rfc-0230time-related-transactions"><a class="header" href="#rfc-0230time-related-transactions">RFC-0230/Time-related Transactions</a></h1>
 <h2 id="time-related-transactions"><a class="header" href="#time-related-transactions">Time-related Transactions</a></h2>
