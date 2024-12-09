@@ -93,10 +93,6 @@ An excellent technical choice would be merge mining with Monero using RandomX as
 a low likelihood of unforeseen optimizations that will give a single miner a considerable advantage. It also means that it stands a 
 good chance of being "commoditized" when ASICs are eventually manufactured. This would mean that SHA3 ASICs are widely available from multiple suppliers.
 
-### The block distribution
-
-A 50/50 split in hash rate among algorithms minimises the chance of hash rate attacks. In Tari, a 50/50 split is employed in favour of merge mining RandomX with Monero and Tari with Sha-3x respectively.
-
 ### The difficulty adjustment strategy
 
 The choice of difficulty adjustment algorithm is important. In typical hybrid mining strategies, each algorithm operates
