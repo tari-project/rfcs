@@ -95,16 +95,13 @@ good chance of being "commoditized" when ASICs are eventually manufactured. This
 
 ### The block distribution
 
-A 50/50 split in hash rate among algorithms minimises the chance of hash rate attacks. However,
-sufficient buy-in is required, especially with regard to merge mining RandomX with Monero. To make it worthwhile for a
-Monero pool operator to merge mine Tari, but still guard against hash rate attacks and to be inclusive of independent
-Tari supporters and enthusiasts, a 60/40 split is employed in favour of merge mining RandomX with Monero.
+A 50/50 split in hash rate among algorithms minimises the chance of hash rate attacks. In Tari, a 50/50 split is employed in favour of merge mining RandomX with Monero and Tari with Sha-3x respectively.
 
 ### The difficulty adjustment strategy
 
 The choice of difficulty adjustment algorithm is important. In typical hybrid mining strategies, each algorithm operates
 completely independently with a scaled target block time. 
-Tari testnet has been running very successfully using the  Linear Weighted Moving Average (LWMA) from Bitcoin & Zcash
+Tari testnet has been running very successfully using the Linear Weighted Moving Average (LWMA) from Bitcoin & Zcash
 Clones [version 2018-11-27](https://github.com/zawy12/difficulty-algorithms/issues/3#issuecomment-442129791). This LWMA
 difficulty adjustment algorithm has also been
 [tested in simulations](https://github.com/tari-labs/modelling/tree/master/scenarios/multi_pow_01), 
