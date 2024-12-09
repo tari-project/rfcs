@@ -199,3 +199,4 @@ This RFC is stable as of PR#4862
 | 2022-11-25 | Update mining hash decsription | CjS77      |
 | 2022-10-26 | Finalise SHA-3 algorithm       | CjS77      |
 | 2022-10-11 | First outline                  | SWvHeerden |
+| 2024-12-09 | Corrected percentages for merged and hybrid mining | Solivagant |
