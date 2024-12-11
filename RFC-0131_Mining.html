@@ -204,15 +204,10 @@ this will eventually become true for any algorithm that supplies PoW for a growi
 , for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm means there is 
 a low likelihood of unforeseen optimizations that will give a single miner a considerable advantage. It also means that it stands a 
 good chance of being &quot;commoditized&quot; when ASICs are eventually manufactured. This would mean that SHA3 ASICs are widely available from multiple suppliers.</p>
-<h3 id="the-block-distribution"><a class="header" href="#the-block-distribution">The block distribution</a></h3>
-<p>A 50/50 split in hash rate among algorithms minimises the chance of hash rate attacks. However,
-sufficient buy-in is required, especially with regard to merge mining RandomX with Monero. To make it worthwhile for a
-Monero pool operator to merge mine Tari, but still guard against hash rate attacks and to be inclusive of independent
-Tari supporters and enthusiasts, a 60/40 split is employed in favour of merge mining RandomX with Monero.</p>
 <h3 id="the-difficulty-adjustment-strategy"><a class="header" href="#the-difficulty-adjustment-strategy">The difficulty adjustment strategy</a></h3>
 <p>The choice of difficulty adjustment algorithm is important. In typical hybrid mining strategies, each algorithm operates
 completely independently with a scaled target block time. 
-Tari testnet has been running very successfully using the  Linear Weighted Moving Average (LWMA) from Bitcoin &amp; Zcash
+Tari testnet has been running very successfully using the Linear Weighted Moving Average (LWMA) from Bitcoin &amp; Zcash
 Clones <a href="https://github.com/zawy12/difficulty-algorithms/issues/3#issuecomment-442129791">version 2018-11-27</a>. This LWMA
 difficulty adjustment algorithm has also been
 <a href="https://github.com/tari-labs/modelling/tree/master/scenarios/multi_pow_01">tested in simulations</a>, 
@@ -301,6 +296,7 @@ expected in block explorers and such that block hashes should always start with 
 <tr><td style="text-align: left">2022-11-25</td><td style="text-align: left">Update mining hash decsription</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">2022-10-26</td><td style="text-align: left">Finalise SHA-3 algorithm</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">2022-10-11</td><td style="text-align: left">First outline</td><td style="text-align: left">SWvHeerden</td></tr>
+<tr><td style="text-align: left">2024-12-09</td><td style="text-align: left">Corrected percentages for merged and hybrid mining</td><td style="text-align: left">Solivagant</td></tr>
 </tbody></table>
 </div>
                     </main>

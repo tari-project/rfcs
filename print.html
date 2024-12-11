@@ -269,8 +269,8 @@ key (and thus, who you are) to the world? <a href="RFC-0203_StealthAddresses.htm
 unspendable. This is an important mechanism that underpins the DAN economy. </li>
 </ul>
 <h4 id="proof-of-work"><a class="header" href="#proof-of-work">Proof of Work</a></h4>
-<p>Tari is mined using a hybrid approach. On average, 60% of block rewards come from <a href="RFC-0132_Merge_Mining_Monero.html">Monero merge-mining</a>,
-while 40% come from the <a href="RFC-0131_Mining.html">Sha3x</a> algorithm. Blocks are produced every 2 minutes, on average.</p>
+<p>Tari is mined using a hybrid approach. On average, 50% of block rewards come from <a href="RFC-0132_Merge_Mining_Monero.html">Monero merge-mining</a>,
+while 50% come from the <a href="RFC-0131_Mining.html">Sha3x</a> algorithm. Blocks are produced every 2 minutes, on average.</p>
 <h3 id="the-role-of-the-base-layer"><a class="header" href="#the-role-of-the-base-layer">The role of the base layer</a></h3>
 <p>The Base Layer fulfils these, and only these, major roles:</p>
 <ol>
@@ -311,6 +311,7 @@ strength.</p>
 <tr><td style="text-align: left">22 Jun 2021</td><td style="text-align: left">Remove payment channel layer proposal</td><td style="text-align: left">SimianZa</td></tr>
 <tr><td style="text-align: left">14 Jan 2022</td><td style="text-align: left">Update image. Expound on Base layer responsibilities</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">10 Nov 2022</td><td style="text-align: left">Update overview for Cerberus</td><td style="text-align: left">CjS77</td></tr>
+<tr><td style="text-align: left">09 Dec 2024</td><td style="text-align: left">Update percentage split for merge mining</td><td style="text-align: left">Solivagant</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="the-tari-base-layer"><a class="header" href="#the-tari-base-layer">The Tari Base Layer</a></h1>
 <p>The Tari Base Layer network comprises the following major pieces of software:</p>
@@ -1116,15 +1117,10 @@ this will eventually become true for any algorithm that supplies PoW for a growi
 , for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm means there is 
 a low likelihood of unforeseen optimizations that will give a single miner a considerable advantage. It also means that it stands a 
 good chance of being &quot;commoditized&quot; when ASICs are eventually manufactured. This would mean that SHA3 ASICs are widely available from multiple suppliers.</p>
-<h3 id="the-block-distribution"><a class="header" href="#the-block-distribution">The block distribution</a></h3>
-<p>A 50/50 split in hash rate among algorithms minimises the chance of hash rate attacks. However,
-sufficient buy-in is required, especially with regard to merge mining RandomX with Monero. To make it worthwhile for a
-Monero pool operator to merge mine Tari, but still guard against hash rate attacks and to be inclusive of independent
-Tari supporters and enthusiasts, a 60/40 split is employed in favour of merge mining RandomX with Monero.</p>
 <h3 id="the-difficulty-adjustment-strategy"><a class="header" href="#the-difficulty-adjustment-strategy">The difficulty adjustment strategy</a></h3>
 <p>The choice of difficulty adjustment algorithm is important. In typical hybrid mining strategies, each algorithm operates
 completely independently with a scaled target block time. 
-Tari testnet has been running very successfully using the  Linear Weighted Moving Average (LWMA) from Bitcoin &amp; Zcash
+Tari testnet has been running very successfully using the Linear Weighted Moving Average (LWMA) from Bitcoin &amp; Zcash
 Clones <a href="https://github.com/zawy12/difficulty-algorithms/issues/3#issuecomment-442129791">version 2018-11-27</a>. This LWMA
 difficulty adjustment algorithm has also been
 <a href="https://github.com/tari-labs/modelling/tree/master/scenarios/multi_pow_01">tested in simulations</a>, 
@@ -1213,6 +1209,7 @@ expected in block explorers and such that block hashes should always start with 
 <tr><td style="text-align: left">2022-11-25</td><td style="text-align: left">Update mining hash decsription</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">2022-10-26</td><td style="text-align: left">Finalise SHA-3 algorithm</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">2022-10-11</td><td style="text-align: left">First outline</td><td style="text-align: left">SWvHeerden</td></tr>
+<tr><td style="text-align: left">2024-12-09</td><td style="text-align: left">Corrected percentages for merged and hybrid mining</td><td style="text-align: left">Solivagant</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="rfc-0132mergeminingmonero"><a class="header" href="#rfc-0132mergeminingmonero">RFC-0132/MergeMiningMonero</a></h1>
 <h2 id="tari-protocol-for-merge-mining-with-monero"><a class="header" href="#tari-protocol-for-merge-mining-with-monero">Tari protocol for Merge Mining with Monero</a></h2>
