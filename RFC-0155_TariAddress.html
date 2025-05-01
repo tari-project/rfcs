@@ -198,6 +198,8 @@ While the wallet can share the private key of this view key with another party f
 <h4 id="checksum"><a class="header" href="#checksum">Checksum</a></h4>
 <p>The checksum is only included when encoding the address as bytes, hex, or emojis. For the checksum, the: <a href="https://github.com/cypherstack/dammsum">DammSum</a> algorithm is employed,
 with <code>k = 8</code> and <code>m = 32</code>, resulting in an 8-bit checksum.</p>
+<h4 id="payment-id"><a class="header" href="#payment-id">Payment ID</a></h4>
+<p>Tari includes an optional encrypted bytes field with a max size of 256 bytes. This field allows you to store bytes that are encrypted on chain, on the UTXO. This can be used to track payments etc. When included into the Tari address, the sent UTXO will include this payment id.</p>
 <h3 id="encoding"><a class="header" href="#encoding">Encoding</a></h3>
 <h4 id="bytes"><a class="header" href="#bytes">Bytes</a></h4>
 <p>When generating a byte representation of the wallet, the following format is used:
@@ -205,7 +207,8 @@ with <code>k = 8</code> and <code>m = 32</code>, resulting in an 8-bit checksum.
 [1]: Raw u8 representing features
 [2..33]: Public view key encoded as u8
 [35..65]: Public spend key encoded as u8
-[66]: DammSum checksum</p>
+[66..N]: Payment ID, optional field encoded as [u8]
+[N]: DammSum checksum</p>
 <p>For nodes lacking a distinct view key, where the view key and spend key are identical, their addresses can be encoded as follows:
 [0]: Network encoded as u8
 [1]: Raw u8 representing features
@@ -245,6 +248,7 @@ The list of chosen emojis is as follows:</p>
 <h2 id="change-log"><a class="header" href="#change-log">Change Log</a></h2>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>
 <tr><td style="text-align: left">2024-05-31</td><td style="text-align: left">Initial stable</td><td style="text-align: left">SWvHeerden</td></tr>
+<tr><td style="text-align: left">2025-04-30</td><td style="text-align: left">Add payment ID</td><td style="text-align: left">SWvHeerden</td></tr>
 </tbody></table>
 </div>
                     </main>
