@@ -90,6 +90,9 @@ Specifies the Tari network the wallet operates on, e.g., Esmeralda, Nextnet, etc
 The checksum is only included when encoding the address as bytes, hex, or emojis. For the checksum, the: [DammSum](https://github.com/cypherstack/dammsum) algorithm is employed,
 with `k = 8` and `m = 32`, resulting in an 8-bit checksum.
 
+#### Payment ID
+Tari includes an optional encrypted bytes field with a max size of 256 bytes. This field allows you to store bytes that are encrypted on chain, on the UTXO. This can be used to track payments etc. When included into the Tari address, the sent UTXO will include this payment id.
+
 ### Encoding 
 #### Bytes
 When generating a byte representation of the wallet, the following format is used:
@@ -97,7 +100,8 @@ When generating a byte representation of the wallet, the following format is use
 [1]: Raw u8 representing features
 [2..33]: Public view key encoded as u8
 [35..65]: Public spend key encoded as u8
-[66]: DammSum checksum
+[66..N]: Payment ID, optional field encoded as [u8]
+[N]: DammSum checksum
 
 For nodes lacking a distinct view key, where the view key and spend key are identical, their addresses can be encoded as follows:
 [0]: Network encoded as u8
@@ -145,6 +149,7 @@ Each byte is encoded using the emoji listed at the corresponding index.
 | Date         | Change                   | Author        |
 |:-------------|:-------------------------|:--------------|
 | 2024-05-31   | Initial stable           | SWvHeerden    |
+| 2025-04-30   | Add payment ID           | SWvHeerden    |
 
 [Communication Node]: Glossary.md#communication-node
 [Node ID]: Glossary.md#node-id
