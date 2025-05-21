@@ -112,6 +112,12 @@ For nodes lacking a distinct view key, where the view key and spend key are iden
 #### Hex
 Each byte in the byte representation is encoded as two hexadecimal characters.
 
+#### Base58
+Base58 encoding is also used by TariAddress. When encoding the following format is used:
+[0]: Network byte encoded as base58 character
+[1]: Raw u8 representing features base58 character
+[2..N]: Remaing bytes encoded as base58
+
 #### Emoji Encoding
 An emoji alphabet of 256 characters has been selected, each assigned a unique index from 0 to 255 inclusive.
 The list of chosen emojis is as follows:
