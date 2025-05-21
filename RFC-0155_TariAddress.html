@@ -216,6 +216,11 @@ with <code>k = 8</code> and <code>m = 32</code>, resulting in an 8-bit checksum.
 [34]: DammSum checksum</p>
 <h4 id="hex"><a class="header" href="#hex">Hex</a></h4>
 <p>Each byte in the byte representation is encoded as two hexadecimal characters.</p>
+<h4 id="base58"><a class="header" href="#base58">Base58</a></h4>
+<p>Base58 encoding is also used by TariAddress. When encoding the following format is used:
+[0]: Network byte encoded as base58 character
+[1]: Raw u8 representing features base58 character
+[2..N]: Remaing bytes encoded as base58</p>
 <h4 id="emoji-encoding"><a class="header" href="#emoji-encoding">Emoji Encoding</a></h4>
 <p>An emoji alphabet of 256 characters has been selected, each assigned a unique index from 0 to 255 inclusive.
 The list of chosen emojis is as follows:</p>
