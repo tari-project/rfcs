@@ -83,8 +83,27 @@ Utilized to compute the spend key of a UTXO and communicate with the node over t
 #### Features
 Indicates the supported features of the wallet, such as interactive and one-sided transactions. Currently, this is represented by an encoded u8, with each bit denoting a specific feature.
 
+| **Feature**                          | **Emoji** | **Hex** | **Base58** |
+|--------------------------------------|-----------|---------|------------|
+| one_sided only                       | 📟        | 01      | 2          |
+| interactive only                     | 🌈        | 02      | 3          |
+| onesided + interactive               | 🌊        | 03      | 4          |
+| one_sided + payment_id               | 🐋        | 05      | 6          |
+| interactive + payment_id             | 🌙        | 06      | 7          |
+| onesided + interactive + payment_id | 🤔        | 07      | 8          |
+
+
 #### Network
 Specifies the Tari network the wallet operates on, e.g., Esmeralda, Nextnet, etc.
+
+| **Network** | **Emoji** | **Hex** | **Base58** |
+|-------------|-----------|---------|------------|
+| Mainnet     | 🐢        | 00      | 1          |
+| Stagenet    | 📟        | 01      | 2          |
+| Nextnet     | 🌈        | 02      | 3          |
+| Localnet    | 🌹        | 10      | H          |
+| Igor        | 🍔        | 24      | d          |
+| Esme        | 🍗        | 26      | f          |
 
 #### Checksum
 The checksum is only included when encoding the address as bytes, hex, or emojis. For the checksum, the: [DammSum](https://github.com/cypherstack/dammsum) algorithm is employed,
@@ -93,17 +112,18 @@ with `k = 8` and `m = 32`, resulting in an 8-bit checksum.
 ### Encoding 
 #### Bytes
 When generating a byte representation of the wallet, the following format is used:
-[0]: Network encoded as u8
-[1]: Raw u8 representing features
-[2..33]: Public view key encoded as u8
-[35..65]: Public spend key encoded as u8
-[66]: DammSum checksum
+- [0]: Network encoded as u8
+- [1]: Raw u8 representing features
+- [2..33]: Public view key encoded as u8
+- [35..65]: Public spend key encoded as u8
+- [66-N]: (Optional) Payment ID, encoded as u8
+- [N+1]: DammSum checksum
 
 For nodes lacking a distinct view key, where the view key and spend key are identical, their addresses can be encoded as follows:
-[0]: Network encoded as u8
-[1]: Raw u8 representing features
-[2..33]: Public spend key encoded as u8
-[34]: DammSum checksum
+- [0]: Network encoded as u8
+- [1]: Raw u8 representing features
+- [2..33]: Public spend key encoded as u8
+- [34]: DammSum checksum
 
 #### Hex
 Each byte in the byte representation is encoded as two hexadecimal characters.
@@ -114,22 +134,22 @@ The list of chosen emojis is as follows:
 
 | | | | | | | | | | | | | | | | |
 |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
-|🦋|📟|🌈|🌊|🎯|🐋|🌙|🤔|🌕|⭐|🎋|🌰|🌴|🌵|🌲|🌸|
-|🌹|🌻|🌽|🍀|🍁|🍄|🥑|🍆|🍇|🍈|🍉|🍊|🍋|🍌|🍍|🍎|
-|🍐|🍑|🍒|🍓|🍔|🍕|🍗|🍚|🍞|🍟|🥝|🍣|🍦|🍩|🍪|🍫|
-|🍬|🍭|🍯|🥐|🍳|🥄|🍵|🍶|🍷|🍸|🍾|🍺|🍼|🎀|🎁|🎂|
-|🎃|🤖|🎈|🎉|🎒|🎓|🎠|🎡|🎢|🎣|🎤|🎥|🎧|🎨|🎩|🎪|
-|🎬|🎭|🎮|🎰|🎱|🎲|🎳|🎵|🎷|🎸|🎹|🎺|🎻|🎼|🎽|🎾|
-|🎿|🏀|🏁|🏆|🏈|⚽|🏠|🏥|🏦|🏭|🏰|🐀|🐉|🐊|🐌|🐍|
-|🦁|🐐|🐑|🐔|🙈|🐗|🐘|🐙|🐚|🐛|🐜|🐝|🐞|🐢|🐣|🐨|
-|🦀|🐪|🐬|🐭|🐮|🐯|🐰|🦆|🦂|🐴|🐵|🐶|🐷|🐸|🐺|🐻|
-|🐼|🐽|🐾|👀|👅|👑|👒|🧢|💅|👕|👖|👗|👘|👙|💃|👛|
-|👞|👟|👠|🥊|👢|👣|🤡|👻|👽|👾|🤠|👃|💄|💈|💉|💊|
-|💋|👂|💍|💎|💐|💔|🔒|🧩|💡|💣|💤|💦|💨|💩|➕|💯|
-|💰|💳|💵|💺|💻|💼|📈|📜|📌|📎|📖|📿|📡|⏰|📱|📷|
-|🔋|🔌|🚰|🔑|🔔|🔥|🔦|🔧|🔨|🔩|🔪|🔫|🔬|🔭|🔮|🔱|
-|🗽|😂|😇|😈|🤑|😍|😎|😱|😷|🤢|👍|👶|🚀|🚁|🚂|🚚|
-|🚑|🚒|🚓|🛵|🚗|🚜|🚢|🚦|🚧|🚨|🚪|🚫|🚲|🚽|🚿|🧲|
+| 🐢 | 📟 | 🌈 | 🌊 | 🎯 | 🐋 | 🌙 | 🤔 | 🌕 | ⭐ | 🎋 | 🌰 | 🌴 | 🌵 | 🌲 | 🌸 |
+| 🌹 | 🌻 | 🌽 | 🍀 | 🍁 | 🍄 | 🥑 | 🍆 | 🍇 | 🍈 | 🍉 | 🍊 | 🍋 | 🍌 | 🍍 | 🍎 |
+| 🍐 | 🍑 | 🍒 | 🍓 | 🍔 | 🍕 | 🍗 | 🍚 | 🍞 | 🍟 | 🥝 | 🍣 | 🍦 | 🍩 | 🍪 | 🍫 |
+| 🍬 | 🍭 | 🍯 | 🥐 | 🍳 | 🥄 | 🍵 | 🍶 | 🍷 | 🍸 | 🍾 | 🍺 | 🍼 | 🎀 | 🎁 | 🎂 |
+| 🎃 | 🤖 | 🎈 | 🎉 | 🎒 | 🎓 | 🎠 | 🎡 | 🎢 | 🎣 | 🎤 | 🎥 | 🎧 | 🎨 | 🎩 | 🎪 |
+| 🎬 | 🎭 | 🎮 | 🎰 | 🎱 | 🎲 | 🎳 | 🎵 | 🎷 | 🎸 | 🎹 | 🎺 | 🎻 | 🎼 | 🎽 | 🎾 |
+| 🎿 | 🏀 | 🏁 | 🏆 | 🏈 | ⚽ | 🏠 | 🏥 | 🏦 | 🏭 | 🏰 | 🐀 | 🐉 | 🐊 | 🐌 | 🐍 |
+| 🦁 | 🐐 | 🐑 | 🐔 | 🙈 | 🐗 | 🐘 | 🐙 | 🐚 | 🐛 | 🐜 | 🐝 | 🐞 | 🦋 | 🐣 | 🐨 |
+| 🦀 | 🐪 | 🐬 | 🐭 | 🐮 | 🐯 | 🐰 | 🦆 | 🦂 | 🐴 | 🐵 | 🐶 | 🐷 | 🐸 | 🐺 | 🐻 |
+| 🐼 | 🐽 | 🐾 | 👀 | 👅 | 👑 | 👒 | 🧢 | 💅 | 👕 | 👖 | 👗 | 👘 | 👙 | 💃 | 👛 |
+| 👞 | 👟 | 👠 | 🥊 | 👢 | 👣 | 🤡 | 👻 | 👽 | 👾 | 🤠 | 👃 | 💄 | 💈 | 💉 | 💊 |
+| 💋 | 👂 | 💍 | 💎 | 💐 | 💔 | 🔒 | 🧩 | 💡 | 💣 | 💤 | 💦 | 💨 | 💩 | ➕ | 💯 |
+| 💰 | 💳 | 💵 | 💺 | 💻 | 💼 | 📈 | 📜 | 📌 | 📎 | 📖 | 📿 | 📡 | ⏰ | 📱 | 📷 |
+| 🔋 | 🔌 | 🚰 | 🔑 | 🔔 | 🔥 | 🔦 | 🔧 | 🔨 | 🔩 | 🔪 | 🔫 | 🔬 | 🔭 | 🔮 | 🔱 |
+| 🗽 | 😂 | 😇 | 😈 | 🤑 | 😍 | 😎 | 😱 | 😷 | 🤢 | 👍 | 👶 | 🚀 | 🚁 | 🚂 | 🚚 |
+| 🚑 | 🚒 | 🚓 | 🛵 | 🚗 | 🚜 | 🚢 | 🚦 | 🚧 | 🚨 | 🚪 | 🚫 | 🚲 | 🚽 | 🚿 | 🧲 |
 
 
 These emojis are selected to ensure:
