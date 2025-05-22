@@ -1690,8 +1690,26 @@ While the wallet can share the private key of this view key with another party f
 <p>Utilized to compute the spend key of a UTXO and communicate with the node over the network. The private key associated with this key pair must be securely kept hidden.</p>
 <h4 id="features"><a class="header" href="#features">Features</a></h4>
 <p>Indicates the supported features of the wallet, such as interactive and one-sided transactions. Currently, this is represented by an encoded u8, with each bit denoting a specific feature.</p>
+<div class="table-wrapper"><table><thead><tr><th><strong>Feature</strong></th><th><strong>Emoji</strong></th><th><strong>Hex</strong></th><th><strong>Base58</strong></th></tr></thead><tbody>
+<tr><td>one_sided only</td><td>📟</td><td>01</td><td>2</td></tr>
+<tr><td>interactive only</td><td>🌈</td><td>02</td><td>3</td></tr>
+<tr><td>onesided + interactive</td><td>🌊</td><td>03</td><td>4</td></tr>
+<tr><td>one_sided + payment_id</td><td>🐋</td><td>05</td><td>6</td></tr>
+<tr><td>interactive + payment_id</td><td>🌙</td><td>06</td><td>7</td></tr>
+<tr><td>onesided + interactive + payment_id</td><td>🤔</td><td>07</td><td>8</td></tr>
+</tbody></table>
+</div>
 <h4 id="network"><a class="header" href="#network">Network</a></h4>
 <p>Specifies the Tari network the wallet operates on, e.g., Esmeralda, Nextnet, etc.</p>
+<div class="table-wrapper"><table><thead><tr><th><strong>Network</strong></th><th><strong>Emoji</strong></th><th><strong>Hex</strong></th><th><strong>Base58</strong></th></tr></thead><tbody>
+<tr><td>Mainnet</td><td>🐢</td><td>00</td><td>1</td></tr>
+<tr><td>Stagenet</td><td>📟</td><td>01</td><td>2</td></tr>
+<tr><td>Nextnet</td><td>🌈</td><td>02</td><td>3</td></tr>
+<tr><td>Localnet</td><td>🌹</td><td>10</td><td>H</td></tr>
+<tr><td>Igor</td><td>🍔</td><td>24</td><td>d</td></tr>
+<tr><td>Esme</td><td>🍗</td><td>26</td><td>f</td></tr>
+</tbody></table>
+</div>
 <h4 id="checksum"><a class="header" href="#checksum">Checksum</a></h4>
 <p>The checksum is only included when encoding the address as bytes, hex, or emojis. For the checksum, the: <a href="https://github.com/cypherstack/dammsum">DammSum</a> algorithm is employed,
 with <code>k = 8</code> and <code>m = 32</code>, resulting in an 8-bit checksum.</p>
@@ -1699,18 +1717,22 @@ with <code>k = 8</code> and <code>m = 32</code>, resulting in an 8-bit checksum.
 <p>Tari includes an optional encrypted bytes field with a max size of 256 bytes. This field allows you to store bytes that are encrypted on chain, on the UTXO. This can be used to track payments etc. When included into the Tari address, the sent UTXO will include this payment id.</p>
 <h3 id="encoding"><a class="header" href="#encoding">Encoding</a></h3>
 <h4 id="bytes"><a class="header" href="#bytes">Bytes</a></h4>
-<p>When generating a byte representation of the wallet, the following format is used:
-[0]: Network encoded as u8
-[1]: Raw u8 representing features
-[2..33]: Public view key encoded as u8
-[35..65]: Public spend key encoded as u8
-[66..N]: Payment ID, optional field encoded as [u8]
-[N]: DammSum checksum</p>
-<p>For nodes lacking a distinct view key, where the view key and spend key are identical, their addresses can be encoded as follows:
-[0]: Network encoded as u8
-[1]: Raw u8 representing features
-[2..33]: Public spend key encoded as u8
-[34]: DammSum checksum</p>
+<p>When generating a byte representation of the wallet, the following format is used:</p>
+<ul>
+<li>[0]: Network encoded as u8</li>
+<li>[1]: Raw u8 representing features</li>
+<li>[2..33]: Public view key encoded as u8</li>
+<li>[34..65]: Public spend key encoded as u8</li>
+<li>[66-N]: (Optional) Payment ID, encoded as u8</li>
+<li>[N+1]: DammSum checksum</li>
+</ul>
+<p>For nodes lacking a distinct view key, where the view key and spend key are identical, their addresses can be encoded as follows:</p>
+<ul>
+<li>[0]: Network encoded as u8</li>
+<li>[1]: Raw u8 representing features</li>
+<li>[2..33]: Public spend key encoded as u8</li>
+<li>[34]: DammSum checksum</li>
+</ul>
 <h4 id="hex"><a class="header" href="#hex">Hex</a></h4>
 <p>Each byte in the byte representation is encoded as two hexadecimal characters.</p>
 <h4 id="base58"><a class="header" href="#base58">Base58</a></h4>
@@ -1722,14 +1744,14 @@ with <code>k = 8</code> and <code>m = 32</code>, resulting in an 8-bit checksum.
 <p>An emoji alphabet of 256 characters has been selected, each assigned a unique index from 0 to 255 inclusive.
 The list of chosen emojis is as follows:</p>
 <div class="table-wrapper"><table><thead><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody>
-<tr><td>🦋</td><td>📟</td><td>🌈</td><td>🌊</td><td>🎯</td><td>🐋</td><td>🌙</td><td>🤔</td><td>🌕</td><td>⭐</td><td>🎋</td><td>🌰</td><td>🌴</td><td>🌵</td><td>🌲</td><td>🌸</td></tr>
+<tr><td>🐢</td><td>📟</td><td>🌈</td><td>🌊</td><td>🎯</td><td>🐋</td><td>🌙</td><td>🤔</td><td>🌕</td><td>⭐</td><td>🎋</td><td>🌰</td><td>🌴</td><td>🌵</td><td>🌲</td><td>🌸</td></tr>
 <tr><td>🌹</td><td>🌻</td><td>🌽</td><td>🍀</td><td>🍁</td><td>🍄</td><td>🥑</td><td>🍆</td><td>🍇</td><td>🍈</td><td>🍉</td><td>🍊</td><td>🍋</td><td>🍌</td><td>🍍</td><td>🍎</td></tr>
 <tr><td>🍐</td><td>🍑</td><td>🍒</td><td>🍓</td><td>🍔</td><td>🍕</td><td>🍗</td><td>🍚</td><td>🍞</td><td>🍟</td><td>🥝</td><td>🍣</td><td>🍦</td><td>🍩</td><td>🍪</td><td>🍫</td></tr>
 <tr><td>🍬</td><td>🍭</td><td>🍯</td><td>🥐</td><td>🍳</td><td>🥄</td><td>🍵</td><td>🍶</td><td>🍷</td><td>🍸</td><td>🍾</td><td>🍺</td><td>🍼</td><td>🎀</td><td>🎁</td><td>🎂</td></tr>
 <tr><td>🎃</td><td>🤖</td><td>🎈</td><td>🎉</td><td>🎒</td><td>🎓</td><td>🎠</td><td>🎡</td><td>🎢</td><td>🎣</td><td>🎤</td><td>🎥</td><td>🎧</td><td>🎨</td><td>🎩</td><td>🎪</td></tr>
 <tr><td>🎬</td><td>🎭</td><td>🎮</td><td>🎰</td><td>🎱</td><td>🎲</td><td>🎳</td><td>🎵</td><td>🎷</td><td>🎸</td><td>🎹</td><td>🎺</td><td>🎻</td><td>🎼</td><td>🎽</td><td>🎾</td></tr>
 <tr><td>🎿</td><td>🏀</td><td>🏁</td><td>🏆</td><td>🏈</td><td>⚽</td><td>🏠</td><td>🏥</td><td>🏦</td><td>🏭</td><td>🏰</td><td>🐀</td><td>🐉</td><td>🐊</td><td>🐌</td><td>🐍</td></tr>
-<tr><td>🦁</td><td>🐐</td><td>🐑</td><td>🐔</td><td>🙈</td><td>🐗</td><td>🐘</td><td>🐙</td><td>🐚</td><td>🐛</td><td>🐜</td><td>🐝</td><td>🐞</td><td>🐢</td><td>🐣</td><td>🐨</td></tr>
+<tr><td>🦁</td><td>🐐</td><td>🐑</td><td>🐔</td><td>🙈</td><td>🐗</td><td>🐘</td><td>🐙</td><td>🐚</td><td>🐛</td><td>🐜</td><td>🐝</td><td>🐞</td><td>🦋</td><td>🐣</td><td>🐨</td></tr>
 <tr><td>🦀</td><td>🐪</td><td>🐬</td><td>🐭</td><td>🐮</td><td>🐯</td><td>🐰</td><td>🦆</td><td>🦂</td><td>🐴</td><td>🐵</td><td>🐶</td><td>🐷</td><td>🐸</td><td>🐺</td><td>🐻</td></tr>
 <tr><td>🐼</td><td>🐽</td><td>🐾</td><td>👀</td><td>👅</td><td>👑</td><td>👒</td><td>🧢</td><td>💅</td><td>👕</td><td>👖</td><td>👗</td><td>👘</td><td>👙</td><td>💃</td><td>👛</td></tr>
 <tr><td>👞</td><td>👟</td><td>👠</td><td>🥊</td><td>👢</td><td>👣</td><td>🤡</td><td>👻</td><td>👽</td><td>👾</td><td>🤠</td><td>👃</td><td>💄</td><td>💈</td><td>💉</td><td>💊</td></tr>
