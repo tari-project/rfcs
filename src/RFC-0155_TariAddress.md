@@ -115,7 +115,7 @@ When generating a byte representation of the wallet, the following format is use
 - [0]: Network encoded as u8
 - [1]: Raw u8 representing features
 - [2..33]: Public view key encoded as u8
-- [35..65]: Public spend key encoded as u8
+- [34..65]: Public spend key encoded as u8
 - [66-N]: (Optional) Payment ID, encoded as u8
 - [N+1]: DammSum checksum
 
