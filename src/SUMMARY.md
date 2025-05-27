@@ -11,6 +11,7 @@
   - [RFC-0132: Merge Mining Monero](RFC-0132_Merge_Mining_Monero.md)
   - [RFC-0140: Synchronizing the Blockchain: Archival and Pruned modes](RFC-0140_Syncing_and_seeding.md)
   - [RFC-0150: Wallets](RFC-0150_Wallets.md)
+  - [RFC-0154: Deep Links](RFC-0154_DeepLinksConvencion.md)
   - [RFC-0155: TariAddress](RFC-0155_TariAddress.md)
   - [RFC-0160: Block Binary Serialization](RFC-0160_BlockSerialization.md)
   - [RFC-0170: Network Communication Protocol](RFC-0170_NetworkCommunicationProtocol.md)
