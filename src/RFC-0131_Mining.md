@@ -93,18 +93,11 @@ An excellent technical choice would be merge mining with Monero using RandomX as
 a low likelihood of unforeseen optimizations that will give a single miner a considerable advantage. It also means that it stands a 
 good chance of being "commoditized" when ASICs are eventually manufactured. This would mean that SHA3 ASICs are widely available from multiple suppliers.
 
-### The block distribution
-
-A 50/50 split in hash rate among algorithms minimises the chance of hash rate attacks. However,
-sufficient buy-in is required, especially with regard to merge mining RandomX with Monero. To make it worthwhile for a
-Monero pool operator to merge mine Tari, but still guard against hash rate attacks and to be inclusive of independent
-Tari supporters and enthusiasts, a 60/40 split is employed in favour of merge mining RandomX with Monero.
-
 ### The difficulty adjustment strategy
 
 The choice of difficulty adjustment algorithm is important. In typical hybrid mining strategies, each algorithm operates
 completely independently with a scaled target block time. 
-Tari testnet has been running very successfully using the  Linear Weighted Moving Average (LWMA) from Bitcoin & Zcash
+Tari testnet has been running very successfully using the Linear Weighted Moving Average (LWMA) from Bitcoin & Zcash
 Clones [version 2018-11-27](https://github.com/zawy12/difficulty-algorithms/issues/3#issuecomment-442129791). This LWMA
 difficulty adjustment algorithm has also been
 [tested in simulations](https://github.com/tari-labs/modelling/tree/master/scenarios/multi_pow_01), 
@@ -202,3 +195,4 @@ This RFC is stable as of PR#4862
 | 2022-11-25 | Update mining hash decsription | CjS77      |
 | 2022-10-26 | Finalise SHA-3 algorithm       | CjS77      |
 | 2022-10-11 | First outline                  | SWvHeerden |
+| 2024-12-09 | Corrected percentages for merged and hybrid mining | Solivagant |
