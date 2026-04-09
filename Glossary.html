@@ -180,9 +180,9 @@ kernels and headers up to that block height from the genesis block.</p>
 <code>BroadcastStrategy</code> include the Gossip protocol and flood fill.</p>
 <h2 id="chain-reorganization"><a class="header" href="#chain-reorganization">Chain Reorganization</a></h2>
 <p>A chain reorganization occurs after a chain split occurs on the network, which commonly occurs due to network latency
-and connectivity issues. When a chain split occurs one chain will have the higher accumulated proof-of-work, this chain
-is considered the best chain. Nodes on the poorer chain will need to rewind and resync their chains to best chain. In 
-this process transaction in the mempool could become orphaned or invalid.</p>
+and connectivity issues. When a chain split occurs, one chain will have the higher accumulated proof-of-work, this chain
+is considered the best chain. Nodes on the poorer chain will need to rewind and resync their chains to the best chain. In 
+this process, transactions in the mempool could become orphaned or invalid.</p>
 <h2 id="checkpoint"><a class="header" href="#checkpoint">Checkpoint</a></h2>
 <p>A hash of the state of a Digital Asset that is recorded on the base layer.</p>
 <h2 id="coinbase-transaction"><a class="header" href="#coinbase-transaction">Coinbase transaction</a></h2>
