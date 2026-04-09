@@ -100,9 +100,9 @@ A strategy for propagating messages amongst nodes in a peer-to-peer network. Exa
 [reorg]: #chain-reorg "After a chain split occurs nodes on the poorer chain must resync to the best chain"
 
 A chain reorganization occurs after a chain split occurs on the network, which commonly occurs due to network latency
-and connectivity issues. When a chain split occurs one chain will have the higher accumulated proof-of-work, this chain
-is considered the best chain. Nodes on the poorer chain will need to rewind and resync their chains to best chain. In 
-this process transaction in the mempool could become orphaned or invalid.
+and connectivity issues. When a chain split occurs, one chain will have the higher accumulated proof-of-work, this chain
+is considered the best chain. Nodes on the poorer chain will need to rewind and resync their chains to the best chain. In 
+this process, transactions in the mempool could become orphaned or invalid.
 
 ## Checkpoint
 
