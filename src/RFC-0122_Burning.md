@@ -4,7 +4,6 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [stringhandler](https://github.com/stringhandler) and [SW van heerden](https://github.com/SWvheerden) 
 
 # Licence
 
@@ -48,7 +47,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to describe the process of Burning UTXOs and to track the amount burned. 
+The aim of this Request for Comment (RFC) is to describe the process of burning UTXOs and to track the amount burned.
 
 ## Related Requests for Comment
 
@@ -56,23 +55,22 @@ The aim of this Request for Comment (RFC) is to describe the process of Burning 
 
 ## Description
 
-Blockchains have used the burn method to destroy coins in circulation and block their use forever. Most chains use a reclaimable address
-to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Tari can also use this method, but this does not explicitly
+Blockchains have used the burn method to destroy coins in circulation and prevent their use forever. Most chains use a reclaimable address
+to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Tari can also use this method, but it does not explicitly
 remove the coins from circulation. This RFC details a method to remove coins from circulation permanently.
 
-An excellent example of using burned coins is for a [Perpetual One-way Peg](https://medium.com/@RubenSomsen/21-million-bitcoins-to-rule-all-sidechains-the-perpetual-one-way-peg-96cb2f8ac302) this allows users 
-create utility tokens on a sidechain or in Tari's case the DAN. By not allowing funds to be moved back, the sidechain gains an auditable total utilitarian value
-. Value speculation is largely removed as the sidechain will only ever be as valuable as value of coins burnet in the peg.
+An excellent example of using burned coins is a [Perpetual One-way Peg](https://medium.com/@RubenSomsen/21-million-bitcoins-to-rule-all-sidechains-the-perpetual-one-way-peg-96cb2f8ac302). This allows users to
+create utility tokens on a sidechain or, in Tari's case, the DAN. By not allowing funds to be moved back, the sidechain gains an auditable total utilitarian value. Value speculation is largely removed, as the sidechain will only ever be as valuable as the value of coins burned in the peg.
 
 
 ## Introduction
 
 To completely remove coins from circulation, we need to mark outputs as burned, and we need to change the balance equation to
-allow pruned nodes and non pruned nodes to still verify the integrity and emission of Tari.
+allow both pruned and non-pruned nodes to verify the integrity and emission of Tari.
 
 ### TL;DR
-In order to get burns working, we flag each desired output as burned with a flag. To calculate the emission of the network, we need
-to store the commitment of the burned output in a kernel. This will allow any pruned node to verify the emission of the network and all burned outputs. 
+In order to get burns working, we flag each desired output as burned. To calculate the emission of the network, we need
+to store the commitment of the burned output in a kernel. This allows any pruned node to verify the emission of the network and all burned outputs.
 
 ### Transaction output changes
 
@@ -81,7 +79,7 @@ Inside this field, we track every possible type of output. We need to add anothe
 
 ```rust,ignore
 pub enum OutputType {
-    /// An standard non-coinbase output.
+    /// A standard non-coinbase output.
     Standard = 0,
     /// Output is a coinbase output, must not be spent until maturity.
     Coinbase = 1,
@@ -92,8 +90,8 @@ pub enum OutputType {
 
 ### Kernel changes
 
-Currently, each transaction has to have one or more kernels, [TransactionKernel](https://github.com/tari-project/tari/blob/2ca06724f0ab7c63eb0b6caab563372f353f4348/base_layer/core/src/transactions/transaction_components/transaction_kernel.rs#L53). This tracks details such as the balance proof of each transaction as well as other information essential for the transaction consensus. Here we add an Optional field to track burned commitments.
-For each burned output, we need to have a kernel where the burned output's commitment is stored. 
+Currently, each transaction has to have one or more kernels, [TransactionKernel](https://github.com/tari-project/tari/blob/2ca06724f0ab7c63eb0b6caab563372f353f4348/base_layer/core/src/transactions/transaction_components/transaction_kernel.rs#L53). This tracks details such as the balance proof of each transaction as well as other information essential for transaction consensus. Here we add an optional field to track burned commitments.
+For each burned output, we need to have a kernel where the burned output's commitment is stored.
 
 ```rust,ignore
 pub struct TransactionKernel {
@@ -117,7 +115,7 @@ pub struct TransactionKernel {
 }
 ```
 Each kernel also has a field called [KernelFeatures](https://github.com/tari-project/tari/blob/2ca06724f0ab7c63eb0b6caab563372f353f4348/base_layer/core/src/transactions/transaction_components/kernel_features.rs#L36) that defines the properties of the kernel. The feature set needs to be expanded to include a burn type.
-Inside this field, we track every possible type of output. We need to add another type here called `BURNED_KERNEL`. 
+Inside this field, we track every possible type of kernel. We need to add another type here called `BURNED_KERNEL`.
 
 ```rust,ignore
 pub struct KernelFeatures: u8 {
@@ -128,18 +126,18 @@ pub struct KernelFeatures: u8 {
     }
 ```
 
-For each burned output in a transaction, there needs to be a kernel. This means that if a transaction has two burned outputs, it needs at least two kernels. 
-This stops a node from publishing an aggregated inflated commitment in the kernel. 
+For each burned output in a transaction, there needs to be a kernel. This means that if a transaction has two burned outputs, it needs at least two kernels.
+This prevents a node from publishing an aggregated inflated commitment in the kernel.
 
 
 
 ### Consensus rules changes
 
-When a block or transaction is received with a burned output, there:
+When a block or transaction is received with a burned output:
 * the number of `BURNED` outputs MUST equal the number of `BURNED_KERNEL` kernels exactly,
-* the commitment values of each burnt output MUST match the commitment value of each corresponding `BURNED_KERNEL` exactly.
+* the commitment values of each burned output MUST match the commitment value of each corresponding `BURNED_KERNEL` exactly.
 
-### Chain balance equation changes 
+### Chain balance equation changes
 
 Currently, when checking the total chain emission, the following equation must hold:
 $$

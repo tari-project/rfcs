@@ -4,8 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
-
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
@@ -61,7 +59,7 @@ The major components are separated into separate modules. Each module exposes a 
 
 ### Base Node Service
 
-The Base Node Service fields requests for the local nodes chain state and also accepts newly mined blocks that are 
+The Base Node Service fields requests for the local node's chain state and also accepts newly mined blocks that are 
 propagating across the network. The service subscribes to NewBlock and BaseNodeRequest messages via the P2P comms 
 interface. These messages are propagated across the P2P network and can also be received directly from other nodes. The 
 service also provides a local interface to its functionality via an asynchronous Request-Response API. 
@@ -72,8 +70,8 @@ The P2P message types this service subscribes to are:
   node will validate it. Its action depends on the validation outcome:
   * _Invalid block_ - drop the block.
   * _Valid block appending to the longest chain_ - add the block to the local state and propagate the block to peers.
-  * _Valid block forking off main chain_ - add the block to the local state and propagate the block to peers.
-  * _Valid block building off unknown block_ - add the orphan block to the local state.
+  * _Valid block forking off main chain_ - add the orphan block to the local state.
+  * _Valid* block building off unknown block_ - add the orphan block to the local state. These blocks are only checked for PoW and other stateless checks.
 
 * **BaseNodeServiceRequest:** A collection of requests for chain data from the node.
 
@@ -93,8 +91,8 @@ block. The mempool is ephemeral and non-consensus critical, and as such may be a
 a large mempool is far more important for Base Nodes serving miners than those serving wallets. The mempool structure 
 itself is a set of hash maps as described in [RFC-0190]
 
-When either the node reboots, or it synchronises a default number of 5 blocks, the Mempool sync service will contact peers and sync valid mempool transactions from them. After 
-it has synced this service runs to field such requests from other peers.
+When either the node reboots or it synchronises a default number of 5 blocks, the Mempool Sync Service will contact peers and sync valid mempool transactions from them. After 
+it has synced, this service runs to field such requests from other peers.
 
 The Mempool service handles Mempool Service Requests which it can receive from the P2P comms stack via its 
 subscriptions, via the Mempool RPC service and via an internal Request-Response API. All these interfaces provide the 
@@ -108,13 +106,13 @@ following calls:
 
 The Liveness service can be used by other modules to test the liveness of a specific peer and also periodically tests a 
 set of its connected peers for liveness. This service subscribes to `Ping` P2P messages and responds with `Pong`s. The 
-service gathers data about the monitored peer's liveness such as its latency. The `Ping` and Pong` messages also contain
-a copy of this nodes current Chain Metadata for use by the receiving nodes Chain Metadata Service.
+service gathers data about the monitored peer's liveness such as its latency. The `Ping` and `Pong` messages also contain
+a copy of this node's current Chain Metadata for use by the receiving node's Chain Metadata Service.
 
 ### Chain Metadata Service
 
-The Chain Metadata Service maintains this nodes current Chain Metadata state to be sent out via `Ping` and `Pong` 
-messages by the Liveness service. This node also monitors the Chain Metadata received from other peers in the `Ping` and
+The Chain Metadata Service maintains this node's current Chain Metadata state to be sent out via `Ping` and `Pong` 
+messages by the Liveness Service. This service also monitors the Chain Metadata received from other peers in the `Ping` and
 `Pong` messages received by the Liveness service. Once a full round of `Pong` messages are received this service will 
 emit this data as an event which the Base Node State Machine monitors.
 
@@ -147,18 +145,17 @@ be thread-safe.
 ### P2P communications
 The Tari Peer to Peer messaging protocol is defined in [RFC-0172]. It is a fire-and-forget style protocol. Messages can 
 be sent directly to a known peer, sent indirectly to an offline or unknown peer and broadcast to a set of peers. When
-a message is sent to specific peer it is propagated to the peers local neighbourhood and stored by those peers until it
+a message is sent to a specific peer it is propagated to the peer's local neighbourhood and stored by those peers until it
 comes online to receive the message. Messages that are broadcast will be propagated around the network until the whole
 network has received them, they are not stored.
 
 ### RPC Services
 Fire-and-forget messaging is not efficient for point to point communications between online peers. For these applications
 the Base Node provides RPC services that present an API for clients to interact with. These RPC services provide a
-Request-Response interface defined by Profobuf for clients to use. RPC also allows for streaming of data which is much
+Request-Response interface defined by Protobuf for clients to use. RPC also allows for streaming of data which is much
 more efficient when transferring large amounts of data.
 
-Examples of RPC services running in 
-Base Node are:
+Examples of RPC services running in the Base Node are:
   - **Wallet RPC service**: An RPC interface containing methods used by wallets to submit and query transactions on a 
     Base Node
   - **Base Node Sync RPC Service**: Used by the Base Node State Machine Service to synchronise blocks
@@ -193,6 +190,37 @@ A non-exhaustive list of methods the base node module API will expose includes:
   * The current size of the mempool (in transaction weight)
 * Block and transaction validation calls
 * Block synchronisation calls
+
+### HTTP Interface
+
+The base node exposes an HTTP API built with [Axum](https://github.com/tokio-rs/axum). Interactive API documentation is
+available via Swagger UI at `/swagger-ui`, with the OpenAPI specification served at `/openapi.json`.
+
+The following endpoints are available:
+
+| Method | Path                               | Description                                          |
+|:-------|:-----------------------------------|:-----------------------------------------------------|
+| GET    | `/get_tip_info`                    | Returns chain tip metadata and sync status           |
+| GET    | `/get_header_by_height`            | Retrieves a block header at a given height           |
+| GET    | `/get_height_at_time`              | Returns the block height for a given Unix timestamp  |
+| GET    | `/get_utxos_mined_info`            | Returns mining info for UTXOs identified by hash     |
+| GET    | `/fetch_utxo`                      | Fetches a single UTXO by output hash                 |
+| GET    | `/get_utxos_deleted_info`          | Returns deletion/spend info for a set of UTXOs       |
+| GET    | `/transactions`                    | Queries a transaction by its excess signature        |
+| GET    | `/sync_utxos_by_block`             | Paginated UTXO sync starting from a header hash      |
+| GET    | `/get_utxos_by_block`              | Returns all UTXOs for a block by header hash         |
+| POST   | `/json_rpc`                        | JSON-RPC 2.0 endpoint (e.g. `submit_transaction`)   |
+| GET    | `/generate_kernel_merkle_proof`    | Generates a Merkle proof for a kernel signature      |
+| GET    | `/get_mempool_fee_per_gram_stats`  | Returns fee-per-gram statistics from the mempool     |
+
+All endpoints use JSON request and response bodies. A global request body size limit of approximately 10 MB is applied,
+though several endpoints disable this limit to support larger payloads. Caching behaviour is configurable per route.
+
+The `/json_rpc` endpoint follows the [JSON-RPC 2.0](https://www.jsonrpc.org/specification) specification. Currently
+supported methods:
+
+* `submit_transaction` — Submits a transaction to the mempool. The response includes whether the transaction was
+  accepted, any rejection reason, and whether the node is synced.
 
 # Change Log
 

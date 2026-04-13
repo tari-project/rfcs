@@ -4,8 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77), [S W van heerden](https://github.com/SWvheerden) and  [Stanley Bondi](https://github.com/sdbondi)
-
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
@@ -55,17 +53,12 @@ their general approach for doing so.
 
 * [RFC-0140: SyncAndSeeding](RFC-0140_Syncing_and_seeding.md)
 
-$$
-\newcommand{\so}{\gamma} % script offset
-$$
-
 ## Description
 
 ### Broad Requirements
 
 Tari Base Nodes form a peer-to-peer network for a proof-of-work based blockchain running the [Mimblewimble]
-protocol. The proof-of-work is performed via hybrid mining, that is merge mining with Monero and stand-alone SHA 3. 
-Arguments for this design are presented [in the overview](RFC-0001_overview.md#proof-of-work).
+protocol. The proof-of-work is performed via hybrid mining, Arguments for this design are presented [in the overview](RFC-0001_overview.md#proof-of-work).
 
 Tari Base Nodes MUST carry out the following tasks:
 
@@ -76,7 +69,7 @@ Tari Base Nodes MUST carry out the following tasks:
 * connect to peer nodes to catch up (sync) with their blockchain state;
 * provide historical block information to peers that are syncing.
 
-Once the Digital Assets Network (DAN) goes live, Base Nodes will also need to support the tasks described in
+Once the Ootle goes live, Base Nodes will also need to support the tasks described in
 [RFC-0303_DAN](RFC-0303_DanOverview.md). These requirements may involve but are not limited to:
 * maintain an index of validator node registrations;
 
@@ -123,7 +116,7 @@ The transaction is validated as follows:
 * The transaction excess is a valid public key. This proves that:
   $$ \Sigma \left( \mathrm{inputs} - \mathrm{outputs} - \mathrm{fees} \right) = 0 $$.
 * The transaction excess has a unique value across the whole chain.
-* The [Tari script] of each input must execute successfully and return the public key that signs the script signature. 
+* The [Tari script] of each input must execute successfully and return the public key that signs a valid script signature. 
 * The script offset \\( \so\\) is calculated and verified as per [RFC-0201_TariScript].
 
 Rejected transactions are dropped without service interruption and noted in log files.
@@ -154,10 +147,10 @@ With an `S` of 1MiB and `N` of 16, the block and transaction body weights are as
 |                   | Byte size | Natural Weight         | Adjust | Final                  |
 |-------------------|-----------|------------------------|--------|------------------------|
 | Output            |           |                        |        |                        |
-| - Per output      | 832       | 52                     | 0      | 52                     |
+| - Per output      | 832       | 52                     | +1     | 53                     |
 | - Tari Script     | variable  | size_of(script) / 16   | 0      | size_of(script) / 16   |
 | - Output Features | variable  | size_of(features) / 16 | 0      | size_of(features) / 16 |
-| Input             | 169       | 11                     | -2     | 9                      |
+| Input             | 169       | 11                     | -3     | 8                      |
 | Kernel size       | 113       | 8                      | 2      | 10                     |
 
 Pseudocode: 

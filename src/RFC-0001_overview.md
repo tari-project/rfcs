@@ -4,8 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
-
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
@@ -101,9 +99,9 @@ We can't have fast, cheap digital assets and also highly secure and decentralize
 Tari overcomes this constraint by building two layers:
 
 1. A base layer that provides a public ledger of Tari coin transactions, secured by PoW to maximize security.
-2. A DAN consisting of a highly scalable, efficient side-chain that each manages the state of all digital asset. 
+2. A DAN consisting of a highly scalable, efficient side-chain that each manages the state of all digital asset, called the Ootle. 
 
-The DAN layer gives up some security guarantees in exchange for performance. However, in the case of a liveness 
+The Ootle layer gives up some security guarantees in exchange for performance. However, in the case of a liveness 
 failure (wherein parts of the DAN cannot make progress), the base layer intervenes to break the deadlock and allow 
 the DAN to continue.
 
@@ -127,7 +125,7 @@ cryptocurrencies such as Bitcoin:
 > "Mimblewimble is the most sound, scalable 'base layer' protocol we know" -- @fluffypony
 
 In addition to this, Tari has made some novel additions to the basic Mimblewimble protocol. Primarily, these were 
-invented to allow the DAN to be built on top of Tari, but have found some great applications generally:
+invented to allow the Ootle to be built on top of Tari, but have found some great applications generally:
 
 * TariScript. Similar to Bitcoin script, TariScript ([RFC-201], [RFC-202]) provides limited "smart contract" 
   functionality on the base layer protocol.
@@ -142,8 +140,9 @@ invented to allow the DAN to be built on top of Tari, but have found some great 
 
 #### Proof of Work
 
-Tari is mined using a hybrid approach. On average, 50% of block rewards come from [Monero merge-mining],
- while 50% come from the [Sha3x][RFC-131] algorithm. Blocks are produced every 2 minutes, on average.  
+Tari is mined using a hybrid approach. On average, 25% of block rewards come from [Monero merge-mining],
+25& solo mined using RandomX, 25% mined using Cuckaroo 29 and 25% come from the [Sha3x][RFC-131] algorithm. 
+Blocks are produced every 2 minutes, on average.  
 
 ### The role of the base layer
 
@@ -156,12 +155,12 @@ The Base Layer fulfils these, and only these, major roles:
    code that they expect and includes functionality like version tracking.
 4. Provides a global reference clock for the digital assets layer to help it resolve certain operational failure modes.
 
-### Digital Assets Network
+### Digital Assets Network, Ootle
 
-The DAN is focused on achieving high speed and scalability while maintaining a high degree of decentralisation.
+The Ootle is focused on achieving high speed and scalability while maintaining a high degree of decentralisation.
 
-The DAN itself is made up of two conceptual levels. On the more fundamental level, the consensus layer uses 
-Cerberus and emergent HotStuff to reach consensus on state changes in the DAN in a highly scalable, decentralised way.
+The Ootle itself is made up of two conceptual levels. On the more fundamental level, the consensus layer uses 
+Cerberus and emergent HotStuff to reach consensus on state changes in the Ootle in a highly scalable, decentralised way.
 
 A big, and probably the biggest, advantage of this approach is that assets in disparate smart contracts can easily 
 interact, without the need for slow, honey pot-shaped bridges. 
@@ -169,7 +168,7 @@ interact, without the need for slow, honey pot-shaped bridges.
 Then there is the semantic layer, which is where the Tari contracts are compiled, run and verified inside sandboxed 
 Tari virtual machines.
 
-Together, these levels provide that smart contract enabled digital assets layer, that we've simply been calling the DAN.
+Together, these levels provide that smart contract enabled digital assets layer, that we've simply been calling the Ootle.
 
 ### Interplay of the layers
 
@@ -183,7 +182,7 @@ enormous;
 imagine controlling every piece of inventory and their live statistics for a massively multiplayer online role-playing
 game (MMORPG). The base layer is also too slow. If _any_ state relies on base layer transactions being confirmed, there
 is an immediate lag before that state change can be considered final, which kills the latency properties we seek for 
-the DAN.
+the Ootle.
 
 It is better to keep the two networks almost totally decoupled from the outset, and allow each network to play to its
 strength.
