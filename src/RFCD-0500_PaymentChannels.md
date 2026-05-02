@@ -4,7 +4,7 @@
 
 ![status: deprecated](theme/images/status-deprecated.svg)
 
-**Maintainer(s)**: Cayle Sharrock <CjS77>
+**Maintainer(s)**: Cayle Sharrock &lt;CjS77&gt;
 
 # Licence
 

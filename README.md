@@ -10,7 +10,7 @@ You can build and serve the RFCs locally while working on them, and navigate the
 
 To do so:
 - Navigate to the repository directory in a terminal
-- Install the `mdbook` and `mdbook-mermaid` tools: `cargo install mdbook@0.4.36 mdbook-mermaid@0.13.0`
+- Install the `mdbook` and `mdbook-mermaid` tools: `cargo install mdbook@0.5.3 mdbook-mermaid@0.17.0`
 - Serve the site: `mdbook serve`
 - View the rendered versions in a browser using the link provided in your terminal: `http://localhost:3000`
 

@@ -4,7 +4,7 @@
 
 ![status: deprecated](theme/images/status-deprecated.svg)
 
-**Maintainer(s)**: Cayle Sharrock <CjS77>
+**Maintainer(s)**: Cayle Sharrock &lt;CjS77&gt;
 
 # License
 
@@ -15,7 +15,7 @@ Copyright 2019. The Tari Development Community
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: Cayle Sharrock <CjS77>
+**Maintainer(s)**: Cayle Sharrock &lt;CjS77&gt;
 
 # License
 
