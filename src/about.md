@@ -1,6 +1,11 @@
-# The Tari RFCs
+# Tari Project Proposals
 
-Tari is a community-driven project. The documents presented in this RFC collection have typically gone through several
+Tari is a community-driven project. This repository contains technical RFCs as well as Tari Improvement Proposals,
+which are more general and may involve community standards and governance practices.
+
+## RFCs
+
+The documents presented in this collection have typically gone through several
 iterations before reaching this point:
 
 * Ideas and questions are posted in #tari-dev on [#FreeNode IRC](https://freenode.net/). This is typically short-form
@@ -8,9 +13,10 @@ iterations before reaching this point:
 * RFCs are "Requests for Comment", so although the proposals in these documents are usually well-thought out, they are
   not cast in stone. RFCs can, and should, undergo further evaluation and discussion by the community. RFC comments are
   best made using Github [issue]s.
+* New RFCs should be posted to the [community forums] for visibility and community review, and should follow the format 
+  given in the [RFC template](RFC_template.md).
 
-New RFC's should follow the format given in the [RFC template](RFC_template.md).
-## Lifecycle
+### Lifecycle
 
 RFCs go through the following lifecycle, which roughly corresponds to the [COSS](https://github.com/unprotocols/rfc/blob/master/2/README.md):
 
@@ -23,5 +29,14 @@ RFCs go through the following lifecycle, which roughly corresponds to the [COSS]
 | Retired     | ![retired](theme/images/status-retired.svg)       | The RFC is no longer in use on the Tari network.                                                                                                                                                                    |
 
 
+## Tari Improvement Proposals (TIP)
+
+Tari Improvement Proposals are proposals for improving the Tari project generally. They are distinct from RFCs in that
+they are product, practice, and community improvement proposals rather than protocol or algorithm proposals.
+
+The format and standards of Tari Improvement Proposals will be covered in [TIP-1].
+
 [pull request]: https://github.com/tari-project/tari/pulls?q=is%3Aopen+is%3Apr+label%3ARFC 'Tari RFC pull requests'
 [issue]: https://github.com/tari-project/tari/issues?q=is%3Aissue+label%3ARFC 'Tari RFC Issues'
+[community forums]: https://community.tari.com/ 'Tari Community Forums'
+[TIP-1]: TIP-0001_tari_improvement_proposals.md 'TIP-1: Tari Improvement Proposals'
