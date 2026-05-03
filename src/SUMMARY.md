@@ -2,6 +2,9 @@
 
 [About the Tari RFC documents](about.md)
 
+- [TIP-1: Tari Improvement Proposals](TIP-0001_tari_improvement_proposals.md)
+- [TIP-2: The Tari Community Charter](TIP-0002_tari_community_charter.md)
+- [TIP-3: Community Forums](TIP-0003_community_forums.md)
 - [RFC-0001: An overview of the Tari network](RFC-0001_overview.md)
 - [The Tari Base Layer](base_layer.md)
   - [RFC-0110: Base nodes](RFC-0110_BaseNodes.md)
