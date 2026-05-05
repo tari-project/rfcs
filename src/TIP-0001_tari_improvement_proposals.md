@@ -254,20 +254,20 @@ existing TIPs may be used as an example.
 Each TIP must begin with a Markdown table with metadata about the TIP. The rows must appear in the following order.
 Rows in italics are otional and are described below. All other rows are required.
 
-| TIP             | TIP-XXXX                                                                          |
-|-----------------|-----------------------------------------------------------------------------------|
-| Title           | <TIP Title>                                                                       |
-| Last Modified   | <date string, in YYYY-MM-DD format>                                               |
-| Authors         | <list of authors' established handles or names, and, optionally, email addresses> |
-| Arbiter         | <Arbiter's established handle or name and email address>                          |
-| Status          | <Draft \| Under Review \| Deferred \| Accepted \| Replaced \| Provisional         |
-| Type            | <Process \| Best Practice \| Product Direction>                                   |
-| Created         | <date created on, in YYYY-MM-DD format>                                           |
-| *Review Period* | <start - target end dates for review>                                             |
-| *Resolution*    | <links to any discussions where the final status was decided>                     |
-| *Replaces*      | <TIP Number>                                                                      |
-| *Replaced-By*   | <TIP Number>                                                                      |
-| *References*    | <links to any other relevant discussions or relevant related materials>           |
+| TIP             | TIP-XXXX                                                                                                 |
+|-----------------|----------------------------------------------------------------------------------------------------------|
+| Title           | <TIP Title>                                                                                              |
+| Last Modified   | <date string, in YYYY-MM-DD format>                                                                      |
+| Authors         | <list of authors' established handles or names, and, optionally, email addresses>                        |
+| Arbiter         | <Arbiter's established handle or name and email address>                                                 |
+| Status          | <Draft \| Under Review \| Deferred \| Accepted \| Replaced \| Provisional \| Needs Revision \| Obsolete> |
+| Type            | <Process \| Best Practice \| Product Direction>                                                          |
+| Created         | <date created on, in YYYY-MM-DD format>                                                                  |
+| *Review Period* | <start - target end dates for review>                                                                    |
+| *Resolution*    | <links to any discussions where the final status was decided>                                            |
+| *Replaces*      | <TIP Number>                                                                                             |
+| *Replaced-By*   | <TIP Number>                                                                                             |
+| *References*    | <links to any other relevant discussions or relevant related materials>                                  |
 
 * The **Authors** header lists the names or community handles, and optionally the email addresses, of all the
   authors/owners of the TIP. The format of the Authors header value must be `Random J. User <address@example.com>` if
