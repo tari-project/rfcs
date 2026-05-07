@@ -126,7 +126,7 @@ Strategic matters, including significant spending, protocol changes, and amendme
 
 ## Article VI. Nomination and Selection
 
-Any person who has made sustained, verifiable contributions to the Tari protocol may be nominated to the Council. Contributions include, but are not limited to: code, infrastructure, documentation, governance facilitation, community building, and ecosystem development. A single or token contribution shall not suffice. Sustained misconduct shall disqualify a candidate regardless of the strength of their contributions.
+Any person who has made sustained, verifiable contributions to the Tari protocol may be nominated to the Council. Contributions include, but are not limited to: code, infrastructure, documentation, governance facilitation, community building, and ecosystem development. A single or minimal contribution shall not suffice. Sustained misconduct shall disqualify a candidate regardless of the strength of their contributions.
 
 Nominations shall be made publicly, with evidence of the candidate's contributions and a clear account of why they would strengthen the Council. The community shall discuss each nomination openly. The Council shall confirm or decline based on the consensus it observes.
 
