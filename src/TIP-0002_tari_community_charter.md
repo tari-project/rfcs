@@ -10,73 +10,73 @@ The words inscribed in Tari's Genesis block are a declaration of intent. They ar
 
 *The following words are inscribed in Tari's Genesis block, mined on May 6, 2025.*
 
-> the journey began 2,863 days ago on a sunny day in Oakland
-> through long troughs of sorrow and hard-won triumphs
-> we arrive at the beginning
-> the Tari genesis block
+> the journey began 2,863 days ago on a sunny day in Oakland  
+> through long troughs of sorrow and hard-won triumphs  
+> we arrive at the beginning  
+> the Tari genesis block  
 >
-> the genesis block is heavy
-> it's full of love, beauty, promise, and ambition
-> of countless fraught decisions and long nights
-> of a desire to build something that lasts for generations
-> of a dream to build a better system than all those that came before
+> the genesis block is heavy  
+> it's full of love, beauty, promise, and ambition  
+> of countless fraught decisions and long nights  
+> of a desire to build something that lasts for generations  
+> of a dream to build a better system than all those that came before  
 >
-> Tari is a multi-layered system
-> the base layer is the foundation for a new network state
-> one that is pro-human and pro-freedom
-> its strength comes from the people who choose to do the work
-> of securing the network
-> they are the trailblazers. the revolutionaries
-> **for mining Tari is an act of rebellion**
+> Tari is a multi-layered system  
+> the base layer is the foundation for a new network state  
+> one that is pro-human and pro-freedom  
+> its strength comes from the people who choose to do the work  
+> of securing the network  
+> they are the trailblazers. the revolutionaries  
+> **for mining Tari is an act of rebellion**  
 >
-> a rebellion against a world that increasingly steals our humanity
-> as we sit in the comfort of our homes, doom scrolling away our time
-> in an intimate embrace with our favorite device
-> being milked of our deepest desires and thoughts
-> and manipulated by saccharine interfaces and slippery algorithms
-> the devices we love unconditionally are watching us
+> a rebellion against a world that increasingly steals our humanity  
+> as we sit in the comfort of our homes, doom scrolling away our time  
+> in an intimate embrace with our favorite device  
+> being milked of our deepest desires and thoughts  
+> and manipulated by saccharine interfaces and slippery algorithms  
+> the devices we love unconditionally are watching us  
 >
-> every click. every stroke watched by cunning eyes
-> we've accepted this fate in the name of convenience
-> this journey towards oblivion
-> it's tragic, and yet, there is something even more insidious at play:
-> the endless, irrevocable surveillance of our financial affairs
-> **a panopticon where every transaction is a scarlet letter**
+> every click. every stroke watched by cunning eyes  
+> we've accepted this fate in the name of convenience  
+> this journey towards oblivion  
+> it's tragic, and yet, there is something even more insidious at play:  
+> the endless, irrevocable surveillance of our financial affairs  
+> **a panopticon where every transaction is a scarlet letter**  
 >
-> it wasn't supposed to be this way
-> this new financial system isn't supposed to take away our agency or safety
-> our transaction history shouldn't be a cudgel beating us into obedience
-> our wallets aren't a window into our souls
-> **enough**
+> it wasn't supposed to be this way  
+> this new financial system isn't supposed to take away our agency or safety  
+> our transaction history shouldn't be a cudgel beating us into obedience  
+> our wallets aren't a window into our souls  
+> **enough**  
 >
-> **in this block. in this moment. we choose another way**
-> Tari is a sanctuary
-> for the enlightened who need refuge from the piercing gaze of endless secret eyes
-> for the visionaries who learn of its magical powers and use it to bend the will of the world in their direction
-> and for those who benefit from it unknowingly because, for them, it's a cog in a greater machine
-> **welcome**
+> **in this block. in this moment. we choose another way**  
+> Tari is a sanctuary  
+> for the enlightened who need refuge from the piercing gaze of endless secret eyes  
+> for the visionaries who learn of its magical powers and use it to bend the will of the world in their direction  
+> and for those who benefit from it unknowingly because, for them, it's a cog in a greater machine  
+> **welcome**  
 >
-> Tari is a boundless paradise
-> where we all receive a sacred gift: a mythical cloak of invisibility
-> wrapped in our cloaks as if they were a second skin
-> we are finally free like all humans that existed before us
-> to live our lives in joyous anonymity
-> to protect ourselves and our families from the eyes of infinite jackals
-> stalking our every move, waiting for the perfect moment to pounce
-> to live our imperfect lives without every moment becoming an immutable snapshot
-> to be human
+> Tari is a boundless paradise  
+> where we all receive a sacred gift: a mythical cloak of invisibility  
+> wrapped in our cloaks as if they were a second skin  
+> we are finally free like all humans that existed before us  
+> to live our lives in joyous anonymity  
+> to protect ourselves and our families from the eyes of infinite jackals  
+> stalking our every move, waiting for the perfect moment to pounce  
+> to live our imperfect lives without every moment becoming an immutable snapshot  
+> to be human  
 >
-> from this moment until the last node is silenced
-> Tari is ever-changing
-> we define its culture
-> we define its traditions
-> we have the power to shape it, to fix it, to contribute
-> to etch our code in stone
-> **to become immortal**
+> from this moment until the last node is silenced  
+> Tari is ever-changing  
+> we define its culture  
+> we define its traditions  
+> we have the power to shape it, to fix it, to contribute  
+> to etch our code in stone  
+> **to become immortal**  
 >
-> one day, we pray that Tari will earn everyone's trust
-> and become a part of everyone's daily lives
-> when that day comes to pass, **it will be because of us**
+> one day, we pray that Tari will earn everyone's trust  
+> and become a part of everyone's daily lives  
+> when that day comes to pass, **it will be because of us**  
 
 ---
 
