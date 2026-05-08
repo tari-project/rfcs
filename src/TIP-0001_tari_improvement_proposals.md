@@ -1,16 +1,15 @@
 # TIP-1: Tari Improvement Proposals
 
-| TIP           | [TIP-1](#tip-1-tari-improvement-proposals)      |
-|---------------|-------------------------------------------------|
-| Title         | Tari Improvement Proposals                      |
-| Last Modified | 2026-05-02                                      |
-| Authors       | Fox Piacenti <fox@vulpinity.com>                |
-| Arbiter       | TBD                                             |
-| Status        | Draft                                           |
-| Type          | Process                                         |
-| Created       | 2026-05-02                                      |
-| Review Period | TBD                                             |
-| References    | Based on the Open edX community's [OEP] process |
+| TIP             | [TIP-2](#tip-1-tari-improvement-proposals)     |
+|-----------------|------------------------------------------------|
+| Title           | Tari Improvement Proposals                     |
+| Last Modified   | 2026-05-02                                     |
+| Authors         | Fox Piacenti <fox@vulpinity.com>               |
+| Expert Reviewer | Blackwolfsa                                    |
+| Status          | Draft                                          |
+| Type            | Process                                        |
+| Created         | 2026-05-02                                     |
+| References      | Based on the Open edX community's [OEP] process |
 
 ## Overview
 
@@ -35,6 +34,8 @@ for Tari.
   applicable Tari services and/or libraries should use or follow.
 * A **Product direction** proposal describes product-level decisions that should be followed by some or all Tari 
   subprojects, as they specify to make a cohesive product experience.
+* An **Architecture** proposal describes a technical implementation decision, such as a chain feature, proof design, or
+  other critical technical improvement to Tari.
 
 ## TIP Roles
 
@@ -43,41 +44,28 @@ for Tari.
 Each TIP must have at least one Author: Someone who writes the TIP using the style and format described here, shepherds
 the discussions in the forum and pull request, and attempts to build community consensus around the idea.
 
-[Step 1. Find an Arbiter](#step-1-find-an-arbiter) lays out ways to get in touch with the community to find an arbiter;
-those channels may also be used to find a co-author, which is encouraged.
+[Step 2. Find an Expert Reviewer](#step-2-find-an-expert-reviewer) lays out ways to get in touch with the community to
+find an Expert Reviewer; those channels may also be used to find a co-author, which is encouraged.
 
-### Arbiters
+### Expert Reviewers
 
-Each TIP also has an Arbiter. An Arbiter of a TIP cannot concurrently be the Author of that TIP.
+Each TIP also has an Expert Reviewer. An Expert Reviewer of a TIP cannot concurrently be the Author of that TIP.
 
-In brief, the Arbiter...
+In brief, the Expert Reviewer...
 
-* Is knowledgeable about the contents of the proposal, while also being able to fairly hear all sides of a discussion.
-* Helps the Authors move the TIP through the TIP Workflow, namely:
-  * As described in [Step 3. Review with Arbiter](#step-3-review-with-arbiter), the Arbiter does a first review pass
-     and establishes the length of the review period (see [Review Period](#review-period))
-  * During the review period, the Arbiter decides if the TIP should be merged and published (with an Accepted or
-    Provisional status), rejected (PR is closed without merge), or remain open for additional discussion.
-
-The Arbiter will be the person making the final decision on whether the TIP should be Accepted, and as such, the Arbiter
-should be knowledgeable about the contents of the proposal. The Arbiter should be willing to listen to arguments both
-for and against it by the rest of the community.
-
-The Arbiter is also responsible for helping the Authors move the proposal through the TIP process, providing process,
-product, or technical expertise as needed. The Arbiter also assists the Authors in soliciting feedback from the
-community on the TIP and moving it towards a final decision (whether the pull request is merged as Accepted or closed.)
-The Arbiter (in discussion with the Authors) can merge an in-progress TIP (if it has reached a stage of relative
-stability) to allow for additional incremental updates.
+* Is knowledgeable about the contents of the proposal, and has specific expertise in the problems it addresses.
+* Helps the Authors prepare the TIP for vote by the Council as described in
+  [Step 5. Review with Council](#step-5-review-with-council).
 
 ### Tari Council
 
 The Tari Council (or Tari Labs, until the Council is established) serves as a backstop for the TIP process.
-Specifically, the group can assist in finding an Arbiter for a TIP if the Author is having trouble getting one for a
-new TIP. They may also assist in finding an arbiter if an old TIP is revived and the original Arbiter is no longer
-available.
+Specifically, the group can assist in finding an Expert Reviewer for a TIP if the Author is having trouble getting one
+for a new TIP. They may also assist in finding an Expert Reviewer if an old TIP is revived and the original Expert
+Reviewer is no longer available.
 
-If there is uncertainty about the choice of Arbiter, it is reasonable to start a discussion with the group. If there is
-a conduct issue with the Arbiter, the Author may also raise this with the Council.
+If there is uncertainty about the choice of Expert Reviewer, it is reasonable to start a discussion with the group.
+If there is a conduct issue with the Expert Reviewer, the Author may also raise this with the Council.
 
 The Council may elect to delegate some or all of its responsibilities here to groups of its specification. Should it
 choose to do so, it should update this TIP (using the standard processes in this document) to indicate the currently
@@ -87,59 +75,89 @@ delegated team.
 
 ### Submitting a TIP
 
-#### Step 1. Find an Arbiter
+#### Step 1. Initial Discussion
 
-When writing a TIP, you may already have an idea of an Arbiter in mind. If so, reach out to that person and ask them.
-They should have the domain expertise needed to be an effective Arbiter and the time to do so. It is best practice for
-the Arbiter to be from a different team or group than the Author.
+No proposal should be put forward without a basic gut-check from others in the community. If you have an idea, start by
+bringing it up in the forum, your preferred Tari chat group (I.E., Discord, Telegram) or your in-person Tari meetup.
 
-If you're not sure who would make a good Arbiter, you should reach out to the Core Contributors or the Tari Council. Any
-community member can feel free to participate in the discussion about the selection of an Arbiter. If you have concerns
-about an arbiter that has been chosen for a particular TIP, please share them with the Author first and see if you can
-resolve your concerns directly. If you continue to have concerns, please share them on either the Pull Request or the
-forums.
+#### Step 2. Find an Expert Reviewer
 
-Once found, this Arbiter will be recorded in the "Arbiter" header on the TIP.
+After the initial discussion, you will need to find an Expert Reviewer to collaborate with. An expert Reviewer is an
+expert in the subject your proposal addresses, known by the community.
 
-#### Step 2. Create PR for "Draft" TIP
+When writing a TIP, you may already have an idea for an Expert Reviewer in mind. If so, reach out to that person and ask
+them. They should have the domain expertise needed to be an Expert Reviewer and the time to do so. It is best practice
+for the Expert Reviewer to be from a different team or group than the Author, though this may not always be possible.
+
+If you're not sure who would make a good Expert Reviewer, you should reach out to the Core Contributors or the Tari
+Council. Any community member can feel free to participate in the discussion about the selection of an Expert Reviewer.
+If you have concerns about an Expert Reviewer that has been chosen for a particular TIP, please share them with the
+Author first and see if you can resolve your concerns directly. If you continue to have concerns, please share them on
+either the Pull Request or the forums.
+
+Once found, this Expert Reviewer will be recorded in the "Reviewer" header on the TIP.
+
+#### Step 3. Initial PR for TIP
 
 Draft a TIP using an existing example, and submit a pull request against the [RFCs repository]. To identify the draft
-proposal, the Authors should check the numbered list of previous TIP pull requests and select the next available number.
+proposal, the Authors should check the numbered list of previous TIPs pull requests and select the next available
+number.
 
 The pull request title should be of the form "TIP-XXXX: <TIP title>" where *XXXX* is the TIP number claimed for the
-included proposal.
+included proposal. The status should be 'Draft.'
 
-#### Step 3. Review with Arbiter
+Once created, the PR goes through initial review by the Expert Reviewer. After review is completed, the status is
+updated to "Under Review", the PR is merged.
 
-Once an Arbiter has been assigned to your TIP, establish begin and end review dates with your Arbiter, making it
-officially "Under Review". Once this state is achieved, announce the TIP to the community in the following channels:
+#### Step 4. Community Review
+
+Once the TIP PR has been merged, announce the TIP to the community in the following channels:
 
 * Create a topic in the Governance category
 * Announce it in Telegram (or have someone do so)
 * Announce it in the Discord (or have someone do so)
 
-The Tari community is given the opportunity to comment on the TIP. The Arbiter serves to keep the discussion on track
-and bring the review process to a final resolution.
+Begin discussions and create follow-up PRs to be reviewed by your Expert Reviewer and the community as concerns are
+raised. Once consensus has been reached, notify the Council that the TIP is ready for their review.
 
-#### Step 4. Announcing Changes
+#### Step 5. Review with Council
 
-After merging a pull request - whether it was the addition of a new TIP, a wording/status change to an existing TIP, or
-a modification of significance to an existing TIP, please announce the change in the original TIP announcement thread
-on the forum.
+The Tari Council reviews the TIP. They check for:
+
+1. Has the TIP had a competent reviewer to perform the initial vetting
+2. Has the community had a chance to weigh in on the proposal and its changes
+3. Has consensus been reached
+4. Are there any other outstanding reasons why this proposal should not pass?
+
+The council then votes. If a majority of the council approves of the TIP, its status is updated to "Accepted" in a new
+PR and merged.
+
+If the TIP is rejected, the Council will provide a reason for the rejection. If the rejection reason cannot or will not
+be remedied, update the proposal status to "Rejected" and include the reasoning from the council at the top of the
+proposal text.
+
+The Council may also declare a TIP Provisional in the case that it should be acted upon as 'Accepted' in the short term
+to validate its ideas, but to indicate that further validation is needed by practice.
+
+#### Step 6. Announcing Changes
+
+Once a TIP has graduated to Approved status, or a modification of significance to an existing TIP, please announce
+the change in the original TIP announcement thread on the forum.
 
 ## TIP Statuses
 
 ### Draft
 
-The Authors are working on a TIP and then reviewing it with an assigned Arbiter.
+The Authors are working on a TIP and then reviewing it with an assigned Expert Reviewer.
 
 ### Under Review
 
-The TIP is under discussion and being reviewed by the Tari community, the Arbiter, and the Authors.
+The TIP is under discussion and being reviewed by the Tari community but has yet to be Accepted or Rejected by the
+Council.
 
 ### Accepted
 
-The Arbiter has accepted the TIP after review and discussion within the agreed upon review period.
+The Council has accepted the TIP after review and discussion.
 
 ### Deferred
 
@@ -148,9 +166,9 @@ No further progress is made on the TIP and so it is marked "Deferred". The TIP A
 
 ### Provisional
 
-The TIP is reviewed and generally agreed upon, but not yet fully "Accepted" since it requires some example or
-prerequisite work within the community. Once viable reference examples of community/product adoption occurs, the TIP
-can transition back to Under Review and be Accepted.
+The TIP is reviewed and generally agreed upon by the Council, but not yet fully "Accepted" since it requires some
+example or prerequisite work within the community. Once viable reference examples of community/product adoption occurs,
+the TIP can transition back to Under Review and be Accepted.
 
 ### Replaced
 
@@ -175,8 +193,8 @@ under the status field.) This field should link the GitHub issue, forum post, or
 
 ### Rejecting a TIP
 
-Sometimes after all is said and done, it was not a good idea. In this case, the pull request proposing the change is
-closed and the description's first line is edited to indicate that the TIP is no longer being pursued, and why.
+Sometimes after all is said and done, it was not a good idea. In this case, the status is updated to 'Rejected', and
+an introductory line is added to indicate that the TIP is no longer being pursued, and why.
 
 ### Status Changes
 
@@ -184,10 +202,9 @@ When a TIP is Accepted, the TIP should be updated accordingly. In addition to up
 least the Resolution header should be added with a link to the appropriate section of the PR, and the Last-Modified
 header should be set to the current date.
 
-A TIP that is in a status of Under Review, Provisional, or Deferred can be merged to capture a set of edits and to make
-the proposal more visible to the community. From that point, additional pull requests can be opened to edit the TIP,
-until it converges to being either "Accepted" or "Obsolete." TIPs that may still expect to be entirely rejected should
-not be merged in this fashion.
+Tips that have passed their initial Draft state should be merged with a status of Under Review. From that point,
+additional pull requests can be opened to edit the TIP, until it converges to being "Accepted", "Rejected", or
+"Obsolete."
 
 When a TIP PR calls for significant work after it merges, add a link named "Follow-up Work" to the References section of
 the TIP header. Use the linked page to keep readers up-to-date on the plan for completing and/or implementing the
@@ -209,7 +226,7 @@ Authors of the TIP.
 #### Unpublished TIPs
 
 Sometimes a TIP is written but ultimately abandoned before being merged. These can be found in closed, unmerged PRs
-(see the list [here](https://github.com/tari-project/rfcs/pulls?q=is%3Apr+is%3Aclosed).)
+(see the list [here](https://github.com/tari-project/rfcs/pulls?q=is%3Apr+is%3Aclosed).) The only time this should happen is if the TIP cannot pass initial review.
 
 #### Updating TIPs
 
@@ -217,21 +234,20 @@ A Best Practice or Process TIP may be updated even after it is "Accepted" as it 
 edits/updates may be made by the original Authors of the TIP or by new Authors. A pull request should be created to
 update the TIP and go through the following steps:
 
-1. For small changes (e.g. formatting or minor updates reflecting how process has already evolved), finding an Arbiter
-   may not be required. Larger changes will benefit from having one. The Arbiter may remain the same as before or a
-   new one may be found as detailed in [Step 1. Find an Arbiter](#step-1-find-an-arbiter).
-2. Reach out to previous Authors and Arbiters, or comment on the original TIP pull request discussion with your proposed
-   update so those central to the original proposal can weigh in on changes.
-3. Follow the [Step 3. Review with Arbiter](#step-3-review-with-arbiter) process, with a review period of at least one
-   week (for smaller changes.)
-4. Finally, please follow [Step 4. Announcing Changes](#step-4-announcing-changes) to inform the community about what
+1. For small changes (e.g. formatting or minor updates reflecting how process has already evolved), finding an Expert
+   Reviewer may not be required. Larger changes will benefit from having one. The Expert Reviewer may remain the same as
+   before or a new one may be found as detailed in [Step 2. Find an Expert Reviewer](#step-2-find-an-expert-reviewer).
+2. Reach out to previous Authors and Reviewers, or comment on the original TIP pull request discussion with your
+   proposed update so those central to the original proposal can weigh in on changes.
+3. Follow the [Step 5. Review with Council](#step-5-review-with-Council) process.
+4. Finally, please follow [Step 6. Announcing Changes](#step-6-announcing-changes) to inform the community about what
    has been changed in the TIP.
 
-#### Adding Additional Authors or Arbiters
+#### Adding Additional Authors or Reviewers
 
 When updates are made beyond those of formatting changes, small corrections, or basic upkeep, the Author(s) who made
-the changes, as well as the Arbiter who saw the change through, shall add themselves to the corresponding sections in
-the [TIP Header Preamble](#tip-header-preamble).
+the changes, as well as the Expert Reviewer who verified the change, shall add themselves to the corresponding sections
+in the [TIP Header Preamble](#tip-header-preamble).
 
 ## TIP Structure and Content
 
@@ -244,7 +260,7 @@ language that is easy to read both while rendered and while in source form. TIPs
 
 Other than requiring that TIPs have a consistent TIP Header Preamble and a
 [Change History Section](#change-history-section), the rest of the TIP document can be customized according to whatever
-is needed to capture the decision(s), as deemed appropriate by the Authors and the Arbiter.
+is needed to capture the decision(s), as deemed appropriate by the Authors, the Expert Reviewer, and the Tari Council.
 
 To help guide Authors, future ready-made templates may be created. At the time of writing, none are available, but
 existing TIPs may be used as an example.
@@ -259,11 +275,10 @@ Rows in italics are otional and are described below. All other rows are required
 | Title           | <TIP Title>                                                                                              |
 | Last Modified   | <date string, in YYYY-MM-DD format>                                                                      |
 | Authors         | <list of authors' established handles or names, and, optionally, email addresses>                        |
-| Arbiter         | <Arbiter's established handle or name and email address>                                                 |
+| Reviewer        | <Expert Reviewer's established handle or name and email address>                                         |
 | Status          | <Draft \| Under Review \| Deferred \| Accepted \| Replaced \| Provisional \| Needs Revision \| Obsolete> |
-| Type            | <Process \| Best Practice \| Product Direction>                                                          |
+| Type            | <Process \| Best Practice \| Product Direction \| Architecture>                                          |
 | Created         | <date created on, in YYYY-MM-DD format>                                                                  |
-| *Review Period* | <start - target end dates for review>                                                                    |
 | *Resolution*    | <links to any discussions where the final status was decided>                                            |
 | *Replaces*      | <TIP Number>                                                                                             |
 | *Replaced-By*   | <TIP Number>                                                                                             |
@@ -273,13 +288,11 @@ Rows in italics are otional and are described below. All other rows are required
   authors/owners of the TIP. The format of the Authors header value must be `Random J. User <address@example.com>` if
   the email address is included, or `Random J. User` if the address is not given. If there are multiple authors, their
   names and addresses should appear in a comma separated list.
-* The **Arbiter** field is used to record who has the authority to make the final decision to approve or reject the TIP.
-* The **Type** header specifies the type of TIP: Process, Best Practice, or Product Direction
+* The **Reviewer** field is used to record who has vetted the proposal for basic soundness before submission to the
+  Tari Council.
+* The **Type** header specifies the type of TIP: Process, Best Practice, Product Direction, or Architecture.
 * The **Created** header records the date that the pull request for the **TIP** was opened. It should be in YYYY-MM-DD
   format, e.g. 2026-05-20.
-* The **Review Period** header specifies the target dates for reviewing the TIP, as agreed by the Authors and Arbiter.
-  The recommended duration of the review is 2 weeks. However, if the review exposes areas of the proposal that need
-  further discussion and fleshing out, then the Arbiter may choose to extend the review period.
 * TIPs can also have a **Replaced-By** header indicating that a TIP has been rendered obsolete by a later document; the
   value is the number of the TIP that replaces the current document. The newer TIP must have a **Replaces** header that
   contains the number of the TIP it rendered obsolete.
@@ -299,6 +312,10 @@ after the one at the bottom of this document. A Change History entry should incl
 changes made, and a link to the pull request where the discussion and approval took place. The changes should be ordered
 such that the most recent change is at the top of the list.
 
+## Housekeeping
+
+In order to transition this
+
 ## Acknowledgements and Legal
 
 This proposal draws heavily from [OEP-1] by Axim Collaborative, which is licensed CC-BY-SA.
@@ -315,6 +332,12 @@ This proposal draws heavily from [OEP-1] by Axim Collaborative, which is license
 
 * Document Created.
 * [Pull Request #164](https://github.com/tari-project/rfcs/pull/164)
+
+2026-05-07
+
+* Concept of Arbiter replaced with lower-powered but higher-knowledge Expert Reviewer
+* Council Votes to accept TIPs
+* All TIPs past the draft stage are Merged, for historical record.
 
 [OEP]: https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0001.html
 [RFCs repository]: https://github.com/tari-project/rfcs
