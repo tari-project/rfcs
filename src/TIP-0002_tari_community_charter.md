@@ -138,7 +138,7 @@ A rejected nominee may request review by proposing an ad hoc Review Panel as des
 
 The Council shall reflect the breadth of the protocol's needs: development, infrastructure, community, and enterprise. No single interest shall dominate.
 
-The inaugural Council shall be appointed by Tari Labs from nominations received from the community. Thereafter, nominations and selections shall follow the process described in this Charter.
+The inaugural Council shall be appointed by Tari Labs from nominations received from the community. The inaugural Council shall publish the initial Contribution Rubric within its first 90 days of operation. Thereafter, nominations and selections shall follow the process described in this Charter.
 
 ## Article VII. The Obligation to Improve
 
