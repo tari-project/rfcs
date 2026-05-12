@@ -140,7 +140,7 @@ The inaugural Council shall publish the initial Contribution Rubric and admit th
 
 ## Article VII. Nomination and Selection
 
-Any Core Contributor may be nominated to the Council. Nominations shall be made publicly, with evidence of the candidate's contributions and a clear account of why they would strengthen the Council.
+Any person who has made sustained, verifiable contributions to the Tari protocol may be nominated to the Council. Contributions include, but are not limited to: code, infrastructure, documentation, governance facilitation, community building, and ecosystem development. A single or token contribution shall not suffice. Sustained misconduct shall disqualify a candidate regardless of the strength of their contributions. Nominations shall be made publicly, with evidence of the candidate's contributions and a clear account of why they would strengthen the Council.
 
 Core Contributors shall elect Council members. The Council shall define and publish the election procedure, which must include a public nomination period, open discussion, and a recorded vote of Core Contributors. Every election result shall include a public written explanation of the outcome.
 
