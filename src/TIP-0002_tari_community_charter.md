@@ -92,7 +92,7 @@ Tari Labs, the protocol's instigator, participates in the Council as a member, n
 
 The Council shall consist of five to seven members, drawn from the community and from enterprise, serving terms of twelve months. Initial terms shall be staggered so that no more than half of the Council's seats expire in the same period. No term shall be presumed to renew. At the conclusion of each term, the community may nominate the member to continue, or the seat shall pass to another.
 
-Council members shall receive a monthly stipend of 100,000 XTM for their service.
+Council members shall receive a monthly stipend of 100,000 XTM for their service, subject to a USD-equivalent reference cap of $4,000 per month calculated at a forward-looking reference rate of $0.04 per XTM. The Council shall publish the calculation method used to determine the stipend and shall review it no less than quarterly. Any increase to the stipend, or change to the calculation method, shall require the charter amendment process and community ratification.
 
 ## Article III. Authority and Responsibility
 
@@ -114,7 +114,9 @@ A Council member shall be willing to yield their seat to anyone who can advance 
 
 A Council member shall demonstrate, through sustained conduct, the qualities the protocol demands: consistency of commitment, constructive in disagreement, generosity toward newcomers, and excellence in the work they produce.
 
-A Council member may be removed by majority vote of the remaining Council for sustained misconduct, prolonged unexplained absence, or conduct incompatible with this Charter. The removal and the reasoning behind it shall be made public.
+Council service is an active working role, not an honorary position. Members are expected to maintain regular availability, participate in scheduled Council deliberations, review proposals, vote when required, and contribute materially to at least one area of Council responsibility. The Council shall publish attendance, votes, recusals, and a brief monthly activity summary for each member.
+
+A Council member may be removed by majority vote of the remaining Council for sustained misconduct, prolonged unexplained absence, or conduct incompatible with this Charter. The removal and the reasoning behind it shall be made public. A removed Council member may request review by proposing three community members to serve as an ad hoc Review Panel. Proposed panelists must not be current Council members or have a direct stake in the outcome. The Review Panel may issue a public recommendation. The Council must either adopt the recommendation or publish its reasons for declining it.
 
 ## Article V. Decisions
 
@@ -124,17 +126,29 @@ Substantive matters shall be discussed in public channels and community calls. T
 
 Strategic matters, including significant spending, protocol changes, and amendments to this charter, shall require fourteen days of open discussion, a seven-day Final Comment Period, and majority Council approval.
 
-## Article VI. Nomination and Selection
+## Article VI. Core Contributors
 
-Any person who has made sustained, verifiable contributions to the Tari protocol may be nominated to the Council. Contributions include, but are not limited to: code, infrastructure, documentation, governance facilitation, community building, and ecosystem development. A single or minimal contribution shall not suffice. Sustained misconduct shall disqualify a candidate regardless of the strength of their contributions.
+The Council shall establish and maintain a Core Contributor Program. Core Contributor status is binary: a person either holds it or does not.
 
-Nominations shall be made publicly, with evidence of the candidate's contributions and a clear account of why they would strengthen the Council. The community shall discuss each nomination openly. The Council shall confirm or decline based on the consensus it observes.
+The Council shall maintain a public Contribution Rubric defining the categories, evidence, and example thresholds used to evaluate sustained, verifiable contributions. The rubric may include, without limitation, merged code, infrastructure operation, documentation, testing, security review, governance facilitation, community support, ecosystem development, and completed funded work. The Council shall admit contributors who meet the rubric's threshold and shall publish each admission decision with a written explanation referencing the rubric and the evidence considered.
+
+A single or token contribution shall not suffice for admission. Sustained misconduct shall disqualify a candidate regardless of the strength of their contributions.
+
+Core Contributor status may be revoked by the Council for sustained inactivity or misconduct, with a public written explanation. A contributor whose status is revoked may request review by proposing an ad hoc Review Panel as described in Article IV.
+
+The inaugural Council shall publish the initial Contribution Rubric and admit the first Core Contributors within its first 90 days of operation.
+
+## Article VII. Nomination and Selection
+
+Any person who has made sustained, verifiable contributions to the Tari protocol may be nominated to the Council. Contributions include, but are not limited to: code, infrastructure, documentation, governance facilitation, community building, and ecosystem development. A single or token contribution shall not suffice. Sustained misconduct shall disqualify a candidate regardless of the strength of their contributions. Nominations shall be made publicly, with evidence of the candidate's contributions and a clear account of why they would strengthen the Council.
+
+Core Contributors shall elect Council members. Council members who hold Core Contributor status must recuse from votes on their own seat. The Council shall define and publish the election procedure, which must include a public nomination period, open discussion, and a recorded vote of Core Contributors. Every election result shall include a public written explanation of the outcome.
 
 The Council shall reflect the breadth of the protocol's needs: development, infrastructure, community, and enterprise. No single interest shall dominate.
 
 The inaugural Council shall be appointed by Tari Labs from nominations received from the community. Thereafter, nominations and selections shall follow the process described in this Charter.
 
-## Article VII. The Obligation to Improve
+## Article VIII. The Obligation to Improve
 
 The Council's highest obligation is to the protocol, not to itself.
 
@@ -142,8 +156,14 @@ Every member shall accept that the Council must be continuously strengthened. If
 
 This obligation shall be the measure against which every future Council is judged.
 
-## Article VIII. Amendments
+## Article IX. Amendments
 
 This charter may be amended through the same process required for strategic decisions: open discussion, a Final Comment Period, and Council approval.
 
+Any amendment affecting Council powers, member selection, removal, stipend calculation, or amendment procedures shall require community ratification by a two-thirds supermajority of Core Contributors, following the public discussion and Final Comment Period.
+
 When this charter no longer serves the protocol, the community shall have both the power and the duty to change it.
+
+---
+
+*This charter is published in draft for community review. It is not handed down. It is offered up.*
