@@ -163,7 +163,3 @@ This charter may be amended through the same process required for strategic deci
 Any amendment affecting Council powers, member selection, removal, stipend calculation, or amendment procedures shall require community ratification by a two-thirds supermajority of Core Contributors, following the public discussion and Final Comment Period.
 
 When this charter no longer serves the protocol, the community shall have both the power and the duty to change it.
-
----
-
-*This charter is published in draft for community review. It is not handed down. It is offered up.*
