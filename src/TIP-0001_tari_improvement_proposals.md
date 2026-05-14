@@ -1,21 +1,22 @@
-# TIP-1: Tari Improvement Proposals
+# UR-TIP-PROC-1: Tari Improvement Proposals
 
-| TIP             | [TIP-2](#tip-1-tari-improvement-proposals)     |
-|-----------------|------------------------------------------------|
-| Title           | Tari Improvement Proposals                     |
-| Last Modified   | 2026-05-02                                     |
-| Authors         | Fox Piacenti <fox@vulpinity.com>               |
-| Expert Reviewer | Blackwolfsa                                    |
-| Status          | Draft                                          |
-| Type            | Process                                        |
-| Created         | 2026-05-02                                     |
-| References      | Based on the Open edX community's [OEP] process |
+| TIP             | [P-TIP-PROC-1](#tip-1-tari-improvement-proposals) |
+|-----------------|---------------------------------------------------|
+| Title           | Tari Improvement Proposals                        |
+| Last Modified   | 2026-05-14                                        |
+| Authors         | Fox Piacenti <fox@vulpinity.com>                  |
+| Expert Reviewer | Blackwolfsa                                       |
+| Status          | Draft                                             |
+| Type            | Process                                           |
+| Created         | 2026-05-02                                        |
+| References      | Based on the Open edX community's [OEP] process   |
 
 ## Overview
 
-* A Tari Improvement Proposal specifies a best practice, product decision, or community process that the Tari community
-  has agreed should be adopted by the project.
-* TIPs are not used to dictate decisions made in every-day feature work.
+* A Tari Improvement Proposal specifies a best practice, product decision, technical architecture, or community process
+  that the Tari community has agreed should be adopted by the project.
+* TIPs are not used to dictate decisions made in every-day feature work, but can be used to inform decision-making on
+  the ground.
 * This document specifies both how to write a TIP and how to get consensus through the community that the TIP should be
   adopted.
 
@@ -29,13 +30,33 @@ for Tari.
 
 ## TIP Types
 
-* A **Process** proposal describes a change to how the Tari Community functions.
-* A **Best Practice** proposal describes a technology or implementation choice that the Tari community believes all 
+* A **Process** (`PROC`) proposal describes a change to how the Tari Community functions.
+* A **Best Practice** (`BPRA`) proposal describes a technology or implementation choice that the Tari community believes all 
   applicable Tari services and/or libraries should use or follow.
-* A **Product direction** proposal describes product-level decisions that should be followed by some or all Tari 
+* A **Product direction** (`DIR`) proposal describes product-level decisions that should be followed by some or all Tari 
   subprojects, as they specify to make a cohesive product experience.
-* An **Architecture** proposal describes a technical implementation decision, such as a chain feature, proof design, or
+* An **Architecture** (`RFC`) proposal describes a technical implementation decision, such as a chain feature, proof design, or
   other critical technical improvement to Tari.
+
+### TIP Naming
+
+TIPs are named with the following format:
+
+`S-TIP-TYP-SUB-X`
+
+Where:
+
+
+|            |                                                                                                                      |
+|------------|----------------------------------------------------------------------------------------------------------------------|
+| S          | Status flag (see [TIP Statuses](#tip-statuses))                                                                      |
+| TIP        | Literally 'TIP'                                                                                                      |
+| TYP        | Type indicator (see [TIP Types](#tip-types))                                                                         |
+| SUB        | Subtype indicator, if a TIP defining subtypes has codified these. Otherwise, this and the following `-` are omitted. |
+| X          | An unique integer (sequential) for the TIP of this type and subtype                                                  |
+
+TIPs change their names (due to the status flag) as their status progresses. However, they do NOT change their URLs.
+Once a file has been created for a tip, that file is kept with its name in perpetuity.
 
 ## TIP Roles
 
@@ -146,41 +167,41 @@ the change in the original TIP announcement thread on the forum.
 
 ## TIP Statuses
 
-### Draft
+### Draft (DR)
 
 The Authors are working on a TIP and then reviewing it with an assigned Expert Reviewer.
 
-### Under Review
+### Under Review (UR)
 
 The TIP is under discussion and being reviewed by the Tari community but has yet to be Accepted or Rejected by the
 Council.
 
-### Accepted
+### Accepted (A)
 
 The Council has accepted the TIP after review and discussion.
 
-### Deferred
+### Deferred (DF)
 
 No further progress is made on the TIP and so it is marked "Deferred". The TIP Authors can change it back to
 "Under Review" when it is in progress again.
 
-### Provisional
+### Provisional (P)
 
 The TIP is reviewed and generally agreed upon by the Council, but not yet fully "Accepted" since it requires some
 example or prerequisite work within the community. Once viable reference examples of community/product adoption occurs,
 the TIP can transition back to Under Review and be Accepted.
 
-### Replaced
+### Replaced (R)
 
 TIPs can be superseded by a different TIP, rendering the original obsolete. In that case, the TIP's status should be
 changed to "Replaced" and updated with a link to its superseding TIP.
 
-### Obsolete
+### Obsolete (O)
 
 Over time some TIPs may become obsolete without being replaced by new guidelines. In this case the TIP's status should
 be changed to "Obsolete" and the TIP should be updated with an explanation as to why the TIP is no longer relevant.
 
-### Needs Revision
+### Needs Revision (NR)
 
 Over time, some TIPs may stay relevant - for example, they may have many sections or core ideas that are still relevant
 to the project - while containing many details that have become stale over time. When we are in agreement that the TIP
@@ -198,9 +219,9 @@ an introductory line is added to indicate that the TIP is no longer being pursue
 
 ### Status Changes
 
-When a TIP is Accepted, the TIP should be updated accordingly. In addition to updating the Status field, at the very
-least the Resolution header should be added with a link to the appropriate section of the PR, and the Last-Modified
-header should be set to the current date.
+When a TIP is Accepted, the TIP should be updated accordingly. In addition to updating the Status field and flag, at
+the very least the Resolution header should be added with a link to the appropriate section of the PR, and the
+Last-Modified header should be set to the current date.
 
 Tips that have passed their initial Draft state should be merged with a status of Under Review. From that point,
 additional pull requests can be opened to edit the TIP, until it converges to being "Accepted", "Rejected", or
@@ -226,7 +247,8 @@ Authors of the TIP.
 #### Unpublished TIPs
 
 Sometimes a TIP is written but ultimately abandoned before being merged. These can be found in closed, unmerged PRs
-(see the list [here](https://github.com/tari-project/rfcs/pulls?q=is%3Apr+is%3Aclosed).) The only time this should happen is if the TIP cannot pass initial review.
+(see the list [here](https://github.com/tari-project/rfcs/pulls?q=is%3Apr+is%3Aclosed).) The only time this should
+happen is if the TIP cannot pass initial review.
 
 #### Updating TIPs
 
@@ -270,19 +292,19 @@ existing TIPs may be used as an example.
 Each TIP must begin with a Markdown table with metadata about the TIP. The rows must appear in the following order.
 Rows in italics are otional and are described below. All other rows are required.
 
-| TIP             | TIP-XXXX                                                                                                 |
-|-----------------|----------------------------------------------------------------------------------------------------------|
-| Title           | <TIP Title>                                                                                              |
-| Last Modified   | <date string, in YYYY-MM-DD format>                                                                      |
-| Authors         | <list of authors' established handles or names, and, optionally, email addresses>                        |
-| Reviewer        | <Expert Reviewer's established handle or name and email address>                                         |
-| Status          | <Draft \| Under Review \| Deferred \| Accepted \| Replaced \| Provisional \| Needs Revision \| Obsolete> |
-| Type            | <Process \| Best Practice \| Product Direction \| Architecture>                                          |
-| Created         | <date created on, in YYYY-MM-DD format>                                                                  |
-| *Resolution*    | <links to any discussions where the final status was decided>                                            |
-| *Replaces*      | <TIP Number>                                                                                             |
-| *Replaced-By*   | <TIP Number>                                                                                             |
-| *References*    | <links to any other relevant discussions or relevant related materials>                                  |
+| TIP           | S-TIP-TYP-SUB-X                                                                                          |
+|---------------|----------------------------------------------------------------------------------------------------------|
+| Title         | <TIP Title>                                                                                              |
+| Last Modified | <date string, in YYYY-MM-DD format>                                                                      |
+| Authors       | <list of authors' established handles or names, and, optionally, email addresses>                        |
+| Reviewer      | <Expert Reviewer's established handle or name and email address>                                         |
+| Status        | <Draft \| Under Review \| Deferred \| Accepted \| Replaced \| Provisional \| Needs Revision \| Obsolete> |
+| Type          | <Process \| Best Practice \| Product Direction \| Architecture>                                          |
+| Created       | <date created on, in YYYY-MM-DD format>                                                                  |
+| *Resolution*  | <links to any discussions where the final status was decided>                                            |
+| *Replaces*    | <TIP Number>                                                                                             |
+| *Replaced-By* | <TIP Number>                                                                                             |
+| *References*  | <links to any other relevant discussions or relevant related materials>                                  |
 
 * The **Authors** header lists the names or community handles, and optionally the email addresses, of all the
   authors/owners of the TIP. The format of the Authors header value must be `Random J. User <address@example.com>` if
@@ -301,9 +323,9 @@ Rows in italics are otional and are described below. All other rows are required
 
 ### Auxillary Files
 
-TIPs may include auxiliary files such as diagrams. Such files must be added to a `TIP-XXXX/` directory, where `XXXX` is
-the TIP number. Include original diagrams alongside image files, to make it easy for others to update the TIP in the
-future.
+TIPs may include auxiliary files such as diagrams. Such files must be added to a subdirectory within `src/assets/` named
+the same as the file. Include original diagrams alongside image files, to make it easy for others to update the TIP in
+the future.
 
 ### Change History Section
 
@@ -314,13 +336,14 @@ such that the most recent change is at the top of the list.
 
 ## Housekeeping
 
-In order to transition this
+In order to transition existing RFCs (and TIPS which may have been created while this process is finalized), each will
+need to be updated with the standard header in follow-up PRs to this repository. Their URLs shall not change.
 
 ## Acknowledgements and Legal
 
 This proposal draws heavily from [OEP-1] by Axim Collaborative, which is licensed CC-BY-SA.
 
-[TIP-1](#tip-1-tari-improvement-proposals) © 2026 by Fox Piacenti is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+[P-TIP-PROC-1](#) © 2026 by Fox Piacenti is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
 <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
 <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
@@ -328,16 +351,22 @@ This proposal draws heavily from [OEP-1] by Axim Collaborative, which is license
 
 ## Change History
 
-2026-05-02
+### 2026-05-02
 
 * Document Created.
 * [Pull Request #164](https://github.com/tari-project/rfcs/pull/164)
 
-2026-05-07
+### 2026-05-07
 
 * Concept of Arbiter replaced with lower-powered but higher-knowledge Expert Reviewer
 * Council Votes to accept TIPs
 * All TIPs past the draft stage are Merged, for historical record.
+
+### 2026-05-14
+
+* TIP Naming schema redefined to make quick recognition of status and domain possible.
+* Changelog dates made into headers
+* Housekeeping section completed
 
 [OEP]: https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0001.html
 [RFCs repository]: https://github.com/tari-project/rfcs
