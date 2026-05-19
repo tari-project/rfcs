@@ -116,8 +116,6 @@ If you have concerns about an Expert Reviewer that has been chosen for a particu
 Author first and see if you can resolve your concerns directly. If you continue to have concerns, please share them on
 either the Pull Request or the forums.
 
-Once found, this Expert Reviewer will be recorded in the "Reviewer" header on the TIP.
-
 #### Step 3. Initial PR for TIP
 
 Draft a TIP using an existing example, and submit a pull request against the [RFCs repository]. To identify the new
@@ -150,14 +148,12 @@ The Tari Council reviews the TIP. They check for:
 4. Are there any other outstanding reasons why this proposal should not pass?
 
 The council then votes. If a majority of the council approves of the TIP, its status is updated to "Accepted" in a new
-PR and merged.
+PR and merged. Any implied changes this accepted proposal creates for previous proposals (that is, any information it
+deprecates) must be addressed in a follow-up PR immediately.
 
 If the TIP is rejected, the Council will provide a reason for the rejection. If the rejection reason cannot or will not
 be remedied, update the proposal status to "Rejected" and include the reasoning from the council at the top of the
 proposal text.
-
-The Council may also declare a TIP Provisional in the case that it should be acted upon as 'Accepted' in the short term
-to validate its ideas, but to indicate that further validation is needed by practice.
 
 #### Step 6. Announcing Changes
 
@@ -179,27 +175,11 @@ The Council has accepted the TIP after review and discussion.
 
 The Council rejected the TIP after review and discussion, or it has been withdrawn by the author.
 
-### Replaced (R)
-
-TIPs can be superseded by a different TIP, rendering the original deprecated. In that case, the TIP's status should be
-changed to "Replaced" and updated with a link to its superseding TIP.
-
 ### Deprecated (D)
 
 Over time some TIPs may become deprecated. They may be replaced by new guidelines, or they may become entirely
 irrelevant. In this case the TIP's status should be changed to "Deprecated" and the TIP should be updated with an
 explanation as to why the TIP is no longer relevant.
-
-### Needs Revision (NR)
-
-Over time, some TIPs may stay relevant - for example, they may have many sections or core ideas that are still relevant
-to the project - while containing many details that have become stale over time. When we are in agreement that the TIP
-needs updating, we can use this status to indicate to those browsing TIPs that this particular one requires some
-renewed attention.
-
-When changing status to "Needs Revision", a row titled "Revision Ticket" should be added to the preamble (directly
-under the status field.) This field should link the GitHub issue, forum post, or pull request in the
-[RFCs repository] that describes what about the TIP needs to be revised.
 
 ### Rejecting a TIP
 
@@ -247,7 +227,7 @@ update the TIP and go through the following steps:
 1. For small changes (e.g. formatting or minor updates reflecting how process has already evolved), finding an Expert
    Reviewer may not be required. Larger changes will benefit from having one. The Expert Reviewer may remain the same as
    before or a new one may be found as detailed in [Step 2. Find an Expert Reviewer](#step-2-find-an-expert-reviewer).
-2. Reach out to previous Authors and Reviewers, or comment on the original TIP pull request discussion with your
+2. Reach out to previous Authors, or comment on the original TIP pull request discussion with your
    proposed update so those central to the original proposal can weigh in on changes.
 3. Follow the [Step 5. Review with Council](#step-5-review-with-Council) process.
 4. Finally, please follow [Step 6. Announcing Changes](#step-6-announcing-changes) to inform the community about what
@@ -256,7 +236,7 @@ update the TIP and go through the following steps:
 #### Adding Additional Authors or Reviewers
 
 When updates are made beyond those of formatting changes, small corrections, or basic upkeep, the Author(s) who made
-the changes, as well as the Expert Reviewer who verified the change, shall add themselves to the corresponding sections
+the changes shall add themselves to the corresponding sections
 in the [TIP Header Preamble](#tip-header-preamble).
 
 ## TIP Structure and Content
@@ -285,8 +265,7 @@ Rows in italics are otional and are described below. All other rows are required
 | Title         | <TIP Title>                                                                       |
 | Last Modified | <date string, in YYYY-MM-DD format>                                               |
 | Authors       | <list of authors' established handles or names, and, optionally, email addresses> |
-| Reviewer      | <Expert Reviewer's established handle or name and email address>                  |
-| Status        | <Proposed \| Accepted \| Replaced \| Needs Revision \| Deprecated>                |
+| Status        | <Proposed \| Accepted \| Rejected \| Deprecated>                                  |
 | Type          | <Process \| Best Practice \| Product Direction \| Architecture>                   |
 | Created       | <date created on, in YYYY-MM-DD format>                                           |
 | *Resolution*  | <links to any discussions where the final status was decided>                     |
@@ -298,8 +277,6 @@ Rows in italics are otional and are described below. All other rows are required
   authors/owners of the TIP. The format of the Authors header value must be `Random J. User <address@example.com>` if
   the email address is included, or `Random J. User` if the address is not given. If there are multiple authors, their
   names and addresses should appear in a comma separated list.
-* The **Reviewer** field is used to record who has vetted the proposal for basic soundness before submission to the
-  Tari Council.
 * The **Type** header specifies the type of TIP: Process, Best Practice, Product Direction, or Architecture.
 * The **Created** header records the date that the pull request for the **TIP** was opened. It should be in YYYY-MM-DD
   format, e.g. 2026-05-20.
@@ -361,6 +338,12 @@ This proposal draws heavily from [OEP-1] by Axim Collaborative, which is license
 * Rename 'Under Review' to 'Proposed', and change its status flag to `P`
 * Remove the 'Deferred' and 'Provisional' statuses. 
 * Remove the 'Draft' status as a separate thing-- pull requests are already a draft state.
+
+### 2026-05-18
+
+* Remove redundant 'Replaced' status in favor of 'Deprecated.'
+* Remove persistent 'Reviewer' field in favor of relying on git history.
+* Remove 'Needs Revision' status in favor of immediate follow-up PRs.
 
 [OEP]: https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0001.html
 [RFCs repository]: https://github.com/tari-project/rfcs
