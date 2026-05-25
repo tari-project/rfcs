@@ -1,11 +1,10 @@
-# UR-TIP-PROC-1: Tari Improvement Proposals
+# P-TIP-PROC-1: Tari Improvement Proposals
 
-| TIP             | [P-TIP-PROC-1](#tip-1-tari-improvement-proposals)                         |
+| TIP             | [P-TIP-PROC-1](#p-tip-proc-1-tari-improvement-proposals)                  |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Tari Improvement Proposals                                                |
 | Last Modified   | 2026-05-17                                                                |
 | Authors         | Fox Piacenti <fox@vulpinity.com>                                          |
-| Expert Reviewer | Blackwolfsa                                                               |
 | Status          | Proposed                                                                  |
 | Type            | Process                                                                   |
 | Created         | 2026-05-02                                                                |
@@ -344,6 +343,11 @@ This proposal draws heavily from [OEP-1] by Axim Collaborative, which is license
 * Remove redundant 'Replaced' status in favor of 'Deprecated.'
 * Remove persistent 'Reviewer' field in favor of relying on git history.
 * Remove 'Needs Revision' status in favor of immediate follow-up PRs.
+
+### 2026-05-22
+
+* Fix title
+* Remove unneeded header field
 
 [OEP]: https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0001.html
 [RFCs repository]: https://github.com/tari-project/rfcs

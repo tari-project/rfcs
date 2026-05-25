@@ -1,4 +1,14 @@
-# The Tari Community Charter
+# A-TIP-PROC-2: The Tari Community Charter
+
+| TIP           | [A-TIP-PROC-2](#a-tip-proc-2-the-tari-community-charter) |
+|---------------|----------------------------------------------------------|
+| Title         | The Tari Community Charter                               |
+| Last Modified | 2026-05-22                                               |
+| Authors       | Possumously <possum@tari.com>                            |
+| Status        | Accepted                                                 |
+| Type          | Process                                                  |
+| Created       | 2026-05-06                                               |
+| References    |                                                          |
 
 ## Introduction
 
@@ -163,3 +173,13 @@ This charter may be amended through the same process required for strategic deci
 Any amendment affecting Council powers, member selection, removal, stipend calculation, or amendment procedures shall require community ratification by a two-thirds supermajority of Core Contributors, following the public discussion and Final Comment Period.
 
 When this charter no longer serves the protocol, the community shall have both the power and the duty to change it.
+
+## Change History
+
+### 2026-05-06
+
+* Initial Charter Merged
+
+### 2026-05-22
+
+* Header and title conformed to current process
