@@ -60,7 +60,7 @@ to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Ta
 remove the coins from circulation. This RFC details a method to remove coins from circulation permanently.
 
 An excellent example of using burned coins is a [Perpetual One-way Peg](https://medium.com/@RubenSomsen/21-million-bitcoins-to-rule-all-sidechains-the-perpetual-one-way-peg-96cb2f8ac302). This allows users to
-create utility tokens on a sidechain or, in Tari's case, the DAN. By not allowing funds to be moved back, the sidechain gains an auditable total utilitarian value. Value speculation is largely removed, as the sidechain will only ever be as valuable as the value of coins burned in the peg.
+create utility tokens on a sidechain or, in Tari's case, the Ootle. By not allowing funds to be moved back, the sidechain gains an auditable total utilitarian value. Value speculation is largely removed, as the sidechain will only ever be as valuable as the value of coins burned in the peg.
 
 
 ## Introduction
