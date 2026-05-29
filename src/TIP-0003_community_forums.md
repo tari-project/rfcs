@@ -3,7 +3,7 @@
 | TIP           | [P-TIP-PROC-3](#p-tip-proc-3-tari-community-forums) |
 |---------------|-----------------------------------------------------|
 | Title         | Tari Community Forums                               |
-| Last Modified | 2026-05-28                                          |
+| Last Modified | 2026-05-29                                          |
 | Authors       | Fox Piacenti <fox@vulpinity.com>                    |
 | Status        | Proposed                                            |
 | Type          | Process                                             |
@@ -100,7 +100,13 @@ subcategories still serve as a venue for discussion in other languages.
 
 * Added section on International categories.
 
+### 2026-05-29
+
+* Fix link formatting issues
+* [Pull Request #172](https://github.com/tari-project/rfcs/pull/172)
+
 [^1]: In this case, trust is meant in the common definition rather than referring to the Discourse feature.
     Moderator trust levels in Discourse cannot be earned automatically but have to be set manually by an administrator.
+
 [Community Forum Link]: https://community.tari.com/
 [TIP-1]: ./TIP-0001_tari_improvement_proposals.md
