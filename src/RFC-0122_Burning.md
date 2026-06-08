@@ -55,7 +55,7 @@ The aim of this Request for Comment (RFC) is to describe the process of burning 
 
 ## Description
 
-Blockchains have used the burn method to destroy coins in circulation and prevent their use forever. Most chains use a reclaimable address
+Blockchains have used the burn method to destroy coins in circulation and prevent their spend forever. Most chains use a reclaimable address
 to denote burned coins. Using [RFC-0201: TariScript](RFC-0201_TariScript.md), Tari can also use this method, but it does not explicitly
 remove the coins from circulation. This RFC details a method to remove coins from circulation permanently.
 

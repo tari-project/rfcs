@@ -268,16 +268,16 @@ The total_script_offset MUST conform to the following:
 
 #### Nonce
 
-This is the nonce used in solving the Proof of Work.
+This is the Nonce used in solving the Proof of Work.
 
-The nonce MUST conform to the following:
+The Nonce MUST conform to the following:
 
 * MUST be transmitted as an unsigned 64-bit integer.
 * For RandomX blocks, this MUST be 0.
 
 #### PoW
 
-This is the Proof of Work algorithm used to mine the block. It is used in conjunction with the nonce.
+This is the Proof of Work algorithm used to mine the block. It is used in conjunction with the Nonce.
 
 The [PoW] MUST contain the following:
 
