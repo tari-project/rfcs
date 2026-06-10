@@ -138,7 +138,6 @@
                         <h1 id="rfc-0111basenodesarchitecture"><a class="header" href="#rfc-0111basenodesarchitecture">RFC-0111/BaseNodesArchitecture</a></h1>
 <h2 id="base-node-architecture"><a class="header" href="#base-node-architecture">Base Node Architecture</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable" /></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a></p>
 <h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2022 The Tari Development Community</p>
@@ -178,7 +177,7 @@ technological merits of the potential system outlined herein.</p>
 <p>The major components are separated into separate modules. Each module exposes a public Application Programming Interface
 (API), which communicates with other modules using asynchronous messages via futures.</p>
 <h3 id="base-node-service"><a class="header" href="#base-node-service">Base Node Service</a></h3>
-<p>The Base Node Service fields requests for the local nodes chain state and also accepts newly mined blocks that are 
+<p>The Base Node Service fields requests for the local node's chain state and also accepts newly mined blocks that are 
 propagating across the network. The service subscribes to NewBlock and BaseNodeRequest messages via the P2P comms 
 interface. These messages are propagated across the P2P network and can also be received directly from other nodes. The 
 service also provides a local interface to its functionality via an asynchronous Request-Response API. </p>
@@ -190,8 +189,8 @@ node will validate it. Its action depends on the validation outcome:</p>
 <ul>
 <li><em>Invalid block</em> - drop the block.</li>
 <li><em>Valid block appending to the longest chain</em> - add the block to the local state and propagate the block to peers.</li>
-<li><em>Valid block forking off main chain</em> - add the block to the local state and propagate the block to peers.</li>
-<li><em>Valid block building off unknown block</em> - add the orphan block to the local state.</li>
+<li><em>Valid block forking off main chain</em> - add the orphan block to the local state.</li>
+<li><em>Valid* block building off unknown block</em> - add the orphan block to the local state. These blocks are only checked for PoW and other stateless checks.</li>
 </ul>
 </li>
 <li>
@@ -209,8 +208,8 @@ modules to subscribe to.</p>
 block. The mempool is ephemeral and non-consensus critical, and as such may be a memory-only data structure. Maintaining
 a large mempool is far more important for Base Nodes serving miners than those serving wallets. The mempool structure 
 itself is a set of hash maps as described in <a href="RFC-0190_Mempool.html">RFC-0190</a></p>
-<p>When either the node reboots, or it synchronises a default number of 5 blocks, the Mempool sync service will contact peers and sync valid mempool transactions from them. After 
-it has synced this service runs to field such requests from other peers.</p>
+<p>When either the node reboots or it synchronises a default number of 5 blocks, the Mempool Sync Service will contact peers and sync valid mempool transactions from them. After 
+it has synced, this service runs to field such requests from other peers.</p>
 <p>The Mempool service handles Mempool Service Requests which it can receive from the P2P comms stack via its 
 subscriptions, via the Mempool RPC service and via an internal Request-Response API. All these interfaces provide the 
 following calls:</p>
@@ -223,11 +222,11 @@ it will be rejected with a reason.</li>
 <h3 id="liveness-service"><a class="header" href="#liveness-service">Liveness Service</a></h3>
 <p>The Liveness service can be used by other modules to test the liveness of a specific peer and also periodically tests a 
 set of its connected peers for liveness. This service subscribes to <code>Ping</code> P2P messages and responds with <code>Pong</code>s. The 
-service gathers data about the monitored peer's liveness such as its latency. The <code>Ping</code> and Pong` messages also contain
-a copy of this nodes current Chain Metadata for use by the receiving nodes Chain Metadata Service.</p>
+service gathers data about the monitored peer's liveness such as its latency. The <code>Ping</code> and <code>Pong</code> messages also contain
+a copy of this node's current Chain Metadata for use by the receiving node's Chain Metadata Service.</p>
 <h3 id="chain-metadata-service"><a class="header" href="#chain-metadata-service">Chain Metadata Service</a></h3>
-<p>The Chain Metadata Service maintains this nodes current Chain Metadata state to be sent out via <code>Ping</code> and <code>Pong</code> 
-messages by the Liveness service. This node also monitors the Chain Metadata received from other peers in the <code>Ping</code> and
+<p>The Chain Metadata Service maintains this node's current Chain Metadata state to be sent out via <code>Ping</code> and <code>Pong</code> 
+messages by the Liveness Service. This service also monitors the Chain Metadata received from other peers in the <code>Ping</code> and
 <code>Pong</code> messages received by the Liveness service. Once a full round of <code>Pong</code> messages are received this service will 
 emit this data as an event which the Base Node State Machine monitors.</p>
 <h3 id="distributed-hash-table-dht-service"><a class="header" href="#distributed-hash-table-dht-service">Distributed Hash Table (DHT) Service</a></h3>
@@ -251,16 +250,15 @@ be thread-safe.</p>
 <h3 id="p2p-communications"><a class="header" href="#p2p-communications">P2P communications</a></h3>
 <p>The Tari Peer to Peer messaging protocol is defined in <a href="RFC-0172_PeerToPeerMessagingProtocol.html">RFC-0172</a>. It is a fire-and-forget style protocol. Messages can 
 be sent directly to a known peer, sent indirectly to an offline or unknown peer and broadcast to a set of peers. When
-a message is sent to specific peer it is propagated to the peers local neighbourhood and stored by those peers until it
+a message is sent to a specific peer it is propagated to the peer's local neighbourhood and stored by those peers until it
 comes online to receive the message. Messages that are broadcast will be propagated around the network until the whole
 network has received them, they are not stored.</p>
 <h3 id="rpc-services"><a class="header" href="#rpc-services">RPC Services</a></h3>
 <p>Fire-and-forget messaging is not efficient for point to point communications between online peers. For these applications
 the Base Node provides RPC services that present an API for clients to interact with. These RPC services provide a
-Request-Response interface defined by Profobuf for clients to use. RPC also allows for streaming of data which is much
+Request-Response interface defined by Protobuf for clients to use. RPC also allows for streaming of data which is much
 more efficient when transferring large amounts of data.</p>
-<p>Examples of RPC services running in 
-Base Node are:</p>
+<p>Examples of RPC services running in the Base Node are:</p>
 <ul>
 <li><strong>Wallet RPC service</strong>: An RPC interface containing methods used by wallets to submit and query transactions on a 
 Base Node</li>
@@ -299,6 +297,33 @@ provides; third-party applications such as block explorers; and, of course, mine
 </li>
 <li>Block and transaction validation calls</li>
 <li>Block synchronisation calls</li>
+</ul>
+<h3 id="http-interface"><a class="header" href="#http-interface">HTTP Interface</a></h3>
+<p>The base node exposes an HTTP API built with <a href="https://github.com/tokio-rs/axum">Axum</a>. Interactive API documentation is
+available via Swagger UI at <code>/swagger-ui</code>, with the OpenAPI specification served at <code>/openapi.json</code>.</p>
+<p>The following endpoints are available:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Method</th><th style="text-align: left">Path</th><th style="text-align: left">Description</th></tr></thead><tbody>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/get_tip_info</code></td><td style="text-align: left">Returns chain tip metadata and sync status</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/get_header_by_height</code></td><td style="text-align: left">Retrieves a block header at a given height</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/get_height_at_time</code></td><td style="text-align: left">Returns the block height for a given Unix timestamp</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/get_utxos_mined_info</code></td><td style="text-align: left">Returns mining info for UTXOs identified by hash</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/fetch_utxo</code></td><td style="text-align: left">Fetches a single UTXO by output hash</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/get_utxos_deleted_info</code></td><td style="text-align: left">Returns deletion/spend info for a set of UTXOs</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/transactions</code></td><td style="text-align: left">Queries a transaction by its excess signature</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/sync_utxos_by_block</code></td><td style="text-align: left">Paginated UTXO sync starting from a header hash</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/get_utxos_by_block</code></td><td style="text-align: left">Returns all UTXOs for a block by header hash</td></tr>
+<tr><td style="text-align: left">POST</td><td style="text-align: left"><code>/json_rpc</code></td><td style="text-align: left">JSON-RPC 2.0 endpoint (e.g. <code>submit_transaction</code>)</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/generate_kernel_merkle_proof</code></td><td style="text-align: left">Generates a Merkle proof for a kernel signature</td></tr>
+<tr><td style="text-align: left">GET</td><td style="text-align: left"><code>/get_mempool_fee_per_gram_stats</code></td><td style="text-align: left">Returns fee-per-gram statistics from the mempool</td></tr>
+</tbody></table>
+</div>
+<p>All endpoints use JSON request and response bodies. A global request body size limit of approximately 10 MB is applied,
+though several endpoints disable this limit to support larger payloads. Caching behaviour is configurable per route.</p>
+<p>The <code>/json_rpc</code> endpoint follows the <a href="https://www.jsonrpc.org/specification">JSON-RPC 2.0</a> specification. Currently
+supported methods:</p>
+<ul>
+<li><code>submit_transaction</code> — Submits a transaction to the mempool. The response includes whether the transaction was
+accepted, any rejection reason, and whether the node is synced.</li>
 </ul>
 <h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr></thead><tbody>

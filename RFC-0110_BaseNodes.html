@@ -138,7 +138,6 @@
                         <h1 id="rfc-0110basenodes"><a class="header" href="#rfc-0110basenodes">RFC-0110/BaseNodes</a></h1>
 <h2 id="base-layer-full-nodes-base-nodes"><a class="header" href="#base-layer-full-nodes-base-nodes">Base Layer Full Nodes (Base Nodes)</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable" /></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a>, <a href="https://github.com/SWvheerden">S W van heerden</a> and  <a href="https://github.com/sdbondi">Stanley Bondi</a></p>
 <h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2019 The Tari Development Community</p>
@@ -177,14 +176,10 @@ their general approach for doing so.</p>
 <ul>
 <li><a href="RFC-0140_Syncing_and_seeding.html">RFC-0140: SyncAndSeeding</a></li>
 </ul>
-<p>$$
-\newcommand{\so}{\gamma} % script offset
-$$</p>
 <h2 id="description"><a class="header" href="#description">Description</a></h2>
 <h3 id="broad-requirements"><a class="header" href="#broad-requirements">Broad Requirements</a></h3>
 <p>Tari Base Nodes form a peer-to-peer network for a proof-of-work based blockchain running the <a href="Glossary.html#mimblewimble">Mimblewimble</a>
-protocol. The proof-of-work is performed via hybrid mining, that is merge mining with Monero and stand-alone SHA 3. 
-Arguments for this design are presented <a href="RFC-0001_overview.html#proof-of-work">in the overview</a>.</p>
+protocol. The proof-of-work is performed via hybrid mining, Arguments for this design are presented <a href="RFC-0001_overview.html#proof-of-work">in the overview</a>.</p>
 <p>Tari Base Nodes MUST carry out the following tasks:</p>
 <ul>
 <li>validate all <a href="Glossary.html#tari-coin">Tari coin</a> transactions;</li>
@@ -194,7 +189,7 @@ Arguments for this design are presented <a href="RFC-0001_overview.html#proof-of
 <li>connect to peer nodes to catch up (sync) with their blockchain state;</li>
 <li>provide historical block information to peers that are syncing.</li>
 </ul>
-<p>Once the Digital Assets Network (DAN) goes live, Base Nodes will also need to support the tasks described in
+<p>Once the Ootle goes live, Base Nodes will also need to support the tasks described in
 <a href="RFC-0303_DanOverview.html">RFC-0303_DAN</a>. These requirements may involve but are not limited to:</p>
 <ul>
 <li>maintain an index of validator node registrations;</li>
@@ -239,7 +234,7 @@ specified block height or timestamp has been reached.</li>
 <li>The transaction excess is a valid public key. This proves that:
 $$ \Sigma \left( \mathrm{inputs} - \mathrm{outputs} - \mathrm{fees} \right) = 0 $$.</li>
 <li>The transaction excess has a unique value across the whole chain.</li>
-<li>The <a href="./RFC-0201_TariScript.html">Tari script</a> of each input must execute successfully and return the public key that signs the script signature. </li>
+<li>The <a href="./RFC-0201_TariScript.html">Tari script</a> of each input must execute successfully and return the public key that signs a valid script signature. </li>
 <li>The script offset \( \so\) is calculated and verified as per <a href="./RFC-0201_TariScript.html">RFC-0201_TariScript</a>.</li>
 </ul>
 <p>Rejected transactions are dropped without service interruption and noted in log files.</p>
@@ -260,10 +255,10 @@ a maximum block weight of <code>S/N</code> grams. </p>
 <p>With an <code>S</code> of 1MiB and <code>N</code> of 16, the block and transaction body weights are as follows:</p>
 <div class="table-wrapper"><table><thead><tr><th></th><th>Byte size</th><th>Natural Weight</th><th>Adjust</th><th>Final</th></tr></thead><tbody>
 <tr><td>Output</td><td></td><td></td><td></td><td></td></tr>
-<tr><td>- Per output</td><td>832</td><td>52</td><td>0</td><td>52</td></tr>
+<tr><td>- Per output</td><td>832</td><td>52</td><td>+1</td><td>53</td></tr>
 <tr><td>- Tari Script</td><td>variable</td><td>size_of(script) / 16</td><td>0</td><td>size_of(script) / 16</td></tr>
 <tr><td>- Output Features</td><td>variable</td><td>size_of(features) / 16</td><td>0</td><td>size_of(features) / 16</td></tr>
-<tr><td>Input</td><td>169</td><td>11</td><td>-2</td><td>9</td></tr>
+<tr><td>Input</td><td>169</td><td>11</td><td>-3</td><td>8</td></tr>
 <tr><td>Kernel size</td><td>113</td><td>8</td><td>2</td><td>10</td></tr>
 </tbody></table>
 </div>
