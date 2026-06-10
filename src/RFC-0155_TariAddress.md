@@ -48,7 +48,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This document outlines the specification for Tari Address, which are encoded wallet addresses used to verify wallet addresses, features, and networks. 
+This document outlines the specification for Tari Address, which are encoded wallet addresses used to verify wallet addresses, features, and networks.
 The address should have human-readable network and feature identification and contain all information required to send transactions to a wallet owning an address.
 
 ## Related Requests for Comment
@@ -88,9 +88,9 @@ Indicates the supported features of the wallet, such as interactive and one-side
 | one_sided only                       | 📟        | 01      | 2          |
 | interactive only                     | 🌈        | 02      | 3          |
 | onesided + interactive               | 🌊        | 03      | 4          |
-| one_sided + payment_id               | 🐋        | 05      | 6          |
-| interactive + payment_id             | 🌙        | 06      | 7          |
-| onesided + interactive + payment_id | 🤔        | 07      | 8          |
+| one_sided + memo field               | 🐋        | 05      | 6          |
+| interactive + memo field             | 🌙        | 06      | 7          |
+| onesided + interactive + memo field  | 🤔        | 07      | 8          |
 
 
 #### Network
@@ -109,17 +109,17 @@ Specifies the Tari network the wallet operates on, e.g., Esmeralda, Nextnet, etc
 The checksum is only included when encoding the address as bytes, hex, or emojis. For the checksum, the: [DammSum](https://github.com/cypherstack/dammsum) algorithm is employed,
 with `k = 8` and `m = 32`, resulting in an 8-bit checksum.
 
-#### Payment ID
-Tari includes an optional encrypted bytes field with a max size of 256 bytes. This field allows you to store bytes that are encrypted on chain, on the UTXO. This can be used to track payments etc. When included into the Tari address, the sent UTXO will include this payment id.
+#### Memo Field
+Tari includes an optional encrypted bytes field with a max size of 256 bytes. This field allows you to store bytes that are encrypted on chain, on the UTXO. This can be used to track payments etc. When included into the Tari address, the sent UTXO will include this memo field.
 
-### Encoding 
+### Encoding
 #### Bytes
 When generating a byte representation of the wallet, the following format is used:
 - [0]: Network encoded as u8
 - [1]: Raw u8 representing features
 - [2..33]: Public view key encoded as u8
 - [34..65]: Public spend key encoded as u8
-- [66-N]: (Optional) Payment ID, encoded as u8
+- [66-N]: (Optional) Memo field, encoded as u8
 - [N+1]: DammSum checksum
 
 
@@ -172,10 +172,11 @@ Each byte is encoded using the emoji listed at the corresponding index.
 
 ## Change Log
 
-| Date         | Change                   | Author        |
-|:-------------|:-------------------------|:--------------|
-| 2024-05-31   | Initial stable           | SWvHeerden    |
-| 2025-04-30   | Add payment ID           | SWvHeerden    |
+| Date       | Change                              | Author      |
+|:-----------|:------------------------------------|:------------|
+| 2024-05-31 | Initial stable                      | SWvHeerden  |
+| 2025-04-30 | Add payment ID                      | SWvHeerden  |
+| 2025-06-21 | Rename Payment ID to Memo Field     | MCozhusheck |
 
 [Communication Node]: Glossary.md#communication-node
 [Node ID]: Glossary.md#node-id
