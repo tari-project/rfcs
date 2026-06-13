@@ -6,7 +6,6 @@ description = "The Tari network RFC library and documentation"
 [build]
 build-dir = "./book"
 create-missing = false
-#preprocess = ["links", "index"]
 
 [output.html]
 mathjax-support=true
@@ -27,8 +26,6 @@ boost-paragraph = 1
 expand = true
 heading-split-level = 3
 copy-js = true
-
-[preprocessor]
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"

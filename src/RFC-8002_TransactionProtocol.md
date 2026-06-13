@@ -4,7 +4,7 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: Cayle Sharrock <CjS77>
+**Maintainer(s)**: Cayle Sharrock &lt;CjS77&gt;
 
 # Licence
 
