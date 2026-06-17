@@ -1,18 +1,18 @@
-# <RFC-Number>-<Short Title>
+# (RFC-Number)-(Short Title)
 
-## <Long title>
+## Long title
 
 ![status: raw](theme/images/status-raw.svg)
 
 Tracking issue: [assigned during WIP phase]()
 
-**Maintainer(s)**: <Maintainer name> <github username>
+**Maintainer(s)**: &lt;Maintainer name&gt; &lt;github username&gt;
 
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
 
-Copyright <YEAR> <COPYRIGHT HOLDER | The Tari Development Community>
+Copyright &lt;YEAR&gt; &lt;COPYRIGHT HOLDER | The Tari Development Community&gt;
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
 following conditions are met:

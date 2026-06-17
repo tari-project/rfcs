@@ -343,14 +343,14 @@ Identical to [`CheckSig`](#checksigmsg), except that nothing is pushed to the st
 In addition to the failures mentioned:
 * Fails with `VerifyFailed` if the signature is invalid.
 
-##### CheckMultiSig(m, n, Vec<PublicKey>, Message)
+##### CheckMultiSig(m, n, Vec&lt;PublicKey&gt;, Message)
 
 Pops exactly `m` signatures from the stack. The multiple signature validation will not succeed if the `m`
-signatures are not unique or if Vec<RistrettoPublicKey> contains a duplicate public key. Each signature is
+signatures are not unique or if Vec&lt;RistrettoPublicKey&gt; contains a duplicate public key. Each signature is
 validated using the 32-byte message and a public key that match. If signature validation for m unique
 signatures succeeds, push 1 to the stack, otherwise push 0.
 
-* Fails with `IncompatibleTypes` if either `m` or `n` is not a valid 8-bit unsigned integer, if Vec<RistrettoPublicKey> 
+* Fails with `IncompatibleTypes` if either `m` or `n` is not a valid 8-bit unsigned integer, if Vec&lt;RistrettoPublicKey&gt; 
   contains an invalid public key or if Message is not a valid 32-byte sequence.
 * Fails with `ValueExceedsBounds` if `m` == 0 or if `n` == 0 or if `m` > `n` or if `n` > `MAX_MULTISIG_LIMIT`
   (32) or if the number of public keys provided != `n`.
@@ -358,7 +358,7 @@ signatures succeeds, push 1 to the stack, otherwise push 0.
 * Fails with `IncompatibleTypes` if any of the m signatures from the stack is not a valid signature.
 * Fails with `InvalidInput` if each of the top m elements is not a Signature.
 
-##### CheckMultiSigVerify(m, n, Vec<PublicKey>, Message)
+##### CheckMultiSigVerify(m, n, Vec&lt;PublicKey&gt;, Message)
 
 Identical to [`CheckMultiSig`](#checkmultisigm-n-public-keys-msg), except that nothing is pushed to the stack if the 
 multiple signature validation is either valid or invalid. 

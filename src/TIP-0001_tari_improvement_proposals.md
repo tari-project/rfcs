@@ -4,7 +4,7 @@
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Tari Improvement Proposals                                                |
 | Last Modified   | 2026-05-17                                                                |
-| Authors         | Fox Piacenti <fox@vulpinity.com>                                          |
+| Authors         | Fox Piacenti &lt;fox@vulpinity.com&gt;                                    |
 | Status          | Proposed                                                                  |
 | Type            | Process                                                                   |
 | Created         | 2026-05-02                                                                |
@@ -121,7 +121,7 @@ Draft a TIP using an existing example, and submit a pull request against the [RF
 proposal, the Authors should check the numbered list of previous TIPs that match their type and subtype, and select the
 next available sequence number.
 
-The pull request title should be of the form "TIP-XXXX: <TIP title>" where *XXXX* is the TIP number claimed for the
+The pull request title should be of the form "TIP-XXXX: &lt;TIP title&gt;" where *XXXX* is the TIP number claimed for the
 included proposal. The status should be 'Proposed.'
 
 Once created, the PR goes through initial review by the Expert Reviewer. After review is completed, the PR is merged.
@@ -259,18 +259,18 @@ existing TIPs may be used as an example.
 Each TIP must begin with a Markdown table with metadata about the TIP. The rows must appear in the following order.
 Rows in italics are otional and are described below. All other rows are required.
 
-| TIP           | S-TIP-TYP-SUB-X                                                                   |
-|---------------|-----------------------------------------------------------------------------------|
-| Title         | <TIP Title>                                                                       |
-| Last Modified | <date string, in YYYY-MM-DD format>                                               |
-| Authors       | <list of authors' established handles or names, and, optionally, email addresses> |
-| Status        | <Proposed \| Accepted \| Rejected \| Deprecated>                                  |
-| Type          | <Process \| Best Practice \| Product Direction \| Architecture>                   |
-| Created       | <date created on, in YYYY-MM-DD format>                                           |
-| *Resolution*  | <links to any discussions where the final status was decided>                     |
-| *Replaces*    | <TIP Number>                                                                      |
-| *Replaced-By* | <TIP Number>                                                                      |
-| *References*  | <links to any other relevant discussions or relevant related materials>           |
+| TIP           | S-TIP-TYP-SUB-X                                                                         |
+|---------------|-----------------------------------------------------------------------------------------|
+| Title         | &lt;TIP Title&gt;                                                                       |
+| Last Modified | &lt;date string, in YYYY-MM-DD format&gt;                                               |
+| Authors       | &lt;list of authors' established handles or names, and, optionally, email addresses&gt; |
+| Status        | &lt;Proposed \| Accepted \| Rejected \| Deprecated&gt;                                  |
+| Type          | &lt;Process \| Best Practice \| Product Direction \| Architecture&gt;                   |
+| Created       | &lt;date created on, in YYYY-MM-DD format&gt;                                           |
+| *Resolution*  | &lt;links to any discussions where the final status was decided&gt;                     |
+| *Replaces*    | &lt;TIP Number&gt;                                                                      |
+| *Replaced-By* | &lt;TIP Number&gt;                                                                      |
+| *References*  | &lt;links to any other relevant discussions or relevant related materials&gt;           |
 
 * The **Authors** header lists the names or community handles, and optionally the email addresses, of all the
   authors/owners of the TIP. The format of the Authors header value must be `Random J. User <address@example.com>` if

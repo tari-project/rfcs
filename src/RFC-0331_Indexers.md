@@ -69,7 +69,7 @@ code.
 
 <p>The indexer application has additional functionality (such as a copy of the Tari engine for executing dry runs of
 transactions) that is outside the domain of what the indexer is responsible for: maintaining a database of contract
-state, and delivering that state to client applications.
+state, and delivering that state to client applications.</p>
 </div>
 
 You can think of Validator nodes as staying in position and managing the state of a fixed set of addresses, possibly
@@ -80,7 +80,7 @@ Figure 1 illustrates this dynamic:
 
 ![Figure 1: Validator and Indexer](./assets/indexer_vs_vn.jpg)
 
-The indexer library work via three inter-oparting modules: substate scanning, substate decoding, and the substate 
+The indexer library works via three interoperating modules: substate scanning, substate decoding, and the substate 
 cache.
 
 ### Substate scanning
