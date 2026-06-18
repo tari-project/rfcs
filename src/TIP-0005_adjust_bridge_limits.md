@@ -25,3 +25,9 @@ This proposal is to raise the daily bridge limit from 2 million to 5 million in 
 Bridges are a common target for malicious actors looking to exploit vulnerabilities in cryptocurrency projects. Current limits exist to reduce the chances of bridge exploits. 
 
 Bridge limits have a secondary effect of limiting sell pressure on exchanges. Raising/removing limits may negatively impact price/liquidity. 
+
+## Change History
+
+### 2026-06-17
+
+* Document Created.
