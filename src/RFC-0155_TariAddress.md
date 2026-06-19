@@ -4,7 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**:[SW van Heerden](https://github.com/swvheerden)
 
 # Licence
 

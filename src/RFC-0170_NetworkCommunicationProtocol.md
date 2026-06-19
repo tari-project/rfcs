@@ -4,8 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Stringhandler](https://github.com/stringhandler)
-
 # License
 
 [ The 3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).
@@ -78,7 +76,7 @@ The majority of the communication required on the [Base Layer] and [Digital Asse
 Alternatively, the Tari communication network can be used for broadcasting joining requests, discovery requests and propagating data messages such as completed blocks, transactions and data messages that are of interest to a large part of the Tari communication network. 
 
 The Tari communication network consists of a number of different entities that need to communicate in a distributed and ad-hoc manner. 
-The primary entities that need to communicate are Validator Nodes (VN), [Base Node]s (BN), and [Wallet]s (W).
+The primary entities that need to communicate are Validator Nodes (VN) and [Base Node]s (BN).
 Here are some examples of different communication tasks that need to be performed by these entities on the Tari Communication network:
 - Base Nodes on the Base Layer need to propagate completed blocks and transactions to other Base Nodes using Gossip protocol based broadcasting.
 - Wallets need to communicate and negotiate with other Wallets to create transactions. They also need the ability to submit transactions to the [mempool] of Base Nodes.
@@ -88,11 +86,10 @@ Here are some examples of different communication tasks that need to be performe
 
 Here is an overview communication matrix that show which source entities SHOULD initiate communication with destination entities on the Tari Communication network:
 
-| Destination (across) <br>Source (down) | Validator Node | Base Node | Wallet |
-|----------------------------------------|---             |-----------|--------|
-| Validator Node                         | Yes            | No        | No     |
-| Base Node                              | No             | Yes       | No     |
-| Wallet                                 | No             | Yes       | Yes    |
+| Destination (across) <br>Source (down) | Validator Node | Base Node |
+|----------------------------------------|---             |-----------|
+| Validator Node                         | Yes            | No        |
+| Base Node                              | No             | Yes       |
 
 #### Communication Nodes and Communication Clients
 
@@ -112,7 +109,6 @@ The different entity types MUST be grouped into the different communication node
 |---             |---                      |
 | Validator Node | Communication Node      |
 | Base Node      | Communication Node      |
-| Wallet         | Communication Client    |
 
 #### Unique identification of Communication Nodes and Communication Clients 
 

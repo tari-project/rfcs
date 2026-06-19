@@ -4,7 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi), [Cayle Sharrock](https://github.com/CjS77), [Stringhandler](https://github.com/stringhandler)
 
 # Licence
 
@@ -387,10 +386,6 @@ The destination peer will attempt to contact the sender and send a `DiscoveryRes
 
 Sent in response to a `Discovery` message. 
 
-- `SafRequestMessages` / `SafStoredMessages`
-
-Request and response messages for stored messages destined for the requester.
-
 ##### EnvelopeBody
 
 The `EnvelopeBody` is the "payload" of the message and consists of an arbitrary number of ordered opaque BLOBs.
@@ -461,27 +456,6 @@ On receipt of a valid message with destination set to `PUBLIC_KEY(xxxx)`, a node
 directly to the peer, if able, or closer to the peer as per the XOR metric. If the message is invalid, the node
 SHOULD discard it.
 
-##### Store and Forward
-
-Sometimes it may be desirable for messages to be sent without a destination node/client being online. This
-is especially important for a modern chat/messaging application as well as interactive Mimblewimble transactions.
-
-Each [communication node] SHOULD allocate some disk space for storage of messages for offline recipients.
-A sender sends a message destined for a particular public identity to its closest peers, which forward the message
-to their closest peers, and so on. A peer is considered close enough by finding the farthest peer from the `n` closest 
-online and available peers to the storage node and comparing that to the XOR distance of the message destination.
-
-Eventually, the message will reach nodes that either know the destination or are very close to the destination.
-These nodes SHOULD store the message in some pending message storage for the destination. The maximum number of
-buckets and the size of each bucket SHOULD be sufficiently large as to be unlikely to overflow, but not so
-large as to approach disk space problems. Individual messages should be small and responsibilities for
-storage spread over the entire network.
-
-On receipt of a valid message with destination set to `PUBLIC_KEY(xxxx)`, and if the peer is sufficiently close to the destination,
-a node SHOULD store the message for a time and return it later to the peer in response to a `SafRequestMessages` message.
-
-If the [DhtEnvelopeBody] is encrypted, the type and contents of the message remain private.
-
 ##### Message Deduplication
 
 A peer propagating/routing a message may receive the same message after propagation from another peer as there is no way 
@@ -497,6 +471,7 @@ discarded and not propagated further.
 | 9 Nov 2022  | Removed I2P and ZeroMQ        | stringhandler |
 | 17 Jan 2023 | Implementation parity updates | sdbondi       |
 | 25 Jan 2023 | Clarify empty body rules      | sdbondi       |
+| 19 Jun 2026 | Saf removal                   | SW van Heerden|
 
 [communication client]: Glossary.md#communication-client
 [communication node]: Glossary.md#communication-node

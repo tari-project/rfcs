@@ -4,8 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Hansie Odendaal](https://github.com/hansieodendaal)
-
 # Licence
 
 [ The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
@@ -84,14 +82,19 @@ switch between them.
 In practice, no set of algorithms is genuinely independent. The best we can do is try to choose algorithms that work best
 on CPUs, GPUs, and ASICs. In truth, the distinction between GPUs and ASICs is only a matter of time. Any "GPU-friendly"
 algorithm is ASIC-friendly, too; it's just a case of whether the capital outlay for fabricating them is worth it, and
-this will eventually become true for any algorithm that supplies PoW for a growing market cap.
+this will eventually become true for any algorithm that supplies PoW for a growing market cap. Memory price is a big hurdle in ASIC design.
 
-With this in mind, we should only choose one GPU/ASIC algorithm and one for CPUs. 
 
-An excellent technical choice would be merge mining with Monero using RandomX as a CPU-only algorithm and SHA3, also known as Keccak
-, for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm means there is 
-a low likelihood of unforeseen optimizations that will give a single miner a considerable advantage. It also means that it stands a 
-good chance of being "commoditized" when ASICs are eventually manufactured. This would mean that SHA3 ASICs are widely available from multiple suppliers.
+An excellent technical choice would be merge mining with Monero using RandomX as a CPU-only algorithm and SHA3, also known
+as Keccak, for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm
+means there is a low likelihood of unforeseen optimizations that would give a single miner a considerable advantage. It
+also means that it stands a good chance of being "commoditized" when ASICs are eventually manufactured, so that SHA3
+ASICs become widely available from multiple suppliers.
+Using Cuckaroo 29 as a memory-bound algorithm makes ASICs and FPGAs very expensive, and the required memory is easy to
+increase, which makes it monetarily hard to justify an FPGA or ASIC.
+
+Relying purely on RandomX merge mined with Monero makes Tari vulnerable to large Monero pools. We can easily use RandomX
+without Monero as a secondary mining pool.
 
 ### The difficulty adjustment strategy
 
@@ -107,7 +110,7 @@ and it proved to be a good choice in the multi-PoW scene as well.
 
 Tari's proof-of-work mining algorithm is summarized below:
 
-- Two mining algorithms, with an average combined target block time of 120 s, to match Monero's block interval.
+- Four mining algorithms, with an average combined target block time of 120 s, to match Monero's block interval.
 - A log-weighted moving average difficulty adjustment algorithm using a window of 90 blocks.
 
 ### Tari mining hash
@@ -133,14 +136,15 @@ This hash is used in both the SHA-3 and RandomX proof-of-work algorithms. The he
 block is 1.
 
 #### RandomX
+##### RxM
 
 Monero blocks that are merge-mining Tari MUST include the Tari mining hash in the extra field of the Monero coinbase transaction.
 
 Tari also imposes the following consensus rules:
 - The `seed_hash` MUST only be used for 3000 blocks, after which a block MUST be discarded if it's used again.
 - The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.
-- The LWMA MUST use a target time of 200 seconds.
-- MUST set the header field PoW:pow_algo as 0 for a Monero block
+- The LWMA MUST use a target time of 800 seconds.
+- MUST set the header field PoW:pow_algo as 0 for a RxM block
 - MUST encode the following data into the Pow:Pow_data field:
   - Monero BlockHeader,
   - RandomX VM key,
@@ -148,6 +152,16 @@ Tari also imposes the following consensus rules:
   - Monero merkle root,
   - Monero coinbase merkle proof and,
   - Monero coinbase transaction
+
+##### RxT
+Using RandomX solely with Tari, the following consensus is enforced:
+
+- The `seed_hash` MUST only be used for 3000 blocks, after which a block MUST be discarded if it's used again.
+- The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.
+- The LWMA MUST use a target time of 800 seconds.
+- MUST set the header field PoW:pow_algo as 2 for an RxT block
+- MUST encode the following data into the Pow:Pow_data field:
+  - 32 bytes extra data
 
 #### Sha-3x
 
@@ -171,7 +185,7 @@ Tari imposes the following consensus rules:
   LWMA for Tari. The difficulty and target are related by the equation `difficulty = (2^256 - 1) / target`.
 - MUST set the header field PoW:pow_algo as 1 for a Sha block.
 - The PoW:pow_data field is empty
-- The LWMA MUST use a target time of 300 seconds.
+- The LWMA MUST use a target time of 800 seconds.
 
 A triple hash is selected to keep the requirements on hardware miners (FPGAs, ASICs) fairly low. But we also want to 
 avoid making the proof-of-work immediately "NiceHashable". There are several coins that already use a single or 
@@ -183,7 +197,16 @@ latter is required to be compatible with the Monero specification. But we also u
 the block hash due to a historical convention. The Bitcoin white paper describes the block hash target as 
 containing "a certain number of leading zeros" (paraphrased). This is obviously a big-endian representation. If we 
 used little-endian, our block hashes would have trailing zeroes. So we use the big-endian form to satisfy the 
-expected in block explorers and such that block hashes should always start with a series of zeroes.    
+expectation in block explorers and elsewhere that block hashes should always start with a series of zeroes.
+
+#### C29
+Using C29 with Tari, the following consensus is enforced:
+
+- The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.
+- The LWMA MUST use a target time of 800 seconds.
+- MUST set the header field PoW:pow_algo as 3 for a C29 block
+- MUST encode the following data into the Pow:Pow_data field:
+  - Cuckaroo 29 Pow data bits
 
 # Stabilisation note
 
@@ -192,7 +215,7 @@ This RFC is stable as of PR#4862
 
 | Date       | Change                         | Author     |
 |:-----------|:-------------------------------|:-----------|
-| 2022-11-25 | Update mining hash decsription | CjS77      |
+| 2022-11-25 | Update mining hash description  | CjS77      |
 | 2022-10-26 | Finalise SHA-3 algorithm       | CjS77      |
 | 2022-10-11 | First outline                  | SWvHeerden |
 | 2024-12-09 | Corrected percentages for merged and hybrid mining | Solivagant |

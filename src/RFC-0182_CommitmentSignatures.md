@@ -4,7 +4,6 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [Aaron Feickert](https://github.com/AaronFeickert)
 
 # Licence
 

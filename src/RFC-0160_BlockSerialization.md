@@ -4,8 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
-
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
