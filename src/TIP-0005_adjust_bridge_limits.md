@@ -1,11 +1,11 @@
-# P-TIP-PROC-5: Adjust Bridge Limits
+# A-TIP-PROC-5: Adjust Bridge Limits
 
-| TIP             | [P-TIP-PROC-5](#p-tip-proc-5-adjust-bridge-limits)                        |
+| TIP             | [A-TIP-PROC-5](#a-tip-proc-5-adjust-bridge-limits)                        |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Adjust Bridge Limits                                                      |
 | Last Modified   | 2026-06-17                                                                |
 | Authors         | marimo                                                                    |
-| Status          | Proposed                                                                  |
+| Status          | Accepted                                                                  |
 | Type            | Process                                                                   |
 | Created         | 2026-06-17                                                                |
 
