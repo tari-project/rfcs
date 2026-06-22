@@ -691,3 +691,4 @@ This document is released under the BSD 3-Clause License.
 
 * Migrated to the `tari-project/rfcs` repository. Renumbered TIP-0006 → TIP-0007 (TIP-0006 was
   already claimed in this repository) and reformatted to the TIP-0001 header preamble.
+* [Pull Request #180](https://github.com/tari-project/rfcs/pull/180)
