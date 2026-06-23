@@ -6,7 +6,7 @@
 - [A-TIP-PROC-2: The Tari Community Charter](TIP-0002_tari_community_charter.md)
 - [P-TIP-PROC-3: Community Forums](TIP-0003_community_forums.md)
 - [A-TIP-0005: Adjust Bridge Limits](Process/TIP-PROC-0005_adjust_bridge_limits.md)
-- [P-TIP-RFC-7: Spend-Time Scripts for Ootle Stealth UTXOs](TIP-0007_ootle_spend_scripts.md)
+- [P-TIP-RFC-7: Spend-Time Scripts for Ootle Stealth UTXOs](rfc/ootle/TIP-RFC-0007_ootle_spend_scripts.md)
 - [RFC-0001: An overview of the Tari network](RFC-0001_overview.md)
 - [The Tari Base Layer](base_layer.md)
   - [RFC-0110: Base nodes](RFC-0110_BaseNodes.md)

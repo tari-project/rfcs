@@ -44,7 +44,7 @@ is explicitly deferred (see [Rationale](#rationale)).
 Ootle stealth UTXOs currently support exactly two spend conditions
 (`crates/template_lib_types/src/stealth/unspent_output.rs:65`):
 
-```rust
+```rust,ignore
 pub enum SpendCondition {
     Signed(RistrettoPublicKeyBytes),
     AccessRule(AccessRule),
@@ -94,7 +94,7 @@ of validation; no new plumbing of transaction data is required.
 
 `crates/template_lib_types/src/stealth/unspent_output.rs`:
 
-```rust
+```rust,ignore
 /// A spend condition is no longer an inline UTXO field; it is the v0 leaf payload of the
 /// condition tree (§9). The key path (`spend_key`, §10) is the signature condition, so the
 /// former `Signed` variant is removed.
@@ -139,7 +139,7 @@ predicate family (e.g. a single `timelock` function bound with different unlock 
 A spend script is an ordinary `is_mut == false` template **function** (no `&self`). It takes
 its bound args plus a `SpendContext` handle, and rejects the spend by panicking (returning normally authorises it):
 
-```rust
+```rust,ignore
 #[template(stateless)]
 mod vault_covenant {
     pub fn enforce(unlock_epoch: u64, ctx: SpendContext) {
@@ -181,7 +181,7 @@ Putting `SpendContext` last lets one rule cover 0, 1 or N bound args. `Type::Uni
 `Type::Other` already exist in the ABI (`template_def.rs:120,150`), so the match is a
 straightforward extension of the existing hook validator:
 
-```rust
+```rust,ignore
 fn validate_spend_script_signature(func: &FunctionDef) -> Result<(), RuntimeError> {
     if func.is_mut {
         return Err(/* spend script must not be mutable */);
@@ -401,7 +401,7 @@ section specifies the tree and proof mechanism, which is independent of that cho
 The decided committed model replaces the inline `SpendCondition` field on the stealth output with
 two separate committed fields — the authorization key and the condition-tree root (§9):
 
-```rust
+```rust,ignore
 pub struct StealthUnspentOutput {
     // …commitment, sender nonce, encrypted data, minimum_value_promise, tag…
     /// Key-path authorization. `None` = no key path.
