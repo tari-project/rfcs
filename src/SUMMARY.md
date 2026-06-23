@@ -5,6 +5,7 @@
 - [P-TIP-PROC-1: Tari Improvement Proposals](TIP-0001_tari_improvement_proposals.md)
 - [A-TIP-PROC-2: The Tari Community Charter](TIP-0002_tari_community_charter.md)
 - [P-TIP-PROC-3: Community Forums](TIP-0003_community_forums.md)
+- [A-TIP-0005: Adjust Bridge Limits](Process/TIP-PROC-0005_adjust_bridge_limits.md)
 - [RFC-0001: An overview of the Tari network](RFC-0001_overview.md)
 - [The Tari Base Layer](base_layer.md)
   - [RFC-0110: Base nodes](RFC-0110_BaseNodes.md)

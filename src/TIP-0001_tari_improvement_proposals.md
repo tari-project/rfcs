@@ -285,11 +285,18 @@ Rows in italics are otional and are described below. All other rows are required
 * The **References** header is a useful section to provide quick links to relevant materials and prior discussions
   regarding the proposal.
 
-### Auxillary Files
+### File Placement
 
-TIPs may include auxiliary files such as diagrams. Such files must be added to a subdirectory within `src/assets/` named
-the same as the file. Include original diagrams alongside image files, to make it easy for others to update the TIP in
-the future.
+New TIPs should be placed in an appropriate subdirectory relevant to their type (and subtype, as applicable). Existing
+TIPs which do not currently conform to this placement and which have been added to the navigation should not be moved,
+in order to preserve their URLs.
+
+#### Auxiliary Files
+
+TIPs may include auxiliary files such as diagrams. Such files must be added to a subdirectory within `src/assets/`
+which mirrors the path of the TIP. For example, if a TIP's file is named `src/Process/TIP-PROC-5555_example_tip.md`,
+the directory for static assets should be named `src/assets/Process/TIP-PROC-5555_example_tip/`. Include original
+diagram sources alongside image files, to make it easy for others to update the TIP in the future.
 
 ### Change History Section
 
