@@ -8,6 +8,7 @@ build-dir = "./book"
 create-missing = false
 
 [output.html]
+edit-url-template = "https://github.com/tari-project/rfcs/commits/main/{path}"
 mathjax-support=true
 theme = "src/theme"
 additional-js = []
