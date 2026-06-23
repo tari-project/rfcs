@@ -113,6 +113,11 @@
                         <h1 class="menu-title"><img src="{{ resource "theme/images/tari-horizontal-logo.png" }}"/> </h1>
 
                         <div class="right-buttons">
+                            {{#if git_repository_edit_url}}
+                                <a href="{{git_repository_edit_url}}" title="View change history" aria-label="View change history">
+                                    {{fa "solid" "clock-rotate-left"}}
+                                </a>
+                            {{/if}}
                             <a href="{{ resource "print.html" }}" title="Print this book" aria-label="Print this book">
                                 {{fa "solid" "print"}}
                             </a>
