@@ -4,8 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) [Stanley Bondi](https://github.com/sdbondi)
-
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
@@ -59,7 +57,6 @@ The aim of this Request for Comment (RFC) is to describe the message serializati
 One way of interpreting the Tari network is that it is a large peer-to-peer messaging application. The entities chatting
 on the network include:
 
-* Wallets
 * Base nodes
 * Validator nodes
 * Other client applications (e.g. chat)

@@ -4,7 +4,6 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [CjS77](https://github.com/CjS77)
 
 # Licence
 

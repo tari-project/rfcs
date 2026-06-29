@@ -4,7 +4,6 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [brianp](https://github.com/brianp)
 
 # Licence
 

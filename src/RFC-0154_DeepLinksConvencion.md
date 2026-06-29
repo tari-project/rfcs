@@ -4,8 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Adrian Truszczyński](https://github.com/TruszczynskiA)
-
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
@@ -48,15 +46,15 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to specify the deep links structure used in the Tari Aurora project.
-The primary motivation is to create a simple, human-readable, and scalable way to structure deep links used by the Tari Aurora clients.
+The aim of this Request for Comment (RFC) is to specify the deep links structure used in the Tari Universe mobile project.
+The primary motivation is to create a simple, human-readable, and scalable way to structure deep links used by the Tari Universe mobile clients.
 
 ## Description
 
 Deep links are the URIs with hierarchical components sequence. We can use this sequence to pass and handle data in a standardized and predictable way. To do that, we need to pass three components to the target client: the scheme, command, and data.
 
 ### Scheme
-The scheme is used to address the client, which will handle the command and data components. In the Tari Aurora project, we're using the `tari` scheme to open the wallet app and execute the command.
+The scheme is used to address the client, which will handle the command and data components. In the Tari Universe mobile project, we're using the `tari` scheme to open the wallet app and execute the command.
 
 ### Command
 The command is a path string used to pass information about the action that should be performed by the client. The handler uses this command to determine how to deserialize the data, before passing it to the command function.

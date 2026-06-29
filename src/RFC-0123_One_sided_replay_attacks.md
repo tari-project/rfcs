@@ -5,8 +5,6 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77) and [S W van heerden](https://github.com/SWvheerden)
-
 # Licence
 
 [The 3-Clause BSD Licence](https://opensource.org/licenses/BSD-3-Clause).
@@ -58,35 +56,47 @@ The aim of this Request for Comment (RFC) is to describe ways we can block repla
 
 ## Replay attack
 
-Replay attacks are "replaying" old messages to deceive the receiver about the message's authenticity. 
+A replay attack "replays" old messages to deceive the receiver about a message's authenticity. 
 With TariScript, a vulnerability exists where a replay attack can occur under certain conditions, even with the current consensus rules. 
 
-For this attack to work, we need Alice and Charlie to collude to steal some of Bob's funds:
+For this attack to work, Alice and Charlie must collude to steal some of Bob's funds:
 
 * Alice sends a one-sided transaction to Bob. 
 * Bob spends this UTXO to Charlie. 
-  * Bob has to spend this and only this UTXO alone to Charlie with **zero change**.
-* Alice sends a new one-sided transaction to Bob, creating the exact same output as before
-* Alice shares the Blinding factor of the UTXO with Charlie
-* Charlie can now claim this UTXO by replaying his old transaction 
-  * Charlie has the signatures to spend the scripts, sign for the changes, etc. 
+  * Bob has to spend this and only this UTXO to Charlie, with **zero change**.
+* Alice sends a new one-sided transaction to Bob, creating the exact same output as before.
+* Alice shares the blinding factor of the UTXO with Charlie.
+* Charlie can now claim this UTXO by replaying his old transaction. 
+  * Charlie has the signatures to spend the scripts, sign for the changes, and so on. 
   * Because the previous transaction contains no other inputs, Charlie only has to provide signatures for this one UTXO.
-  * Because there is no change UTXO, Charlie has the keys for all the outputs in the transactions and can thus add another transaction or input
-     /output to make sure the kernel excess signature is unique.
+  * Because there is no change UTXO, Charlie has the keys for all the outputs in the transaction and can thus add another input
+     or output to ensure the kernel excess signature is unique.
 
-This does not work if Bob includes another UTXO in the transaction to Charlie due to the [script offset]. Although Charlie has the 
-blinding factor, for the one UTXO, he does not have the [script offset]. Charlie can create a new kernel signature unique for blockchain consensus with the blinding factor. Still, because the [script offset] needs to balance as well, and he does not know the private keys for this, he needs
-to use this as is, meaning he needs to use an exact copy of the transaction. If the transaction includes any UTXO that he does not know the 
-blinding factor of, he cannot create a new kernel excess signature. Meaning it won't pass consensus rules. 
+This does not work if Bob includes another UTXO in the transaction to Charlie, because of the [script offset]. Although Charlie has the 
+blinding factor for the one UTXO, he does not have the [script offset]. Charlie can create a new kernel signature, unique for blockchain consensus, with the blinding factor. However, because the [script offset] also needs to balance, and he does not know the private keys for it, he needs
+to use it as is, meaning he must use an exact copy of the transaction. If the transaction includes any UTXO whose
+blinding factor he does not know, he cannot create a new kernel excess signature, which means it won't pass the consensus rules. 
 
 ## Solutions
 
-This is a very niche attack that will only be useful under certain circumstances, but never less still needs to be addressed. 
+This is a very niche attack that is only useful under certain circumstances, but it nonetheless still needs to be addressed. 
+
+### Wallet ensures it always creates change
+
+The wallet ensures it never sends just one output, but always creates change. This forces uniqueness into the transaction, preventing reuse. 
+
+#### Advantages
+
+* Does not require any more on-chain information.
+
+#### Disadvantages
+
+* Transactions will effectively have a minimum of two outputs. 
 
 ### Sign with chain information
 
-If we require as part of the [script signature] challenge that we sign the mined block height of that UTXO, it will ensure that Charlie cannot replay the signatures that
-Bob provided on the Input to spend the output, as each duplicate commitment will have its own block height. This is ensured as we currently have a limit that a commitment
+If we require, as part of the [script signature] challenge, that we sign the mined block height of that UTXO, it will ensure that Charlie cannot replay the signatures that
+Bob provided on the input to spend the output, as each duplicate commitment will have its own block height. This holds because we currently enforce a limit that a commitment
 must be unique in the unspent set. 
 
 #### Advantages
@@ -95,21 +105,21 @@ must be unique in the unspent set.
 
 #### Disadvantages
 
-* Reorged transactions cannot be put back in if the inputs are now spent at different heights
+* Reorged transactions cannot be put back in if the inputs are now spent at different heights. This is a big issue if you have many reorgs, which Tari does.
 
 
 ### Enforce global commitment uniqueness
 
-Alice cannot send the same one-sided UTXO to Bob if we require the commitment to be globally unique. This does mean that pruned nodes needs 
-to track the spent TXO set's commitment and the UTXO set.
+Alice cannot send the same one-sided UTXO to Bob if we require the commitment to be globally unique. This does mean that pruned nodes need 
+to track both the spent TXO set's commitments and the UTXO set.
 
-#### advantages
-* Safely reorg transactions
+#### Advantages
+* Transactions can be reorged safely.
 
-#### disadvantages
-* Pruned node needs to save extra data about the spent set.
-* Syncing pruned nodes need to provide extra info to ensure that the downloaded list of commitments is correct
-  * Without requiring extra information in the header, pruned nodes need to download the entire TXO set and compare this to the output_mmr root.
+#### Disadvantages
+* Pruned nodes need to save extra data about the spent set.
+* Syncing pruned nodes need to provide extra information to ensure that the downloaded list of commitments is correct.
+  * Without requiring extra information in the header, pruned nodes need to download the entire TXO set and compare it to the output_mmr root.
 
 # Change Log
 

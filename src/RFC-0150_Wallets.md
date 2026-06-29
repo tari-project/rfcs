@@ -4,25 +4,23 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
-
 
 <!-- TOC -->
-* [RFC-0150/Wallets](#rfc-0150wallets)
-    * [Base Layer Wallet Module](#base-layer-wallet-module)
-* [Licence](#licence)
-    * [Language](#language)
-    * [Disclaimer](#disclaimer)
-    * [Goals](#goals)
-    * [Related Requests for Comment](#related-requests-for-comment)
-    * [Description](#description)
-        * [Key Responsibilities](#key-responsibilities)
-        * [Functional Details](#functional-details)
-            * [Basic Transaction Functionality](#basic-transaction-functionality)
-            * [Key Management Features](#key-management-features)
-            * [State Recovery](#state-recovery)
-            * [State Recovery: Process Overview](#state-recovery-process-overview)
-        * [Change Log](#change-log)
+- [RFC-0150/Wallets](#rfc-0150wallets)
+  - [Base Layer Wallet Module](#base-layer-wallet-module)
+- [Licence](#licence)
+  - [Language](#language)
+  - [Disclaimer](#disclaimer)
+  - [Goals](#goals)
+  - [Related Requests for Comment](#related-requests-for-comment)
+  - [Description](#description)
+    - [Key Responsibilities](#key-responsibilities)
+    - [Functional Details](#functional-details)
+      - [Basic Transaction Functionality](#basic-transaction-functionality)
+      - [Key Management Features](#key-management-features)
+      - [State Recovery](#state-recovery)
+      - [State Recovery: Process Overview](#state-recovery-process-overview)
+    - [Change Log](#change-log)
 <!-- TOC -->
 
 
@@ -83,7 +81,7 @@ This RFC is derived from a proposal first made in [this issue](https://github.co
 ### Key Responsibilities
 
 The wallet software is responsible for constructing and negotiating [transactions][transaction] for transferring and receiving
-[Tari coins][Tari coin] on the [base layer][Base Layer]. It should also provide functionality to generate, store and recover a master seed key
+[MinoTari coins][Tari coin] on the [base layer][Base Layer]. It should also provide functionality to generate, store and recover a master seed key
 and derived cryptographic keypairs that can be used for Base Layer addresses and signing of transactions.
 
 ### Functional Details
@@ -95,10 +93,7 @@ A detailed description of the required functionality of the Tari software wallet
 
 #### Basic Transaction Functionality
 
-- Wallet **MUST** be able to send and receive Tari coins using [Mimblewimble] transactions.
-- Wallet **SHOULD** be able to establish a connection with other user wallets to interactively negotiate:
-    - construction of the transaction,
-    - signing of multi-signature transactions.
+- Wallet **MUST** be able to send and receive MinoTari coins using [Mimblewimble] transactions.
 - Wallet **SHOULD** be implemented as a library or Application Programming Interface (API) so that Graphical
   User Interface (GUI) or Command Line Interface (CLI) applications can be developed on top of it.
 - Wallet **MUST** be able to establish connection to the [base node][Base Node], submit transactions and monitor the Tari [blockchain].
@@ -137,20 +132,19 @@ A detailed description of the required functionality of the Tari software wallet
 
 #### State Recovery: Process Overview
 If the wallet database has been lost, corrupted or otherwise damaged, the outputs contained within ([UTXOs](Glossary.md#unspent-transaction-outputs))
-can still be recovered from the Tari [blockchain], given you provide the valid recovery keys. When the wallet is first initialized in recovery mode,
-it attempts to synchronize with available base nodes, pulling blocks, attempting to recognize outputs attributed to that particular wallet.
+can still be recovered from the Tari [blockchain], provided the valid recovery keys are supplied. When the wallet is first initialized in recovery mode,
+it attempts to synchronize with available base nodes, pulling blocks and attempting to recognize outputs attributed to that particular wallet.
 
 If one can successfully decrypt the encrypted value, then the UTXO is successfully recognized. The next step is to attempt the mask (blinding factor)
-recovery by rewinding the range proof. All recognized and verified outputs are stored in the newly initialized, local wallet database,
+recovery by decrypting the extra data on the output. All recognized and verified outputs are stored in the newly initialized, local wallet database,
 available for further spending.
 
-The recovery of simple and stealth one-sided outputs is a bit more complex as we first have to recognize the output by its script pattern, before we can try
-to decrypt the encrypted value.
+The recovery of simple and stealth one-sided outputs is more complex, as we first have to recognize the output by its script pattern before we can try to decrypt the encrypted value.
 
-An output is recognized if it matches either of the following input script patterns:
+An output is recognized if it matches any of the following input script patterns:
 
 - The standard output is the simplest, having a single `Nop` instruction.
-- The simple one-sided is matched by the `[Opcode::PushPubKey(scanned_pk)]` so if the `scanned_pk` matches the key derived from the recovery phrase - it's recognized,
+- The simple one-sided is matched by `[Opcode::PushPubKey(scanned_pk)]`, so if the `scanned_pk` matches the key derived from the recovery phrase, it is recognized.
 - The [stealth one-sided](RFC-0203_StealthAddresses.md) is similar to its simple counterpart with only the script pattern being different `[Opcode::PushPubKey(nonce), Opcode::Drop, Opcode::PushPubKey(scanned_pk)]`, matching by the last provided `Opcode::PushPubKey(scanned_pk)` instruction.
 
 
