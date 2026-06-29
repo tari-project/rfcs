@@ -2,7 +2,6 @@
 
 ![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [S W van Heerden](https://github.com/SWvheerden)
 
 # Licence
 
