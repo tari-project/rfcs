@@ -140,7 +140,6 @@
                         <h1 id="rfc-0154deeplinksconvention"><a class="header" href="#rfc-0154deeplinksconvention">RFC-0154/DeepLinksConvention</a></h1>
 <h2 id="deep-links-structure-convention"><a class="header" href="#deep-links-structure-convention">Deep links structure convention.</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/TruszczynskiA">Adrian Truszczyński</a></p>
 <h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2022 The Tari Development Community</p>
@@ -173,12 +172,12 @@ without notice.</p>
 community. The release of this document is intended solely for review and discussion by the community regarding the
 technological merits of the potential system outlined herein.</p>
 <h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
-<p>The aim of this Request for Comment (RFC) is to specify the deep links structure used in the Tari Aurora project.
-The primary motivation is to create a simple, human-readable, and scalable way to structure deep links used by the Tari Aurora clients.</p>
+<p>The aim of this Request for Comment (RFC) is to specify the deep links structure used in the Tari Universe mobile project.
+The primary motivation is to create a simple, human-readable, and scalable way to structure deep links used by the Tari Universe mobile clients.</p>
 <h2 id="description"><a class="header" href="#description">Description</a></h2>
 <p>Deep links are the URIs with hierarchical components sequence. We can use this sequence to pass and handle data in a standardized and predictable way. To do that, we need to pass three components to the target client: the scheme, command, and data.</p>
 <h3 id="scheme"><a class="header" href="#scheme">Scheme</a></h3>
-<p>The scheme is used to address the client, which will handle the command and data components. In the Tari Aurora project, we’re using the <code>tari</code> scheme to open the wallet app and execute the command.</p>
+<p>The scheme is used to address the client, which will handle the command and data components. In the Tari Universe mobile project, we’re using the <code>tari</code> scheme to open the wallet app and execute the command.</p>
 <h3 id="command"><a class="header" href="#command">Command</a></h3>
 <p>The command is a path string used to pass information about the action that should be performed by the client. The handler uses this command to determine how to deserialize the data, before passing it to the command function.
 To support multiple networks the first path component should be the name of corresponding network. Before proceeding with the command, the client should first check that the active account is pointed to the correct network, or show an error if there is a mismatch.</p>

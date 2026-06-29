@@ -140,7 +140,6 @@
                         <h1 id="rfc-0150wallets"><a class="header" href="#rfc-0150wallets">RFC-0150/Wallets</a></h1>
 <h2 id="base-layer-wallet-module"><a class="header" href="#base-layer-wallet-module">Base Layer Wallet Module</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a></p>
 <!-- TOC -->
 <ul>
 <li><a href="#rfc-0150wallets">RFC-0150/Wallets</a>
@@ -214,7 +213,7 @@ Tari <a href="Glossary.html#wallet">wallet</a> module. The module exposes the co
 <h2 id="description"><a class="header" href="#description">Description</a></h2>
 <h3 id="key-responsibilities"><a class="header" href="#key-responsibilities">Key Responsibilities</a></h3>
 <p>The wallet software is responsible for constructing and negotiating <a href="Glossary.html#transaction">transactions</a> for transferring and receiving
-<a href="Glossary.html#tari-coin">Tari coins</a> on the <a href="Glossary.html#base-layer">base layer</a>. It should also provide functionality to generate, store and recover a master seed key
+<a href="Glossary.html#tari-coin">MinoTari coins</a> on the <a href="Glossary.html#base-layer">base layer</a>. It should also provide functionality to generate, store and recover a master seed key
 and derived cryptographic keypairs that can be used for Base Layer addresses and signing of transactions.</p>
 <h3 id="functional-details"><a class="header" href="#functional-details">Functional Details</a></h3>
 <p>A detailed description of the required functionality of the Tari software wallet is provided in three parts:</p>
@@ -225,13 +224,7 @@ and derived cryptographic keypairs that can be used for Base Layer addresses and
 </ul>
 <h4 id="basic-transaction-functionality"><a class="header" href="#basic-transaction-functionality">Basic Transaction Functionality</a></h4>
 <ul>
-<li>Wallet <strong>MUST</strong> be able to send and receive Tari coins using <a href="Glossary.html#mimblewimble">Mimblewimble</a> transactions.</li>
-<li>Wallet <strong>SHOULD</strong> be able to establish a connection with other user wallets to interactively negotiate:
-<ul>
-<li>construction of the transaction,</li>
-<li>signing of multi-signature transactions.</li>
-</ul>
-</li>
+<li>Wallet <strong>MUST</strong> be able to send and receive MinoTari coins using <a href="Glossary.html#mimblewimble">Mimblewimble</a> transactions.</li>
 <li>Wallet <strong>SHOULD</strong> be implemented as a library or Application Programming Interface (API) so that Graphical
 User Interface (GUI) or Command Line Interface (CLI) applications can be developed on top of it.</li>
 <li>Wallet <strong>MUST</strong> be able to establish connection to the <a href="Glossary.html#base-node">base node</a>, submit transactions and monitor the Tari <a href="Glossary.html#blockchain">blockchain</a>.</li>
@@ -276,17 +269,16 @@ transactions, using keys derived from the master key.</li>
 </ul>
 <h4 id="state-recovery-process-overview"><a class="header" href="#state-recovery-process-overview">State Recovery: Process Overview</a></h4>
 <p>If the wallet database has been lost, corrupted or otherwise damaged, the outputs contained within (<a href="Glossary.html#unspent-transaction-outputs">UTXOs</a>)
-can still be recovered from the Tari <a href="Glossary.html#blockchain">blockchain</a>, given you provide the valid recovery keys. When the wallet is first initialized in recovery mode,
-it attempts to synchronize with available base nodes, pulling blocks, attempting to recognize outputs attributed to that particular wallet.</p>
+can still be recovered from the Tari <a href="Glossary.html#blockchain">blockchain</a>, provided the valid recovery keys are supplied. When the wallet is first initialized in recovery mode,
+it attempts to synchronize with available base nodes, pulling blocks and attempting to recognize outputs attributed to that particular wallet.</p>
 <p>If one can successfully decrypt the encrypted value, then the UTXO is successfully recognized. The next step is to attempt the mask (blinding factor)
-recovery by rewinding the range proof. All recognized and verified outputs are stored in the newly initialized, local wallet database,
+recovery by decrypting the extra data on the output. All recognized and verified outputs are stored in the newly initialized, local wallet database,
 available for further spending.</p>
-<p>The recovery of simple and stealth one-sided outputs is a bit more complex as we first have to recognize the output by its script pattern, before we can try
-to decrypt the encrypted value.</p>
-<p>An output is recognized if it matches either of the following input script patterns:</p>
+<p>The recovery of simple and stealth one-sided outputs is more complex, as we first have to recognize the output by its script pattern before we can try to decrypt the encrypted value.</p>
+<p>An output is recognized if it matches any of the following input script patterns:</p>
 <ul>
 <li>The standard output is the simplest, having a single <code>Nop</code> instruction.</li>
-<li>The simple one-sided is matched by the <code>[Opcode::PushPubKey(scanned_pk)]</code> so if the <code>scanned_pk</code> matches the key derived from the recovery phrase - it’s recognized,</li>
+<li>The simple one-sided is matched by <code>[Opcode::PushPubKey(scanned_pk)]</code>, so if the <code>scanned_pk</code> matches the key derived from the recovery phrase, it is recognized.</li>
 <li>The <a href="RFC-0203_StealthAddresses.html">stealth one-sided</a> is similar to its simple counterpart with only the script pattern being different <code>[Opcode::PushPubKey(nonce), Opcode::Drop, Opcode::PushPubKey(scanned_pk)]</code>, matching by the last provided <code>Opcode::PushPubKey(scanned_pk)</code> instruction.</li>
 </ul>
 <h3 id="change-log"><a class="header" href="#change-log">Change Log</a></h3>

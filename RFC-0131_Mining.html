@@ -140,7 +140,6 @@
                         <h1 id="rfc-0131mining"><a class="header" href="#rfc-0131mining">RFC-0131/Mining</a></h1>
 <h2 id="full-node-mining-on-tari-base-layer"><a class="header" href="#full-node-mining-on-tari-base-layer">Full-node Mining on Tari Base Layer</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/hansieodendaal">Hansie Odendaal</a></p>
 <h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2020 The Tari Development Community</p>
@@ -200,12 +199,16 @@ switch between them.</p>
 <p>In practice, no set of algorithms is genuinely independent. The best we can do is try to choose algorithms that work best
 on CPUs, GPUs, and ASICs. In truth, the distinction between GPUs and ASICs is only a matter of time. Any “GPU-friendly”
 algorithm is ASIC-friendly, too; it’s just a case of whether the capital outlay for fabricating them is worth it, and
-this will eventually become true for any algorithm that supplies PoW for a growing market cap.</p>
-<p>With this in mind, we should only choose one GPU/ASIC algorithm and one for CPUs.</p>
-<p>An excellent technical choice would be merge mining with Monero using RandomX as a CPU-only algorithm and SHA3, also known as Keccak
-, for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm means there is
-a low likelihood of unforeseen optimizations that will give a single miner a considerable advantage. It also means that it stands a
-good chance of being “commoditized” when ASICs are eventually manufactured. This would mean that SHA3 ASICs are widely available from multiple suppliers.</p>
+this will eventually become true for any algorithm that supplies PoW for a growing market cap. Memory price is a big hurdle in ASIC design.</p>
+<p>An excellent technical choice would be merge mining with Monero using RandomX as a CPU-only algorithm and SHA3, also known
+as Keccak, for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm
+means there is a low likelihood of unforeseen optimizations that would give a single miner a considerable advantage. It
+also means that it stands a good chance of being “commoditized” when ASICs are eventually manufactured, so that SHA3
+ASICs become widely available from multiple suppliers.
+Using Cuckaroo 29 as a memory-bound algorithm makes ASICs and FPGAs very expensive, and the required memory is easy to
+increase, which makes it monetarily hard to justify an FPGA or ASIC.</p>
+<p>Relying purely on RandomX merge mined with Monero makes Tari vulnerable to large Monero pools. We can easily use RandomX
+without Monero as a secondary mining pool.</p>
 <h3 id="the-difficulty-adjustment-strategy"><a class="header" href="#the-difficulty-adjustment-strategy">The difficulty adjustment strategy</a></h3>
 <p>The choice of difficulty adjustment algorithm is important. In typical hybrid mining strategies, each algorithm operates
 completely independently with a scaled target block time.
@@ -217,7 +220,7 @@ and it proved to be a good choice in the multi-PoW scene as well.</p>
 <h3 id="final-proposal-hybrid-mining-details"><a class="header" href="#final-proposal-hybrid-mining-details">Final proposal, hybrid mining details</a></h3>
 <p>Tari’s proof-of-work mining algorithm is summarized below:</p>
 <ul>
-<li>Two mining algorithms, with an average combined target block time of 120 s, to match Monero’s block interval.</li>
+<li>Four mining algorithms, with an average combined target block time of 120 s, to match Monero’s block interval.</li>
 <li>A log-weighted moving average difficulty adjustment algorithm using a window of 90 blocks.</li>
 </ul>
 <h3 id="tari-mining-hash"><a class="header" href="#tari-mining-hash">Tari mining hash</a></h3>
@@ -241,13 +244,14 @@ and it proved to be a good choice in the multi-PoW scene as well.</p>
 <p>This hash is used in both the SHA-3 and RandomX proof-of-work algorithms. The header version for the Tari Genesis
 block is 1.</p>
 <h4 id="randomx"><a class="header" href="#randomx">RandomX</a></h4>
+<h5 id="rxm"><a class="header" href="#rxm">RxM</a></h5>
 <p>Monero blocks that are merge-mining Tari MUST include the Tari mining hash in the extra field of the Monero coinbase transaction.</p>
 <p>Tari also imposes the following consensus rules:</p>
 <ul>
 <li>The <code>seed_hash</code> MUST only be used for 3000 blocks, after which a block MUST be discarded if it’s used again.</li>
 <li>The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.</li>
-<li>The LWMA MUST use a target time of 200 seconds.</li>
-<li>MUST set the header field PoW:pow_algo as 0 for a Monero block</li>
+<li>The LWMA MUST use a target time of 800 seconds.</li>
+<li>MUST set the header field PoW:pow_algo as 0 for a RxM block</li>
 <li>MUST encode the following data into the Pow:Pow_data field:
 <ul>
 <li>Monero BlockHeader,</li>
@@ -256,6 +260,19 @@ block is 1.</p>
 <li>Monero merkle root,</li>
 <li>Monero coinbase merkle proof and,</li>
 <li>Monero coinbase transaction</li>
+</ul>
+</li>
+</ul>
+<h5 id="rxt"><a class="header" href="#rxt">RxT</a></h5>
+<p>Using RandomX solely with Tari, the following consensus is enforced:</p>
+<ul>
+<li>The <code>seed_hash</code> MUST only be used for 3000 blocks, after which a block MUST be discarded if it’s used again.</li>
+<li>The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.</li>
+<li>The LWMA MUST use a target time of 800 seconds.</li>
+<li>MUST set the header field PoW:pow_algo as 2 for an RxT block</li>
+<li>MUST encode the following data into the Pow:Pow_data field:
+<ul>
+<li>32 bytes extra data</li>
 </ul>
 </li>
 </ul>
@@ -279,7 +296,7 @@ header, keeping everything else constant.</p>
 LWMA for Tari. The difficulty and target are related by the equation <code>difficulty = (2^256 - 1) / target</code>.</li>
 <li>MUST set the header field PoW:pow_algo as 1 for a Sha block.</li>
 <li>The PoW:pow_data field is empty</li>
-<li>The LWMA MUST use a target time of 300 seconds.</li>
+<li>The LWMA MUST use a target time of 800 seconds.</li>
 </ul>
 <p>A triple hash is selected to keep the requirements on hardware miners (FPGAs, ASICs) fairly low. But we also want to
 avoid making the proof-of-work immediately “NiceHashable”. There are several coins that already use a single or
@@ -290,7 +307,19 @@ latter is required to be compatible with the Monero specification. But we also u
 the block hash due to a historical convention. The Bitcoin white paper describes the block hash target as
 containing “a certain number of leading zeros” (paraphrased). This is obviously a big-endian representation. If we
 used little-endian, our block hashes would have trailing zeroes. So we use the big-endian form to satisfy the
-expected in block explorers and such that block hashes should always start with a series of zeroes.</p>
+expectation in block explorers and elsewhere that block hashes should always start with a series of zeroes.</p>
+<h4 id="c29"><a class="header" href="#c29">C29</a></h4>
+<p>Using C29 with Tari, the following consensus is enforced:</p>
+<ul>
+<li>The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.</li>
+<li>The LWMA MUST use a target time of 800 seconds.</li>
+<li>MUST set the header field PoW:pow_algo as 3 for a C29 block</li>
+<li>MUST encode the following data into the Pow:Pow_data field:
+<ul>
+<li>Cuckaroo 29 Pow data bits</li>
+</ul>
+</li>
+</ul>
 <h1 id="stabilisation-note"><a class="header" href="#stabilisation-note">Stabilisation note</a></h1>
 <p>This RFC is stable as of PR#4862</p>
 <h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
@@ -300,7 +329,7 @@ expected in block explorers and such that block hashes should always start with 
 <tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr>
 </thead>
 <tbody>
-<tr><td style="text-align: left">2022-11-25</td><td style="text-align: left">Update mining hash decsription</td><td style="text-align: left">CjS77</td></tr>
+<tr><td style="text-align: left">2022-11-25</td><td style="text-align: left">Update mining hash description</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">2022-10-26</td><td style="text-align: left">Finalise SHA-3 algorithm</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">2022-10-11</td><td style="text-align: left">First outline</td><td style="text-align: left">SWvHeerden</td></tr>
 <tr><td style="text-align: left">2024-12-09</td><td style="text-align: left">Corrected percentages for merged and hybrid mining</td><td style="text-align: left">Solivagant</td></tr>

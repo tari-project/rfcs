@@ -140,7 +140,6 @@
                         <h1 id="rfc-0170networkcommunicationprotocol"><a class="header" href="#rfc-0170networkcommunicationprotocol">RFC-0170/NetworkCommunicationProtocol</a></h1>
 <h2 id="the-tari-communication-network-and-network-communication-protocol"><a class="header" href="#the-tari-communication-network-and-network-communication-protocol">The Tari Communication Network and Network Communication Protocol</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/stringhandler">Stringhandler</a></p>
 <h1 id="license"><a class="header" href="#license">License</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD License</a>.</p>
 <p>Copyright 2018 The Tari Development Community</p>
@@ -197,7 +196,7 @@ Where messages are of importance to a wide variety of entities on the network, G
 The majority of the communication required on the <a href="Glossary.html#base-layer">Base Layer</a> and <a href="Glossary.html#digital-asset-network">Digital Asset Network</a> (DAN) will be performed via direct P2P communication between known clients and nodes.
 Alternatively, the Tari communication network can be used for broadcasting joining requests, discovery requests and propagating data messages such as completed blocks, transactions and data messages that are of interest to a large part of the Tari communication network.</p>
 <p>The Tari communication network consists of a number of different entities that need to communicate in a distributed and ad-hoc manner.
-The primary entities that need to communicate are Validator Nodes (VN), <a href="Glossary.html#base-node">Base Node</a>s (BN), and <a href="Glossary.html#wallet">Wallet</a>s (W).
+The primary entities that need to communicate are Validator Nodes (VN) and <a href="Glossary.html#base-node">Base Node</a>s (BN).
 Here are some examples of different communication tasks that need to be performed by these entities on the Tari Communication network:</p>
 <ul>
 <li>Base Nodes on the Base Layer need to propagate completed blocks and transactions to other Base Nodes using Gossip protocol based broadcasting.</li>
@@ -208,12 +207,11 @@ Here are some examples of different communication tasks that need to be performe
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Destination (across) <br>Source (down)</th><th>Validator Node</th><th>Base Node</th><th>Wallet</th></tr>
+<tr><th>Destination (across) <br>Source (down)</th><th>Validator Node</th><th>Base Node</th></tr>
 </thead>
 <tbody>
-<tr><td>Validator Node</td><td>Yes</td><td>No</td><td>No</td></tr>
-<tr><td>Base Node</td><td>No</td><td>Yes</td><td>No</td></tr>
-<tr><td>Wallet</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Validator Node</td><td>Yes</td><td>No</td></tr>
+<tr><td>Base Node</td><td>No</td><td>Yes</td></tr>
 </tbody>
 </table>
 </div>
@@ -237,7 +235,6 @@ The Tari communication network is unaware of this direct P2P communication once 
 <tbody>
 <tr><td>Validator Node</td><td>Communication Node</td></tr>
 <tr><td>Base Node</td><td>Communication Node</td></tr>
-<tr><td>Wallet</td><td>Communication Client</td></tr>
 </tbody>
 </table>
 </div>

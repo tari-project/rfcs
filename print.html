@@ -1616,7 +1616,6 @@ This value is used to compare chain tips to determine the strongest chain.</p>
 <h1 id="rfc-0131mining"><a class="header" href="#rfc-0131mining">RFC-0131/Mining</a></h1>
 <h2 id="full-node-mining-on-tari-base-layer"><a class="header" href="#full-node-mining-on-tari-base-layer">Full-node Mining on Tari Base Layer</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/hansieodendaal">Hansie Odendaal</a></p>
 <h1 id="licence-4"><a class="header" href="#licence-4">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2020 The Tari Development Community</p>
@@ -1676,12 +1675,16 @@ switch between them.</p>
 <p>In practice, no set of algorithms is genuinely independent. The best we can do is try to choose algorithms that work best
 on CPUs, GPUs, and ASICs. In truth, the distinction between GPUs and ASICs is only a matter of time. Any “GPU-friendly”
 algorithm is ASIC-friendly, too; it’s just a case of whether the capital outlay for fabricating them is worth it, and
-this will eventually become true for any algorithm that supplies PoW for a growing market cap.</p>
-<p>With this in mind, we should only choose one GPU/ASIC algorithm and one for CPUs.</p>
-<p>An excellent technical choice would be merge mining with Monero using RandomX as a CPU-only algorithm and SHA3, also known as Keccak
-, for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm means there is
-a low likelihood of unforeseen optimizations that will give a single miner a considerable advantage. It also means that it stands a
-good chance of being “commoditized” when ASICs are eventually manufactured. This would mean that SHA3 ASICs are widely available from multiple suppliers.</p>
+this will eventually become true for any algorithm that supplies PoW for a growing market cap. Memory price is a big hurdle in ASIC design.</p>
+<p>An excellent technical choice would be merge mining with Monero using RandomX as a CPU-only algorithm and SHA3, also known
+as Keccak, for a GPU/ASIC-friendly algorithm. Using a custom configuration of such a simple and well-understood algorithm
+means there is a low likelihood of unforeseen optimizations that would give a single miner a considerable advantage. It
+also means that it stands a good chance of being “commoditized” when ASICs are eventually manufactured, so that SHA3
+ASICs become widely available from multiple suppliers.
+Using Cuckaroo 29 as a memory-bound algorithm makes ASICs and FPGAs very expensive, and the required memory is easy to
+increase, which makes it monetarily hard to justify an FPGA or ASIC.</p>
+<p>Relying purely on RandomX merge mined with Monero makes Tari vulnerable to large Monero pools. We can easily use RandomX
+without Monero as a secondary mining pool.</p>
 <h3 id="the-difficulty-adjustment-strategy"><a class="header" href="#the-difficulty-adjustment-strategy">The difficulty adjustment strategy</a></h3>
 <p>The choice of difficulty adjustment algorithm is important. In typical hybrid mining strategies, each algorithm operates
 completely independently with a scaled target block time.
@@ -1693,7 +1696,7 @@ and it proved to be a good choice in the multi-PoW scene as well.</p>
 <h3 id="final-proposal-hybrid-mining-details"><a class="header" href="#final-proposal-hybrid-mining-details">Final proposal, hybrid mining details</a></h3>
 <p>Tari’s proof-of-work mining algorithm is summarized below:</p>
 <ul>
-<li>Two mining algorithms, with an average combined target block time of 120 s, to match Monero’s block interval.</li>
+<li>Four mining algorithms, with an average combined target block time of 120 s, to match Monero’s block interval.</li>
 <li>A log-weighted moving average difficulty adjustment algorithm using a window of 90 blocks.</li>
 </ul>
 <h3 id="tari-mining-hash"><a class="header" href="#tari-mining-hash">Tari mining hash</a></h3>
@@ -1717,13 +1720,14 @@ and it proved to be a good choice in the multi-PoW scene as well.</p>
 <p>This hash is used in both the SHA-3 and RandomX proof-of-work algorithms. The header version for the Tari Genesis
 block is 1.</p>
 <h4 id="randomx"><a class="header" href="#randomx">RandomX</a></h4>
+<h5 id="rxm"><a class="header" href="#rxm">RxM</a></h5>
 <p>Monero blocks that are merge-mining Tari MUST include the Tari mining hash in the extra field of the Monero coinbase transaction.</p>
 <p>Tari also imposes the following consensus rules:</p>
 <ul>
 <li>The <code>seed_hash</code> MUST only be used for 3000 blocks, after which a block MUST be discarded if it’s used again.</li>
 <li>The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.</li>
-<li>The LWMA MUST use a target time of 200 seconds.</li>
-<li>MUST set the header field PoW:pow_algo as 0 for a Monero block</li>
+<li>The LWMA MUST use a target time of 800 seconds.</li>
+<li>MUST set the header field PoW:pow_algo as 0 for a RxM block</li>
 <li>MUST encode the following data into the Pow:Pow_data field:
 <ul>
 <li>Monero BlockHeader,</li>
@@ -1732,6 +1736,19 @@ block is 1.</p>
 <li>Monero merkle root,</li>
 <li>Monero coinbase merkle proof and,</li>
 <li>Monero coinbase transaction</li>
+</ul>
+</li>
+</ul>
+<h5 id="rxt"><a class="header" href="#rxt">RxT</a></h5>
+<p>Using RandomX solely with Tari, the following consensus is enforced:</p>
+<ul>
+<li>The <code>seed_hash</code> MUST only be used for 3000 blocks, after which a block MUST be discarded if it’s used again.</li>
+<li>The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.</li>
+<li>The LWMA MUST use a target time of 800 seconds.</li>
+<li>MUST set the header field PoW:pow_algo as 2 for an RxT block</li>
+<li>MUST encode the following data into the Pow:Pow_data field:
+<ul>
+<li>32 bytes extra data</li>
 </ul>
 </li>
 </ul>
@@ -1755,7 +1772,7 @@ header, keeping everything else constant.</p>
 LWMA for Tari. The difficulty and target are related by the equation <code>difficulty = (2^256 - 1) / target</code>.</li>
 <li>MUST set the header field PoW:pow_algo as 1 for a Sha block.</li>
 <li>The PoW:pow_data field is empty</li>
-<li>The LWMA MUST use a target time of 300 seconds.</li>
+<li>The LWMA MUST use a target time of 800 seconds.</li>
 </ul>
 <p>A triple hash is selected to keep the requirements on hardware miners (FPGAs, ASICs) fairly low. But we also want to
 avoid making the proof-of-work immediately “NiceHashable”. There are several coins that already use a single or
@@ -1766,7 +1783,19 @@ latter is required to be compatible with the Monero specification. But we also u
 the block hash due to a historical convention. The Bitcoin white paper describes the block hash target as
 containing “a certain number of leading zeros” (paraphrased). This is obviously a big-endian representation. If we
 used little-endian, our block hashes would have trailing zeroes. So we use the big-endian form to satisfy the
-expected in block explorers and such that block hashes should always start with a series of zeroes.</p>
+expectation in block explorers and elsewhere that block hashes should always start with a series of zeroes.</p>
+<h4 id="c29"><a class="header" href="#c29">C29</a></h4>
+<p>Using C29 with Tari, the following consensus is enforced:</p>
+<ul>
+<li>The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.</li>
+<li>The LWMA MUST use a target time of 800 seconds.</li>
+<li>MUST set the header field PoW:pow_algo as 3 for a C29 block</li>
+<li>MUST encode the following data into the Pow:Pow_data field:
+<ul>
+<li>Cuckaroo 29 Pow data bits</li>
+</ul>
+</li>
+</ul>
 <h1 id="stabilisation-note"><a class="header" href="#stabilisation-note">Stabilisation note</a></h1>
 <p>This RFC is stable as of PR#4862</p>
 <h1 id="change-log-4"><a class="header" href="#change-log-4">Change Log</a></h1>
@@ -1776,7 +1805,7 @@ expected in block explorers and such that block hashes should always start with 
 <tr><th style="text-align: left">Date</th><th style="text-align: left">Change</th><th style="text-align: left">Author</th></tr>
 </thead>
 <tbody>
-<tr><td style="text-align: left">2022-11-25</td><td style="text-align: left">Update mining hash decsription</td><td style="text-align: left">CjS77</td></tr>
+<tr><td style="text-align: left">2022-11-25</td><td style="text-align: left">Update mining hash description</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">2022-10-26</td><td style="text-align: left">Finalise SHA-3 algorithm</td><td style="text-align: left">CjS77</td></tr>
 <tr><td style="text-align: left">2022-10-11</td><td style="text-align: left">First outline</td><td style="text-align: left">SWvHeerden</td></tr>
 <tr><td style="text-align: left">2024-12-09</td><td style="text-align: left">Corrected percentages for merged and hybrid mining</td><td style="text-align: left">Solivagant</td></tr>
@@ -1787,7 +1816,6 @@ expected in block explorers and such that block hashes should always start with 
 <h1 id="rfc-0132mergeminingmonero"><a class="header" href="#rfc-0132mergeminingmonero">RFC-0132/MergeMiningMonero</a></h1>
 <h2 id="tari-protocol-for-merge-mining-with-monero"><a class="header" href="#tari-protocol-for-merge-mining-with-monero">Tari protocol for Merge Mining with Monero</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/sdbondi">Stanley Bondi</a></p>
 <h1 id="licence-5"><a class="header" href="#licence-5">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2020 The Tari Development Community</p>
@@ -1927,7 +1955,6 @@ Tari block is retrieved, enriched with the <code>MoneroPowData</code> struct and
 <h1 id="rfc-0140syncandseeding"><a class="header" href="#rfc-0140syncandseeding">RFC-0140/SyncAndSeeding</a></h1>
 <h2 id="synchronizing-the-blockchain-archival-and-pruned-modes"><a class="header" href="#synchronizing-the-blockchain-archival-and-pruned-modes">Synchronizing the Blockchain: Archival and Pruned Modes</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/SWvheerden">S W van Heerden</a></p>
 <h1 id="licence-6"><a class="header" href="#licence-6">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2022 The Tari Development Community</p>
@@ -2073,7 +2100,6 @@ If the Base Node is running in archive mode, it MUST NOT prune.</p>
 <h1 id="rfc-0150wallets"><a class="header" href="#rfc-0150wallets">RFC-0150/Wallets</a></h1>
 <h2 id="base-layer-wallet-module"><a class="header" href="#base-layer-wallet-module">Base Layer Wallet Module</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a></p>
 <!-- TOC -->
 <ul>
 <li><a href="#rfc-0150wallets">RFC-0150/Wallets</a>
@@ -2147,7 +2173,7 @@ Tari <a href="#wallet">wallet</a> module. The module exposes the core wallet fun
 <h2 id="description-4"><a class="header" href="#description-4">Description</a></h2>
 <h3 id="key-responsibilities"><a class="header" href="#key-responsibilities">Key Responsibilities</a></h3>
 <p>The wallet software is responsible for constructing and negotiating <a href="#transaction">transactions</a> for transferring and receiving
-<a href="#tari-coin">Tari coins</a> on the <a href="#base-layer-1">base layer</a>. It should also provide functionality to generate, store and recover a master seed key
+<a href="#tari-coin">MinoTari coins</a> on the <a href="#base-layer-1">base layer</a>. It should also provide functionality to generate, store and recover a master seed key
 and derived cryptographic keypairs that can be used for Base Layer addresses and signing of transactions.</p>
 <h3 id="functional-details"><a class="header" href="#functional-details">Functional Details</a></h3>
 <p>A detailed description of the required functionality of the Tari software wallet is provided in three parts:</p>
@@ -2158,13 +2184,7 @@ and derived cryptographic keypairs that can be used for Base Layer addresses and
 </ul>
 <h4 id="basic-transaction-functionality"><a class="header" href="#basic-transaction-functionality">Basic Transaction Functionality</a></h4>
 <ul>
-<li>Wallet <strong>MUST</strong> be able to send and receive Tari coins using <a href="#mimblewimble">Mimblewimble</a> transactions.</li>
-<li>Wallet <strong>SHOULD</strong> be able to establish a connection with other user wallets to interactively negotiate:
-<ul>
-<li>construction of the transaction,</li>
-<li>signing of multi-signature transactions.</li>
-</ul>
-</li>
+<li>Wallet <strong>MUST</strong> be able to send and receive MinoTari coins using <a href="#mimblewimble">Mimblewimble</a> transactions.</li>
 <li>Wallet <strong>SHOULD</strong> be implemented as a library or Application Programming Interface (API) so that Graphical
 User Interface (GUI) or Command Line Interface (CLI) applications can be developed on top of it.</li>
 <li>Wallet <strong>MUST</strong> be able to establish connection to the <a href="#base-node">base node</a>, submit transactions and monitor the Tari <a href="#blockchain">blockchain</a>.</li>
@@ -2209,17 +2229,16 @@ transactions, using keys derived from the master key.</li>
 </ul>
 <h4 id="state-recovery-process-overview"><a class="header" href="#state-recovery-process-overview">State Recovery: Process Overview</a></h4>
 <p>If the wallet database has been lost, corrupted or otherwise damaged, the outputs contained within (<a href="#unspent-transaction-outputs">UTXOs</a>)
-can still be recovered from the Tari <a href="#blockchain">blockchain</a>, given you provide the valid recovery keys. When the wallet is first initialized in recovery mode,
-it attempts to synchronize with available base nodes, pulling blocks, attempting to recognize outputs attributed to that particular wallet.</p>
+can still be recovered from the Tari <a href="#blockchain">blockchain</a>, provided the valid recovery keys are supplied. When the wallet is first initialized in recovery mode,
+it attempts to synchronize with available base nodes, pulling blocks and attempting to recognize outputs attributed to that particular wallet.</p>
 <p>If one can successfully decrypt the encrypted value, then the UTXO is successfully recognized. The next step is to attempt the mask (blinding factor)
-recovery by rewinding the range proof. All recognized and verified outputs are stored in the newly initialized, local wallet database,
+recovery by decrypting the extra data on the output. All recognized and verified outputs are stored in the newly initialized, local wallet database,
 available for further spending.</p>
-<p>The recovery of simple and stealth one-sided outputs is a bit more complex as we first have to recognize the output by its script pattern, before we can try
-to decrypt the encrypted value.</p>
-<p>An output is recognized if it matches either of the following input script patterns:</p>
+<p>The recovery of simple and stealth one-sided outputs is more complex, as we first have to recognize the output by its script pattern before we can try to decrypt the encrypted value.</p>
+<p>An output is recognized if it matches any of the following input script patterns:</p>
 <ul>
 <li>The standard output is the simplest, having a single <code>Nop</code> instruction.</li>
-<li>The simple one-sided is matched by the <code>[Opcode::PushPubKey(scanned_pk)]</code> so if the <code>scanned_pk</code> matches the key derived from the recovery phrase - it’s recognized,</li>
+<li>The simple one-sided is matched by <code>[Opcode::PushPubKey(scanned_pk)]</code>, so if the <code>scanned_pk</code> matches the key derived from the recovery phrase, it is recognized.</li>
 <li>The <a href="#rfc-0203stealth-addresses">stealth one-sided</a> is similar to its simple counterpart with only the script pattern being different <code>[Opcode::PushPubKey(nonce), Opcode::Drop, Opcode::PushPubKey(scanned_pk)]</code>, matching by the last provided <code>Opcode::PushPubKey(scanned_pk)</code> instruction.</li>
 </ul>
 <h3 id="change-log-7"><a class="header" href="#change-log-7">Change Log</a></h3>
@@ -2238,7 +2257,6 @@ to decrypt the encrypted value.</p>
 <h1 id="rfc-0154deeplinksconvention"><a class="header" href="#rfc-0154deeplinksconvention">RFC-0154/DeepLinksConvention</a></h1>
 <h2 id="deep-links-structure-convention"><a class="header" href="#deep-links-structure-convention">Deep links structure convention.</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/TruszczynskiA">Adrian Truszczyński</a></p>
 <h1 id="licence-8"><a class="header" href="#licence-8">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2022 The Tari Development Community</p>
@@ -2271,12 +2289,12 @@ without notice.</p>
 community. The release of this document is intended solely for review and discussion by the community regarding the
 technological merits of the potential system outlined herein.</p>
 <h2 id="goals-8"><a class="header" href="#goals-8">Goals</a></h2>
-<p>The aim of this Request for Comment (RFC) is to specify the deep links structure used in the Tari Aurora project.
-The primary motivation is to create a simple, human-readable, and scalable way to structure deep links used by the Tari Aurora clients.</p>
+<p>The aim of this Request for Comment (RFC) is to specify the deep links structure used in the Tari Universe mobile project.
+The primary motivation is to create a simple, human-readable, and scalable way to structure deep links used by the Tari Universe mobile clients.</p>
 <h2 id="description-5"><a class="header" href="#description-5">Description</a></h2>
 <p>Deep links are the URIs with hierarchical components sequence. We can use this sequence to pass and handle data in a standardized and predictable way. To do that, we need to pass three components to the target client: the scheme, command, and data.</p>
 <h3 id="scheme"><a class="header" href="#scheme">Scheme</a></h3>
-<p>The scheme is used to address the client, which will handle the command and data components. In the Tari Aurora project, we’re using the <code>tari</code> scheme to open the wallet app and execute the command.</p>
+<p>The scheme is used to address the client, which will handle the command and data components. In the Tari Universe mobile project, we’re using the <code>tari</code> scheme to open the wallet app and execute the command.</p>
 <h3 id="command"><a class="header" href="#command">Command</a></h3>
 <p>The command is a path string used to pass information about the action that should be performed by the client. The handler uses this command to determine how to deserialize the data, before passing it to the command function.
 To support multiple networks the first path component should be the name of corresponding network. Before proceeding with the command, the client should first check that the active account is pointed to the correct network, or show an error if there is a mismatch.</p>
@@ -2392,7 +2410,6 @@ tari://nextnet/contacts/list[0][alias]=MrTari&amp;list[0][tariAddress]=012345567
 <h1 id="rfc-0155tariaddress"><a class="header" href="#rfc-0155tariaddress">RFC-0155/TariAddress</a></h1>
 <h2 id="tariaddress-specification"><a class="header" href="#tariaddress-specification">TariAddress specification</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>:<a href="https://github.com/swvheerden">SW van Heerden</a></p>
 <h1 id="licence-9"><a class="header" href="#licence-9">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2024. The Tari Development Community</p>
@@ -2560,7 +2577,6 @@ The list of chosen emojis is as follows:</p>
 <h1 id="rfc-0160blockserialization"><a class="header" href="#rfc-0160blockserialization">RFC-0160/BlockSerialization</a></h1>
 <h2 id="tari-block-binary-serialization"><a class="header" href="#tari-block-binary-serialization">Tari Block Binary Serialization</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/sdbondi">Stanley Bondi</a></p>
 <h1 id="licence-10"><a class="header" href="#licence-10">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2021 The Tari Development Community</p>
@@ -3080,7 +3096,6 @@ a final step for the Base node to add the MMR roots to the header.</p>
 <h1 id="rfc-0170networkcommunicationprotocol"><a class="header" href="#rfc-0170networkcommunicationprotocol">RFC-0170/NetworkCommunicationProtocol</a></h1>
 <h2 id="the-tari-communication-network-and-network-communication-protocol"><a class="header" href="#the-tari-communication-network-and-network-communication-protocol">The Tari Communication Network and Network Communication Protocol</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/stringhandler">Stringhandler</a></p>
 <h1 id="license"><a class="header" href="#license">License</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD License</a>.</p>
 <p>Copyright 2018 The Tari Development Community</p>
@@ -3137,7 +3152,7 @@ Where messages are of importance to a wide variety of entities on the network, G
 The majority of the communication required on the <a href="#base-layer-1">Base Layer</a> and <a href="#digital-asset-network">Digital Asset Network</a> (DAN) will be performed via direct P2P communication between known clients and nodes.
 Alternatively, the Tari communication network can be used for broadcasting joining requests, discovery requests and propagating data messages such as completed blocks, transactions and data messages that are of interest to a large part of the Tari communication network.</p>
 <p>The Tari communication network consists of a number of different entities that need to communicate in a distributed and ad-hoc manner.
-The primary entities that need to communicate are Validator Nodes (VN), <a href="#base-node">Base Node</a>s (BN), and <a href="#wallet">Wallet</a>s (W).
+The primary entities that need to communicate are Validator Nodes (VN) and <a href="#base-node">Base Node</a>s (BN).
 Here are some examples of different communication tasks that need to be performed by these entities on the Tari Communication network:</p>
 <ul>
 <li>Base Nodes on the Base Layer need to propagate completed blocks and transactions to other Base Nodes using Gossip protocol based broadcasting.</li>
@@ -3148,12 +3163,11 @@ Here are some examples of different communication tasks that need to be performe
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Destination (across) <br>Source (down)</th><th>Validator Node</th><th>Base Node</th><th>Wallet</th></tr>
+<tr><th>Destination (across) <br>Source (down)</th><th>Validator Node</th><th>Base Node</th></tr>
 </thead>
 <tbody>
-<tr><td>Validator Node</td><td>Yes</td><td>No</td><td>No</td></tr>
-<tr><td>Base Node</td><td>No</td><td>Yes</td><td>No</td></tr>
-<tr><td>Wallet</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Validator Node</td><td>Yes</td><td>No</td></tr>
+<tr><td>Base Node</td><td>No</td><td>Yes</td></tr>
 </tbody>
 </table>
 </div>
@@ -3177,7 +3191,6 @@ The Tari communication network is unaware of this direct P2P communication once 
 <tbody>
 <tr><td>Validator Node</td><td>Communication Node</td></tr>
 <tr><td>Base Node</td><td>Communication Node</td></tr>
-<tr><td>Wallet</td><td>Communication Client</td></tr>
 </tbody>
 </table>
 </div>
@@ -3338,7 +3351,6 @@ The CN can decide how the peer connections should be selected from the routing t
 <h1 id="rfc-0171messageserialization"><a class="header" href="#rfc-0171messageserialization">RFC-0171/MessageSerialization</a></h1>
 <h2 id="message-serialization"><a class="header" href="#message-serialization">Message Serialization</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a> <a href="https://github.com/sdbondi">Stanley Bondi</a></p>
 <h1 id="licence-11"><a class="header" href="#licence-11">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2019 The Tari Development Community</p>
@@ -3378,7 +3390,6 @@ technological merits of the potential system outlined herein.</p>
 <p>One way of interpreting the Tari network is that it is a large peer-to-peer messaging application. The entities chatting
 on the network include:</p>
 <ul>
-<li>Wallets</li>
 <li>Base nodes</li>
 <li>Validator nodes</li>
 <li>Other client applications (e.g. chat)</li>
@@ -3571,7 +3582,6 @@ also offers significant ability to tweak how a given struct will be serialized t
 <h1 id="rfc-0172peertopeermessaging"><a class="header" href="#rfc-0172peertopeermessaging">RFC-0172/PeerToPeerMessaging</a></h1>
 <h2 id="peer-to-peer-messaging-protocol"><a class="header" href="#peer-to-peer-messaging-protocol">Peer to Peer Messaging Protocol</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/sdbondi">Stanley Bondi</a>, <a href="https://github.com/CjS77">Cayle Sharrock</a>, <a href="https://github.com/stringhandler">Stringhandler</a></p>
 <h1 id="licence-12"><a class="header" href="#licence-12">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2019 The Tari Development Community</p>
@@ -3932,10 +3942,6 @@ The destination peer will attempt to contact the sender and send a <code>Discove
 <li><code>DiscoveryResponse</code></li>
 </ul>
 <p>Sent in response to a <code>Discovery</code> message.</p>
-<ul>
-<li><code>SafRequestMessages</code> / <code>SafStoredMessages</code></li>
-</ul>
-<p>Request and response messages for stored messages destined for the requester.</p>
 <h5 id="envelopebody"><a class="header" href="#envelopebody">EnvelopeBody</a></h5>
 <p>The <code>EnvelopeBody</code> is the “payload” of the message and consists of an arbitrary number of ordered opaque BLOBs.
 It may be encrypted for a particular destination. The contents of these BLOBs are decided by domain-level requirements.</p>
@@ -4017,21 +4023,6 @@ contents of the message. An encrypted message reveals to recipient but keeps the
 <p>On receipt of a valid message with destination set to <code>PUBLIC_KEY(xxxx)</code>, a node SHOULD forward a message either
 directly to the peer, if able, or closer to the peer as per the XOR metric. If the message is invalid, the node
 SHOULD discard it.</p>
-<h5 id="store-and-forward"><a class="header" href="#store-and-forward">Store and Forward</a></h5>
-<p>Sometimes it may be desirable for messages to be sent without a destination node/client being online. This
-is especially important for a modern chat/messaging application as well as interactive Mimblewimble transactions.</p>
-<p>Each <a href="#communication-node">communication node</a> SHOULD allocate some disk space for storage of messages for offline recipients.
-A sender sends a message destined for a particular public identity to its closest peers, which forward the message
-to their closest peers, and so on. A peer is considered close enough by finding the farthest peer from the <code>n</code> closest
-online and available peers to the storage node and comparing that to the XOR distance of the message destination.</p>
-<p>Eventually, the message will reach nodes that either know the destination or are very close to the destination.
-These nodes SHOULD store the message in some pending message storage for the destination. The maximum number of
-buckets and the size of each bucket SHOULD be sufficiently large as to be unlikely to overflow, but not so
-large as to approach disk space problems. Individual messages should be small and responsibilities for
-storage spread over the entire network.</p>
-<p>On receipt of a valid message with destination set to <code>PUBLIC_KEY(xxxx)</code>, and if the peer is sufficiently close to the destination,
-a node SHOULD store the message for a time and return it later to the peer in response to a <code>SafRequestMessages</code> message.</p>
-<p>If the [DhtEnvelopeBody] is encrypted, the type and contents of the message remain private.</p>
 <h5 id="message-deduplication"><a class="header" href="#message-deduplication">Message Deduplication</a></h5>
 <p>A peer propagating/routing a message may receive the same message after propagation from another peer as there is no way
 for routing node to know which peers have seen the message before. To prevent infinite message propagation, message contents
@@ -4048,6 +4039,7 @@ discarded and not propagated further.</p>
 <tr><td style="text-align: left">9 Nov 2022</td><td style="text-align: left">Removed I2P and ZeroMQ</td><td style="text-align: left">stringhandler</td></tr>
 <tr><td style="text-align: left">17 Jan 2023</td><td style="text-align: left">Implementation parity updates</td><td style="text-align: left">sdbondi</td></tr>
 <tr><td style="text-align: left">25 Jan 2023</td><td style="text-align: left">Clarify empty body rules</td><td style="text-align: left">sdbondi</td></tr>
+<tr><td style="text-align: left">19 Jun 2026</td><td style="text-align: left">Saf removal</td><td style="text-align: left">SW van Heerden</td></tr>
 </tbody>
 </table>
 </div>
@@ -4055,7 +4047,6 @@ discarded and not propagated further.</p>
 <h1 id="rfc-0173versioning"><a class="header" href="#rfc-0173versioning">RFC-0173/Versioning</a></h1>
 <h2 id="versioning"><a class="header" href="#versioning">Versioning</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/stringhandler">Stringhandler</a></p>
 <h1 id="licence-13"><a class="header" href="#licence-13">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2021 The Tari Development Community</p>
@@ -4186,7 +4177,6 @@ in the header are valid for that block’s height.</p>
 <h1 id="rfc-0174chat-metadata"><a class="header" href="#rfc-0174chat-metadata">RFC-0174/Chat Metadata</a></h1>
 <h2 id="versioning-1"><a class="header" href="#versioning-1">Versioning</a></h2>
 <p><img src="theme/images/status-draft.svg" alt="status: draft"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/brianp">brianp</a></p>
 <h1 id="licence-14"><a class="header" href="#licence-14">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2023 The Tari Development Community</p>
@@ -4257,7 +4247,6 @@ A reply metadata should be a single String element matching the UUID of the mess
 <h1 id="rfc-0181bulletproofsplus"><a class="header" href="#rfc-0181bulletproofsplus">RFC-0181/BulletproofsPlus</a></h1>
 <h2 id="bulletproofs-range-proving"><a class="header" href="#bulletproofs-range-proving">Bulletproofs+ range proving</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/AaronFeickert">Aaron Feickert</a></p>
 <h1 id="licence-15"><a class="header" href="#licence-15">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2022 The Tari Development Community</p>
@@ -4495,7 +4484,6 @@ Overall efficiency is likely to depend on specific optimizations.</p>
 <h1 id="rfc-0182commitmentsignatures"><a class="header" href="#rfc-0182commitmentsignatures">RFC-0182/CommitmentSignatures</a></h1>
 <h2 id="commitment-and-public-key-signatures"><a class="header" href="#commitment-and-public-key-signatures">Commitment and public key signatures</a></h2>
 <p><img src="theme/images/status-draft.svg" alt="status: draft"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/AaronFeickert">Aaron Feickert</a></p>
 <h1 id="licence-16"><a class="header" href="#licence-16">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2023 The Tari Development Community</p>
@@ -4646,8 +4634,7 @@ To account for this, the verifier accepts the proof if and only if $eaH + u_x G 
 <p>However, this alters the proof format and verification, which may be undesirable for a more general implementation.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="rfc-0190mempool"><a class="header" href="#rfc-0190mempool">RFC-0190/Mempool</a></h1>
-<p><img src="theme/images/status-stable.svg" alt="status: updated">
-<strong>Maintainer(s)</strong>: <a href="https://github.com/sdbondi">Stanley Bondi</a>, <a href="https://github.com/SWvheerden">SW van Heerden</a></p>
+<p><img src="theme/images/status-stable.svg" alt="status: updated"></p>
 <h2 id="the-mempool-for-unconfirmed-transactions-on-the-tari-base-layer"><a class="header" href="#the-mempool-for-unconfirmed-transactions-on-the-tari-base-layer">The Mempool for Unconfirmed Transactions on the Tari Base Layer</a></h2>
 <!-- TOC -->
 <ul>
@@ -4668,7 +4655,7 @@ To account for this, the verifier accepts the proof if and only if $eaH + u_x G 
 <li><a href="#abstract-2">Abstract</a></li>
 <li><a href="#overview-4">Overview</a></li>
 <li><a href="#prioritizing-unconfirmed-transactions">Prioritizing Unconfirmed Transactions</a></li>
-<li><a href="#memory-pool-state--syncing-and-updating">Memory Pool State: Syncing and Updating</a></li>
+<li><a href="#memory-pool-state-syncing-and-updating">Memory Pool State: Syncing and Updating</a></li>
 <li><a href="#unconfirmed-pool">Unconfirmed Pool</a></li>
 <li><a href="#reorg-pool">Reorg Pool</a></li>
 <li><a href="#mempool">Mempool</a></li>
@@ -8903,7 +8890,6 @@ it must be updated to <img src="theme/images/status-outdated.svg" alt="outdated"
 <h1 id="rfc-0123replayattacks"><a class="header" href="#rfc-0123replayattacks">RFC-0123/ReplayAttacks</a></h1>
 <h2 id="mitigating-one-sided-payment-replay-attacks"><a class="header" href="#mitigating-one-sided-payment-replay-attacks">Mitigating One-sided payment replay attacks</a></h2>
 <p><img src="theme/images/status-draft.svg" alt="status: draft"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a> and <a href="https://github.com/SWvheerden">S W van heerden</a></p>
 <h1 id="licence-33"><a class="header" href="#licence-33">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2021 The Tari Development Community</p>
@@ -8943,58 +8929,68 @@ technological merits of the potential system outlined herein.</p>
 <li><a href="#rfc-0201tariscript">RFC-0201: TariScript</a></li>
 </ul>
 <h2 id="replay-attack"><a class="header" href="#replay-attack">Replay attack</a></h2>
-<p>Replay attacks are “replaying” old messages to deceive the receiver about the message’s authenticity.
+<p>A replay attack “replays” old messages to deceive the receiver about a message’s authenticity.
 With TariScript, a vulnerability exists where a replay attack can occur under certain conditions, even with the current consensus rules.</p>
-<p>For this attack to work, we need Alice and Charlie to collude to steal some of Bob’s funds:</p>
+<p>For this attack to work, Alice and Charlie must collude to steal some of Bob’s funds:</p>
 <ul>
 <li>Alice sends a one-sided transaction to Bob.</li>
 <li>Bob spends this UTXO to Charlie.
 <ul>
-<li>Bob has to spend this and only this UTXO alone to Charlie with <strong>zero change</strong>.</li>
+<li>Bob has to spend this and only this UTXO to Charlie, with <strong>zero change</strong>.</li>
 </ul>
 </li>
-<li>Alice sends a new one-sided transaction to Bob, creating the exact same output as before</li>
-<li>Alice shares the Blinding factor of the UTXO with Charlie</li>
-<li>Charlie can now claim this UTXO by replaying his old transaction
+<li>Alice sends a new one-sided transaction to Bob, creating the exact same output as before.</li>
+<li>Alice shares the blinding factor of the UTXO with Charlie.</li>
+<li>Charlie can now claim this UTXO by replaying his old transaction.
 <ul>
-<li>Charlie has the signatures to spend the scripts, sign for the changes, etc.</li>
+<li>Charlie has the signatures to spend the scripts, sign for the changes, and so on.</li>
 <li>Because the previous transaction contains no other inputs, Charlie only has to provide signatures for this one UTXO.</li>
-<li>Because there is no change UTXO, Charlie has the keys for all the outputs in the transactions and can thus add another transaction or input
-/output to make sure the kernel excess signature is unique.</li>
+<li>Because there is no change UTXO, Charlie has the keys for all the outputs in the transaction and can thus add another input
+or output to ensure the kernel excess signature is unique.</li>
 </ul>
 </li>
 </ul>
-<p>This does not work if Bob includes another UTXO in the transaction to Charlie due to the <a href="#script-offset-1">script offset</a>. Although Charlie has the
-blinding factor, for the one UTXO, he does not have the <a href="#script-offset-1">script offset</a>. Charlie can create a new kernel signature unique for blockchain consensus with the blinding factor. Still, because the <a href="#script-offset-1">script offset</a> needs to balance as well, and he does not know the private keys for this, he needs
-to use this as is, meaning he needs to use an exact copy of the transaction. If the transaction includes any UTXO that he does not know the
-blinding factor of, he cannot create a new kernel excess signature. Meaning it won’t pass consensus rules.</p>
+<p>This does not work if Bob includes another UTXO in the transaction to Charlie, because of the <a href="#script-offset-1">script offset</a>. Although Charlie has the
+blinding factor for the one UTXO, he does not have the <a href="#script-offset-1">script offset</a>. Charlie can create a new kernel signature, unique for blockchain consensus, with the blinding factor. However, because the <a href="#script-offset-1">script offset</a> also needs to balance, and he does not know the private keys for it, he needs
+to use it as is, meaning he must use an exact copy of the transaction. If the transaction includes any UTXO whose
+blinding factor he does not know, he cannot create a new kernel excess signature, which means it won’t pass the consensus rules.</p>
 <h2 id="solutions"><a class="header" href="#solutions">Solutions</a></h2>
-<p>This is a very niche attack that will only be useful under certain circumstances, but never less still needs to be addressed.</p>
-<h3 id="sign-with-chain-information"><a class="header" href="#sign-with-chain-information">Sign with chain information</a></h3>
-<p>If we require as part of the <a href="#transaction-input-changes">script signature</a> challenge that we sign the mined block height of that UTXO, it will ensure that Charlie cannot replay the signatures that
-Bob provided on the Input to spend the output, as each duplicate commitment will have its own block height. This is ensured as we currently have a limit that a commitment
-must be unique in the unspent set.</p>
+<p>This is a very niche attack that is only useful under certain circumstances, but it nonetheless still needs to be addressed.</p>
+<h3 id="wallet-ensures-it-always-creates-change"><a class="header" href="#wallet-ensures-it-always-creates-change">Wallet ensures it always creates change</a></h3>
+<p>The wallet ensures it never sends just one output, but always creates change. This forces uniqueness into the transaction, preventing reuse.</p>
 <h4 id="advantages"><a class="header" href="#advantages">Advantages</a></h4>
 <ul>
-<li>Does not require any more on-chain information</li>
+<li>Does not require any more on-chain information.</li>
 </ul>
 <h4 id="disadvantages"><a class="header" href="#disadvantages">Disadvantages</a></h4>
 <ul>
-<li>Reorged transactions cannot be put back in if the inputs are now spent at different heights</li>
+<li>Transactions will effectively have a minimum of two outputs.</li>
+</ul>
+<h3 id="sign-with-chain-information"><a class="header" href="#sign-with-chain-information">Sign with chain information</a></h3>
+<p>If we require, as part of the <a href="#transaction-input-changes">script signature</a> challenge, that we sign the mined block height of that UTXO, it will ensure that Charlie cannot replay the signatures that
+Bob provided on the input to spend the output, as each duplicate commitment will have its own block height. This holds because we currently enforce a limit that a commitment
+must be unique in the unspent set.</p>
+<h4 id="advantages-1"><a class="header" href="#advantages-1">Advantages</a></h4>
+<ul>
+<li>Does not require any more on-chain information</li>
+</ul>
+<h4 id="disadvantages-1"><a class="header" href="#disadvantages-1">Disadvantages</a></h4>
+<ul>
+<li>Reorged transactions cannot be put back in if the inputs are now spent at different heights. This is a big issue if you have many reorgs, which Tari does.</li>
 </ul>
 <h3 id="enforce-global-commitment-uniqueness"><a class="header" href="#enforce-global-commitment-uniqueness">Enforce global commitment uniqueness</a></h3>
-<p>Alice cannot send the same one-sided UTXO to Bob if we require the commitment to be globally unique. This does mean that pruned nodes needs
-to track the spent TXO set’s commitment and the UTXO set.</p>
-<h4 id="advantages-1"><a class="header" href="#advantages-1">advantages</a></h4>
+<p>Alice cannot send the same one-sided UTXO to Bob if we require the commitment to be globally unique. This does mean that pruned nodes need
+to track both the spent TXO set’s commitments and the UTXO set.</p>
+<h4 id="advantages-2"><a class="header" href="#advantages-2">Advantages</a></h4>
 <ul>
-<li>Safely reorg transactions</li>
+<li>Transactions can be reorged safely.</li>
 </ul>
-<h4 id="disadvantages-1"><a class="header" href="#disadvantages-1">disadvantages</a></h4>
+<h4 id="disadvantages-2"><a class="header" href="#disadvantages-2">Disadvantages</a></h4>
 <ul>
-<li>Pruned node needs to save extra data about the spent set.</li>
-<li>Syncing pruned nodes need to provide extra info to ensure that the downloaded list of commitments is correct
+<li>Pruned nodes need to save extra data about the spent set.</li>
+<li>Syncing pruned nodes need to provide extra information to ensure that the downloaded list of commitments is correct.
 <ul>
-<li>Without requiring extra information in the header, pruned nodes need to download the entire TXO set and compare this to the output_mmr root.</li>
+<li>Without requiring extra information in the header, pruned nodes need to download the entire TXO set and compare it to the output_mmr root.</li>
 </ul>
 </li>
 </ul>
@@ -9014,7 +9010,6 @@ to track the spent TXO set’s commitment and the UTXO set.</p>
 <h1 id="rfc-0141sparsemerkletrees"><a class="header" href="#rfc-0141sparsemerkletrees">RFC-0141/SparseMerkleTrees</a></h1>
 <h2 id="sparse-merkle-trees-a-mutable-data-structure-for-txo-commitments"><a class="header" href="#sparse-merkle-trees-a-mutable-data-structure-for-txo-commitments">Sparse Merkle Trees: A mutable data structure for TXO commitments</a></h2>
 <p><img src="theme/images/status-draft.svg" alt="status: draft"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">CjS77</a></p>
 <h1 id="licence-34"><a class="header" href="#licence-34">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2023 The Tari Development Community</p>
@@ -9565,7 +9560,6 @@ since it fundamentally alters how the UTXO Merkle root is calculated.</p>
 <h1 id="rfc-0153stagedwalletsecurity"><a class="header" href="#rfc-0153stagedwalletsecurity">RFC-0153/StagedWalletSecurity</a></h1>
 <h2 id="staged-wallet-security"><a class="header" href="#staged-wallet-security">Staged Wallet Security</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a></p>
 <h1 id="licence-35"><a class="header" href="#licence-35">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2021 The Tari Development Community</p>

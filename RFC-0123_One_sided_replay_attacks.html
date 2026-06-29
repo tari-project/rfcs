@@ -140,7 +140,6 @@
                         <h1 id="rfc-0123replayattacks"><a class="header" href="#rfc-0123replayattacks">RFC-0123/ReplayAttacks</a></h1>
 <h2 id="mitigating-one-sided-payment-replay-attacks"><a class="header" href="#mitigating-one-sided-payment-replay-attacks">Mitigating One-sided payment replay attacks</a></h2>
 <p><img src="theme/images/status-draft.svg" alt="status: draft"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/CjS77">Cayle Sharrock</a> and <a href="https://github.com/SWvheerden">S W van heerden</a></p>
 <h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2021 The Tari Development Community</p>
@@ -180,58 +179,68 @@ technological merits of the potential system outlined herein.</p>
 <li><a href="RFC-0201_TariScript.html">RFC-0201: TariScript</a></li>
 </ul>
 <h2 id="replay-attack"><a class="header" href="#replay-attack">Replay attack</a></h2>
-<p>Replay attacks are “replaying” old messages to deceive the receiver about the message’s authenticity.
+<p>A replay attack “replays” old messages to deceive the receiver about a message’s authenticity.
 With TariScript, a vulnerability exists where a replay attack can occur under certain conditions, even with the current consensus rules.</p>
-<p>For this attack to work, we need Alice and Charlie to collude to steal some of Bob’s funds:</p>
+<p>For this attack to work, Alice and Charlie must collude to steal some of Bob’s funds:</p>
 <ul>
 <li>Alice sends a one-sided transaction to Bob.</li>
 <li>Bob spends this UTXO to Charlie.
 <ul>
-<li>Bob has to spend this and only this UTXO alone to Charlie with <strong>zero change</strong>.</li>
+<li>Bob has to spend this and only this UTXO to Charlie, with <strong>zero change</strong>.</li>
 </ul>
 </li>
-<li>Alice sends a new one-sided transaction to Bob, creating the exact same output as before</li>
-<li>Alice shares the Blinding factor of the UTXO with Charlie</li>
-<li>Charlie can now claim this UTXO by replaying his old transaction
+<li>Alice sends a new one-sided transaction to Bob, creating the exact same output as before.</li>
+<li>Alice shares the blinding factor of the UTXO with Charlie.</li>
+<li>Charlie can now claim this UTXO by replaying his old transaction.
 <ul>
-<li>Charlie has the signatures to spend the scripts, sign for the changes, etc.</li>
+<li>Charlie has the signatures to spend the scripts, sign for the changes, and so on.</li>
 <li>Because the previous transaction contains no other inputs, Charlie only has to provide signatures for this one UTXO.</li>
-<li>Because there is no change UTXO, Charlie has the keys for all the outputs in the transactions and can thus add another transaction or input
-/output to make sure the kernel excess signature is unique.</li>
+<li>Because there is no change UTXO, Charlie has the keys for all the outputs in the transaction and can thus add another input
+or output to ensure the kernel excess signature is unique.</li>
 </ul>
 </li>
 </ul>
-<p>This does not work if Bob includes another UTXO in the transaction to Charlie due to the <a href="Glossary.html#script-offset">script offset</a>. Although Charlie has the
-blinding factor, for the one UTXO, he does not have the <a href="Glossary.html#script-offset">script offset</a>. Charlie can create a new kernel signature unique for blockchain consensus with the blinding factor. Still, because the <a href="Glossary.html#script-offset">script offset</a> needs to balance as well, and he does not know the private keys for this, he needs
-to use this as is, meaning he needs to use an exact copy of the transaction. If the transaction includes any UTXO that he does not know the
-blinding factor of, he cannot create a new kernel excess signature. Meaning it won’t pass consensus rules.</p>
+<p>This does not work if Bob includes another UTXO in the transaction to Charlie, because of the <a href="Glossary.html#script-offset">script offset</a>. Although Charlie has the
+blinding factor for the one UTXO, he does not have the <a href="Glossary.html#script-offset">script offset</a>. Charlie can create a new kernel signature, unique for blockchain consensus, with the blinding factor. However, because the <a href="Glossary.html#script-offset">script offset</a> also needs to balance, and he does not know the private keys for it, he needs
+to use it as is, meaning he must use an exact copy of the transaction. If the transaction includes any UTXO whose
+blinding factor he does not know, he cannot create a new kernel excess signature, which means it won’t pass the consensus rules.</p>
 <h2 id="solutions"><a class="header" href="#solutions">Solutions</a></h2>
-<p>This is a very niche attack that will only be useful under certain circumstances, but never less still needs to be addressed.</p>
-<h3 id="sign-with-chain-information"><a class="header" href="#sign-with-chain-information">Sign with chain information</a></h3>
-<p>If we require as part of the <a href="RFC-0201_TariScript.html#transaction-input-changes">script signature</a> challenge that we sign the mined block height of that UTXO, it will ensure that Charlie cannot replay the signatures that
-Bob provided on the Input to spend the output, as each duplicate commitment will have its own block height. This is ensured as we currently have a limit that a commitment
-must be unique in the unspent set.</p>
+<p>This is a very niche attack that is only useful under certain circumstances, but it nonetheless still needs to be addressed.</p>
+<h3 id="wallet-ensures-it-always-creates-change"><a class="header" href="#wallet-ensures-it-always-creates-change">Wallet ensures it always creates change</a></h3>
+<p>The wallet ensures it never sends just one output, but always creates change. This forces uniqueness into the transaction, preventing reuse.</p>
 <h4 id="advantages"><a class="header" href="#advantages">Advantages</a></h4>
 <ul>
-<li>Does not require any more on-chain information</li>
+<li>Does not require any more on-chain information.</li>
 </ul>
 <h4 id="disadvantages"><a class="header" href="#disadvantages">Disadvantages</a></h4>
 <ul>
-<li>Reorged transactions cannot be put back in if the inputs are now spent at different heights</li>
+<li>Transactions will effectively have a minimum of two outputs.</li>
+</ul>
+<h3 id="sign-with-chain-information"><a class="header" href="#sign-with-chain-information">Sign with chain information</a></h3>
+<p>If we require, as part of the <a href="RFC-0201_TariScript.html#transaction-input-changes">script signature</a> challenge, that we sign the mined block height of that UTXO, it will ensure that Charlie cannot replay the signatures that
+Bob provided on the input to spend the output, as each duplicate commitment will have its own block height. This holds because we currently enforce a limit that a commitment
+must be unique in the unspent set.</p>
+<h4 id="advantages-1"><a class="header" href="#advantages-1">Advantages</a></h4>
+<ul>
+<li>Does not require any more on-chain information</li>
+</ul>
+<h4 id="disadvantages-1"><a class="header" href="#disadvantages-1">Disadvantages</a></h4>
+<ul>
+<li>Reorged transactions cannot be put back in if the inputs are now spent at different heights. This is a big issue if you have many reorgs, which Tari does.</li>
 </ul>
 <h3 id="enforce-global-commitment-uniqueness"><a class="header" href="#enforce-global-commitment-uniqueness">Enforce global commitment uniqueness</a></h3>
-<p>Alice cannot send the same one-sided UTXO to Bob if we require the commitment to be globally unique. This does mean that pruned nodes needs
-to track the spent TXO set’s commitment and the UTXO set.</p>
-<h4 id="advantages-1"><a class="header" href="#advantages-1">advantages</a></h4>
+<p>Alice cannot send the same one-sided UTXO to Bob if we require the commitment to be globally unique. This does mean that pruned nodes need
+to track both the spent TXO set’s commitments and the UTXO set.</p>
+<h4 id="advantages-2"><a class="header" href="#advantages-2">Advantages</a></h4>
 <ul>
-<li>Safely reorg transactions</li>
+<li>Transactions can be reorged safely.</li>
 </ul>
-<h4 id="disadvantages-1"><a class="header" href="#disadvantages-1">disadvantages</a></h4>
+<h4 id="disadvantages-2"><a class="header" href="#disadvantages-2">Disadvantages</a></h4>
 <ul>
-<li>Pruned node needs to save extra data about the spent set.</li>
-<li>Syncing pruned nodes need to provide extra info to ensure that the downloaded list of commitments is correct
+<li>Pruned nodes need to save extra data about the spent set.</li>
+<li>Syncing pruned nodes need to provide extra information to ensure that the downloaded list of commitments is correct.
 <ul>
-<li>Without requiring extra information in the header, pruned nodes need to download the entire TXO set and compare this to the output_mmr root.</li>
+<li>Without requiring extra information in the header, pruned nodes need to download the entire TXO set and compare it to the output_mmr root.</li>
 </ul>
 </li>
 </ul>

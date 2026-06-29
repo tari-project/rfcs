@@ -140,7 +140,6 @@
                         <h1 id="rfc-0172peertopeermessaging"><a class="header" href="#rfc-0172peertopeermessaging">RFC-0172/PeerToPeerMessaging</a></h1>
 <h2 id="peer-to-peer-messaging-protocol"><a class="header" href="#peer-to-peer-messaging-protocol">Peer to Peer Messaging Protocol</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/sdbondi">Stanley Bondi</a>, <a href="https://github.com/CjS77">Cayle Sharrock</a>, <a href="https://github.com/stringhandler">Stringhandler</a></p>
 <h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause"> The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2019 The Tari Development Community</p>
@@ -501,10 +500,6 @@ The destination peer will attempt to contact the sender and send a <code>Discove
 <li><code>DiscoveryResponse</code></li>
 </ul>
 <p>Sent in response to a <code>Discovery</code> message.</p>
-<ul>
-<li><code>SafRequestMessages</code> / <code>SafStoredMessages</code></li>
-</ul>
-<p>Request and response messages for stored messages destined for the requester.</p>
 <h5 id="envelopebody"><a class="header" href="#envelopebody">EnvelopeBody</a></h5>
 <p>The <code>EnvelopeBody</code> is the “payload” of the message and consists of an arbitrary number of ordered opaque BLOBs.
 It may be encrypted for a particular destination. The contents of these BLOBs are decided by domain-level requirements.</p>
@@ -586,21 +581,6 @@ contents of the message. An encrypted message reveals to recipient but keeps the
 <p>On receipt of a valid message with destination set to <code>PUBLIC_KEY(xxxx)</code>, a node SHOULD forward a message either
 directly to the peer, if able, or closer to the peer as per the XOR metric. If the message is invalid, the node
 SHOULD discard it.</p>
-<h5 id="store-and-forward"><a class="header" href="#store-and-forward">Store and Forward</a></h5>
-<p>Sometimes it may be desirable for messages to be sent without a destination node/client being online. This
-is especially important for a modern chat/messaging application as well as interactive Mimblewimble transactions.</p>
-<p>Each <a href="Glossary.html#communication-node">communication node</a> SHOULD allocate some disk space for storage of messages for offline recipients.
-A sender sends a message destined for a particular public identity to its closest peers, which forward the message
-to their closest peers, and so on. A peer is considered close enough by finding the farthest peer from the <code>n</code> closest
-online and available peers to the storage node and comparing that to the XOR distance of the message destination.</p>
-<p>Eventually, the message will reach nodes that either know the destination or are very close to the destination.
-These nodes SHOULD store the message in some pending message storage for the destination. The maximum number of
-buckets and the size of each bucket SHOULD be sufficiently large as to be unlikely to overflow, but not so
-large as to approach disk space problems. Individual messages should be small and responsibilities for
-storage spread over the entire network.</p>
-<p>On receipt of a valid message with destination set to <code>PUBLIC_KEY(xxxx)</code>, and if the peer is sufficiently close to the destination,
-a node SHOULD store the message for a time and return it later to the peer in response to a <code>SafRequestMessages</code> message.</p>
-<p>If the [DhtEnvelopeBody] is encrypted, the type and contents of the message remain private.</p>
 <h5 id="message-deduplication"><a class="header" href="#message-deduplication">Message Deduplication</a></h5>
 <p>A peer propagating/routing a message may receive the same message after propagation from another peer as there is no way
 for routing node to know which peers have seen the message before. To prevent infinite message propagation, message contents
@@ -617,6 +597,7 @@ discarded and not propagated further.</p>
 <tr><td style="text-align: left">9 Nov 2022</td><td style="text-align: left">Removed I2P and ZeroMQ</td><td style="text-align: left">stringhandler</td></tr>
 <tr><td style="text-align: left">17 Jan 2023</td><td style="text-align: left">Implementation parity updates</td><td style="text-align: left">sdbondi</td></tr>
 <tr><td style="text-align: left">25 Jan 2023</td><td style="text-align: left">Clarify empty body rules</td><td style="text-align: left">sdbondi</td></tr>
+<tr><td style="text-align: left">19 Jun 2026</td><td style="text-align: left">Saf removal</td><td style="text-align: left">SW van Heerden</td></tr>
 </tbody>
 </table>
 </div>
