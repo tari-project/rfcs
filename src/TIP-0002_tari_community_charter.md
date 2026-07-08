@@ -102,7 +102,7 @@ Tari Labs, the protocol's instigator, participates in the Council as a member, n
 
 The Council shall consist of five to seven members, drawn from the community and from enterprise, serving terms of twelve months. Initial terms shall be staggered so that no more than half of the Council's seats expire in the same period. No term shall be presumed to renew. At the conclusion of each term, the community may nominate the member to continue, or the seat shall pass to another.
 
-Council members shall receive a monthly stipend of 100,000 XTM for their service, subject to a USD-equivalent reference cap of $4,000 per month calculated at a forward-looking reference rate of $0.04 per XTM. The Council shall publish the calculation method used to determine the stipend and shall review it no less than quarterly. Any increase to the stipend, or change to the calculation method, shall require the charter amendment process and community ratification.
+Council members shall receive a monthly stipend of 400,000 XTM for their service, subject to a USD-equivalent reference cap of $8,000 per month. The Council shall publish the calculation method used to determine the stipend and shall review it no less than quarterly. Any increase to the stipend, or change to the calculation method, shall require the charter amendment process and community ratification.
 
 ## Article III. Authority and Responsibility
 
