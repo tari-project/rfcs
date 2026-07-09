@@ -140,7 +140,6 @@
                         <h1 id="rfc-0205hardware-transactions"><a class="header" href="#rfc-0205hardware-transactions">RFC-0205/Hardware transactions</a></h1>
 <h2 id="hardware-transactions"><a class="header" href="#hardware-transactions">Hardware transactions</a></h2>
 <p><img src="theme/images/status-stable.svg" alt="status: stable"></p>
-<p><strong>Maintainer(s)</strong>: <a href="https://github.com/swvheerden">SW van Heerden</a></p>
 <h1 id="licence"><a class="header" href="#licence">Licence</a></h1>
 <p><a href="https://opensource.org/licenses/BSD-3-Clause">The 3-Clause BSD Licence</a>.</p>
 <p>Copyright 2023 The Tari Development Community</p>
@@ -216,23 +215,28 @@ $$</p>
 <p>The blinding factor (\( k_i \) ) is used as a random nonce when creating the script key. This means the helper can create the public key without the signer present, and the signer can then at a later stage create the private key from the nonce. The key pair (\( a, A \) ) is the master key pair from the signer. The private key (\( a \) ) is kept secret by the signer at all times.</p>
 <h3 id="initialization"><a class="header" href="#initialization">Initialization</a></h3>
 <p>Adding a hardware wallet to a wallet (helper) we need to ensure that all keys are only derived from a single seed phrase provided by the hardware wallet.</p>
-<p>Helper asks signer for master helper key (\( k_H \) ).
-This key is derived from the signer seed phrase.</p>
+<p>Helper asks signer for the view key (\( k_V \) ).
+This key is derived from the signer seed phrase and allows the helper to recognise and decrypt its own outputs while scanning the blockchain. The corresponding public view key (\( K_V \) ) also forms part of the wallet’s address so that senders can encrypt outputs to it.</p>
 <h3 id="transaction-receiving"><a class="header" href="#transaction-receiving">Transaction receiving</a></h3>
 <p>When a transaction is received the helper constructs the new <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a> with its Rangeproof. Choosing a new ( \( k_i \) ) for the <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a>, it calculates a new \( K_S \). It attaches the script <code>PushPubkey(K_S)</code> to output.</p>
 <h3 id="transaction-sending"><a class="header" href="#transaction-sending">Transaction sending</a></h3>
-<p>When the user wants to send a transaction, the helper retrieves the desired <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a>. The helper asks the signer to sign the transaction.
-The signer calculates \( k_s \) to sign the transaction.
-The signer creates a random nonce \( k_O \) to use for the script_offset. It produces the metadata signature with \( k_O \), and supplies the script_offset to the helper.
-The helper can attach the correct signatures to the <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a>s and ship the transaction.</p>
+<p>When the user wants to send a transaction, the helper retrieves the desired <a href="./Glossary.html#unspent-transaction-outputs">UTXO</a>. The helper asks the signer to sign the transaction.</p>
+<p>To spend an input, the signer reconstructs the script key \( k_S \) (from the output’s blinding factor \( k_i \) and the spend key \( a \), as above) and produces the <strong>script signature</strong> for that input. This is a <code>CommitmentAndPublicKeySignature</code> constructed with fresh random nonces (\( r_a, r_x, r_y \) ) generated on the device.</p>
+<p>The signer also computes the <strong>script offset</strong>, which binds the spent inputs to the newly created outputs. The script offset is <strong>not</strong> a random nonce: it is calculated deterministically as the difference between the sum of the spent inputs’ script private keys and the sum of the created outputs’ sender offset private keys,
+$$
+\sigma = \sum_j k_{S_j} - \sum_l k_{O_l}
+$$
+and is returned to the helper. To prevent an attacker from extracting the spend key by requesting a single-key offset, the signer enforces that at least two unique keys participate in this computation.</p>
+<p>The helper attaches the script signatures and script offset to the transaction and ships it. (The separate <strong>metadata signature</strong>, also produced on the device, is used when <em>creating</em> one-sided outputs (the “Transaction receiving” flow above), not when spending.)</p>
 <h3 id="receiving-normal-one-sided-transaction"><a class="header" href="#receiving-normal-one-sided-transaction">Receiving normal one-sided transaction</a></h3>
 <p>This can be done by the helper asking the signer for a public key. And advertising this public key as the destination public key for a 1-sided transaction.
 The helper can scan the blockchain for this public key.</p>
 <h3 id="receiving-one-sided-stealth"><a class="header" href="#receiving-one-sided-stealth">Receiving one-sided-stealth</a></h3>
-<p>Not yet possible with this this design.</p>
+<p>This is supported. The signer exposes a Diffie-Hellman operation to the helper: given a public key \( P \) supplied by the helper, the signer returns the shared secret \( k_V \cdot P \) computed against the view key, without ever revealing \( k_V \).
+While scanning, the helper computes the DH shared secret between the view key and an output’s sender offset public key and uses it to derive the output’s encryption key (see “Output recovery” below). If decryption succeeds, the output belongs to this wallet. The helper can then derive the stealth script spending key and recover the output. Spending such an output proceeds exactly as in “Transaction sending” above, since the script key is constructed in the same way.</p>
 <h3 id="output-recovery"><a class="header" href="#output-recovery">Output recovery</a></h3>
-<p>When creating outputs the wallet encrypts the blinding factor \(k_i \) and value \( v \) with \( k_H \). This is encrypted using extended-nonce AEAD using a random nonce and authenticated decryption.
-Because the key \( k_H \)  is calculated from the seed phrase of the signer, this will be the same each time. The helper can try to decrypt each scanned output, when it is successful it knows it has found its own output.
+<p>When creating outputs the wallet encrypts the blinding factor \(k_i \), value \( v \) and payment id with an output encryption key. This is encrypted using extended-nonce AEAD (XChaCha20-Poly1305) using a random nonce and authenticated decryption.
+The encryption key is not a single static key. It is derived per-output from a Diffie-Hellman shared secret between the sender’s offset key and the receiver’s view key (\( k_V \) ), which is then domain-separated hashed into the output encryption key. Because the view key \( k_V \) is calculated from the seed phrase of the signer, the helper can reproduce the same shared secret for its own outputs. The helper tries to decrypt each scanned output; when it succeeds it knows it has found its own output.
 The helper can validate that the commitment is correct using the blinding factor \(k_i \) and value \( v \). It can also validate (\( K_S)\) corresponds to (\( k_i, A \) )</p>
 <h2 id="security"><a class="header" href="#security">Security</a></h2>
 <p>Because the script key is required for spending, it is the only key that needs to be kept secret.
@@ -243,12 +247,12 @@ The following table explains what an attacker can do upon learning a key from th
 <tr><th style="text-align: left">key</th><th style="text-align: left">Worst case scenario</th></tr>
 </thead>
 <tbody>
-<tr><td style="text-align: left">\( k_H \)</td><td style="text-align: left">Can view all transactions and values made by the wallet</td></tr>
+<tr><td style="text-align: left">\( k_V \)</td><td style="text-align: left">Can view all transactions and values made by the wallet</td></tr>
 <tr><td style="text-align: left">\( k_i \)</td><td style="text-align: left">Can try and brute force the value of the transaction</td></tr>
 </tbody>
 </table>
 </div>
-<p>The keys ( \( a, k_S, k_O \) ) are only known to the signer, and should never leave the hardware wallet.</p>
+<p>The spend key \( a \) (and therefore any script key \( k_S \) derived from it) is only known to the signer, and should never leave the hardware wallet. The script offset \( \sigma \) is computed on, and only released from, the device.</p>
 <h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
 <div class="table-wrapper">
 <table>
@@ -257,6 +261,7 @@ The following table explains what an attacker can do upon learning a key from th
 </thead>
 <tbody>
 <tr><td style="text-align: left">17 May 2023</td><td style="text-align: left">First draft</td><td style="text-align: left">swvheerden</td></tr>
+<tr><td style="text-align: left">29 Jun 2026</td><td style="text-align: left">Align with implementation: view key (\( k_V \)) recovery and DH-derived output encryption key (was \( k_H \)); clarify spending uses a script signature and a deterministic script offset (not a random nonce); one-sided stealth receiving now supported</td><td style="text-align: left">swvheerden</td></tr>
 </tbody>
 </table>
 </div>
