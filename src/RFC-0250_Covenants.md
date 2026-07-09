@@ -4,7 +4,6 @@
 
 ![status: stable](theme/images/status-stable.svg)
 
-**Maintainer(s)**: [Stanley Bondi](https://github.com/sdbondi)
 
 # Licence
 
@@ -49,8 +48,8 @@ technological merits of the potential system outlined herein.
 ## Goals
 
 This Request for Comment (RFC) presents a proposal for introducing _covenants_ into the Tari base layer protocol. Tari
-Covenants aims to provide restrictions on the _future_ spending of subsequent transactions to enable a number of powerful
-use-cases, such as
+covenants aim to provide restrictions on the _future_ spending of subsequent transactions to enable a number of powerful
+use cases, such as:
 
 - [vaults]
 - side-chain checkpointing transactions,
@@ -69,7 +68,7 @@ may be included as an input to a transaction (a.k.a spent). The scope of informa
 by the [TariScript Opcodes] and the input data provided by a spender. Once the requirements of the script are met,
 a spender may generate [UTXO]s of their choosing, within the constraints of [MimbleWimble].
 
-This RFC expands the capabilities of Tari protocol by adding _additional requirements_, called covenants
+This RFC expands the capabilities of the Tari protocol by adding _additional requirements_, called covenants,
 that allow the owner(s) of a [UTXO] to control the composition of a _subsequent_ transaction.
 
 Covenants are not a new idea and have been proposed and implemented in various forms by others.
@@ -79,6 +78,9 @@ For example,
 - [Bitcoin-NG covenants] put forward the `CheckOutputVerify` script opcode.
 - [Handshake] has implemented covenants to add the [UTXO] state of their auctioning process.
 - [Elements Covenants]
+
+## Current Status
+Although covenants are enabled on the Localnet and Igor networks, they are currently disabled on Esmeralda and Mainnet.
 
 ## Covenants in MimbleWimble
 
@@ -91,7 +93,7 @@ and outputs (and kernels) for transactions and blocks. This is innate to [Mimble
 to put a "box" around these inputs/outputs there is nothing to stop someone from including inputs and
 outputs from other boxes as long as balance is maintained.
 
-This results in an interesting dilemma: how do we allow rules that dictate how future outputs look only armed with
+This results in an interesting dilemma: how do we allow rules that dictate how future outputs look, armed only with
 the knowledge that the rule must apply to one or more outputs?
 
 In this RFC, we detail a covenant scheme that allows the [UTXO] originator to express a _filter_ that must be
@@ -165,19 +167,19 @@ enum CovenantArg {
     // byte code: 0x05
     // data size: <= 4096 bytes
     Covenant(Covenant),
-    // byte cide: 0x06
+    // byte code: 0x06
     // data size: variable
     Uint(u64),
-    // byte cide: 0x07
+    // byte code: 0x07
     // data size: variable
     OutputField(OutputField),
-    // byte cide: 0x08
+    // byte code: 0x08
     // data size: variable
     OutputFields(OutputFields),
-    // byte cide: 0x09
+    // byte code: 0x09
     // data size: variable
     Bytes(Vec<u8>),
-    // byte cide: 0x0a
+    // byte code: 0x0a
     // data size: 1 bytes
     OutputType(OutputType),
 }
@@ -231,15 +233,15 @@ args: [Covenant, Covenant]
 ##### xor(A, B)
 
 The symmetric difference (\\(A \triangle B\\)) of the resulting output set for covenant rules \\(A\\) and \\(B\\).
-This is, outputs that match either \\(A\\) or \\(B\\) but not both.
+That is, outputs that match either \\(A\\) or \\(B\\) but not both.
 
 op_byte: 0x23<br>
 args: [Covenant, Covenant]
 
 ##### not(A)
 
-Returns the compliment of `A`. That is, all the elements of `A` are removed from the
-resultant output set.
+Returns the complement of `A`. That is, all the elements of `A` are removed from the
+resulting output set.
 
 op_byte: 0x24<br>
 args: [Covenant]
@@ -335,9 +337,9 @@ invalid transactions in a block cannot influence the results.
 
 ### Complexity
 
-This introduces additional validation complexity. We avoid stacks, loops, and conditionals (covenants are basically
-one conditional), there are overheads both in terms of complexity and performance as a trade-off for the
-power given by covenants.
+This introduces additional validation complexity. Although we avoid stacks, loops, and conditionals (a covenant is
+essentially a single conditional), there are overheads in terms of both complexity and performance as a trade-off for
+the power that covenants provide.
 
 The worst case complexity for covenant validation is `O(num_inputs*num_outputs)`, although as mentioned above
 validation for each input can be executed in parallel. To compensate for the additional workload the network
@@ -385,7 +387,7 @@ and(
 ```ignore
 or(
    not(filter_absolute_height(100)),
-   filter_fields_hashed_eq([field::commmitment], Hash(xxxx))
+   filter_fields_hashed_eq([field::commitment], Hash(xxxx))
 )
 ```
 
@@ -407,9 +409,9 @@ xor(
 // Must be different outputs
 xor(
     and(
-        // Relavant input fields preserved in subsequent output
+        // Relevant input fields preserved in subsequent output
         filter_fields_preserved([fields::features, fields::covenant, fields::script]),
-        // The spender must obtain the covenent for the subsequent output
+        // The spender must obtain the covenant for the subsequent output
         filter_fields_hashed_eq([fields::covenant], Hash(xxxx)),
     ),
     // The spender must obtain and submit the output that matches this hash
