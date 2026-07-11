@@ -6,6 +6,7 @@
   - [TIP-PROC-1: Tari Improvement Proposals](TIP-0001_tari_improvement_proposals.md)
   - [TIP-PROC-3: Community Forums](TIP-0003_community_forums.md)
   - [TIP-RFC-O-8003: Tari Use Cases](RFC-8003_TariUseCases.md)
+  - [TIP-PROC-0006: Core Contributor Program](Process/TIP-PROC-0006_core_contributor_program.md)
 - [Accepted](accepted.md)
   - [TIP-RFC-MT-0241: XMR Atomic swap](RFC-0241_AtomicSwapXMR.md)
 - [Implemented](implemented.md)
