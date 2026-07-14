@@ -53,7 +53,7 @@ responsibility of the council. For an example, a core contributor can be granted
 * DNS administration capabilities
 * server and online service access
 * seat licenses to software
-* signature powers for specific wallets
+* signature powers for specific wallets (if also approved by supermajority (2/3) council vote)
 * project management responsibilities
 * ...or other assets which the Tari Foundation and Council hold in trust by the community.
 
@@ -86,6 +86,7 @@ The current categories are:
 
 * [Code](#code-ccs)
 * [Product](#product-ccs)
+* [Ecosystem](#ecosystem-ccs)
 * [Community](#community-ccs)
 * [Project](#product-ccs).
 
@@ -116,6 +117,14 @@ responsibility for generated code, and must review any code generated before req
 their pull requests. They must not commit code they do not understand to their respective repositories, and are expected
 to guard their repositories from code which does not follow best practices via the review process.
 
+**Examples Code CC readiness:**
+
+* Delivering multiple major features at high quality
+* Delivering many thoughtful code improvements every month for at least three months.
+* Providing constructive code review with a keen eye for other contributors
+* Writing up issues and bugs with clear descriptions and acceptance criteria
+* Provides quality tests with code contributed
+
 #### Product CCs
 
 Product CCs guide the holistic implementation of features by providing UI/UX designs that contributors can
@@ -124,6 +133,47 @@ of new features and may provide art such as iconography which aids in communicat
 
 Product CCs are expected to review product TIPs and feature requests to assist in their prioritization and
 design. They assist the community by rethinking how we meet the needs of the ever-evolving real-world needs of users.
+
+**Examples of Product CC readiness:**
+
+* Delivers multiple quality feature proposals with UI/UX Designs that are accepted for development
+* Delivers multiple enhancements to existing features via improved UI/UX designs that are accepted for development
+* Demonstrates skill in working with developers and project contributors to verify and validate feature changes against
+  designs
+
+#### Ecosystem CCs
+
+Ecosystem CCs grow Tari beyond its own repositories: the integrations, partnerships, and real-world adoption built on
+top of the protocol. Ecosystem CCs might do things like:
+
+* Source and support integrations with exchanges, wallets, payment processors, and other protocols
+* Source and develop partnerships with businesses and institutions that bring real-world usage to Tari
+* Support third-party teams building on Tari with onboarding, technical liaison, and go-to-market help
+* Represent Tari with enterprises, at industry events, and in adjacent ecosystems
+* Advise the council on ecosystem strategy, deal structure, and market development
+
+**Examples of Ecosystem CC readiness:**
+
+* Demonstrates decorum, clarity, technical acumen and helpfulness in onboarding community members with wallets and other
+  Tari software
+* Maintains a welcoming attitude toward others
+* Performs live presentation demos of technology and products
+* Makes quality referrals to and from the Tari community and other teams
+
+#### Infrastructure CCs
+
+Infrastructure CCs run Tari-project managed infrastructure. They are charged with keeping community resources in working
+order. Infrastructure CCs might do things like:
+
+* Run and maintain boostrap/seed nodes
+* Perform DevOps work on servers and web applications such as the forums
+* Maintain mining guides and establish best practices for deploying Tari tools
+
+**Examples of Infrastructure CC readiness:**
+
+* Demonstrated ability to deploy and maintain services
+* Assists community members in mining and software setup
+* Writes guides and contributes documentation for practical deployments
 
 #### Project CCs
 
@@ -138,6 +188,13 @@ metawork that helps the Tari project run smoothly. Project CCs may do things lik
 * Flesh out day-to-day processes implied but not explicitly defined by TIPs
 * Run large-scale events beyond the scope of what Community CCs handle on their own
 
+**Examples of Project CC readiness:**
+
+* Self-starts projects and recruits community members to deliver value to the community
+* Assists in coordinating workgroup activities
+* Gives quality feedback on items like feature and initiative prioritization
+* Is able to work amicably with a wide swath of people from varying backgrounds and viewpoints
+
 #### Community CCs
 
 Community CCs help with day-to-day community affairs. Community CCs might do things like:
@@ -149,6 +206,14 @@ Community CCs help with day-to-day community affairs. Community CCs might do thi
 * Work with Project CCs to run large-scale events
 * Translate resources and run language-specific discussions and community events
 
+**Examples of Community CC Readiness:**
+
+* Conducts themselves in public chats/forums with decorum and a welcoming demeanor
+* Assists in mediation when tempers flare, and does not stoke flames
+* Helps newcomers and points them in constructive directions
+* Brings useful discussion topics to the table
+* Assists in running community events
+
 ## Nomination
 
 Any member of the community may be nominated by a Core Contributor or may nominate themselves. Core Contributor
@@ -156,9 +221,9 @@ nominations shall be posted in an appropriate forum category. Any nomination sho
 
 * Who is being nominated
 * What rights and contributor categories they are being nominated for
-* Evidence that they meet [the requirements for being a Core Contributor](#requirements)
+* Evidence that they meet [the requirements for being a Core Contributor](#requirements), as links and/or testimony
 * Evidence that they hold competencies in any categories or for any rights they're being nominated for
-* A date, 14 business days from the date of posting, by which any votes for or against their candidacy must be given
+* A date, 10 business days from the date of posting, by which any votes for or against their candidacy must be given
 
 For example:
 
@@ -183,10 +248,15 @@ The nomination will be considered approved if five Core Contributors give an aff
 votes by the time the feedback period has ended. In the event (such as when initially starting the program) there are
 not five Core Contributors, Tari Council members may vote for the contributor's candidacy.
 
+In the event of an explicit 'no' vote, the candidate may elect to appeal to the Tari Council. The Tari Council will
+consider the application of the candidate, and vote on the applicant's candidacy. The candidate will be approved if the
+Council decides in their favor with a supermajority (2/3). They will vote and publish their decision on admission within
+10 business days, including reasoning and their view of the evidence in light of the standards in this document.
+
 ### Rights Expansion
 
 Expansion of rights is done similar to [nomination](#nomination). A forum post requesting rights or category expansion,
-with reason given and evidence of competency supplied, shall be made. If after 7 working days there are at least three
+with reason given and evidence of competency supplied, shall be made. If after 5 working days there are at least three
 affirmative votes and no negative votes, access shall be granted. Voting rights are the same as described in
 [Nomination](#nomination).
 
@@ -198,18 +268,20 @@ A Core Contributor who is either unable or unwilling to continue their work as a
 
 Core Contributors are people. They may be called to new projects, may lose interest, or may lose any sponsorship that
 assisted their role as contributor. Whatever the reason, a Core Contributor may submit their resignation to the Council
-at any time. They will then be offboarded from the program. To leave in good standing, a notice period of at least two
-weeks and good faith work to perform clean handoffs are required.
+at any time. They will then be offboarded from the program. To leave in good standing, a notice period of at least ten
+business days and good faith work to perform clean handoffs are required.
 
 ### Involuntary Exits
 
 If a Core Contributor fails to meet the standards of Commitment, Conduct, and Caliber required of the program, and no
 remediation is possible or forthcoming (such as a major breach of trust, a refusal to address critical feedback, or
-extended lack of contribution) they may be removed from the program and have all access revoked by the
-council.
+extended lack of contribution) they may be removed from the program by a majority vote of the council and have all
+CC rights revoked.
 
 In the event an involuntary removal occurs, a public reason for this removal must be published by the council within
-72 hours of the action taken.
+72 hours of the action taken. The removed may appeal to the council within 5 business days, and upon appeal, the council
+will consider their evidence and will vote once more, requiring a supermajority (2/3) to maintain removal.
+They shall vote and publish their verdict within 5 business days of the appeal being posted.
 
 ## Council Voting
 
