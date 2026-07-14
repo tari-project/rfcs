@@ -88,7 +88,7 @@ The current categories are:
 * [Product](#product-ccs)
 * [Ecosystem](#ecosystem-ccs)
 * [Community](#community-ccs)
-* [Project](#product-ccs).
+* [Project](#project-ccs).
 
 A brief overview of each category is below. Further refinement of expectations and requirements for each may be
 submitted in subsequent TIPs.
