@@ -298,13 +298,6 @@ which mirrors the path of the TIP. For example, if a TIP's file is named `src/Pr
 the directory for static assets should be named `src/assets/Process/TIP-PROC-5555_example_tip/`. Include original
 diagram sources alongside image files, to make it easy for others to update the TIP in the future.
 
-### Change History Section
-
-For every change (including the initial document creation), include an entry in a "Change History" section modeled
-after the one at the bottom of this document. A Change History entry should include three parts: the date of the change, a very brief summary of
-changes made, and a link to the pull request where the discussion and approval took place. The changes should be ordered
-such that the most recent change is at the top of the list.
-
 ## Housekeeping
 
 In order to transition existing RFCs (and TIPS which may have been created while this process is finalized), each will
@@ -318,43 +311,6 @@ This proposal draws heavily from [OEP-1] by Axim Collaborative, which is license
 <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
 <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
 <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
-
-
-## Change History
-
-### 2026-05-02
-
-* Document Created.
-* [Pull Request #164](https://github.com/tari-project/rfcs/pull/164)
-
-### 2026-05-07
-
-* Concept of Arbiter replaced with lower-powered but higher-knowledge Expert Reviewer
-* Council Votes to accept TIPs
-* All TIPs past the draft stage are Merged, for historical record.
-
-### 2026-05-14
-
-* TIP Naming schema redefined to make quick recognition of status and domain possible.
-* Changelog dates made into headers
-* Housekeeping section completed
-
-### 2026-05-16
-
-* Rename 'Under Review' to 'Proposed', and change its status flag to `P`
-* Remove the 'Deferred' and 'Provisional' statuses. 
-* Remove the 'Draft' status as a separate thing-- pull requests are already a draft state.
-
-### 2026-05-18
-
-* Remove redundant 'Replaced' status in favor of 'Deprecated.'
-* Remove persistent 'Reviewer' field in favor of relying on git history.
-* Remove 'Needs Revision' status in favor of immediate follow-up PRs.
-
-### 2026-05-22
-
-* Fix title
-* Remove unneeded header field
 
 [OEP]: https://docs.openedx.org/projects/openedx-proposals/en/latest/processes/oep-0001.html
 [RFCs repository]: https://github.com/tari-project/rfcs
