@@ -170,6 +170,10 @@ Council.
 
 The Council has accepted the TIP after review and discussion.
 
+### Implemented (I)
+
+Implementation (if the proposal requires a specific implementation) has been completed.
+
 ### Rejected (R)
 
 The Council rejected the TIP after review and discussion, or it has been withdrawn by the author.
@@ -264,7 +268,7 @@ Rows in italics are otional and are described below. All other rows are required
 | Title         | &lt;TIP Title&gt;                                                                       |
 | Last Modified | &lt;date string, in YYYY-MM-DD format&gt;                                               |
 | Authors       | &lt;list of authors' established handles or names, and, optionally, email addresses&gt; |
-| Status        | &lt;Proposed \| Accepted \| Rejected \| Deprecated&gt;                                  |
+| Status        | &lt;Proposed \| Accepted \| Implemented \| Rejected \| Deprecated&gt;                   |
 | Type          | &lt;Process \| Best Practice \| Product Direction \| Architecture&gt;                   |
 | Created       | &lt;date created on, in YYYY-MM-DD format&gt;                                           |
 | *Resolution*  | &lt;links to any discussions where the final status was decided&gt;                     |
@@ -312,7 +316,7 @@ need to be updated with the standard header in follow-up PRs to this repository.
 
 ## Acknowledgements and Legal
 
-This proposal draws heavily from [OEP-1] by Axim Collaborative, which is licensed CC-BY-SA.
+This proposal draws heavily from [OEP-1][OEP] by Axim Collaborative, which is licensed CC-BY-SA.
 
 [P-TIP-PROC-1](#) © 2026 by Fox Piacenti is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
