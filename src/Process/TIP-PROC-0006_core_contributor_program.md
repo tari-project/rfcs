@@ -42,6 +42,8 @@ Core Contributors may have additional requirements based on their [category](#ca
 Core Contributors are expected to maintain the three Cs and other requirements before and during their tenure. Core
 Contributors who lapse in their commitment, conduct, and caliber [may be removed](#involuntary-exits).
 
+At a minimum, all Core Contributors must have at least six months of history and participation in the Tari project.
+
 ## Contributor Powers and Rights
 
 Core Contributors may be appointed and given power to handle any element of the project which is not the exclusive
