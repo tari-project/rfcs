@@ -223,6 +223,7 @@ nominations shall be posted in an appropriate forum category. Any nomination sho
 * What rights and contributor categories they are being nominated for
 * Evidence that they meet [the requirements for being a Core Contributor](#requirements), as links and/or testimony
 * Evidence that they hold competencies in any categories or for any rights they're being nominated for
+* **Any corporate entity which is sponsoring their contributions**
 * A date, 10 business days from the date of posting, by which any votes for or against their candidacy must be given
 
 For example:
@@ -237,6 +238,8 @@ For example:
 > Link 1
 > Link 2
 > Link 3
+>
+> JimBob's contributions are backed by CompanyName Inc.
 > 
 > Please provide your vote and feedback by August 24th!
 
