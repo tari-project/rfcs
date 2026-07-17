@@ -1,4 +1,14 @@
-# RFC-0202/TariScriptOpcodes
+# I-TIP-RFC-MT-0202/TariScriptOpcodes
+
+| TIP             | [I-TIP-RFC-MT-0202/TariScriptOpcodes](#I-TIP-RFC-MT-0202/TariScriptOpcodes)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | TariScript Opcodes                                                        |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2020-08-17                                                                |
+| References      |                                                                           |
 
 ## TariScript Opcodes
 

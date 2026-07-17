@@ -1,4 +1,14 @@
-# RFC-0203/Stealth addresses
+# I-TIP-RFC-MT-0203/Stealth addresses
+
+| TIP             | [I-TIP-RFC-MT-0203/StealthAddresses](#I-TIP-RFC-MT-0203/StealthAddresses) |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Stealth Addresses                                                         |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-06-01                                                                |
+| References      |                                                                           |
 
 ## Stealth addresses
 

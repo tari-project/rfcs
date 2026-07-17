@@ -1,4 +1,4 @@
-# RFC-0001/Overview
+# Overview
 
 ## Overview of Tari Network
 

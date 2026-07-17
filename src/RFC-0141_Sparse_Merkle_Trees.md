@@ -1,8 +1,17 @@
-# RFC-0141/SparseMerkleTrees
+# D-TIP-RFC-MT-0141/SparseMerkleTrees
+
+| TIP             | [D-TIP-RFC-MT-0141/SparseMerkleTrees](#D-TIP-RFC-MT-0141/SparseMerkleTrees)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Sparse Merkle Trees                                                       |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2023-07-10                                                                |
+| References      |                                                                           |
 
 ## Sparse Merkle Trees: A mutable data structure for TXO commitments
 
-![status: draft](theme/images/status-draft.svg)
 
 
 # Licence

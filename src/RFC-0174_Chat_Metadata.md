@@ -1,4 +1,14 @@
-# RFC-0174/Chat Metadata
+# D-TIP-RFC-MT-0174/Chat Metadata
+
+| TIP             | [D-TIP-RFC-MT-0174/ChatMetadata](#D-TIP-RFC-MT-0174/ChatMetadata)         |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Chat Metadata                                                             |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Depricated                                                                     |
+| Type            | RFC                                                                       |
+| Created         | 2023-12-21                                                                |
+| References      |                                                                           |
 
 ## Versioning
 

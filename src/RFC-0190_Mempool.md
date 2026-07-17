@@ -1,10 +1,19 @@
-# RFC-0190/Mempool
-![status: updated](theme/images/status-stable.svg)
+# I-TIP-RFC-MT-0190/Mempool
+
+| TIP             | [I-TIP-RFC-MT-0190/Mempool](#I-TIP-RFC-MT-0190/Mempool)                   |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | The Mempool for Unconfirmed Transactions on the Tari Base Layer           |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-06-13                                                                |
+| References      |                                                                           |
 
 ## The Mempool for Unconfirmed Transactions on the Tari Base Layer
 
 <!-- TOC -->
-- [RFC-0190/Mempool](#rfc-0190mempool)
+- [I-TIP-RFC-MT-0190/Mempool](#i-tip-rfc-mt-0190mempool)
   - [The Mempool for Unconfirmed Transactions on the Tari Base Layer](#the-mempool-for-unconfirmed-transactions-on-the-tari-base-layer)
 - [License](#license)
   - [Language](#language)

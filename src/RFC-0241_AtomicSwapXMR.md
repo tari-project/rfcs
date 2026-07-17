@@ -1,4 +1,14 @@
-# RFC-0241/XMR Atomic Swap
+# I-TIP-RFC-MT-0241/XMR Atomic Swap
+
+| TIP             | [I-TIP-RFC-MT-0241/AtomicSwapXMR](#I-TIP-RFC-MT-0241/AtomicSwapXMR)       |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | XMR Atomic Swap                                                           |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                                     |
+| Type            | RFC                                                                       |
+| Created         | 2022-06-13                                                                |
+| References      |                                                                           |
 
 ![status: draft](theme/images/status-draft.svg)
 

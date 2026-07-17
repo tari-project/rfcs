@@ -1,4 +1,14 @@
-# RFC-0230/Time-related Transactions
+# I-TIP-RFC-MT-0230/Time-related Transactions
+
+| TIP             | [I-TIP-RFC-MT-0230/HTLC](#I-TIP-RFC-MT-0230/HTLC)                         |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Time-related Transactions                                                 |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2019-04-14                                                                |
+| References      |                                                                           |
 
 ## Time-related Transactions
 

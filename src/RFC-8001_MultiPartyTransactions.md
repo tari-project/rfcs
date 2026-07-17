@@ -1,10 +1,18 @@
-# RFC-8001/MultiPartyTransactions
+# I-TIP-RFC-MT-8001/MultiPartyTransactions
+
+| TIP             | [I-TIP-RFC-MT-8001/MultiPartyTransactions](#I-TIP-RFC-MT-8001/MultiPartyTransactions)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Multi-party Transactions                                                  |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-06-13                                                                |
+| References      |                                                                           |
 
 ## Time related transactions
 
-![status: draft](theme/images/status-draft.svg)
 
-**Maintainer(s)**: [SW van heerden](https://github.com/SWvheerden)
 
 # License
 
@@ -48,25 +56,36 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This document describes a few extension to [MimbleWimble](MimbleWimble) to allow multi-party [UTXOs](utxo).
+This document describes a few extensions to [MimbleWimble](MimbleWimble) to allow multi-party [UTXOs](utxo).
 
 ## Related RFCs
 
 ## Description
 
-#### Multi Party UTXO
+There are two ways to construct multi-party UTXOs: using a shared commitment, or using a shared Tari Script.
+
+## Multi Party UTXO Commitment
 
 Normal [MimbleWimble] does not have the concept of a [multisig] UTXO. The UTXO is a commitment `C(v,r) = r·G + v·H` with
-the value blinded. However, the blinding factor `r` can be composed of multiple blinding factors where `r = r1 + r2 + ... + rn`, as Pedersen commitments are linear.
+the value blinded. However, because Pedersen commitments are linear, the blinding factor `r` can be composed of multiple
+blinding factors, where `r = r1 + r2 + ... + rn`.
 
 The output commitment can then be constructed as `C(v,r) = r1·G + r2·G + ... + rn·G + v·H = (r1 + r2 + ... + rn)·G + v·H`.
-This can be exploited for multiple users where each participant has their own `ri` and keeps their private blinding factor
-hidden and only provides their public blinding factor.
+This can be used by multiple participants, where each participant has their own `ri`, keeps their private blinding factor
+hidden, and only provides their public blinding factor.
 
-The base layer is oblivious as to how the commitment and related signature were constructed.
-To open such commitments (in order to spend it) only the n-of-n blinding factor `r` is required, and not the original
-aggregated signature that was used to sign the transaction. The parties that wants to open the commitment needs to
+The base layer is oblivious to how the commitment and its related signature were constructed.
+To open such a commitment (in order to spend it), only the n-of-n blinding factor `r` is required, and not the original
+aggregated signature that was used to sign the transaction. The parties that want to open the commitment must
 collaborate to produce the n-of-n blinding factor `r`.
+
+### Tari Script
+
+Because this UTXO relies on a shared aggregated commitment key, the script can be signed by any party. It can be a normal `pushPubkey(K_s)` script, where `K_s` is a shared key, or simply a `Nop` script.
+
+## Multi Party script
+
+This also uses a shared commitment, but the script is constructed as a multi-party script. See [Tari Script examples](RFC-0204_TariScriptExamples.md#Multi-party-considerations).
 
 [mimblewimble]: Glossary.md#mimblewimble
 [UTXO]: Glossary.md#unspent-transaction-outputs

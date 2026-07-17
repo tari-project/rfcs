@@ -1,10 +1,17 @@
-# RFC-8003/TariUseCases
+# P-TIP-RFC-O-8003/TariUseCases
+
+| TIP             | [P-TIP-RFC-O-8003/TariUseCases](#P-TIP-RFC-O-8003/TariUseCases)           |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Tari Use Cases                                                            |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Proposed                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-06-13                                                                |
+| References      |                                                                           |
 
 ## Digital Asset Framework
 
-![status: draft](./theme/images/status-draft.svg)
-
-**Maintainer(s)**: [CjS77](https://github.com/CjS77)
 
 # Licence
 

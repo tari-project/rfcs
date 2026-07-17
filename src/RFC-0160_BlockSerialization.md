@@ -1,4 +1,14 @@
-# RFC-0160/BlockSerialization
+# I-TIP-RFC-MT-0160/BlockSerialization
+
+| TIP             | [I-TIP-RFC-MT-0160/BlockSerialization](#I-TIP-RFC-MT-0160/BlockSerialization)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Tari Block Binary Serialization                                           |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-06-13                                                                |
+| References      |                                                                           |
 
 ## Tari Block Binary Serialization
 

@@ -1,8 +1,17 @@
-# RFC-0111/BaseNodesArchitecture
+# I-TIP-RFC-MT-0111/BaseNodesArchitecture
+
+| TIP             | [I-TIP-RFC-MT-0111/BaseNodesArchitecture](#I-TIP-RFC-MT-0111/BaseNodesArchitecture)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Base Node Architecture                                                    |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2019-07-02                                                                |
+| References      |                                                                           |
 
 ## Base Node Architecture
 
-![status: stable](theme/images/status-stable.svg)
 
 # Licence
 

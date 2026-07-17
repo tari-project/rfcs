@@ -1,4 +1,14 @@
-# RFC-0205/Hardware transactions
+# I-TIP-RFC-MT-0205/Hardware transactions
+
+| TIP             | [I-TIP-RFC-MT-0205/HardwareTransactions](#I-TIP-RFC-MT-0205/HardwareTransactions)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Hardware Transactions                                                     |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2023-05-17                                                                |
+| References      |                                                                           |
 
 ## Hardware transactions
 

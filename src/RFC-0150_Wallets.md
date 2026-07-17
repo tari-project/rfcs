@@ -1,4 +1,14 @@
-# RFC-0150/Wallets
+# I-TIP-RFC-MT-0150/Wallets
+
+| TIP             | [I-TIP-RFC-MT-0150/Wallets](#I-TIP-RFC-MT-0150/Wallets)                   |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Base Layer Wallet Module                                                  |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-10-26                                                                |
+| References      |                                                                           |
 
 ## Base Layer Wallet Module
 
@@ -6,7 +16,7 @@
 
 
 <!-- TOC -->
-- [RFC-0150/Wallets](#rfc-0150wallets)
+- [I-TIP-RFC-MT-0150/Wallets](#i-tip-rfc-mt-0150wallets)
   - [Base Layer Wallet Module](#base-layer-wallet-module)
 - [Licence](#licence)
   - [Language](#language)

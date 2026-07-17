@@ -1,4 +1,14 @@
-# RFC-0153/StagedWalletSecurity
+# I-TIP-RFC-MT-0153/StagedWalletSecurity
+
+| TIP             | [I-TIP-RFC-MT-0153/StagedWalletSecurity](#I-TIP-RFC-MT-0153/StagedWalletSecurity)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Staged Wallet Security                                                    |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-11-10                                                                |
+| References      |                                                                           |
 
 ## Staged Wallet Security
 

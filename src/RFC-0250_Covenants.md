@@ -1,4 +1,14 @@
-# RFC-0250/Covenants
+# I-TIP-RFC-MT-0250/Covenants
+
+| TIP             | [I-TIP-RFC-MT-0250/Covenants](#I-TIP-RFC-MT-0250/Covenants)               |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Covenants                                                                 |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2021-10-17                                                                |
+| References      |                                                                           |
 
 ## Covenants
 
