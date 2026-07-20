@@ -55,7 +55,7 @@ responsibility of the council. For an example, a core contributor can be granted
 * DNS administration capabilities
 * server and online service access
 * seat licenses to software
-* signature powers for specific wallets (if also approved by supermajority (2/3) council vote)
+* signature powers for scoped project/budget wallets (if also approved by supermajority (2/3) council vote)
 * project management responsibilities
 * ...or other assets which the Tari Foundation and Council hold in trust by the community.
 
@@ -255,8 +255,9 @@ not five Core Contributors, Tari Council members may vote for the contributor's 
 
 In the event of an explicit 'no' vote, the candidate may elect to appeal to the Tari Council. The Tari Council will
 consider the application of the candidate, and vote on the applicant's candidacy. The candidate will be approved if the
-Council decides in their favor with a supermajority (2/3). They will vote and publish their decision on admission within
-10 business days, including reasoning and their view of the evidence in light of the standards in this document.
+Council decides in their favor with full unanimity. Any override vote must be completed within 10 business days, and
+must include publicly published reasoning for the override, and their view of the evidence in light of the standards
+in this document. Otherwise, the answer is 'no.'
 
 ### Rights Expansion
 
