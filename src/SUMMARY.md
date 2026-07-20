@@ -2,15 +2,16 @@
 
 [About the Tari RFC documents](about.md)
 
-- [Proposed]
+- [Proposed](proposed.md)
   - [P-TIP-PROC-1: Tari Improvement Proposals](TIP-0001_tari_improvement_proposals.md)
   - [P-TIP-PROC-3: Community Forums](TIP-0003_community_forums.md)
   - [P-TIP-RFC-O-8003: Tari Use Cases](RFC-8003_TariUseCases.md)
-- [Accepted]
+- [Accepted](accepted.md)
   - [A-TIP-PROC-2: The Tari Community Charter](TIP-0002_tari_community_charter.md)
   - [A-TIP-0005: Adjust Bridge Limits](Process/TIP-PROC-0005_adjust_bridge_limits.md)
-- [Implemented]
-  - [RFC]
+  - [A-TIP-RFC-MT-0241: XMR Atomic swap](RFC-0241_AtomicSwapXMR.md)
+- [Implemented](implemented.md)
+  - [RFC](implemented_rfc.md)
     - [RFC-0001: An overview of the Tari network](RFC-0001_overview.md)
     - [The Tari Base Layer](base_layer.md)
       - [I-TIP-RFC-MT-0110: Base nodes](RFC-0110_BaseNodes.md)
@@ -38,18 +39,18 @@
         - [I-TIP-RFC-MT-0203: Stealth Addresses](RFC-0203_StealthAddresses.md)
         - [I-TIP-RFC-MT-0205: Hardware Transactions](RFC-0205_HardwareTransactions.md)
         - [I-TIP-RFC-MT-0250: Covenants](RFC-0250_Covenants.md)
-     - [Applications](proposals.md)
+    - [Applications](proposals.md)
       - [I-TIP-RFC-MT-0123: Mitigating One-sided payment replay attacks](RFC-0123_One_sided_replay_attacks.md)
       - [I-TIP-RFC-MT-0153: Staged Wallet Security](RFC-0153_StagedWalletSecurity.md)
       - [I-TIP-RFC-MT-0230: Hash time locked contracts](RFC-0230_HTLC.md)
       - [I-TIP-RFC-MT-0240: Atomic swap](RFC-0240_AtomicSwap.md)
-      - [I-TIP-RFC-MT-0241: XMR Atomic swap](RFC-0241_AtomicSwapXMR.md)
       - [I-TIP-RFC-MT-8001: Multi-party transactions](RFC-8001_MultiPartyTransactions.md)
 - [Depricated](deprecated.md)
-  - [RFC]
+  - [RFC](deprecated_rfc.md)
     - [D-TIP-RFC-MT-0010: Tari code structure and organization](RFCD-0010_CodeStructure.md)
     - [D-TIP-RFC-MT-0121: Consensus encoding](RFCD-0121_ConsensusEncoding.md)
     - [D-TIP-RFC-MT-0130: Mining](RFCD-0130_Mining.md)
+    - [D-TIP-RFC-MT-0141: Sparse Merkle Tees](RFC-0141_Sparse_Merkle_Trees.md)
     - [D-TIP-RFC-MT-0152: Emoji ID](RFCD-0152_EmojiId.md)
     - [D-TIP-RFC-MT-0180: Bulletproof range proof rewinding](RFCD-0180_BulletproofRewinding.md)
     - [D-TIP-RFC-O-0300: The Digital Assets Network](RFCD-0300_DAN.md)
@@ -65,9 +66,8 @@
     - [D-TIP-RFC-O-0345: Asset Life cycle](RFCD-0345_AssetLifeCycle.md)
     - [D-TIP-RFC-O-0360: NFT sale using MimbleWimble Invoice](RFCD-0360_NFTInvoices.md)
     - [D-TIP-RFC-O-0500: Tari payment channels](RFCD-0500_PaymentChannels.md)
-    - [D-TIP-RFC-MT-0141: Sparse Merkle Tees](RFC-0141_Sparse_Merkle_Trees.md)
     - [D-TIP-RFC-MT-8002: Transaction protocol](RFC-8002_TransactionProtocol.md)
-- [Unknown status]
+- [Unknown status](unknown_status.md)
   - [RFC-0303: The Tari Digital Assets Network](RFC-0303_DanOverview.md)
   - [RFC-0313: Validator Node Registration](RFC-0313_VNRegistration.md)
   - [RFC-0320: The turbine model](RFC-0320_TurbineModel.md)

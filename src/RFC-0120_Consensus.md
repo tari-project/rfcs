@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0120/Consensus
+# I-TIP-RFC-MT-0120: Consensus
 
-| TIP             | [I-TIP-RFC-MT-0120/Consensus](#I-TIP-RFC-MT-0120/Consensus)               |
+| TIP             | [I-TIP-RFC-MT-0120](#I-TIP-RFC-MT-0120-consensus)               |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Base Layer Consensus                                                      |
 | Last Modified   | 2026-07-16                                                                |

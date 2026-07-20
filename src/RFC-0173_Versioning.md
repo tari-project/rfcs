@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0173/Versioning
+# I-TIP-RFC-MT-0173: Versioning
 
-| TIP             | [I-TIP-RFC-MT-0173/Versioning](#I-TIP-RFC-MT-0173/Versioning)             |
+| TIP             | [I-TIP-RFC-MT-0173](#I-TIP-RFC-MT-0173-versioning)             |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Versioning                                                                |
 | Last Modified   | 2026-07-16                                                                |

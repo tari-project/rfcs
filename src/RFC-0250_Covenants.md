@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0250/Covenants
+# I-TIP-RFC-MT-0250: Covenants
 
-| TIP             | [I-TIP-RFC-MT-0250/Covenants](#I-TIP-RFC-MT-0250/Covenants)               |
+| TIP             | [I-TIP-RFC-MT-0250](#I-TIP-RFC-MT-0250-covenants)               |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Covenants                                                                 |
 | Last Modified   | 2026-07-16                                                                |

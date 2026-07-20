@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0131/Mining
+# I-TIP-RFC-MT-0131: Mining
 
-| TIP             | [I-TIP-RFC-MT-0131/Mining](#I-TIP-RFC-MT-0131/Mining)                     |
+| TIP             | [I-TIP-RFC-MT-0131](#I-TIP-RFC-MT-0131-mining)                     |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Full-node Mining on Tari Base Layer                                       |
 | Last Modified   | 2026-07-16                                                                |

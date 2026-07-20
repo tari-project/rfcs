@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0170/NetworkCommunicationProtocol
+# I-TIP-RFC-MT-0170: NetworkCommunicationProtocol
 
-| TIP             | [I-TIP-RFC-MT-0170/NetworkCommunicationProtocol](#I-TIP-RFC-MT-0170/NetworkCommunicationProtocol)|
+| TIP             | [I-TIP-RFC-MT-0170](#I-TIP-RFC-MT-0170-network-communication-protocol)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | The Tari Communication Network and Network Communication Protocol         |
 | Last Modified   | 2026-07-16                                                                |

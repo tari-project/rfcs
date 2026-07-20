@@ -1,12 +1,12 @@
 
-# I-TIP-RFC-MT-0123/ReplayAttacks
+# I-TIP-RFC-MT-0123: ReplayAttacks
 
-| TIP             | [I-TIP-RFC-MT-0123/ReplayAttacks](#I-TIP-RFC-MT-0123/ReplayAttacks)       |
+| TIP             | [I-TIP-RFC-MT-0123](#I-TIP-RFC-MT-0123-replay-attacks)       |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Mitigating One-sided Payment Replay Attacks                               |
 | Last Modified   | 2026-07-16                                                                |
 | Authors         | Tari Labs                                                                 |
-| Status          | Draft                                                                     |
+| Status          | Implemented                                                                     |
 | Type            | RFC                                                                       |
 | Created         | 2022-10-19                                                                |
 | References      |                                                                           |

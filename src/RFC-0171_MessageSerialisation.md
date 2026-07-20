@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0171/MessageSerialization
+# I-TIP-RFC-MT-0171: MessageSerialization
 
-| TIP             | [I-TIP-RFC-MT-0171/MessageSerialization](#I-TIP-RFC-MT-0171/MessageSerialization)|
+| TIP             | [I-TIP-RFC-MT-0171](#I-TIP-RFC-MT-0171-message-serialization)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Message Serialization                                                     |
 | Last Modified   | 2026-07-16                                                                |

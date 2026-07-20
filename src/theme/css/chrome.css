@@ -400,6 +400,42 @@ li .section li .section {
     line-height: 1.9em;
 }
 
+/* --- Sidebar chapter folding (mdBook 0.5.x, legacy {{#toc}} inline TOC) --- */
+
+/* Collapse the nested list of any chapter that is not expanded. */
+.chapter li.chapter-item:not(.expanded) > ol.section {
+    display: none;
+}
+
+/* The fold chevron shown next to foldable chapters. */
+.chapter-fold-toggle {
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0 10px;
+    user-select: none;
+    opacity: 0.68;
+}
+
+.chapter-fold-toggle div {
+    display: inline-block;
+    transition: transform 0.3s;
+}
+
+/* Rotate the chevron to point down when the chapter is expanded. */
+.chapter li.chapter-item.expanded > .chapter-link-wrapper > .chapter-fold-toggle div {
+    transform: rotate(90deg);
+}
+
+/* Lay the label and chevron out on one row so the chevron sits at the end. */
+.chapter-link-wrapper {
+    display: flex;
+    align-items: center;
+}
+.chapter-link-wrapper > a:not(.chapter-fold-toggle),
+.chapter-link-wrapper > span:first-child {
+    flex: 1;
+}
+
 /* Theme Menu Popup */
 
 .theme-popup {

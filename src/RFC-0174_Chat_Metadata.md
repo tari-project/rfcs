@@ -1,6 +1,6 @@
-# D-TIP-RFC-MT-0174/Chat Metadata
+# D-TIP-RFC-MT-0174: Chat Metadata
 
-| TIP             | [D-TIP-RFC-MT-0174/ChatMetadata](#D-TIP-RFC-MT-0174/ChatMetadata)         |
+| TIP             | [D-TIP-RFC-MT-0174](#D-TIP-RFC-MT-0174-chat-metadata)         |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Chat Metadata                                                             |
 | Last Modified   | 2026-07-16                                                                |

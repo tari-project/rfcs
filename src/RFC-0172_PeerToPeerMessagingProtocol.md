@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0172/PeerToPeerMessaging
+# I-TIP-RFC-MT-0172: PeerToPeerMessaging
 
-| TIP             | [I-TIP-RFC-MT-0172/PeerToPeerMessaging](#I-TIP-RFC-MT-0172/PeerToPeerMessaging)|
+| TIP             | [I-TIP-RFC-MT-0172](#I-TIP-RFC-MT-0172-peer-to-peer-messaging)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Peer to Peer Messaging Protocol                                           |
 | Last Modified   | 2026-07-16                                                                |

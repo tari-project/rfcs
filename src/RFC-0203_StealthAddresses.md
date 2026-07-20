@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0203/Stealth addresses
+# I-TIP-RFC-MT-0203: Stealth addresses
 
-| TIP             | [I-TIP-RFC-MT-0203/StealthAddresses](#I-TIP-RFC-MT-0203/StealthAddresses) |
+| TIP             | [I-TIP-RFC-MT-0203](#I-TIP-RFC-MT-0203-stealth-addresses) |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Stealth Addresses                                                         |
 | Last Modified   | 2026-07-16                                                                |

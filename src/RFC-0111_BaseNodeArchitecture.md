@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0111/BaseNodesArchitecture
+# I-TIP-RFC-MT-0111: BaseNodesArchitecture
 
-| TIP             | [I-TIP-RFC-MT-0111/BaseNodesArchitecture](#I-TIP-RFC-MT-0111/BaseNodesArchitecture)|
+| TIP             | [I-TIP-RFC-MT-0111](#I-TIP-RFC-MT-0111-base-nodes-architecture)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Base Node Architecture                                                    |
 | Last Modified   | 2026-07-16                                                                |

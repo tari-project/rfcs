@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0155/TariAddress
+# I-TIP-RFC-MT-0155: TariAddress
 
-| TIP             | [I-TIP-RFC-MT-0155/TariAddress](#I-TIP-RFC-MT-0155/TariAddress)           |
+| TIP             | [I-TIP-RFC-MT-0155](#I-TIP-RFC-MT-0155-tari-address)           |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | TariAddress Specification                                                 |
 | Last Modified   | 2026-07-16                                                                |

@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0150/Wallets
+# I-TIP-RFC-MT-0150: Wallets
 
-| TIP             | [I-TIP-RFC-MT-0150/Wallets](#I-TIP-RFC-MT-0150/Wallets)                   |
+| TIP             | [I-TIP-RFC-MT-0150](#I-TIP-RFC-MT-0150-wallets)                   |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Base Layer Wallet Module                                                  |
 | Last Modified   | 2026-07-16                                                                |
@@ -16,7 +16,7 @@
 
 
 <!-- TOC -->
-- [I-TIP-RFC-MT-0150/Wallets](#i-tip-rfc-mt-0150wallets)
+- [I-TIP-RFC-MT-0150: Wallets](#i-tip-rfc-mt-0150-wallets)
   - [Base Layer Wallet Module](#base-layer-wallet-module)
 - [Licence](#licence)
   - [Language](#language)

@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0154/DeepLinksConvention
+# I-TIP-RFC-MT-0154: DeepLinksConvention
 
-| TIP             | [I-TIP-RFC-MT-0154/DeepLinksConvention](#I-TIP-RFC-MT-0154/DeepLinksConvention)|
+| TIP             | [I-TIP-RFC-MT-0154](#I-TIP-RFC-MT-0154-deep-links-convention)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Deep Links Structure Convention                                           |
 | Last Modified   | 2026-07-16                                                                |

@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0181/BulletproofsPlus
+# I-TIP-RFC-MT-0181: BulletproofsPlus
 
-| TIP             | [I-TIP-RFC-MT-0181/BulletproofsPlus](#I-TIP-RFC-MT-0181/BulletproofsPlus) |
+| TIP             | [I-TIP-RFC-MT-0181](#I-TIP-RFC-MT-0181-bulletproofs-plus) |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Bulletproofs+ Range Proving                                               |
 | Last Modified   | 2026-07-16                                                                |

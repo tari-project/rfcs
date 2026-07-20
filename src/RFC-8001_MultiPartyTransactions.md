@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-8001/MultiPartyTransactions
+# I-TIP-RFC-MT-8001: MultiPartyTransactions
 
-| TIP             | [I-TIP-RFC-MT-8001/MultiPartyTransactions](#I-TIP-RFC-MT-8001/MultiPartyTransactions)|
+| TIP             | [I-TIP-RFC-MT-8001](#I-TIP-RFC-MT-8001-multi-party-transactions)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Multi-party Transactions                                                  |
 | Last Modified   | 2026-07-16                                                                |

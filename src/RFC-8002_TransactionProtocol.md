@@ -1,6 +1,6 @@
-# D-TIP-RFC-MT-8002/TransactionProtocol
+# D-TIP-RFC-MT-8002: TransactionProtocol
 
-| TIP             | [D-TIP-RFC-MT-8002/TransactionProtocol](#D-TIP-RFC-MT-8002/TransactionProtocol)|
+| TIP             | [D-TIP-RFC-MT-8002](#D-TIP-RFC-MT-8002-transaction-protocol)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Transaction Protocol                                                      |
 | Last Modified   | 2026-07-16                                                                |

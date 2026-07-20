@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0240/Atomic Swap
+# I-TIP-RFC-MT-0240: Atomic Swap
 
-| TIP             | [I-TIP-RFC-MT-0240/AtomicSwap](#I-TIP-RFC-MT-0240/AtomicSwap)             |
+| TIP             | [I-TIP-RFC-MT-0240](#I-TIP-RFC-MT-0240-atomic-swap)             |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Atomic Swap                                                               |
 | Last Modified   | 2026-07-16                                                                |

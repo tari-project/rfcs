@@ -1,6 +1,6 @@
-# P-TIP-RFC-O-8003/TariUseCases
+# P-TIP-RFC-O-8003: TariUseCases
 
-| TIP             | [P-TIP-RFC-O-8003/TariUseCases](#P-TIP-RFC-O-8003/TariUseCases)           |
+| TIP             | [P-TIP-RFC-O-8003](#P-TIP-RFC-O-8003-tari-use-cases)           |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Tari Use Cases                                                            |
 | Last Modified   | 2026-07-16                                                                |

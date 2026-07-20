@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0153/StagedWalletSecurity
+# I-TIP-RFC-MT-0153: StagedWalletSecurity
 
-| TIP             | [I-TIP-RFC-MT-0153/StagedWalletSecurity](#I-TIP-RFC-MT-0153/StagedWalletSecurity)|
+| TIP             | [I-TIP-RFC-MT-0153](#I-TIP-RFC-MT-0153-staged-wallet-security)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Staged Wallet Security                                                    |
 | Last Modified   | 2026-07-16                                                                |

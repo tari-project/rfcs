@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0205/Hardware transactions
+# I-TIP-RFC-MT-0205: Hardware transactions
 
-| TIP             | [I-TIP-RFC-MT-0205/HardwareTransactions](#I-TIP-RFC-MT-0205/HardwareTransactions)|
+| TIP             | [I-TIP-RFC-MT-0205](#I-TIP-RFC-MT-0205-hardware-transactions)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Hardware Transactions                                                     |
 | Last Modified   | 2026-07-16                                                                |

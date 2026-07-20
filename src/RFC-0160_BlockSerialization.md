@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0160/BlockSerialization
+# I-TIP-RFC-MT-0160: BlockSerialization
 
-| TIP             | [I-TIP-RFC-MT-0160/BlockSerialization](#I-TIP-RFC-MT-0160/BlockSerialization)|
+| TIP             | [I-TIP-RFC-MT-0160](#I-TIP-RFC-MT-0160-block-serialization)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Tari Block Binary Serialization                                           |
 | Last Modified   | 2026-07-16                                                                |

@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0202/TariScriptOpcodes
+# I-TIP-RFC-MT-0202: TariScriptOpcodes
 
-| TIP             | [I-TIP-RFC-MT-0202/TariScriptOpcodes](#I-TIP-RFC-MT-0202/TariScriptOpcodes)|
+| TIP             | [I-TIP-RFC-MT-0202](#I-TIP-RFC-MT-0202-tari-script-opcodes)|
 |-----------------|---------------------------------------------------------------------------|
 | Title           | TariScript Opcodes                                                        |
 | Last Modified   | 2026-07-16                                                                |

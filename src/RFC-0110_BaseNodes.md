@@ -1,4 +1,7 @@
-| TIP             | [I-TIP-RFC-MT-0110/BaseNodes](#I-TIP-RFC-MT-0110/BaseNodes)               |
+# I-TIP-RFC-MT-0110: BaseNodes
+
+
+| TIP             | [I-TIP-RFC-MT-0110](#I-TIP-RFC-MT-0110-base-nodes)               |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Base Layer Full Nodes                                                     |
 | Last Modified   | 2026-07-16                                                                |

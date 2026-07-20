@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0230/Time-related Transactions
+# I-TIP-RFC-MT-0230: Time-related Transactions
 
-| TIP             | [I-TIP-RFC-MT-0230/HTLC](#I-TIP-RFC-MT-0230/HTLC)                         |
+| TIP             | [I-TIP-RFC-MT-0230](#I-TIP-RFC-MT-0230-htlc)                         |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Time-related Transactions                                                 |
 | Last Modified   | 2026-07-16                                                                |

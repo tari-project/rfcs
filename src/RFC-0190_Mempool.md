@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0190/Mempool
+# I-TIP-RFC-MT-0190: Mempool
 
-| TIP             | [I-TIP-RFC-MT-0190/Mempool](#I-TIP-RFC-MT-0190/Mempool)                   |
+| TIP             | [I-TIP-RFC-MT-0190](#I-TIP-RFC-MT-0190-mempool)                   |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | The Mempool for Unconfirmed Transactions on the Tari Base Layer           |
 | Last Modified   | 2026-07-16                                                                |
@@ -13,7 +13,7 @@
 ## The Mempool for Unconfirmed Transactions on the Tari Base Layer
 
 <!-- TOC -->
-- [I-TIP-RFC-MT-0190/Mempool](#i-tip-rfc-mt-0190mempool)
+- [I-TIP-RFC-MT-0190: Mempool](#i-tip-rfc-mt-0190-mempool)
   - [The Mempool for Unconfirmed Transactions on the Tari Base Layer](#the-mempool-for-unconfirmed-transactions-on-the-tari-base-layer)
 - [License](#license)
   - [Language](#language)

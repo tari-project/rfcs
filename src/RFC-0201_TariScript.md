@@ -1,6 +1,6 @@
-# I-TIP-RFC-MT-0201/TariScript
+# I-TIP-RFC-MT-0201: TariScript
 
-| TIP             | [I-TIP-RFC-MT-0201/TariScript](#I-TIP-RFC-MT-0201/TariScript)             |
+| TIP             | [I-TIP-RFC-MT-0201](#I-TIP-RFC-MT-0201-tari-script)             |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | TariScript                                                                |
 | Last Modified   | 2026-07-16                                                                |
