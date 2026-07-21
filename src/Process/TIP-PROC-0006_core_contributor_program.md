@@ -119,10 +119,10 @@ responsibility for generated code, and must review any code generated before req
 their pull requests. They must not commit code they do not understand to their respective repositories, and are expected
 to guard their repositories from code which does not follow best practices via the review process.
 
-**Examples Code CC readiness:**
+**Example Evidence of Code CC readiness:**
 
 * Delivering multiple major features at high quality
-* Delivering many thoughtful code improvements every month for at least three months.
+* Delivering many thoughtful code improvements
 * Providing constructive code review with a keen eye for other contributors
 * Writing up issues and bugs with clear descriptions and acceptance criteria
 * Provides quality tests with code contributed
@@ -136,7 +136,7 @@ of new features and may provide art such as iconography which aids in communicat
 Product CCs are expected to review product TIPs and feature requests to assist in their prioritization and
 design. They assist the community by rethinking how we meet the needs of the ever-evolving real-world needs of users.
 
-**Examples of Product CC readiness:**
+**Example Evidence of Product CC readiness:**
 
 * Delivers multiple quality feature proposals with UI/UX Designs that are accepted for development
 * Delivers multiple enhancements to existing features via improved UI/UX designs that are accepted for development
@@ -154,7 +154,7 @@ top of the protocol. Ecosystem CCs might do things like:
 * Represent Tari with enterprises, at industry events, and in adjacent ecosystems
 * Advise the council on ecosystem strategy, deal structure, and market development
 
-**Examples of Ecosystem CC readiness:**
+**Example Evidence of Ecosystem CC readiness:**
 
 * Demonstrates decorum, clarity, technical acumen and helpfulness in onboarding community members with wallets and other
   Tari software
@@ -171,7 +171,7 @@ order. Infrastructure CCs might do things like:
 * Perform DevOps work on servers and web applications such as the forums
 * Maintain mining guides and establish best practices for deploying Tari tools
 
-**Examples of Infrastructure CC readiness:**
+**Example Evidence of Infrastructure CC readiness:**
 
 * Demonstrated ability to deploy and maintain services
 * Assists community members in mining and software setup
@@ -190,7 +190,7 @@ metawork that helps the Tari project run smoothly. Project CCs may do things lik
 * Flesh out day-to-day processes implied but not explicitly defined by TIPs
 * Run large-scale events beyond the scope of what Community CCs handle on their own
 
-**Examples of Project CC readiness:**
+**Example Evidence of Project CC readiness:**
 
 * Self-starts projects and recruits community members to deliver value to the community
 * Assists in coordinating workgroup activities
@@ -218,8 +218,9 @@ Community CCs help with day-to-day community affairs. Community CCs might do thi
 
 ## Nomination
 
-Any member of the community may be nominated by a Core Contributor or may nominate themselves. Core Contributor
-nominations shall be posted in an appropriate forum category. Any nomination should contain the following:
+Core Contributors must have a sponsoring nominator. Only existing Core Contributors and current council members may
+nominate someone for Core Contributor status. Core Contributor nominations shall be posted in an appropriate forum
+category. Any nomination should contain the following:
 
 * Who is being nominated
 * What rights and contributor categories they are being nominated for
