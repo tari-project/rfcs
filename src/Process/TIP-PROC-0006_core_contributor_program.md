@@ -17,6 +17,15 @@ Commitment, to take ownership and responsibility of elements of the Tari project
 Core Contributors (CCs) are empowered to make on-the-ground decisions about the project,
 and [elect the Tari Council][CouncilElection].
 
+To become a Core Contributor, you must be active in the community and consistently contributing with high quality.
+Over time, you demonstrate your trustworthiness and, at the discretion of the team, are nominated to a CC position with
+specific responsibilities. After a review of the evidence, you may then be inducted into the Core Contributors.
+
+There is no automatic path, where you contribute X amount of work in Y time, or check enough boxes to 'win'
+Core Contributor status. Rather, it is given at the discretion and in trust by those who have earned that trust before
+you. Some guidelines are given in this document to help team members judge readiness, but the judgment is ultimately up
+to the current CCs whether to admit a new member.
+
 ## Motivation
 
 Tari is for everyone. It is a community project. To better distribute the work of the project, improve governance,
