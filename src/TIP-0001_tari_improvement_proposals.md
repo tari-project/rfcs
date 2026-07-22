@@ -168,11 +168,12 @@ Council.
 
 ### Accepted (A)
 
-The Council has accepted the TIP after review and discussion.
+The Council has accepted the TIP after review and discussion. Implementation has not been completed. If the proposal
+does not require implementation or is already implemented, it goes straight to the Implemented status instead.
 
 ### Implemented (I)
 
-Implementation (if the proposal requires a specific implementation) has been completed.
+Implementation has been completed or the TIP is otherwise in effect.
 
 ### Rejected (R)
 

@@ -1,6 +1,6 @@
-# A-TIP-PROC-5: Adjust Bridge Limits
+# I-TIP-PROC-5: Adjust Bridge Limits
 
-| TIP             | [A-TIP-PROC-5](#a-tip-proc-5-adjust-bridge-limits) |
+| TIP             | [I-TIP-PROC-5](#i-tip-proc-5-adjust-bridge-limits) |
 |-----------------|----------------------------------------------------|
 | Title           | Adjust Bridge Limits                               |
 | Last Modified   | 2026-06-17                                         |

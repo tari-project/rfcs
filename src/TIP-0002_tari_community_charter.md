@@ -1,6 +1,6 @@
-# A-TIP-PROC-2: The Tari Community Charter
+# I-TIP-PROC-2: The Tari Community Charter
 
-| TIP           | [A-TIP-PROC-2](#a-tip-proc-2-the-tari-community-charter) |
+| TIP           | [I-TIP-PROC-2](#i-tip-proc-2-the-tari-community-charter) |
 |---------------|----------------------------------------------------------|
 | Title         | The Tari Community Charter                               |
 | Last Modified | 2026-05-22                                               |
