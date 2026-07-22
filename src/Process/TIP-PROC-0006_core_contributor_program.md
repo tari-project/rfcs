@@ -225,7 +225,7 @@ category. Any nomination should contain the following:
 * Who is being nominated
 * Evidence that they meet [the requirements for being a Core Contributor](#requirements), as links and/or testimony
 * **Any corporate entity which is sponsoring their contributions**
-* A date, 10 business days from the date of posting, by which any votes for or against their candidacy must be given
+* A date, 14 days from the date of posting, by which any votes for or against their candidacy must be given
 
 For example:
 
@@ -253,7 +253,7 @@ not five Core Contributors, Tari Council members may vote for the contributor's 
 
 In the event of an explicit 'no' vote, the candidate may elect to appeal to the Tari Council. The Tari Council will
 consider the application of the candidate, and vote on the applicant's candidacy. The candidate will be approved if the
-Council decides in their favor with full unanimity. Any override vote must be completed within 10 business days, and
+Council decides in their favor with full unanimity. Any override vote must be completed within 14 days, and
 must include publicly published reasoning for the override, and their view of the evidence in light of the standards
 in this document. Otherwise, the answer is 'no.'
 
@@ -272,8 +272,8 @@ A Core Contributor who is either unable or unwilling to continue their work as a
 
 Core Contributors are people. They may be called to new projects, may lose interest, or may lose any sponsorship that
 assisted their role as contributor. Whatever the reason, a Core Contributor may submit their resignation to the Council
-at any time. They will then be offboarded from the program. To leave in good standing, a notice period of at least ten
-business days and good faith work to perform clean handoffs are required.
+at any time. They will then be offboarded from the program. To leave in good standing, a notice period of at least 14
+days and good faith work to perform clean handoffs are required.
 
 ### Involuntary Exits
 
@@ -283,9 +283,9 @@ extended lack of contribution) they may be removed from the program by a majorit
 CC rights revoked.
 
 In the event an involuntary removal occurs, a public reason for this removal must be published by the council within
-72 hours of the action taken. The removed may appeal to the council within 5 business days, and upon appeal, the council
+72 hours of the action taken. The removed may appeal to the council within 7 days, and upon appeal, the council
 will consider their evidence and will vote once more, requiring a supermajority (2/3) to maintain removal.
-They shall vote and publish their verdict within 5 business days of the appeal being posted.
+They shall vote and publish their verdict within 7 days of the appeal being posted.
 
 ## Council Voting
 
