@@ -1,5 +1,4 @@
 # Accepted
 
-Proposals in this section have been reviewed and accepted by the community, but have not necessarily been
-implemented yet. Once the corresponding functionality has been built and merged, they move to the
-[Implemented](implemented.md) section.
+Proposals in this section have been has accepted by the The Council. Implementation has not been completed. If the proposal
+does not require implementation or is already implemented, it goes straight to the [Implemented](implemented.md) status instead.
