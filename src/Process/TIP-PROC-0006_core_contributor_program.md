@@ -18,8 +18,8 @@ Core Contributors (CCs) are empowered to make on-the-ground decisions about the 
 and [elect the Tari Council][CouncilElection].
 
 To become a Core Contributor, you must be active in the community and consistently contributing with high quality.
-Over time, you demonstrate your trustworthiness and, at the discretion of the team, are nominated to a CC position with
-specific responsibilities. After a review of the evidence, you may then be inducted into the Core Contributors.
+Over time, you demonstrate your trustworthiness and, at the discretion of the team, are nominated to a CC position.
+After a review of the evidence, you may then be inducted into the Core Contributors.
 
 There is no automatic path, where you contribute X amount of work in Y time, or check enough boxes to 'win'
 Core Contributor status. Rather, it is given at the discretion and in trust by those who have earned that trust before
@@ -55,7 +55,7 @@ At a minimum, all Core Contributors must have at least six months of history and
 
 ## Contributor Powers and Rights
 
-Core Contributors may be appointed and given power to handle any element of the project which is not the exclusive
+Core Contributors may be given power to handle any element of the project which is not the exclusive
 responsibility of the council. For an example, a core contributor can be granted:
 
 * commit or maintainer rights on a code repository
@@ -74,12 +74,9 @@ For counterexample, a core contributor may not be granted:
 * the ability to bind the community, Tari Council, or the Tari Foundation to contract
 * final say on high-level budgetary decisions, though they may advise them
 
-### Scoping
-
-As part of [their nomination](#nomination), a list of requested grants shall be made. Acceptance of nomination will be
-acceptance of the requested grants, and only those grants unless further grants can be directly inferred. For example, 
-if all code CCs are given access to a specific Continuing Integration service or code assistance tool, then granting
-committer access to a repository grants this as well. It would not, however, grant access to all other repositories.
+Core contributor status does not automatically confer any particular power or access right. Access rights are granted on
+an as-needed basis. Core Contributors are the first (and, in most cases, only) community members considered for access
+to project resources.
 
 ### Categories
 
@@ -88,10 +85,6 @@ licenses to specific resources en masse, and may have categorical expectations a
 work. Core Contributors may be part of multiple categories, or may have no category. Core Contributors are permitted to
 contribute in areas outside their category, but may not be granted specific rights and responsibilities of those
 categories without membership.
-
-For example, Code CCs have merge rights over their respective repositories, and may be required to triage
-and/or review pull requests on their repositories. A design contributor or project manager can still contribute pull
-requests, review, and may assist in triage, but they would not be required to, nor would they have merge rights.
 
 The current categories are:
 
@@ -105,14 +98,12 @@ A brief overview of each category is below. Further refinement of expectations a
 submitted in subsequent TIPs.
 
 To distinguish between, for instance, all code contributors and specifically Core Contributors in the Code Category, we
-will use 'code contributors' for the former and 'Code CCs' for the latter.
+will use 'code contributors' or 'contributors' for the former and 'Code CCs' for the latter.
 
 #### Code CCs
 
-Code CCs are community members with demonstrated software engineering skills who have consistently delivered
-high quality code contributions to the Tari project. Code CCs are inducted with commit rights to one or more
-repositories. Commit rights involve the right and responsibility to commit high quality code to the official public
-repositories of the project.
+Code CCs are community members with demonstrated software engineering skills who have consistently delivered high
+quality code contributions to the Tari project.
 
 Code CCs are expected to follow best practices in software engineering. These include, but are not limited to:
 
@@ -232,16 +223,13 @@ nominate someone for Core Contributor status. Core Contributor nominations shall
 category. Any nomination should contain the following:
 
 * Who is being nominated
-* What rights and contributor categories they are being nominated for
 * Evidence that they meet [the requirements for being a Core Contributor](#requirements), as links and/or testimony
-* Evidence that they hold competencies in any categories or for any rights they're being nominated for
 * **Any corporate entity which is sponsoring their contributions**
 * A date, 10 business days from the date of posting, by which any votes for or against their candidacy must be given
 
 For example:
 
-> I am nominating JimBob for the Core Contributor program as a Code CC, with commit rights to the simulations
-> repository.
+> I am nominating JimBob for the Core Contributor program as a Code CC.
 > 
 > JimBob has been a contributor of code to our repositories for several months, and proved his excellence when
 > implementing spline reticulation. He is very helpful on the forums, always has a good attitude, and contributes
@@ -269,9 +257,9 @@ Council decides in their favor with full unanimity. Any override vote must be co
 must include publicly published reasoning for the override, and their view of the evidence in light of the standards
 in this document. Otherwise, the answer is 'no.'
 
-### Rights Expansion
+### Category Expansion
 
-Expansion of rights is done similar to [nomination](#nomination). A forum post requesting rights or category expansion,
+Expansion of categories is done similar to [nomination](#nomination). A forum post requesting category expansion,
 with reason given and evidence of competency supplied, shall be made. If after 5 working days there are at least three
 affirmative votes and no negative votes, access shall be granted. Voting rights are the same as described in
 [Nomination](#nomination).
