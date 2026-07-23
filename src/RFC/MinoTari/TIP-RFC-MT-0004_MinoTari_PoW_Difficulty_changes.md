@@ -1,14 +1,14 @@
-# P-TIP-PROC-MT-0004: MinoTari PoW difficulty changes
+# A-TIP-RFC-MT-0004: MinoTari PoW difficulty changes
 
-| TIP             | [P-TIP-PROC-MT-0004](#/Process/MinoTari/TIP-Proc-MT-0004_MinoTari_PoW_Difficulty_changes.md)                  |
+| TIP             | [A-TIP-RFC-MT-0004](#/RFC/MinoTari/TIP-RFC-MT-0004_MinoTari_PoW_Difficulty_changes.md)                  |
 |-----------------|---------------------------------------------------------------------------|
-| Title           | MinoTari PoW difficulty changes                                               |
+| Title           | MinoTari PoW difficulty changes                                           |
 | Last Modified   | 2026-05-17                                                                |
 | Authors         | SW van Heerden                                                            |
-| Status          | Proposed                                                                  |
+| Status          | Accepted                                                                  |
 | Type            | Process                                                                   |
 | Created         | 2026-06-11                                                                |
-| References      | Based on the Open edX community's [OEP] process. Forum discussion thread. |
+| References      |                                                                           |
 
 ## Overview
 
