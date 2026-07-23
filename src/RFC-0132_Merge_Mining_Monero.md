@@ -1,4 +1,14 @@
-# RFC-0132/MergeMiningMonero
+# I-TIP-RFC-MT-0132: MergeMiningMonero
+
+| TIP             | [I-TIP-RFC-MT-0132](#I-TIP-RFC-MT-0132-merge-mining-monero)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Tari Protocol for Merge Mining with Monero                                |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-10-26                                                                |
+| References      |                                                                           |
 
 ## Tari protocol for Merge Mining with Monero
 

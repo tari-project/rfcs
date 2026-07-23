@@ -1,4 +1,14 @@
-# RFC-0131/Mining
+# I-TIP-RFC-MT-0131: Mining
+
+| TIP             | [I-TIP-RFC-MT-0131](#I-TIP-RFC-MT-0131-mining)                     |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Full-node Mining on Tari Base Layer                                       |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-11-25                                                                |
+| References      |                                                                           |
 
 ## Full-node Mining on Tari Base Layer
 

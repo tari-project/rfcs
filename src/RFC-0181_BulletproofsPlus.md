@@ -1,4 +1,14 @@
-# RFC-0181/BulletproofsPlus
+# I-TIP-RFC-MT-0181: BulletproofsPlus
+
+| TIP             | [I-TIP-RFC-MT-0181](#I-TIP-RFC-MT-0181-bulletproofs-plus) |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Bulletproofs+ Range Proving                                               |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-12-07                                                                |
+| References      |                                                                           |
 
 ## Bulletproofs+ range proving
 

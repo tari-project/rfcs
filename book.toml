@@ -13,6 +13,10 @@ mathjax-support=true
 theme = "src/theme"
 additional-js = []
 
+[output.html.fold]
+enable = true
+level = 0
+
 [output.html.playpen]
 editable = false
 

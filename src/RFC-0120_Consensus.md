@@ -1,4 +1,14 @@
-# RFC-0120/Consensus
+# I-TIP-RFC-MT-0120: Consensus
+
+| TIP             | [I-TIP-RFC-MT-0120](#I-TIP-RFC-MT-0120-consensus)               |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Base Layer Consensus                                                      |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-10-11                                                                |
+| References      |                                                                           |
 
 ## Base Layer Consensus
 

@@ -1,4 +1,14 @@
-# RFC-0240/Atomic Swap
+# I-TIP-RFC-MT-0240: Atomic Swap
+
+| TIP             | [I-TIP-RFC-MT-0240](#I-TIP-RFC-MT-0240-atomic-swap)             |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Atomic Swap                                                               |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                                     |
+| Type            | RFC                                                                       |
+| Created         | 2022-10-17                                                                |
+| References      |                                                                           |
 
 ![status: draft](theme/images/status-draft.svg)
 

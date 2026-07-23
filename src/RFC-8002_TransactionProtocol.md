@@ -1,10 +1,16 @@
-# RFC-8002/TransactionProtocol
+# D-TIP-RFC-MT-8002: TransactionProtocol
+
+| TIP             | [D-TIP-RFC-MT-8002](#D-TIP-RFC-MT-8002-transaction-protocol)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Transaction Protocol                                                      |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Depricated                                                                |
+| Type            | RFC                                                                       |
+| Created         | 2022-06-13                                                                |
+| References      |                                                                           |
 
 ## Transaction Protocol
-
-![status: draft](theme/images/status-draft.svg)
-
-**Maintainer(s)**: Cayle Sharrock &lt;CjS77&gt;
 
 # Licence
 

@@ -1,4 +1,14 @@
-# RFC-0154/DeepLinksConvention
+# I-TIP-RFC-MT-0154: DeepLinksConvention
+
+| TIP             | [I-TIP-RFC-MT-0154](#I-TIP-RFC-MT-0154-deep-links-convention)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Deep Links Structure Convention                                           |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2023-04-19                                                                |
+| References      |                                                                           |
 
 ## Deep links structure convention.
 

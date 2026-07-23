@@ -1,4 +1,14 @@
-# RFC-0140/SyncAndSeeding
+# I-TIP-RFC-MT-0140: SyncAndSeeding
+
+| TIP             | [I-TIP-RFC-MT-0140](#I-TIP-RFC-MT-0140-sync-and-seeding)     |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Synchronizing the Blockchain: Archival and Pruned Modes                   |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2019-02-07                                                                |
+| References      |                                                                           |
 
 ## Synchronizing the Blockchain: Archival and Pruned Modes
 

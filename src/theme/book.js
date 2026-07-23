@@ -409,7 +409,7 @@ function playpen_text(playpen) {
         elem.className = 'fa fa-copy tooltipped';
     }
 
-    var clipboardSnippets = new Clipboard('.clip-button', {
+    var clipboardSnippets = new ClipboardJS('.clip-button', {
         text: function (trigger) {
             hideTooltip(trigger);
             let playpen = trigger.closest("pre");
@@ -463,4 +463,51 @@ function playpen_text(playpen) {
 
         previousScrollTop = document.scrollingElement.scrollTop;
     }, { passive: true });
+})();
+
+// Sidebar chapter folding.
+// mdBook 0.5.x renders the fold chevrons (.chapter-fold-toggle) and the
+// expanded/collapsed classes via the legacy {{#toc}} helper, but the click
+// behaviour and active-page detection normally live in the built-in toc.js
+// web component, which this custom theme does not use. Wire them up here.
+(function sidebarChapterFold() {
+    var sidebar = document.getElementById("sidebar");
+    if (!sidebar) {
+        return;
+    }
+
+    // Toggle a chapter open/closed when its chevron is clicked.
+    Array.prototype.forEach.call(
+        sidebar.querySelectorAll(".chapter-fold-toggle"),
+        function (toggle) {
+            toggle.addEventListener("click", function (e) {
+                e.preventDefault();
+                var item = toggle.closest("li.chapter-item");
+                if (item) {
+                    item.classList.toggle("expanded");
+                }
+            });
+        }
+    );
+
+    // Highlight the current page and expand all of its ancestors so it stays
+    // visible even when the tree is collapsed by default.
+    Array.prototype.forEach.call(
+        sidebar.querySelectorAll("a[href]"),
+        function (link) {
+            if (link.classList.contains("chapter-fold-toggle")) {
+                return;
+            }
+            if (link.pathname !== window.location.pathname) {
+                return;
+            }
+            link.classList.add("active");
+            var item = link.closest("li.chapter-item");
+            while (item) {
+                item.classList.add("expanded");
+                var parentList = item.parentElement;
+                item = parentList ? parentList.closest("li.chapter-item") : null;
+            }
+        }
+    );
 })();

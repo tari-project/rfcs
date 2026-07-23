@@ -1,4 +1,14 @@
-# RFC-0182/CommitmentSignatures
+# I-TIP-RFC-MT-0182: CommitmentSignatures
+
+| TIP             | [I-TIP-RFC-MT-0182](#I-TIP-RFC-MT-0182-commitment-signatures)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Commitment and Public Key Signatures                                      |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                                     |
+| Type            | RFC                                                                       |
+| Created         | 2023-04-15                                                                |
+| References      |                                                                           |
 
 ## Commitment and public key signatures
 

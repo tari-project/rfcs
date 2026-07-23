@@ -1,4 +1,15 @@
-# RFC-0204/TariScriptExamples
+# I-TIP-RFC-MT-0204: TariScriptExamples
+
+| TIP             | [I-TIP-RFC-MT-0204](#I-TIP-RFC-MT-0204-tari-script-examples)|
+|-----------------|---------------------------------------------------------------------------|
+| Title           | TariScript Examples                                                       |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-11-11                                                                |
+| References      |                                                                           |
+
 $$
 \newcommand{\script}{\alpha} % utxo script
 \newcommand{\input}{ \theta }

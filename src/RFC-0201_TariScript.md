@@ -1,4 +1,14 @@
-# RFC-0201/TariScript
+# I-TIP-RFC-MT-0201: TariScript
+
+| TIP             | [I-TIP-RFC-MT-0201](#I-TIP-RFC-MT-0201-tari-script)             |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | TariScript                                                                |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2020-08-17                                                                |
+| References      |                                                                           |
 
 ## TariScript
 

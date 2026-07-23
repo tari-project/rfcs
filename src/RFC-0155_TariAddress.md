@@ -1,4 +1,14 @@
-# RFC-0155/TariAddress
+# I-TIP-RFC-MT-0155: TariAddress
+
+| TIP             | [I-TIP-RFC-MT-0155](#I-TIP-RFC-MT-0155-tari-address)           |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | TariAddress Specification                                                 |
+| Last Modified   | 2026-07-16                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2024-05-31                                                                |
+| References      |                                                                           |
 
 ## TariAddress specification
 
