@@ -36,7 +36,9 @@ Tari currently supports four PoW algorithms:
 
 To compare two competing chain tips, Tari calculates:
 
-    Rx * RxT * Sha3x * C29
+```text
+Rx * RxT * Sha3x * C29
+```
 
 The chain with the larger product is considered to have more accumulated
 PoW.
@@ -45,7 +47,9 @@ PoW.
 
 Assume the total accumulated difficulties for the four algorithms are:
 
-    Rx, RxT, Sha3x, C29
+```text
+Rx, RxT, Sha3x, C29
+```
 
 Now consider two competing new blocks:
 
@@ -54,12 +58,16 @@ Now consider two competing new blocks:
 
 We compare:
 
-    (Rx + x) * RxT * Sha3x * C29
-    Rx * RxT * (Sha3x + y) * C29
+```text
+(Rx + x) * RxT * Sha3x * C29
+Rx * RxT * (Sha3x + y) * C29
+```
 
 After cancelling common terms, this comparison reduces to evaluating:
 
-    x / Rx  vs  y / Sha3x
+```text
+x / Rx  vs  y / Sha3x
+```
 
 Whichever ratio is larger represents the larger relative increase in
 accumulated PoW.
