@@ -7,6 +7,7 @@
   - [TIP-PROC-3: Community Forums](TIP-0003_community_forums.md)
   - [TIP-RFC-O-8003: Tari Use Cases](RFC-8003_TariUseCases.md)
 - [Accepted](accepted.md)
+  - [TIP-RFC-MT-0004: MinoTari PoW difficulty changes](RFC/MinoTari/TIP-RFC-MT-0004_MinoTari_PoW_Difficulty_changes.md)
   - [TIP-RFC-MT-0241: XMR Atomic swap](RFC-0241_AtomicSwapXMR.md)
 - [Implemented](implemented.md)
   - [TIP-PROC-2: The Tari Community Charter](TIP-0002_tari_community_charter.md)
