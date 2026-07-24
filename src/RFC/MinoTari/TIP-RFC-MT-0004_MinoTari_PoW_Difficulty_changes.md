@@ -3,10 +3,10 @@
 | TIP             | [A-TIP-RFC-MT-0004](#/RFC/MinoTari/TIP-RFC-MT-0004_MinoTari_PoW_Difficulty_changes.md)                  |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | MinoTari PoW difficulty changes                                           |
-| Last Modified   | 2026-05-17                                                                |
+| Last Modified   | 2026-06-24                                                                |
 | Authors         | SW van Heerden                                                            |
 | Status          | Accepted                                                                  |
-| Type            | Process                                                                   |
+| Type            | Architecture                                                              |
 | Created         | 2026-06-11                                                                |
 | References      |                                                                           |
 
@@ -123,8 +123,8 @@ This mechanism:
 -   Makes selfish mining exponentially more expensive for any single
     algorithm attempting to dominate.
 -   Encourages natural interleaving of algorithms.
--   
-## Consequences
+
+## Consequences 1
 
 ### Positive
 
@@ -143,6 +143,20 @@ This mechanism:
 -   Does not change the geometric-mean comparison logic directly.
 -   Does not modify the LWMA formula itself --- only its target-time
     input.
+
+## Proposed Change 2
+
+Tari currently uses a block window of 90 for the LWMA. While this provides stability to the mining power, it takes a few blocks to respond to hash rate changes. If exchanges jump on and off, this can lead to large hash rate differences that come with large changes in the solvetime. Having the LWMA respond quicker to these will be helpful. This should be changed to a 45-block window, given the large target time per block that we have.
+
+## Consequences 2
+
+### Positive
+
+-   Faster response on blocks with an increase or decrease in hash power
+
+### Negative
+
+-   Can cause some oscillation in the difficulty
 
 ## References
 
