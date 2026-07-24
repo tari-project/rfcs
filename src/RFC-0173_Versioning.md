@@ -96,20 +96,23 @@ connection cheaply without having to perform any further operations, like comple
 The following is the current mapping of the WireMode byte:
 
 ```rust,ignore
-   pub enum Network {
+pub enum Network {
     MainNet = 0x00,
+    StageNet = 0x01,
+    NextNet = 0x02,
     LocalNet = 0x10,
-    Ridcully = 0x21,
-    Stibbons = 0x22,
-    Weatherwax = 0xa3,
     Igor = 0x24,
-    Dibbler = 0x25,
     Esmeralda = 0x26,
 }
 
 // As well as the special wiremode for local liveness checks
-const LIVENESS_WIRE_MODE: u8 = 0xa6;
+const LIVENESS_WIRE_MODE: u8 = 0xa7;
 ```
+
+Note: The wire byte sent on the wire is not always equal to the enum discriminant. `Network::as_wire_byte()` returns a
+value within a binned range for each network (e.g. `NextNet` has discriminant `0x02` but wire byte `82`; `Esmeralda`
+has discriminant `0x26` but wire byte `202`). The liveness wire byte `0xa7` is reserved and must never be used for a
+network.
 
 ### P2P message version
 Peer to Peer messages on the Tari network are encapsulated into message envelopes. The body of message envelopes are 

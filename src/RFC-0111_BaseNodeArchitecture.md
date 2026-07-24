@@ -147,16 +147,17 @@ This module is used by the Base Node Service, Base Node State Machine, Mempool S
 this is delivered using the Lightning Memory-mapped Database (LMDB). LMDB is highly performant, intelligent and
 straightforward to use. An LMDB is essentially treated as a hash map data structure that transparently handles
 memory caching, disk Input/Output (I/O) and multi-threaded access. This module is shared by many services and so must
-be thread-safe.
+be thread-safe. The current UTXO set is maintained as a Jellyfish Merkle Tree (JMT) — a sparse Merkle tree — backed by
+the LMDB store, whose root is committed to in the block header as `output_mr`.
 
 ## Communication Interfaces
 
 ### P2P communications
 The Tari Peer to Peer messaging protocol is defined in [RFC-0172]. It is a fire-and-forget style protocol. Messages can 
-be sent directly to a known peer, sent indirectly to an offline or unknown peer and broadcast to a set of peers. When
-a message is sent to a specific peer it is propagated to the peer's local neighbourhood and stored by those peers until it
-comes online to receive the message. Messages that are broadcast will be propagated around the network until the whole
-network has received them, they are not stored.
+be sent directly to a known peer or broadcast to a set of peers. Messages that are broadcast will be propagated around 
+the network until the whole network has received them; they are not stored. (Store-and-forward messaging, which
+previously allowed messages to be stored for offline peers, has been removed; all current nodes discard store-and-forward
+messages.)
 
 ### RPC Services
 Fire-and-forget messaging is not efficient for point to point communications between online peers. For these applications

@@ -126,11 +126,11 @@ In the Tari communication network, each CN or CC makes use of a node ID to deter
 This node ID can be derived from the CNs or CCs identification public key.
 The method used to obtain a node ID will either enhance or limit the trustworthiness of that entity when propagating messages through them on the Tari communication network.
 
-The similarity or distance between different node IDs can be calculated by performing the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) between the bits of the two node ID numbers.
-The Hamming distance can be implemented as an Exclusive OR (XOR) between the bits of the numbers and the summation of the resulting true bits.
-CCs and/or CNs that have similar node IDs, that produce a small Hamming distance, are located in similar regions of the Tari communication network.
+The similarity or distance between different node IDs is calculated using the XOR distance metric as proposed by the [Kademlia](https://en.wikipedia.org/wiki/Kademlia) paper.
+The distance is computed by taking the Exclusive OR (XOR) of the two node IDs and interpreting the result as an unsigned integer for comparison (not by summing the differing bits, which would be the Hamming distance).
+CCs and/or CNs that have similar node IDs, that produce a small XOR distance, are located in similar regions of the Tari communication network.
 This does not mean that their geographic locations are near each other, but rather that their location in the network is similar.
-A thresholding scheme can be applied to the Hamming distance to ensure that only neighboring CNs with similar node IDs are allowed to share and propagate specific information.
+A thresholding scheme can be applied to the XOR distance to ensure that only neighboring CNs with similar node IDs are allowed to share and propagate specific information.
 As an example, only routing table information that contains similar node IDs to the requesting CCs or CNs node ID should be shared with them.
 Limiting the sharing of routing table information makes it more difficult to map the entire Tari communication network.
 
@@ -142,15 +142,7 @@ The parent Base Node will perform any communication tasks on the Tari communicat
 #### Online Communication Address, Peer Address and Routing Table
 
 Each CC and CN on the Tari communication network will have identification cryptographic keys, a node ID and an online communication address.
-The online communication address SHOULD be either an IPv4, IPv6, Or Tor (Base32) address and can be stored using the network address type as follows:
-
-| Description  | Data type  | Comments                                            |
-|:-------------|:-----------|:----------------------------------------------------|
-| address type | uint4      | Specify if IPv4/IPv6/Tor|
-| address      | char array | IPv4, IPv6, Tor (Base32) address |
-| port         | uint16     | port number                                         |
-
-Tari uses the [Multiaddr] format for addresses. 
+The online communication address is encoded using the [Multiaddr] format, which self-describes the protocol, address and port. Supported transports are IPv4, IPv6, Onion (Tor), and Memory (in-process); for example `/ip4/123.123.123.123/tcp/12345` or `/onion3/abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrst:12345`.
 
 A Tor address can be used when anonymity is important for a CC or CN.
 The IPv4 and IPv6 address types do not provide any privacy features but do provide increased bandwidth. 
@@ -261,7 +253,7 @@ The CN can decide how the peer connections should be selected from the routing t
 - A CN MUST construct and provide a list of peer addresses from its routing table that is similar to a requested node ID so that other CCs and CNs can extend their routing tables.
 - A CN MUST keep its routing table up to date by removing unreachable peer addresses and adding newly received addresses.
 - It MUST have a mechanism to determine if a node ID was obtained through registration or was derived from an identification public key.
-- A CN MUST calculate the similarity between different node IDs by calculating the Hamming distance between the bits of the two node ID numbers.
+- A CN MUST calculate the similarity between different node IDs by calculating the XOR distance between the two node ID numbers.
 
 #### Functionality Required of Communication Clients
 
@@ -274,7 +266,7 @@ The CN can decide how the peer connections should be selected from the routing t
 - A CC MUST maintain a small persistent routing table of Tari Communication network peers with which ad hoc connections can be established.
 - As the CC becomes aware of other CNs and CCs on the communication network, the CC SHOULD extend its local routing table by including the newly discovered CCs or CNs contact information.
 - Peers from the CCs routing table that have been unreachable for a number of attempts SHOULD be removed from the its routing table.
-- A CC MUST calculate the similarity between different node IDs by calculating the Hamming distance between the bits of the two node ID numbers.
+- A CC MUST calculate the similarity between different node IDs by calculating the XOR distance between the two node ID numbers.
 
 # Change Log
 
