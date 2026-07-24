@@ -45,7 +45,7 @@
       - [MT-0230: Hash time locked contracts](RFC-0230_HTLC.md)
       - [MT-0240: Atomic swap](RFC-0240_AtomicSwap.md)
       - [MT-8001: Multi-party transactions](RFC-8001_MultiPartyTransactions.md)
-- [Depricated](deprecated.md)
+- [Deprecated](deprecated.md)
   - [RFC](deprecated_rfc.md)
     - [MT-0010: Tari code structure and organization](RFCD-0010_CodeStructure.md)
     - [MT-0121: Consensus encoding](RFCD-0121_ConsensusEncoding.md)
