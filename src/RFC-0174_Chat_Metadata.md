@@ -5,7 +5,7 @@
 | Title           | Chat Metadata                                                             |
 | Last Modified   | 2026-07-16                                                                |
 | Authors         | Tari Labs                                                                 |
-| Status          | Depricated                                                                     |
+| Status          | Deprecated                                                                     |
 | Type            | RFC                                                                       |
 | Created         | 2023-12-21                                                                |
 | References      |                                                                           |
@@ -66,6 +66,8 @@ will use during interaction with other nodes.
 - [RFC-0712: PeerToPeerMessagingProtocol](RFC-0172_PeerToPeerMessagingProtocol.md)
 
 ## Description
+
+**Note:** This RFC describes a proposed chat metadata protocol that was never implemented in the Tari codebase. The message type values `TariMessageTypeChat = 2`, `TariMessageTypeText = 225`, and `TariMessageTypeTextAck = 226` are reserved in the protocol enum, but no chat metadata structures or handlers exist in the v5.5.0 release.
 
 The chat protocol incorporates metadata within messages to support various message types, such as Replies,
 TokenRequests, Gifs, and Links. This metadata-driven approach enhances the technical flexibility of chat,
