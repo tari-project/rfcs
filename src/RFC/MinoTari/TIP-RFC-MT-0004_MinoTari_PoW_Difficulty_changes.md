@@ -3,7 +3,7 @@
 | TIP             | [A-TIP-RFC-MT-0004](#/RFC/MinoTari/TIP-RFC-MT-0004_MinoTari_PoW_Difficulty_changes.md)                  |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | MinoTari PoW difficulty changes                                           |
-| Last Modified   | 2026-06-24                                                                |
+| Last Modified   | 2026-07-28                                                                |
 | Authors         | SW van Heerden                                                            |
 | Status          | Accepted                                                                  |
 | Type            | Architecture                                                              |
@@ -21,15 +21,15 @@ multiplying a set of values together and then taking the n-th root
 geometric mean is well suited to comparing values that span multiple
 orders of magnitude.
 
-Tari does not compute the full geometric mean. Specifically, the final
-n-th root step is omitted to avoid floating-point operations. Since the
-protocol only needs to compare two values (rather than compute the exact
-geometric mean), the root operation is unnecessary --- multiplying the
-accumulated difficulties is sufficient for ordering purposes.
+Tari does not compute the full geometric mean: the final n-th root step
+is omitted to avoid floating-point operations. Because the protocol only
+needs to order two values rather than compute an exact mean, the root is
+unnecessary --- multiplying the accumulated difficulties preserves the
+same ordering.
 
 Tari currently supports four PoW algorithms:
 
--   Rx
+-   RxM
 -   RxT
 -   Sha3x
 -   C29
@@ -37,7 +37,7 @@ Tari currently supports four PoW algorithms:
 To compare two competing chain tips, Tari calculates:
 
 ```text
-Rx * RxT * Sha3x * C29
+RxM * RxT * Sha3x * C29
 ```
 
 The chain with the larger product is considered to have more accumulated
@@ -48,25 +48,25 @@ PoW.
 Assume the total accumulated difficulties for the four algorithms are:
 
 ```text
-Rx, RxT, Sha3x, C29
+RxM, RxT, Sha3x, C29
 ```
 
 Now consider two competing new blocks:
 
--   One mined on Rx with difficulty `x`
+-   One mined on RxM with difficulty `x`
 -   One mined on Sha3x with difficulty `y`
 
 We compare:
 
 ```text
-(Rx + x) * RxT * Sha3x * C29
-Rx * RxT * (Sha3x + y) * C29
+(RxM + x) * RxT * Sha3x * C29
+RxM * RxT * (Sha3x + y) * C29
 ```
 
 After cancelling common terms, this comparison reduces to evaluating:
 
 ```text
-x / Rx  vs  y / Sha3x
+x / RxM  vs  y / Sha3x
 ```
 
 Whichever ratio is larger represents the larger relative increase in
@@ -74,25 +74,24 @@ accumulated PoW.
 
 ### Problem
 
-This approach works under balanced hash rate conditions. However, if one
-algorithm (e.g., Sha3x) experiences a significant hash rate increase ---
-for example due to ASIC hardware becoming dominant relative to GPU
-mining --- its relative contribution can dominate the comparison.
+This approach works while hash rate is balanced across the algorithms.
+If one algorithm (for example Sha3x) sees a large hash rate increase ---
+say because ASIC hardware becomes dominant relative to GPU mining --- its
+relative contribution can dominate the comparison.
 
-As accumulated difficulty grows, terms such as `x / Rx` converge toward
-zero unless `x` scales proportionally with `Rx`. If one algorithm's
-difficulty grows much faster than the others, its blocks will
-consistently produce larger relative increases.
+As accumulated difficulty grows, terms such as `x / RxM` converge toward
+zero unless `x` scales proportionally with `RxM`. If one algorithm's
+difficulty grows much faster than the others, its blocks consistently
+produce larger relative increases.
 
-This creates a situation where one algorithm can disproportionately
-reorg blocks mined by other algorithms. That outcome undermines the
-original design goal of including multiple PoW algorithms for
-decentralization and hardware diversity.
+One algorithm can therefore reorg blocks mined by the other algorithms
+disproportionately often, which undermines the original design goal of
+using multiple PoW algorithms for decentralization and hardware
+diversity.
 
+## Proposed Change 1
 
-## Proposed Change
-
-Tari currently calculates target difficulty using LWMA (Linearly
+Tari currently calculates target difficulty using an LWMA (Linearly
 Weighted Moving Average) over the last 90 blocks. The LWMA uses:
 
 -   Target block time
@@ -101,28 +100,60 @@ Weighted Moving Average) over the last 90 blocks. The LWMA uses:
 
 to compute the next target difficulty.
 
-
-Introduce an exponential backoff mechanism for consecutive blocks mined
+This RFC introduces an exponential backoff for consecutive blocks mined
 by the same PoW algorithm:
 
--   If a block is mined using algorithm A, and the previous block was
-    also mined using algorithm A, then the target time for algorithm A
-    is doubled.
--   This doubling continues for each consecutive block of the same
-    algorithm.
+-   If a block is mined using algorithm A and the previous block was
+    also mined using algorithm A, the target time for algorithm A is
+    doubled.
+-   The doubling compounds for each further consecutive block of the
+    same algorithm.
 -   If a block of a different algorithm is mined, the target time for
     algorithm A resets to its base consensus value.
 
-### Example
+The current difficulty calculation is:
 
-Assume the base target time for Sha3x is **8 minutes**.
+```text
+next_target_difficulty = ave_difficulty * k / weighted_times
 
--   If the previous block was Sha3x → the next Sha3x target time becomes
-    **16 minutes**.
--   If another Sha3x block is mined consecutively → target time becomes
-    **32 minutes**.
--   If a different algorithm mines a block → Sha3x target time resets to
-    **8 minutes**.
+where k = block_window * (block_window + 1) * target_time / 2
+```
+
+Because the penalty enters the formula only through `target_time`, it
+can be expressed as a single multiplier:
+
+```text
+adjusted_next_target_difficulty = next_target_difficulty * m
+
+where m = the penalty modifier
+```
+
+The `adjusted_next_target_difficulty` is used only as the target
+difficulty that the mined block must meet. It is not counted when
+calculating the total accumulated PoW of the chain --- the unadjusted
+difficulty is used there.
+
+The modifier applied to each block in the window must also be fed back
+into the next difficulty calculation. The weighted times are currently
+the sum over the window of:
+
+```text
+weighted_times = sum( solve_time[i] * (i + 1) )
+
+where i = index of the block within the window
+```
+
+Each solve time is normalized by the modifier that was in force for that
+block, so that a block mined against an inflated target is not read as a
+drop in hash rate:
+
+```text
+weighted_times = sum( solve_time[i] / m[i] * (i + 1) )
+
+where
+i    = index of the block within the window
+m[i] = modifier applied to block i
+```
 
 This mechanism:
 
@@ -131,6 +162,17 @@ This mechanism:
 -   Makes selfish mining exponentially more expensive for any single
     algorithm attempting to dominate.
 -   Encourages natural interleaving of algorithms.
+
+### Example
+
+Assume the base target time for Sha3x is **8 minutes**.
+
+-   If the previous block was Sha3x, the next Sha3x target time becomes
+    **16 minutes**.
+-   If another Sha3x block is mined consecutively, the target time
+    becomes **32 minutes**.
+-   If a different algorithm mines a block, the Sha3x target time resets
+    to **8 minutes**.
 
 ## Consequences 1
 
@@ -145,6 +187,7 @@ This mechanism:
 -   Requires a hard fork.
 -   Changes block-time dynamics under certain hash rate distributions.
 -   May introduce more short-term variance in block intervals.
+-   Does not prevent pools from switching between RxT and RxM.
 
 ### Neutral
 
@@ -154,17 +197,22 @@ This mechanism:
 
 ## Proposed Change 2
 
-Tari currently uses a block window of 90 for the LWMA. While this provides stability to the mining power, it takes a few blocks to respond to hash rate changes. If exchanges jump on and off, this can lead to large hash rate differences that come with large changes in the solvetime. Having the LWMA respond quicker to these will be helpful. This should be changed to a 45-block window, given the large target time per block that we have.
+Tari currently uses a block window of 90 blocks for the LWMA. This gives
+a stable difficulty, but it takes several blocks to respond to a change
+in hash rate. When large miners switch on and off, the resulting hash
+rate swings produce correspondingly large swings in solve time, so a
+faster response is desirable. Given Tari's long target block time, the
+window should be reduced to 45 blocks.
 
 ## Consequences 2
 
 ### Positive
 
--   Faster response on blocks with an increase or decrease in hash power
+-   Responds faster to an increase or decrease in hash power.
 
 ### Negative
 
--   Can cause some oscillation in the difficulty
+-   Can cause more oscillation in the difficulty.
 
 ## References
 
