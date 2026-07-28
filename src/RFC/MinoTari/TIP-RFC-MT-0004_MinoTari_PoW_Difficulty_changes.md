@@ -181,6 +181,91 @@ block and resumes normal operation as soon as any other class mines.
 The cap is reached after 5 doublings, i.e. on the **sixth** consecutive
 block of a class.
 
+### Expected cost, and why the factor is two
+
+The doubling factor is not arbitrary. It places the point at which the
+mechanism becomes prohibitive exactly at the majority threshold.
+
+Model each block's penalty class as independent, with `p` the share of
+blocks won by class A. For a block mined by A, let `j` be the number of
+immediately preceding consecutive A blocks, so that `m = 2^j`. The `j`
+preceding blocks are A and the one before them is not, giving:
+
+```text
+P(j = k) = p^k * (1 - p)
+```
+
+The expected modifier paid by a block of class A is therefore:
+
+```text
+E[m] = sum over k of  (1 - p) * p^k * 2^k
+     = (1 - p) / (1 - 2p)          for p < 1/2
+```
+
+The series converges only while `2p < 1`. Below 50% block share the
+expected penalty is finite and mild; as share approaches 50% it grows
+without bound. More generally, a backoff factor of `b` places the
+divergence at `p = 1/b`: a factor of 1.5 would only become prohibitive
+above a two-thirds share, and a factor of 3 would penalize a class
+holding only a third of blocks. **A factor of two is the choice that
+puts the pole at the majority threshold**, which is the threshold the
+protocol already treats as the security boundary.
+
+With the 32x cap the expectation is finite everywhere, since a run of
+five or more preceding blocks pays a flat 32:
+
+```text
+E[m] = (1 - p) * (1 - (2p)^5) / (1 - 2p)  +  32 * p^5
+```
+
+| Block share `p` | `E[m]` uncapped | `E[m]` capped at 32 |
+|-----------------|-----------------|---------------------|
+| 1/3 (balanced)  | 2.00            | 1.87                |
+| 0.40            | 3.00            | 2.34                |
+| 0.45            | 5.50            | 2.84                |
+| 0.50            | diverges        | 3.50                |
+| 0.60            | diverges        | 5.47                |
+| 0.75            | diverges        | 10.89               |
+
+The cap is a deliberate trade. It buys the liveness guarantee described
+above, and it pays for that by blunting the sharp majority threshold: a
+class at 50% share pays 3.5x rather than an unbounded amount. The
+mechanism therefore taxes concentration progressively rather than
+imposing a hard ceiling on it.
+
+Two caveats apply to these figures. The model assumes each block's class
+is drawn independently with a fixed `p`, which ignores the behavioural
+feedback the mechanism is designed to create --- miners who interleave
+deliberately pay less than the table shows, and `E[m]` tends to 1 under
+perfect round-robin mining. And `p` is a share of *blocks won*, not of
+hash rate; because the penalty itself suppresses a concentrated class's
+block share, the hash rate corresponding to a given `p` is higher than
+`p` alone suggests.
+
+### Effect on mean block time
+
+The expectation above has a direct consequence for block pacing that the
+base target times must account for.
+
+Because solve times are normalized by `m` before entering the LWMA, the
+LWMA converges to the point where the *normalized* mean solve time
+equals the base target time `T`. Actual solve times are `m` times the
+normalized ones, so the mean interval between blocks of a class is:
+
+```text
+E[solve_time] = E[m] * T
+```
+
+At three balanced penalty classes this inflates the mean block interval
+by roughly 87% for as long as classes arrive independently. The base
+target times must be reduced accordingly if the emission schedule is to
+be preserved, and the correct divisor depends on how far real miner
+behaviour sits between independent arrival and deliberate interleaving.
+This is a consequence of normalizing solve times rather than letting the
+LWMA absorb the penalty; the alternative --- omitting the normalization
+--- holds block time constant but lets the LWMA cancel most of the
+penalty in steady state, leaving it effective only transiently.
+
 ### Difficulty calculation
 
 The current difficulty calculation is:
@@ -304,12 +389,20 @@ between the two RandomX variants does not reset the modifier.
 -   Preserves the multi-algorithm decentralization objective.
 -   Grouping RxM and RxT into one penalty class closes the cheapest
     bypass, since both are mined by the same hardware.
+-   The cost is progressive in concentration rather than flat: a class
+    at balanced share pays about 1.9x on average, one at 60% share pays
+    about 5.5x.
 
 ### Negative
 
 -   Requires a hard fork.
 -   Changes block-time dynamics under certain hash rate distributions.
 -   May introduce more short-term variance in block intervals.
+-   Inflates the mean block interval by a factor of `E[m]` unless the
+    base target times are reduced to compensate. See *Effect on mean
+    block time*.
+-   The 32x cap blunts the majority threshold: a class at 50% block
+    share pays 3.5x on average rather than an unbounded amount.
 -   Does not prevent a miner holding capacity in two or more penalty
     classes from alternating between them to avoid the penalty
     entirely.
