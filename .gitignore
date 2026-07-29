@@ -21,3 +21,6 @@ book/
 
 # Ignore local history in Visual Studio Code
 .lh
+
+# mdBook binaries fetched by scripts/build.sh
+.build-tools/

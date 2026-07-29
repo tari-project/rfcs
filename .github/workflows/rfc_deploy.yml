@@ -2,33 +2,29 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 
-name: Deploy RFC Docs
+name: Verify Cloudflare Pages build
+
+# NOTE: This workflow no longer deploys anything.
+#
+# https://rfc.tari.com is served by a Cloudflare Pages project ("rfcs", in the
+# "Tari and Yat" Cloudflare account) connected directly to this repo. Cloudflare
+# builds and publishes on every push to `main` — GitHub Actions is NOT in the
+# publish path. (The old job here pushed a build to the gh-pages branch for
+# GitHub Pages, which was retired in 2024 and served nothing.)
+#
+# What this job does now: run the EXACT same build Cloudflare runs
+# (scripts/build.sh), so if a change would break the real deploy, CI goes red
+# immediately instead of the site silently freezing. See DEPLOYMENT.md.
 
 jobs:
-  deploy:
+  verify-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v4
 
-      - name: Install 🦀
-        run: |
-          curl -L https://github.com/badboy/mdbook-mermaid/releases/download/v0.17.0/mdbook-mermaid-v0.17.0-x86_64-unknown-linux-gnu.tar.gz | tar xvz
-          curl -L https://github.com/rust-lang/mdBook/releases/download/v0.5.2/mdbook-v0.5.2-x86_64-unknown-linux-gnu.tar.gz | tar xvz
-          export PATH=$PATH:$(pwd)
-          mdbook --version
-          mdbook-mermaid --version
-
-      - name: Build 🛠
-        run: |
-          export PATH=$PATH:$(pwd)
-          mdbook test
-          mdbook build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.3
-        with:
-          branch: gh-pages
-          folder: book
-          commit-message: "[skip ci] deploy gh-pages"
+      - name: Build the book the same way Cloudflare Pages does 🛠
+        run: bash scripts/build.sh
