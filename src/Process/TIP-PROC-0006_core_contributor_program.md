@@ -64,8 +64,6 @@ responsibility of the council. For an example, a core contributor can be granted
 * DNS administration capabilities
 * server and online service access
 * seat licenses to software
-* One key from a set of signature keys for multisig community wallets (if also approved by supermajority (2/3) council vote)
-* signature powers for scoped project/budget wallets (if also approved by supermajority (2/3) council vote)
 * project management responsibilities
 * ...or other assets which the Tari Foundation and Council hold in trust by the community.
 
@@ -110,10 +108,11 @@ Code CCs are expected to follow best practices in software engineering. These in
 
 1. Not committing directly to special branches (such as 'main') but using a pull request instead
 2. Having all code reviewed by at least one Code CC, even their own.
-3. Reviewing code of other contributors
-4. Writing automated tests for code whenever reasonable automated tests can be written, and providing detailed testing
+3. Selecting appropriate reviewers for their pull requests.
+4. Reviewing code of other contributors
+5. Writing automated tests for code whenever reasonable automated tests can be written, and providing detailed testing
    instructions when not
-5. Including documentation and testing instructions with changes
+6. Including documentation and testing instructions with changes
 
 Code CCs may elect to use code generation tools according to their judgment. They must, however, bear
 responsibility for generated code, and must review any code generated before requesting another contributor to review
@@ -290,9 +289,10 @@ extended lack of contribution) they may be removed from the program by a majorit
 CC rights revoked.
 
 In the event an involuntary removal occurs, a public reason for this removal must be published by the council within
-72 hours of the action taken. The removed may appeal to the council within 7 days, and upon appeal, the council
-will consider their evidence and will vote once more, requiring a supermajority (2/3) to maintain removal.
-They shall vote and publish their verdict within 7 days of the appeal being posted.
+72 hours of the action taken. The removed may appeal to the council and the CC body within 7 days. Upon appeal,
+the matter will be put before the CCs and the council for a vote over a 14-day period. If the majority of CCs who cast
+a vote choose removal, and the council votes unanimously for removal, the removal will stay. Otherwise, the CC will be
+reinstated.
 
 ## Council Voting
 
