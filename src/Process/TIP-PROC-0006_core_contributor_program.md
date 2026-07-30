@@ -305,8 +305,9 @@ hold the position. The current incumbent must affirmatively and publicly indicat
 during this time. Nomination closes one month plus one week before the councilor's term ends.
 
 After one week of setup for voting, elections shall begin, with two weeks for each Core Contributor to submit their
-ranked choice (AKA 'instant run-off') ballot. The final two weeks between terms will be used for onboarding and
-hand-off, with decision-making power only manifesting when the new electee's term begins.
+ranked choice (AKA 'instant run-off') ballot. If an adequate confidential voting solution is available, it should be
+used. The final two weeks between terms will be used for onboarding and hand-off, with decision-making power only
+manifesting when the new electee's term begins.
 
 ## Amendments
 
