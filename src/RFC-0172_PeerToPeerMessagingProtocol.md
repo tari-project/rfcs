@@ -127,6 +127,9 @@ The following transports are supported by the Tari communication layer:
 - TCP/IP - A publicly accessible IPv4 address.
 - SOCKS5 - Allows a SOCKS5 proxy to be configured for inbound and outbound connections.
 - Tor - A specialisation of the SOCKS5 transport that facilitates connections over the Tor network.
+- TorTcp - Enables both Tor and TCP peer addresses, preferring Tor when selecting dial addresses.
+- TcpTor - Enables both TCP and Tor peer addresses, preferring TCP when selecting dial addresses. This is the default transport.
+- Memory - In-process transport used for testing.
 
 #### Establishing a Connection
 
@@ -165,8 +168,9 @@ We list the following characteristics and requirements for encrypted peer-to-pee
 - forward secrecy; and,
 - for efficiency, has a minimal round trip time.
 
-For these reasons we select the single round-trip `Noise_IX_25519_ChaChaPoly_BLAKE2b` protocol, that is, the Noise IX 
+For these reasons we select the `Noise_XX_25519_ChaChaPoly_BLAKE2b` protocol, that is, the Noise XX 
 handshake pattern using Curve25519 for ephemeral and static identities, ChaChaPoly encryption and a HKDF using BLAKE2b.
+A prologue `com.tari.comms.noise.prologue` is set on both sides to bind the handshake to the Tari protocol.
 
 If successful, an authenticated encrypted socket connection is established between the peers.
 
@@ -205,8 +209,9 @@ To begin, the initiator MUST send a protocol negotiation message consisting of 1
 The bitflags are defined as follows:
 - `0x01` - `OPTIMISTIC`
 - `0x02` - `TERMINATE`
-- `0x04` - `PROTOCOL_NOT_SUPPORTED` (response)
-- `0x08 - 0x128` - Future use (ignored)
+- `0x04` - `NOT_SUPPORTED` (response)
+
+When the `OPTIMISTIC` flag is set, the `TERMINATE` flag is also set so that the initiator does not wait for a response.
 
 If the `OPTIMISTIC` flag is set, the initiator considers the negotiation complete as it is optimistic that the responder 
 supports it. It can assume this because the peer gave a list of supported protocols in the [Identity Exchange](#identity-exchange) 
@@ -218,7 +223,7 @@ flag unset in the initial message.
 
 If the responder supports the protocol, it SHOULD respond with the name of the supported protocol and all flags unset and
 immediately proceed with the agreed upon protocol.
-If not, it SHOULD respond with the `PROTOCOL_NOT_SUPPORTED` flag set and an empty protocol name and wait for more messages.
+If not, it SHOULD respond with the `NOT_SUPPORTED` flag set and an empty protocol name and wait for more messages.
 The initiator MAY send another protocol negotiation message or close the substream.
 
 A responder MAY set the `TERMINATE` flag at any time and close the substream. In practise, this is used to indicate to the 
@@ -235,7 +240,7 @@ Fields include:
   as preferred address;
 - `peer_features` - bitflags with the following flags
   - `MESSAGE_PROPAGATION = 0x01` - peer is able to propagate/route messages
-  - `DHT_STORE_FORWARD = 0x02` - peer provides message storage and can respond to `SafRequestMessages`
+  - `DHT_STORE_FORWARD = 0x02` - legacy flag for nodes that used to offer store and forward functionality. This is no longer used but is retained for backward compatibility (its presence affects the node's public key derivation). Store-and-forward messages are not supported and are discarded.
   - A `COMMUNICATION_NODE` is defined as `0x03` (`MESSAGE_PROPAGATION | DHT_STORE_FORWARD`)
   - A `COMMUNICATION_CLIENT` is defined as `0x00`
 - `last_seen` - a timestamp of the last time a message has been sent/received from this peer;
@@ -331,8 +336,8 @@ The `DhtHeader` is a protobuf message with these fields:
   - Join = 1 - Join/Announce
   - Discovery = 2 - Discovery request
   - DiscoveryResponse = 3 - Response to a discovery request
-  - SafRequestMessages = 20 - Request stored messages from a node
-  - SafStoredMessages = 21 - Stored messages response
+  - SafRequestMessages = 20 - (Deprecated/removed) Request stored messages from a node. These messages are discarded by nodes that do not support store-and-forward (all current nodes).
+  - SafStoredMessages = 21 - (Deprecated/removed) Stored messages response.
 
 - `flags: u32` - bitflags `0x01 - ENCRYPTED` 
 - `message_tag: u64` - Message trace ID. This can be omitted or any value and is used for debug tracing.
@@ -367,14 +372,13 @@ If any of these rules fail the message SHOULD be discarded.
 
 The protocol provides for the following outbound message broadcast strategies:
 
-- `Direct(Identity)` - Send the message directly to the destination peer. 
+- `DirectNodeId(NodeId)` - Send the message directly to the peer matching the given node ID.
+- `DirectPublicKey(CommsPublicKey)` - Send the message directly to the peer matching the given public key.
 - `Flood(exclude)` - Send to all connected peers excluding `exclude` peers. If no peers are connected, no messages are sent.
 - `Random(n, exclude)` - Send to a random set of peers of size n that are Communication Nodes, excluding `exclude` peers.
-- `ClosestNodes({node_id, exclude, connected_only})` - Send to all n nearest Communication Nodes to the given node_id.
-- `DirectOrClosestNodes({node_id, exclude, connected_only})` - Send directly to destination if connected but otherwise send to all n nearest Communication Nodes
-- `Broadcast(excludes)`- Send to a random set of _connected_ peers, excluding `excludes` peers. The number of peers selected at most equal to `propagation_factor`.
+- `Broadcast(excludes)`- Send to a random set of _connected_ peers, excluding `excludes` peers. The number of peers selected is at most equal to `broadcast_factor`.
 - `SelectedPeers(peers)` - Send to the specified peers.
-- `Propagate(NodeDestination, Vec<NodeId>)` - Propagate to a set of _connected_ peers closer to the destination. The number of peers selected at most equal to `propagation_factor`.
+- `Propagate(NodeDestination, Vec<NodeId>)` - Propagate to a set of _connected_ peers closer to the destination. The number of peers selected is at most equal to `propagation_factor`.
 
 A peer's node_id is defined as the 13-byte variable-length Blake2b hash of the public key. To determine if a peer identity 
 is "closer" to another peer we compare the XOR distance between peers as proposed by the [kademlia] paper.
@@ -412,14 +416,15 @@ Every Tari message MUST have a payload header containing the following fields at
 
 | Name         | Type  | Description                                                                   |
 |--------------|-------|-------------------------------------------------------------------------------|
-| message_type | `u8`  | An enumeration of the message type of the body. Refer to message types below. |
-| nonce        | `u32` | The optional message nonce.                                                   |
+| message_type | `int32`  | An enumeration of the message type of the body. Refer to message types below. |
+| nonce        | `uint64` | The optional message nonce.                                                   |
 
 MessageTypes are represented as an unsigned eight-bit integer denoting the expected contents of the `MessageBody`.
 
 | Category   | Name                            | Value | Description                                                                                 |
 |------------|:--------------------------------|-------|---------------------------------------------------------------------------------------------|
-| Network    | PingPong                        | 1     | A PongPong message.                                                                         |
+| Network    | PingPong                        | 1     | A PingPong message.                                                                         |
+| Network    | Chat                            | 2     | A chat message.                                                                              |
 | Blockchain | NewTransaction                  | 65    | Transaction submitted by a wallet or propagated by a base node.                             |
 | Blockchain | NewBlock                        | 66    | Block propagated by a base node.                                                            |
 | Wallet     | SenderPartialTransaction        | 67    | A partial MimbleWimble transaction submitted by a sender wallet to the receiver.            |
@@ -430,6 +435,8 @@ MessageTypes are represented as an unsigned eight-bit integer denoting the expec
 | Blockchain | MempoolResponse                 | 72    | Base node response in reply to a MempoolRequest message.                                    |
 | Wallet     | TransactionFinalized            | 73    | Finalized transaction message sent by a sender to receiver wallet.                          |
 | Wallet     | TransactionCancelled            | 74    | A courtesy message sent by a wallet to inform the other that the transaction is cancelled.  |
+| Extended   | Text                            | 225   | A text message.                                                                             |
+| Extended   | TextAck                         | 226   | A text message acknowledgement.                                                             |
 
 All other message types are reserved for future use.
 
@@ -447,7 +454,7 @@ To route an encrypted message, the following requirements MUST be met:
 
 A message is encrypted using the following procedure:
 - The `DhtEnvelopBody` is containing the `MessageHeader` and `MessageBody` is serialized using [protobuf].
-- A CSRNG is used to generate the cipher nonce and this is prepended onto the message.
+- A fixed zero nonce is used for the AEAD cipher. This is safe because the message key is ephemeral (derived from a fresh ECDH exchange per message).
 - The plaintext message is padded with '0x00' to a multiple of 6000 bytes.
 - The message encryption key is generated as follows:
   - Key material `dh_key` is generated by Diffie-Hellman of the recipient public key and the ephemeral private key.

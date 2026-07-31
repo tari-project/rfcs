@@ -121,7 +121,7 @@ and it proved to be a good choice in the multi-PoW scene as well.
 Tari's proof-of-work mining algorithm is summarized below:
 
 - Four mining algorithms, with an average combined target block time of 120 s, to match Monero's block interval.
-- A log-weighted moving average difficulty adjustment algorithm using a window of 90 blocks.
+- A linear weighted moving average (LWMA) difficulty adjustment algorithm using a window of 90 blocks.
 
 ### Tari mining hash
 
@@ -136,14 +136,16 @@ First, the block header is hashed with the 256-bit Blake2b hashing algorithm usi
 - input Merkle root
 - output Merkle root
 - output Merkle mountain range size
-- witness Merkle root
+- block output Merkle root
 - kernel Merkle root
 - kernel Merkle mountain range size
 - total kernel offset
 - total script offset
+- validator node Merkle root
+- validator node Merkle mountain range size
 
 This hash is used in both the SHA-3 and RandomX proof-of-work algorithms. The header version for the Tari Genesis 
-block is 1.
+block is 0.
 
 #### RandomX
 ##### RxM
@@ -153,7 +155,7 @@ Monero blocks that are merge-mining Tari MUST include the Tari mining hash in th
 Tari also imposes the following consensus rules:
 - The `seed_hash` MUST only be used for 3000 blocks, after which a block MUST be discarded if it's used again.
 - The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.
-- The LWMA MUST use a target time of 800 seconds.
+- The LWMA MUST use a target time of 480 seconds.
 - MUST set the header field PoW:pow_algo as 0 for a RxM block
 - MUST encode the following data into the Pow:Pow_data field:
   - Monero BlockHeader,
@@ -168,7 +170,7 @@ Using RandomX solely with Tari, the following consensus is enforced:
 
 - The `seed_hash` MUST only be used for 3000 blocks, after which a block MUST be discarded if it's used again.
 - The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.
-- The LWMA MUST use a target time of 800 seconds.
+- The LWMA MUST use a target time of 480 seconds.
 - MUST set the header field PoW:pow_algo as 2 for an RxT block
 - MUST encode the following data into the Pow:Pow_data field:
   - 32 bytes extra data
@@ -195,7 +197,7 @@ Tari imposes the following consensus rules:
   LWMA for Tari. The difficulty and target are related by the equation `difficulty = (2^256 - 1) / target`.
 - MUST set the header field PoW:pow_algo as 1 for a Sha block.
 - The PoW:pow_data field is empty
-- The LWMA MUST use a target time of 800 seconds.
+- The LWMA MUST use a target time of 480 seconds.
 
 A triple hash is selected to keep the requirements on hardware miners (FPGAs, ASICs) fairly low. But we also want to 
 avoid making the proof-of-work immediately "NiceHashable". There are several coins that already use a single or 
@@ -212,8 +214,8 @@ expectation in block explorers and elsewhere that block hashes should always sta
 #### C29
 Using C29 with Tari, the following consensus is enforced:
 
-- The little-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.
-- The LWMA MUST use a target time of 800 seconds.
+- The big-endian difficulty MUST be equal to or greater than the target for that block as determined by the LWMA for Tari.
+- The LWMA MUST use a target time of 480 seconds.
 - MUST set the header field PoW:pow_algo as 3 for a C29 block
 - MUST encode the following data into the Pow:Pow_data field:
   - Cuckaroo 29 Pow data bits

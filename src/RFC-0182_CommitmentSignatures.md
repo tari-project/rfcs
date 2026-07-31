@@ -12,7 +12,7 @@
 
 ## Commitment and public key signatures
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 
 # Licence
@@ -61,7 +61,7 @@ This Request for Comment (RFC) describes signatures relating to commitments and 
 
 ## Related Requests for Comment
 
-* [RFC-0120: TariScript](./RFC-0120_TariScript.md)
+* [RFC-0201: TariScript](./RFC-0201_TariScript.md)
 
 ## Introduction
 

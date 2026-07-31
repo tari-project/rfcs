@@ -131,7 +131,7 @@ A coinbase transaction contained in a block MUST:
 * MUST NOT have a script offset other than 0
   
 A coinbase transaction contained in a block MAY:
-* include any arbitrary 64 bytes of extra data; see [coinbase-extra]
+* include any arbitrary extra data up to 256 bytes (as limited by `coinbase_output_features_extra_max_length`); see [coinbase-extra]
 
 ### Block Headers
 [block headers]: #block-headers "Block headers"
@@ -146,13 +146,12 @@ Every [block header] MUST contain the following fields:
 * output_mr;
 * block_output_mr;
 * output_smt_size;
-* witness_mr;
 * kernel_mr;
 * kernel_mmr_size;
 * total_kernel_offset;
-* script_kernel_offset;
+* total_script_offset;
 * validator_node_mr;
-* validator_size;
+* validator_node_size;
 * pow;
 * nonce.
 
@@ -215,17 +214,17 @@ The output_mr MUST conform to the following:
 * Represented as an array of unsigned 8-bit integers (bytes) in little-endian format.
 * The hashing function used MUST be blake2b with a 256-bit digest.
 
-#### Output_mmr_size
+#### Output_smt_size
 
-This is the total size of the leaves in the output Merkle mountain range.
+This is the total number of leaves in the output sparse Merkle tree (Jellyfish Merkle Tree), which tracks the current UTXO set.
 
-The Output_mmr_size MUST conform to the following:
+The Output_smt_size MUST conform to the following:
 
 * Represented as a single unsigned 64-bit integer.
   
 #### Block_output_mr
 
-The `block_output_mr` MUST be calculated as the Merkle mountain range tree root of all non-coinbase outputs, appended with the Merkle mountain range tree root of all coinbase outputs.
+The `block_output_mr` MUST be calculated as the Merkle mountain range root of a structure that contains, as leaves, the hash of each coinbase output in canonical order, followed by the Merkle mountain range root of all non-coinbase outputs.
 
 The block_output_mr MUST conform to the following:
 
@@ -283,7 +282,7 @@ This is the Nonce used in solving the Proof of Work.
 The Nonce MUST conform to the following:
 
 * MUST be transmitted as an unsigned 64-bit integer.
-* For RandomX blocks, this MUST be 0.
+* For RandomX-M (Monero merge-mined) blocks, this MUST be 0. RandomX-T blocks may use the nonce as part of the PoW solution.
 
 #### PoW
 
@@ -291,10 +290,12 @@ This is the Proof of Work algorithm used to mine the block. It is used in conjun
 
 The [PoW] MUST contain the following:
 
-* pow_algo as an enum (0 for RandomX-M, 1 for Sha3x, 2 for RandomX-T, and 3 for C29).
-* pow_data for RandomX blocks as an array of unsigned 8-bit integers (bytes) in little-endian format, containing the RandomX merge-mining Proof-of-Work data.
-  * The RandomX seed, stored as `randomx_key` within the RandomX block, MUST NOT have been first seen in a block with more than `max_randomx_seed_height` confirmations.
+* pow_algo as an enum (0 for RandomX-M, 1 for Sha3x, 2 for RandomX-T, and 3 for Cuckaroo, also known as C29).
+* pow_data for RandomX-M (Monero merge-mined) blocks as an array of unsigned 8-bit integers (bytes) in little-endian format, containing the Monero merge-mining Proof-of-Work data.
+  * The RandomX seed, stored as `randomx_key` within the RandomX-M block, MUST NOT have been first seen in a block with more than `max_randomx_seed_height` confirmations (3000 blocks on mainnet).
+* pow_data for RandomX-T (Tari solo RandomX) blocks MUST be at most 32 bytes.
 * pow_data for Sha3x blocks MUST be empty.
+* pow_data for Cuckaroo blocks MUST be exactly `ceil(cuckaroo_cycle_length * cuckaroo_edge_bits / 8)` bytes (153 bytes on mainnet where cycle length=42 and edge bits=29), containing the packed cuckaroo cycle edges. The last byte MUST be zero-padded if the total bit count is not a multiple of 8.
 
 #### Difficulty Calculation
 [target difficulty]: #target-difficulty "Target Difficulty"
@@ -310,8 +311,8 @@ $$
 | Symbol                 	| Value                   | Description                                                                                                         |
 |-------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------|
 | N                       | 90                      | Target difficulty block window                                                                                      |
-| T                       | 480                     | Target block time in seconds. The value used depends on the PoW algorithm being used.                               |
-| \\( \solvetimemax \\)   | 2880                    | Maximum solve time. This is six times the target time of the current PoW algorithm.                                   |
+| T                       | 480 (current)           | Target block time in seconds per PoW algorithm. The value used depends on the PoW algorithm and the block height. On mainnet: 240s for heights 0–14,999; 360s for heights 15,000–94,999; 480s from height 95,000 onward. |
+| \\( \solvetimemax \\)   | 6 × T                   | Maximum solve time. This is six times the target time of the current PoW algorithm (e.g. 2880s when T=480, 2160s when T=360, 1440s when T=240).                                   |
 | \\( \solvetime \\)    	| variable                | The timestamp difference in seconds between block _i_ and _i - 1_ where \\( 1 \le \solvetime \le \solvetimemax \\)   |
 | \\( \mathrm{D_{avg}} \\)| variable                | The average difficulty of the last _N_ blocks                                                                       |
 
@@ -324,31 +325,30 @@ $$
 \tag{2}
 $$
 
-It is important to note that the two proof-of-work algorithms are calculated _independently_; i.e., if the current block uses _SHA3x_ proof of work, the block window and solve times only include _SHA3x_ blocks, and vice versa.
+It is important to note that the proof-of-work algorithms are calculated _independently_; i.e., if the current block uses _SHA3x_ proof of work, the block window and solve times only include _SHA3x_ blocks. The same applies to each of the other algorithms (RandomX-M, RandomX-T, and Cuckaroo).
 
 ### FTL
 [FTL]: #ftl "Future Time Limit"
 
 The Future Time Limit (FTL) defines how far into the future a timestamp is accepted as valid. Any block with a timestamp beyond the FTL is rejected until the current time catches up.
 
-The FTL is calculated as (T*N)/20, with T and N defined as:
-- T: Target time — the ideal time that should pass between mined blocks.
-- N: Block window — the number of blocks used when calculating difficulty adjustments.
+The FTL is hardcoded per consensus version. On mainnet it is 540 seconds. The design formula is (T_chain*N)/20, where T_chain is the overall chain target block time (the ideal time between any two consecutive blocks, which equals the per-algorithm target time divided by the number of active PoW algorithms), and N is the difficulty block window (90). For mainnet, T_chain = 120s (e.g. 240s/2 algos or 480s/4 algos), so FTL = 120*90/20 = 540. Note that T_chain is distinct from the per-algorithm target time T used in the difficulty calculation table.
 
 ### MTP
 [MTP]: #mtp "Median Time Passed"
 
-The Median Time Passed (MTP) is the lower bound calculated by taking the median timestamp of the last _N_ blocks. Any block with a timestamp less than the MTP will be rejected.
+The Median Time Passed (MTP) is the lower bound calculated by taking the median timestamp of the last `median_timestamp_count` blocks (11 blocks on mainnet). This is a separate consensus constant from the difficulty block window _N_. Any block with a timestamp less than or equal to the MTP will be rejected.
 
 ### Total accumulated proof of work
 
-This is defined as the total accumulated proof of work done on the blockchain. Tari uses four _independent_ proof-of-work algorithms rated at different difficulties. To compare them, they are simply multiplied together into one number:
+This is defined as the total accumulated proof of work done on the blockchain. Tari uses up to four _independent_ proof-of-work algorithms rated at different difficulties. To compare them, their accumulated difficulties are multiplied together into one number. The total accumulated difficulty is computed as the product of the accumulated RandomX-M, RandomX-T, and SHA3x difficulties. The accumulated Cuckaroo (C29) difficulty is additionally included in the product only when the consensus flag `include_c29_accumulated_difficulty_into_total` is set (on mainnet, this is true from block height 126,000 onward):
 $$
 \begin{align}
- \textit{accumulated_randomxM_difficulty} * \textit{accumulated_sha3x_difficulty} * \textit{accumulated_randomxT_difficulty} * \textit{accumulated_C29_difficulty} 
+ \textit{total} = \textit{accumulated\_randomxM} \times \textit{accumulated\_randomxT} \times \textit{accumulated\_sha3x} \quad [\times \textit{accumulated\_cuckaroo} \text{ if enabled}]
 \end{align}
 \tag{3}
 $$
+Algorithms that have not yet been activated have an accumulated difficulty of 1 (the minimum), so they do not affect the product.
 This value is used to compare chain tips to determine the strongest chain.
 
 ### Transaction Ordering

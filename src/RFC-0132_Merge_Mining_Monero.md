@@ -65,7 +65,7 @@ This document describes the specific protocol Tari uses to merge mine with Moner
 
 ## Introduction
 
-Tari employs a hybrid mining strategy, accepting 2 mining algorithms whose difficulties are independent of each other as discussed in [RFC-0131_Mining.html](/RFC-0131_Mining.html).
+Tari employs a hybrid mining strategy, accepting four mining algorithms whose difficulties are independent of each other as discussed in [RFC-0131_Mining.html](/RFC-0131_Mining.html).
 This RFC details a protocol to enable Tari to accept Monero proof of work, enabling participating miners a chance to produce a valid block for either or both chain without additional mining effort.
 
 The protocol must enable a Tari base node to make the following assertions:
@@ -84,9 +84,9 @@ are independent (See [RFC-0131_Mining.html](/RFC-0131_Mining.html)). Next, a coi
 the `get_coinbase` gRPC function. 
 
 Next, the coinbase transaction is added to the new block template and passed back to the base node for the new MMR roots to be calculated.
-Furthermore, the base node constructs a _Blake256_ hash of _some_ of the Tari header fields. We'll call this hash the merge mining hash \\( h_m \\) that commits to 
-the following header fields in order: `version`, `height`,`prev_hash`,`timestamp`,`input_mr`, `output_mr`,`output_mmr_size`,`kernel_mr`,
-`kernel_mmr_size`,`total_kernel_offset`,`total_script_offset`. Note, this hash does not include the `pow` and `nonce` fields, as these fields are set as part of mining.
+Furthermore, the base node constructs a _Blake2b-256_ hash of the Tari header fields (excluding the `nonce` and `pow` fields). We'll call this hash the merge mining hash \\( h_m \\) that commits to 
+the following header fields in order: `version`, `height`, `prev_hash`, `timestamp`, `input_mr`, `output_mr`, `output_mmr_size`, `block_output_mr`, `kernel_mr`,
+`kernel_mmr_size`, `total_kernel_offset`, `total_script_offset`, `validator_node_mr`, `validator_node_size`. Note, this hash does not include the `pow` and `nonce` fields, as these fields are set as part of mining.
 
 To have the chance of mining a Monero block as well as a Tari block, we must obtain a new valid monero block template, by calling [get_block_template].
 This returns a `blocktemplate_blob`, that is, a serialized Monero block containing the Monero block header, coinbase and a list of hashes referencing the 
@@ -111,22 +111,26 @@ reconstructed. A rust port of [Monero's tree hash] algorithm is needed to achiev
 This satisfies **REQ 2**, proving that the proof-of-work was performed for the Tari block.
 
 The block may now be mined. Once a solution is found that satisfies the Tari difficulty, the miner must include enough data to allow the Tari blockchain to assert **REQ 1** and **REQ 2**.
-Concretely, A miner must serialize `MoneroPowData` using Monero consensus encoding and add it to the `pow_data` field in the Tari header.
+Concretely, A miner must serialize `MoneroPowData` using Borsh and add it to the `pow_data` field in the Tari header.
 
 ```rust,ignore
 pub struct MoneroPowData {
     /// Monero header fields
-    header: MoneroBlockHeader,
-    /// randomX vm key
-    randomx_key: FixedByteArray, // Fixed 64 bytes
-    /// transaction count
-    transaction_count: u16,
-    /// transaction root
-    merkle_root: MoneroHash,
+    pub header: MoneroBlockHeader,
+    /// RandomX VM key (variable length up to 60 bytes, stored in a 64-byte container)
+    pub randomx_key: FixedByteArray,
+    /// The number of transactions included in this Monero block
+    pub transaction_count: u16,
+    /// Transaction root
+    pub merkle_root: MoneroHash,
     /// Coinbase merkle proof hashes
-    coinbase_merkle_proof: MerkleProof,
-    /// Coinbase tx from Monero
-    coinbase_tx: MoneroTransaction,
+    pub coinbase_merkle_proof: MerkleProof,
+    /// Incomplete Keccak hash state of the coinbase transaction prefix
+    pub coinbase_tx_hasher: Keccak,
+    /// Extra field of the coinbase transaction
+    pub coinbase_tx_extra: RawExtraField,
+    /// Aux-chain merkle proof hashes (for multi-chain / AuxPoW merge mining)
+    pub aux_chain_merkle_proof: MerkleProof,
 }
 ```
 _fig 2. Monero PoW data struct serialized in Tari blocks_
@@ -134,7 +138,6 @@ _fig 2. Monero PoW data struct serialized in Tari blocks_
 ```rust,ignore
 pub struct MerkleProof {
    branch: Vec<Hash>,
-   depth: u16,
    path_bitmap: u32,
 }
 ```
@@ -143,7 +146,7 @@ _fig 3. Merkle proof struct_
 A verifier may now check that the `coinbase_tx` contains the merge mining hash \\( h_m \\), and validate the `coinbase_merkle_proof` against the `transaction_root`.
 The `coinbase_merkle_proof` contains the minimal proof required to construct the `transaction_root`.
 
-For example, a proof for a merkle tree of 4 hashes will require 2 hashes (h_1, h_23) of 32 bytes each, 4 bytes for the path bitmap and 2 bytes for the depth.
+For example, a proof for a merkle tree of 4 hashes will require 2 hashes (h_1, h_23) of 32 bytes each and 4 bytes for the path bitmap.
 ```text
            Root*
          /      \
@@ -156,9 +159,10 @@ For example, a proof for a merkle tree of 4 hashes will require 2 hashes (h_1, h
 
 ## Serialisation
 
-For Monero proof-of-work, Monero consensus encoding MUST be used to serialize the `MoneroPowData` struct. Given the same inputs, 
-this encoding will byte-for-byte the same. The encoding uses VarInt for all integer types, allowing byte-savings, in particular
-for fields that typically contain small values. Importantly, extra bytes that a miner _could_ tack onto the end of the `pow_data` field
+For Monero proof-of-work, the `MoneroPowData` struct is serialized using Borsh. Given the same inputs, 
+this encoding will be byte-for-byte the same. Some nested Monero types (the block header and merkle root) use Monero 
+consensus encoding (which uses VarInt for those types), while scalar fields such as `transaction_count` use Borsh's 
+fixed-size encoding. Importantly, extra bytes that a miner _could_ tack onto the end of the `pow_data` field
 are expressly disallowed.
 
 ## Merge Mining Proxy 
@@ -191,7 +195,7 @@ Tari block is retrieved, enriched with the `MoneroPowData` struct and submitted 
 
 [Monero's tree hash]: https://github.com/monero-project/monero/blob/1c8e598172bd2eddba2607cae0804db2e685813b/src/crypto/tree-hash.c
 [merge mining subfield]: https://docs.rs/monero/0.13.0/monero/blockdata/transaction/enum.SubField.html#variant.MergeMining
-[Tari merge mining proxy]: https://github.com/tari-project/tari/blob/development/applications/tari_merge_mining_proxy
+[Tari merge mining proxy]: https://github.com/tari-project/tari/blob/development/applications/minotari_merge_mining_proxy
 [get_block_template]: https://ww.getmonero.org/resources/developer-guides/daemon-rpc.html#get_block_template
 [bincode]: https://docs.rs/bincode/1.3.3/bincode/
 [Monero daemon RPC]: https://www.getmonero.org/resources/developer-guides/daemon-rpc.html

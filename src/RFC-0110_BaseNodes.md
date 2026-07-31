@@ -172,7 +172,7 @@ Pseudocode:
         output_weight += serialize(output.script) / BYTES_PER_GRAM
         output_weight += serialize(output.features) / BYTES_PER_GRAM
         
-    input_weight = num_inputs * PER_INPUT_GRAMS(9)
+    input_weight = num_inputs * PER_INPUT_GRAMS(8)
     kernel_weight = num_kernels * PER_KERNEL_GRAMS(10)
     
     weight = output_weight + input_weight + kernel_weight

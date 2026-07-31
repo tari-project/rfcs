@@ -7,23 +7,22 @@ on:
 
 name: Test RFC Docs
 
+# Builds the book via the canonical scripts/build.sh (the same recipe Cloudflare
+# Pages uses to publish rfc.tari.com), then additionally runs `mdbook test` to
+# compile the rust code samples in the docs. Reusing the script keeps the mdBook
+# version single-sourced — see DEPLOYMENT.md.
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v4
 
-      - name: Install 🦀
-        run: |
-          curl -L https://github.com/badboy/mdbook-mermaid/releases/download/v0.17.0/mdbook-mermaid-v0.17.0-x86_64-unknown-linux-gnu.tar.gz | tar xvz
-          curl -L https://github.com/rust-lang/mdBook/releases/download/v0.5.2/mdbook-v0.5.2-x86_64-unknown-linux-gnu.tar.gz | tar xvz
-          export PATH=$PATH:$(pwd)
-          mdbook --version
-          mdbook-mermaid --version
+      - name: Build the book (same recipe as Cloudflare Pages) 🛠
+        run: bash scripts/build.sh
 
-      - name: Test 🧪
+      - name: Test rust code samples 🧪
         run: |
-          export PATH=$PATH:$(pwd)
+          export PATH="$PWD/.build-tools:$PATH"
           mdbook test
-          mdbook build

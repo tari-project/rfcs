@@ -80,41 +80,38 @@ following underlying data types for serialization:
 6. `array` of type `[u8; n]`
 7. `Vec<T>` where `T` is `u8`, `enum` or `array`
 
-For 1. to 5. and all numbers, [Base 128 Varint] encoding MUST be used.
+For 1. to 5., fixed-size little-endian [Borsh] encoding MUST be used: integers are encoded in their minimum-width
+little-endian representation (`u8` = 1 byte, `u16` = 2 bytes, `u64`/`i64` = 8 bytes), and `bool` as a single byte
+(`0` or `1`).
 
-From the Protocol Buffers documentation:
+For 6. to 7., the dynamically sized `array` and `Vec` types MUST be preceded by a 4-byte little-endian length prefix
+indicating the number of elements. The elements themselves are then encoded sequentially in declaration order.
 
-> Varints are a method of serializing integers using one or more bytes. Smaller numbers take a smaller number of bytes. 
-> Each byte in a varint, except the last byte, has the most significant bit (msb) set – this indicates that there are 
-> further bytes to come. The lower 7 bits of each byte are used to store the two's complement representation of the 
-> number in groups of 7 bits, least significant group first.
+Consensus hashing of these structures uses domain-separated [Borsh] serialization (see [Hash domains](#hash-domains)).
 
-For 6. to 7., the dynamically sized `array` and `Vec` type, the encoded array MUST be preceded by a number indicating the 
-length of the array. This length MUST also be encoded as a varint. By prepending the length of the array, the decoder 
-knows how many elements to decode as part of the sequence.
-
-[base 128 varint]: https://developers.google.com/protocol-buffers/docs/encoding#varints
+[borsh]: https://borsh.io/
 
 ## Block field ordering
 
-Using this varint encoding, all fields of the complete block MUST be encoded in the following order:
+Using this Borsh encoding, all fields of the complete block MUST be encoded in the following order:
 
 1. Version
 2. Height
 3. Previous block hash
 4. Timestamp
-5. Output Merkle root
-6. Witness Merkle root
-7. Output Merkle mountain range size
-8. Kernel Merkle root
-9. Kernel Merkle mountain range size
-10. Input Merkle root
+5. Input Merkle root
+6. Output Merkle root
+7. Block output Merkle root
+8. Output SMT size
+9. Kernel Merkle root
+10. Kernel Merkle mountain range size
 11. Total kernel offset
 12. Total script offset
-13. Nonce
-14. Proof of work algorithm
-15. Proof of work supplemental data
-16. Transaction inputs - for each input:
+13. Validator node Merkle root
+14. Validator node Merkle mountain range size
+15. Proof of work (algorithm and supplemental data)
+16. Nonce
+17. Transaction inputs - for each input:
     - Version 
     - Spent output - for each output:
       - Version
@@ -132,7 +129,7 @@ Using this varint encoding, all fields of the complete block MUST be encoded in 
       - Minimum value promise
     - Input data ([vector] of Stack items)
     - Script signature
-17. Transaction outputs - for each output:
+18. Transaction outputs - for each output:
     - Version
     - Features
         - Version
@@ -148,7 +145,7 @@ Using this varint encoding, all fields of the complete block MUST be encoded in 
     - Covenant
     - Encrypted value
     - Minimum value promise
-18. Transaction kernels - for each kernel:
+19. Transaction kernels - for each kernel:
     - Version
     - Features
     - Fee
@@ -229,10 +226,9 @@ domain separation. Tari uses the [hashing API](https://github.com/tari-project/t
 within the tari codebase to achieve proper hash domain separation.
 
 The following functional areas MUST each use a separate hash domain that is unique in the tari codebase:
-- kernel Merkle Mointain Range;
-- witness MMR;
-- output MMR;
-- input MMR;
+- kernel Merkle Mountain Range;
+- output sparse Merkle tree (Jellyfish Merkle Tree);
+- input Merkle root;
 - value encryption.
 
 To achieve interoperability with other blockchains like Bitcoin and Monero, for example an atomic swap, TariScript MUST 
@@ -254,16 +250,18 @@ Here we describe the respective Rust types of these fields in the tari codebase,
 | Height              | `u64`            | `u64`                             | Height of this block since the genesis block                                              |
 | Previous Block Hash | `BlockHash`      | `[u8;32]`                         | Hash of the previous block in the chain                                                   |
 | Timestamp           | `EpochTime`      | `u64`                             | Timestamp at which the block was built (number of seconds since Unix epoch)               |
-| Output Merkle Root  | `BlockHash`      | `[u8;32]`                         | Merkle Root of the unspent transaction ouputs                                             |
-| Witness Merkle Root | `BlockHash`      | `[u8;32]`                         | MMR root of the witness proofs                                                            |
-| Output MMR Size     | `u64`            | `u64`                             | The size (number of leaves) of the output and range proof MMRs at the time of this header |
-| Kernel Merkle Root  | `BlockHash`      | `[u8;32]`                         | MMR root of the transaction kernels                                                       |
-| Kernel MMR Size     | `u64`            | `u64`                             | Number of leaves in the kernel MMR                                                        |
-| Input Merkle Root   | `BlockHash`      | `[u8;32]`                         | Merkle Root of the transaction inputs in this block                                       |
-| Total Kernel Offset | `BlindingFactor` | `[u8;32]`                         | Sum of kernel offsets for all transaction kernels in this block                           |
-| Total Script Offset | `BlindingFactor` | `[u8;32]`                         | Sum of script offsets for all transaction kernels in this block                           |
-| Nonce               | `u64`            | `u64`                             | Nonce increment used to mine this block                                                   |
-| Pow                 | `ProofOfWork`    | See [Proof Of Work](#proof-of-work) | Proof of Work information                                                                 |
+| Input Merkle Root        | `BlockHash`      | `[u8;32]`                         | Merkle Root of the transaction inputs in this block                                        |
+| Output Merkle Root       | `BlockHash`      | `[u8;32]`                         | Sparse Merkle tree (Jellyfish Merkle Tree) root of the unspent transaction outputs          |
+| Block Output Merkle Root | `BlockHash`      | `[u8;32]`                         | MMR root combining the block's coinbase output hashes and the non-coinbase output MMR root |
+| Output SMT Size          | `u64`            | `u64`                             | The number of leaves in the output sparse Merkle tree at the time of this header           |
+| Kernel Merkle Root       | `BlockHash`      | `[u8;32]`                         | MMR root of the transaction kernels                                                       |
+| Kernel MMR Size          | `u64`            | `u64`                             | Number of leaves in the kernel MMR                                                        |
+| Total Kernel Offset      | `BlindingFactor` | `[u8;32]`                         | Sum of kernel offsets for all transaction kernels in this block                           |
+| Total Script Offset      | `BlindingFactor` | `[u8;32]`                         | Sum of script offsets for all transaction kernels in this block                           |
+| Validator Node Merkle Root | `BlockHash`    | `[u8;32]`                         | Merkle root of all active validator nodes                                                |
+| Validator Node Size      | `u64`            | `u64`                             | Number of validator node hashes                                                          |
+| Pow                      | `ProofOfWork`    | See [Proof Of Work](#proof-of-work) | Proof of Work information                                                                 |
+| Nonce                    | `u64`            | `u64`                             | Nonce increment used to mine this block                                                  |
 
 `[u8;32]` indicates an array of 32 unsigned 8-bit integers
 
@@ -271,7 +269,7 @@ Here we describe the respective Rust types of these fields in the tari codebase,
 
 | Field                   | Abstract Type    | Data Type | Description                                                                                                                                                                                       |
 |-------------------------|------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Proof of Work Algorithm | `PowAlgorithm`   | `u8`      | The algorithm used to mine this block ((Monero or SHA3))                                                                                                                                          |
+| Proof of Work Algorithm | `PowAlgorithm`   | `u8`      | The algorithm used to mine this block (0 = RandomX-M, 1 = Sha3x, 2 = RandomX-T, 3 = Cuckaroo)                                                                                                                                          |
 | Proof of Work Data      | `Vec<u8>`        | `u8`      | Supplemental proof of work data. For example for Sha3, this would be empty (only the block header is required), but for Monero merge mining we need the Monero block header and RandomX seed hash |
 
 ### Block Body

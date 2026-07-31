@@ -112,32 +112,33 @@ can be configured. When a new transaction is received and the storage capacity l
 transactions are prioritized by ordering their total `fee per gram` of all UTXOs used and transaction age, in that order.
 The transactions of the least priority are discarded to make room for higher priority transactions.
 
-The transaction priority metric has the following behavior:
-- transactions with higher fee per gram **SHOULD** be prioritized over lower fee per gram transactions.
-- older transactions in the mempool **SHOULD** be prioritized over newer ones.
+The transaction priority metric is a composite key with the following ordering (highest to lowest significance):
+- **Fee per gram** (scaled by 1000 for integer precision): `total_fee * 1000 / weight`. Transactions with higher fee per gram **SHOULD** be prioritized over lower fee per gram transactions.
+- **Transaction age** (`u64::MAX - insert_epoch`): older transactions in the mempool **SHOULD** be prioritized over newer ones.
+- **Aggregate excess signature and nonce**: used as a tiebreaker to ensure unique keys in the priority index.
 
 
 ### Memory Pool State: Syncing and Updating
 
-On the initial startup, the complete state of the unconfirmed pool is pulled from the connected peers. Typically, Mempool
-doesn't persist its state, but can be configured to do so. If the state is locally present, then only the missing, unconfirmed transactions
-are synced from the peers, otherwise, the full state is requested. The validity and priority of transactions are computed
-as they are being downloaded from the connected peers. If the base node undergoes a re-org, then the missing state is again 
-pulled from the peers.
+On the initial startup, after the node has completed chain sync, the mempool state is synchronized with up to
+`initial_sync_num_peers` (default: 2) connected peers using a bidirectional inventory-based protocol. Each peer sends a
+transaction inventory (list of kernel excess signatures); the receiving peer streams back transactions not already known,
+then requests any missing transactions from the sender. Each sync session is capped at `initial_sync_max_transactions`
+(default: 10,000) transactions. The Mempool does not persist its state; on restart the pool is empty and the full state is
+synced from peers. The validity and priority of transactions are computed as they are received from the connected peers.
+If the base node undergoes a re-org that adds at least `block_sync_trigger` (default: 5) blocks, a mempool sync is
+re-triggered with peers.
 
 The functional bahavior required for the Mempool's synchronization are the following:
 
-- All verified transactions **MUST** be propagated to neighboring peers.
+- All verified transactions that are stored in the Unconfirmed Pool **MUST** be propagated to neighboring peers. Transactions that fail validation (orphan, time-locked, already spent, duplicate kernel, fee too low, consensus failure) **MUST NOT** be propagated.
 - Unverified or invalid transactions **MUST NOT** be propagated to peers.
 - Verified transactions that were discarded due to low priority levels **MUST** be propagated to peers.
 - Duplicate transactions **MUST NOT** be propagated to peers.
 - Mempool **MUST** have an interface, allowing peers to query and download its state, partially and in full.
 - Mempool **MUST** accept all transactions received from peers but **MAY** decide to discard low-priority transactions.
 - Mempool **MUST** allow wallets to track payments by monitoring that a particular transaction has been added to the Mempool.
-- Mempool **MAY** choose:
-    - to discard its state on restart and then download the full state from its peers or
-    - to store its state using persistent storage to reduce communication bandwidth required when
-      reinitializing the pool after a restart.
+- The Mempool discards its state on restart and downloads the full state from its peers. Persistent storage of the mempool state is not supported.
 
 ### Unconfirmed Pool
 
@@ -151,7 +152,7 @@ Functional behavior required of the Unconfirmed Pool:
 - It **MUST** ensure that incoming transactions don't have a processing time-lock or has a time-lock that has
   expired.
 - It **MUST** ensure that all time-locks of the UTXOs that will be spent by the transaction have expired.
-- Transactions that have been used to construct new blocks **MUST** be removed from the Unconfirmed Pool and added to the Reorg Pool.
+- Transactions that have been used to construct new blocks **MUST** be removed from the Unconfirmed Pool and added to the Reorg Pool. Transactions that conflict with a published block (double-spending inputs already spent by the block, or producing outputs already produced by the block) **MUST** be removed from the Unconfirmed Pool and discarded.
 
 ### Reorg Pool
 
@@ -159,13 +160,16 @@ The Reorg Pool consists of transactions that have recently been added to blocks,
 their removal from the Unconfirmed Pool. When a potential blockchain reorganization occurs that invalidates previously
 assembled blocks, the transactions used to construct these discarded blocks can be moved back into the Unconfirmed Pool. 
 This ensures that high-priority transactions are not lost during reorganization and can be included in future blocks. 
-The Reorg Pool is an internal, isolated Mempool component and cannot be accessed or queried from outside.
+The Reorg Pool is an internal Mempool component that is not directly accessible, but its state can be queried through the Mempool's public interface (e.g., via `get_state`, `get_tx_state_by_excess_sig`, and `retrieve_by_excess_sigs`).
 
 Functional behavior required of the Reorg Pool:
 - Copies of the transactions used recently in blocks **MUST** be stored in the Reorg Pool.
-- Transactions in the Reorg Pool **MAY** be discarded after a set expiration threshold has been reached.
+- Transactions in the Reorg Pool **MAY** be discarded after a set block-height expiration horizon (`expiry_height`, default: 5 blocks) has been reached.
 - When reorganization is detected, all affected transactions found in the Reorg Pool **MUST** be moved back to the
-  Unconfirmed Pool and removed from the Reorg Pool.
+  Unconfirmed Pool and removed from the Reorg Pool. Additionally, all transactions currently in the Unconfirmed Pool
+  **MUST** be drained and re-validated, as previously valid transactions may no longer be valid after the reorg.
+  Double-spending transactions in the Reorg Pool (whose inputs are spent by new blocks in the reorg) **MUST** be
+  discarded.
 
 ### Mempool
 
@@ -174,15 +178,14 @@ must pass all verification steps to make it into the Unconfirmed Pool and furthe
 
 Functional behavior required of the Mempool:
 - If the received transaction already exists in the Mempool, then it **MUST** be discarded.
-- If multiple transactions contain the same UTXO, then only the highest priority transaction **MUST** be kept and the
-  rest (having the said UTXO included) **MUST** be discarded.
+- If multiple transactions contain the same UTXO, they **MAY** coexist in the Unconfirmed Pool. When constructing a new block, only one transaction per conflicting input is selected (the highest priority one that fits); the rest remain in the pool for potential inclusion in future blocks.
 - If the storage capacity limit is reached, then new incoming transactions **SHOULD** be prioritized according
   to a set number of [rules](#prioritizing-unconfirmed-transactions).
 - Transactions of the least priority **MUST** be discarded to make room for higher priority incoming transactions.
-- Transactions with its computed priority being lower than the minimum set threshold **MUST** be discarded.
+- Transactions with a total fee lower than the configured `min_fee` threshold (default: 50 MicroMinotari) **MUST** be discarded. Additionally, when the Unconfirmed Pool is at capacity, incoming transactions with a priority lower than the current lowest-priority transaction in the pool **MUST** be discarded.
 - The Mempool **MUST** verify that incoming transactions do not have duplicate outputs.
 - The Mempool **MUST** verify that only matured coinbase outputs can be spent.
-- Each component pool **MAY** have the storage capacity configured and adjusted.
+- The Unconfirmed Pool **MAY** have its storage capacity (maximum number of transactions, default: 40,000) configured and adjusted. The Reorg Pool **MAY** have its expiry height horizon (default: 5 blocks) configured and adjusted.
 - The memory pool **SHOULD** have a mechanism to estimate fee categories from the current Mempool state. For example, 
   the transaction fee can be estimated, ensuring that new transactions will be properly prioritized, to be added
   into new blocks in a timely manner.
@@ -191,7 +194,7 @@ Functional behavior required for the allocation of incoming transactions in the 
 - Verified transactions that have passed all checks such as spending of valid UTXOs and expired time-locks **MUST** be
   placed in the Unconfirmed Pool.
 - Incoming transactions with time-locks, prohibiting them from being included in new blocks **SHOULD** be discarded.
-- Newly received, verified transactions attempting to spend a UTXO that does not yet exist **MUST** be discarded.
+- Newly received, verified transactions attempting to spend a UTXO that does not yet exist in the chain **MUST** be discarded, unless the UTXO is an output of another transaction already in the Unconfirmed Pool, in which case the transaction is stored as a dependent transaction with a reference to its dependent outputs.
 - Transactions that have been added to blocks and were removed from the Unconfirmed Pool **SHOULD** be added to the Reorg Pool.
 
 [base layer]: Glossary.md#base-layer

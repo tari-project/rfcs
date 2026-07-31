@@ -114,7 +114,7 @@ The full list of [Error codes](#error-codes) is given below.
 
 ### Constraints
 
-* The maximum length of a script when serialised is 1,024 bytes.
+* The maximum length of a script when serialised is 512 bytes (consensus-enforced; the TariScript library hard-caps parsing at 4,096 bytes).
 * The maximum length of a script's input is 1,024 bytes.
 * The maximum stack height is 255.
 
