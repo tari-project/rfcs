@@ -1,6 +1,6 @@
-# P-TIP-PROC-6: Core Contributor Program
+# I-TIP-PROC-6: Core Contributor Program
 
-| TIP           | [P-TIP-PROC-6](#p-tip-proc-6-core-contributor-program) |
+| TIP           | [I-TIP-PROC-6](#i-tip-proc-6-core-contributor-program) |
 |---------------|--------------------------------------------------------|
 | Title         | Core Contributor Program                               |
 | Last Modified | 2026-07-11                                             |
