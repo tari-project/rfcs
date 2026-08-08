@@ -11,6 +11,7 @@
 - [Implemented](implemented.md)
   - [TIP-PROC-2: The Tari Community Charter](TIP-0002_tari_community_charter.md)
   - [TIP-0005: Adjust Bridge Limits](Process/TIP-PROC-0005_adjust_bridge_limits.md)
+  - [TIP-PROC-0006: Core Contributor Program](Process/TIP-PROC-0006_core_contributor_program.md)
   - [RFC](implemented_rfc.md)
     - [RFC-0001: An overview of the Tari network](RFC-0001_overview.md)
     - [The Tari Base Layer](base_layer.md)
