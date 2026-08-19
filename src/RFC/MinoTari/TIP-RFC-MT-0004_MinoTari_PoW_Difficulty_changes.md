@@ -3,7 +3,7 @@
 | TIP             | [A-TIP-RFC-MT-0004](#/RFC/MinoTari/TIP-RFC-MT-0004_MinoTari_PoW_Difficulty_changes.md)                  |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | MinoTari PoW difficulty changes                                           |
-| Last Modified   | 2026-07-28                                                                |
+| Last Modified   | 2026-08-19                                                                |
 | Authors         | SW van Heerden                                                            |
 | Status          | Accepted                                                                  |
 | Type            | Architecture                                                              |
@@ -111,47 +111,67 @@ routinely out-pace the GPU and CPU algorithms.
 It does not defend against a miner who controls capacity in two or more
 algorithms and can alternate between them. Such a miner never produces a
 same-algorithm run and never incurs a penalty. This limitation is
-inherent to a rule keyed on the previous block's algorithm, and is the
-reason for the penalty classes defined below.
+inherent to a rule keyed on the previous block's algorithm.
 
-### Penalty classes
+Because RxM and RxT are both RandomX variants mined by the same
+hardware, that exemption covers RandomX capacity by construction: a
+miner with CPU hash rate can alternate the two variants at no cost. This
+is a deliberate choice, discussed under *Penalty scope* below, and it
+means the mechanism binds Sha3x and C29 in practice.
 
-RxM and RxT are both RandomX variants and are mined by the same
-hardware, so a miner can move between them at no cost. Treating them as
-distinct algorithms for backoff purposes would leave the mechanism open
-to trivial bypass: a RandomX farm alternating RxM and RxT would build an
-unbroken chain with no penalty at all, while a Sha3x miner --- the party
-this RFC is aimed at --- would pay in full.
+### Penalty scope
 
-Algorithms are therefore grouped into **penalty classes** for the
-purposes of the backoff rule:
+The backoff is keyed on the **PoW algorithm** of the preceding blocks.
+All four algorithms --- RxM, RxT, Sha3x and C29 --- are treated
+independently. A run is a sequence of consecutive blocks of the *same*
+algorithm, and a block of any other algorithm resets the modifier.
 
-| Penalty class | Algorithms  |
-|---------------|-------------|
-| RandomX       | RxM, RxT    |
-| Sha3x         | Sha3x       |
-| C29           | C29         |
+An earlier draft of this RFC grouped RxM and RxT into a single RandomX
+penalty class, on the grounds that both are mined by the same hardware
+and a RandomX farm could otherwise alternate them to bypass the
+mechanism. That grouping is not adopted, for two reasons.
 
-Penalty classes affect only the backoff rule. Accumulated difficulty is
+First, it is not neutral between algorithms. All four algorithms are
+configured with the same base target time, and each algorithm's LWMA
+pins that algorithm to its own target time independently of hash rate,
+so in steady state each wins roughly one quarter of blocks. A combined
+RandomX class would therefore hold roughly half of all blocks and pay a
+far larger expected penalty than Sha3x --- about 1.47x against about
+1.15x in simulation. The mechanism would tax the CPU-mined algorithms
+hardest while the Sha3x concentration it was written to deter paid
+least.
+
+Second, the grouping is the dominant contributor to the block time
+inflation described below. It raises the mean block interval by roughly
+8%, against roughly 2% with the algorithms kept separate.
+
+The cost of keeping them separate is that a miner with RandomX capacity
+can alternate RxM and RxT and pay no penalty at all, including when
+building a private chain. This is accepted: it is the same exemption
+already granted to any miner holding capacity in two algorithms, and the
+threat model above names single-algorithm Sha3x concentration as the
+target.
+
+Penalty scope affects only the backoff rule. Accumulated difficulty is
 still tracked per algorithm, and the chain comparison in the Overview is
 unchanged.
 
 ### The backoff rule
 
 This RFC introduces an exponential backoff for consecutive blocks mined
-by the same penalty class:
+by the same algorithm:
 
--   If a block is mined in class A and the previous block was also mined
-    in class A, the target time for class A is doubled.
+-   If a block is mined with algorithm A and the previous block was also
+    mined with algorithm A, the target time for A is doubled.
 -   The doubling compounds for each further consecutive block of the
-    same class.
--   If a block of a different class is mined, the target time for class
-    A resets to its base consensus value.
+    same algorithm.
+-   If a block of any other algorithm is mined, the target time for A
+    resets to its base consensus value.
 
 ### Cap
 
 The doubling is capped at **32x**. Writing `r` for the run length --- the
-number of consecutive blocks of the same penalty class ending at and
+number of consecutive blocks of the same algorithm ending at and
 including the block being mined --- the modifier is:
 
 ```text
@@ -169,33 +189,35 @@ m = min( 2^(r - 1), 32 )
 | 7 or more      | 32           |
 
 The cap is a liveness requirement, not a tuning choice. The modifier
-only resets when a block of a *different* penalty class is mined. If a
-class is ever the sole active miner --- for example if the GPU and CPU
+only resets when a block of a *different* algorithm is mined. If an
+algorithm is ever the sole active miner --- for example if the other
 algorithms lose their miners after a fork --- there is nothing to reset
 it, and an uncapped modifier would double indefinitely until the chain
 stopped producing blocks, with no recovery path short of another fork.
 The cap bounds that failure to a 32x slowdown: at an 8 minute base
-target, a chain mined by a single class settles at roughly 4.3 hours per
-block and resumes normal operation as soon as any other class mines.
+target, a chain mined by a single algorithm settles at roughly 4.3 hours
+per block and resumes normal operation as soon as any other algorithm
+mines. A chain left with only RandomX miners does not reach this state,
+because RxM and RxT reset each other.
 
 The cap is reached after 5 doublings, i.e. on the **sixth** consecutive
-block of a class.
+block of an algorithm.
 
 ### Expected cost, and why the factor is two
 
 The doubling factor is not arbitrary. It places the point at which the
 mechanism becomes prohibitive exactly at the majority threshold.
 
-Model each block's penalty class as independent, with `p` the share of
-blocks won by class A. For a block mined by A, let `j` be the number of
-immediately preceding consecutive A blocks, so that `m = 2^j`. The `j`
-preceding blocks are A and the one before them is not, giving:
+Model each block's algorithm as independent, with `p` the share of
+blocks won by algorithm A. For a block mined by A, let `j` be the number
+of immediately preceding consecutive A blocks, so that `m = 2^j`. The
+`j` preceding blocks are A and the one before them is not, giving:
 
 ```text
 P(j = k) = p^k * (1 - p)
 ```
 
-The expected modifier paid by a block of class A is therefore:
+The expected modifier paid by a block of algorithm A is therefore:
 
 ```text
 E[m] = sum over k of  (1 - p) * p^k * 2^k
@@ -206,7 +228,7 @@ The series converges only while `2p < 1`. Below 50% block share the
 expected penalty is finite and mild; as share approaches 50% it grows
 without bound. More generally, a backoff factor of `b` places the
 divergence at `p = 1/b`: a factor of 1.5 would only become prohibitive
-above a two-thirds share, and a factor of 3 would penalize a class
+above a two-thirds share, and a factor of 3 would penalize an algorithm
 holding only a third of blocks. **A factor of two is the choice that
 puts the pole at the majority threshold**, which is the threshold the
 protocol already treats as the security boundary.
@@ -218,53 +240,108 @@ five or more preceding blocks pays a flat 32:
 E[m] = (1 - p) * (1 - (2p)^5) / (1 - 2p)  +  32 * p^5
 ```
 
-| Block share `p` | `E[m]` uncapped | `E[m]` capped at 32 |
-|-----------------|-----------------|---------------------|
-| 1/3 (balanced)  | 2.00            | 1.87                |
-| 0.40            | 3.00            | 2.34                |
-| 0.45            | 5.50            | 2.84                |
-| 0.50            | diverges        | 3.50                |
-| 0.60            | diverges        | 5.47                |
-| 0.75            | diverges        | 10.89               |
+| Block share `p`      | `E[m]` uncapped | `E[m]` capped at 32 |
+|----------------------|-----------------|---------------------|
+| 0.25 (four algos)    | 1.50            | 1.48                |
+| 1/3 (three algos)    | 2.00            | 1.87                |
+| 0.40                 | 3.00            | 2.34                |
+| 0.45                 | 5.50            | 2.84                |
+| 0.50                 | diverges        | 3.50                |
+| 0.60                 | diverges        | 5.47                |
+| 0.75                 | diverges        | 10.89               |
 
 The cap is a deliberate trade. It buys the liveness guarantee described
-above, and it pays for that by blunting the sharp majority threshold: a
-class at 50% share pays 3.5x rather than an unbounded amount. The
+above, and it pays for that by blunting the sharp majority threshold: an
+algorithm at 50% share pays 3.5x rather than an unbounded amount. The
 mechanism therefore taxes concentration progressively rather than
 imposing a hard ceiling on it.
 
-Two caveats apply to these figures. The model assumes each block's class
-is drawn independently with a fixed `p`, which ignores the behavioural
-feedback the mechanism is designed to create --- miners who interleave
-deliberately pay less than the table shows, and `E[m]` tends to 1 under
-perfect round-robin mining. And `p` is a share of *blocks won*, not of
-hash rate; because the penalty itself suppresses a concentrated class's
-block share, the hash rate corresponding to a given `p` is higher than
-`p` alone suggests.
+#### Why these figures are an upper bound
+
+The independent-arrival model above is what fixes the backoff factor at
+two, but it overstates the penalty actually paid, and by a wide margin.
+It ignores the feedback the mechanism itself creates: while an algorithm
+holds the tip it is throttled by `m` and the other three are not, so it
+is markedly less likely to extend its own run than `p` suggests.
+
+Simulating the race between algorithms through to the LWMA fixed point,
+at four live algorithms with equal base target times:
+
+| Run length `r` | P(extend) modelled | P(extend) simulated |
+|----------------|--------------------|---------------------|
+| 1              | 0.25               | 0.13                |
+| 2              | 0.25               | 0.07                |
+| 3              | 0.25               | 0.04                |
+| 4              | 0.25               | 0.03                |
+
+Long runs are therefore far rarer than `p^k`, and long runs are exactly
+what the `2^k` weight multiplies. The realised expected modifier is
+correspondingly lower:
+
+| Live algorithms | `E[m]` modelled | `E[m]` simulated |
+|-----------------|-----------------|------------------|
+| 4               | 1.48            | 1.16             |
+| 3               | 1.87            | 1.23             |
+
+Note also that `p` is a share of *blocks won*, not of hash rate, and the
+two are only loosely coupled here. Because each algorithm's LWMA pins it
+to its own target time, steady-state block share is set by the
+configured target times and is insensitive to hash rate: a Sha3x hash
+rate boom raises Sha3x difficulty rather than its block share. Shares
+materially above 1/4 arise from algorithms losing their miners
+altogether, not from one algorithm out-hashing the others. The rows at
+`p >= 0.4` above are therefore about attack and abandonment scenarios,
+not about ordinary operation.
 
 ### Effect on mean block time
 
-The expectation above has a direct consequence for block pacing that the
-base target times must account for.
-
 Because solve times are normalized by `m` before entering the LWMA, the
-LWMA converges to the point where the *normalized* mean solve time
-equals the base target time `T`. Actual solve times are `m` times the
-normalized ones, so the mean interval between blocks of a class is:
+LWMA has no feedback path that fully corrects for the penalty. It
+converges to the point where the *normalized* mean solve time equals the
+base target time `T`, while wall-clock intervals remain longer than
+that. Block production is therefore slower than the configured target.
 
-```text
-E[solve_time] = E[m] * T
-```
+A first-order estimate treats the modifier and the solve time as
+independent, giving `E[solve_time] = E[m] * T`. That overstates the
+effect substantially, for three reasons:
 
-At three balanced penalty classes this inflates the mean block interval
-by roughly 87% for as long as classes arrive independently. The base
-target times must be reduced accordingly if the emission schedule is to
-be preserved, and the correct divisor depends on how far real miner
-behaviour sits between independent arrival and deliberate interleaving.
-This is a consequence of normalizing solve times rather than letting the
-LWMA absorb the penalty; the alternative --- omitting the normalization
---- holds block time constant but lets the LWMA cancel most of the
-penalty in steady state, leaving it effective only transiently.
+-   Runs are suppressed by the penalty itself, so `E[m]` is much smaller
+    than the independent model predicts. See *Why these figures are an
+    upper bound* above.
+-   The chain does not stall while an algorithm is penalized. Only the
+    algorithm holding the tip is throttled; the other three continue at
+    full rate, so total block production dips rather than scaling down
+    by `m`.
+-   The normalization does not fully blind the LWMA. Tari keeps one LWMA
+    per algorithm, so a solve time is the gap between consecutive blocks
+    of *that* algorithm and spans blocks of other algorithms. Penalties
+    in force during the gap stretch it, but only the modifier of the
+    block that closes the gap is divided out. The residual stretch is
+    visible to the LWMA, which lowers difficulty in response and
+    partially compensates.
+
+Simulating the race through to the LWMA fixed point at the mainnet
+configuration --- four algorithms with equal base target times --- gives
+the following inflation of the mean chain block interval:
+
+| Configuration                         | Inflation     |
+|---------------------------------------|---------------|
+| Four algorithms live                  | 1.7%          |
+| Three algorithms live (one abandoned) | 3.5%          |
+| Single algorithm live                 | 32x (the cap) |
+
+At under 2% the effect does not warrant reducing the base target times
+to compensate, and doing so would misconfigure the chain if the number
+of live algorithms later changed. For comparison, grouping RxM and RxT
+into one penalty class raises the four-algorithm figure to 8.4% and the
+three-algorithm figure to 19.6%, which is the second reason that
+grouping is not adopted.
+
+The inflation that does remain is a consequence of normalizing solve
+times rather than letting the LWMA absorb the penalty. The alternative
+--- omitting the normalization --- holds block time exactly constant but
+lets the LWMA cancel the penalty in steady state, leaving it effective
+only transiently.
 
 ### Difficulty calculation
 
@@ -371,44 +448,48 @@ Assume the base target time for Sha3x is **8 minutes**.
     becomes **32 minutes**.
 -   After six consecutive Sha3x blocks the target time reaches **4 hours
     16 minutes** (32x) and stops growing.
--   If a block of a different penalty class is mined, the Sha3x target
-    time resets to **8 minutes**.
+-   If a block of any other algorithm is mined, the Sha3x target time
+    resets to **8 minutes**.
 
-An RxM block followed by an RxT block is a run of two within the RandomX
-class, so the second block is mined at a 16 minute target. Switching
-between the two RandomX variants does not reset the modifier.
+An RxM block followed by an RxT block is a run of one in each algorithm,
+so neither block is penalized. Switching between the two RandomX
+variants resets the modifier, and a miner with RandomX capacity can
+alternate them indefinitely without ever paying a penalty.
 
 ## Consequences 1
 
 ### Positive
 
 -   Significantly increases the cost of selfish mining. A private chain
-    of depth 6 built by a single penalty class costs 63 units of work
+    of depth 6 built by a single algorithm costs 63 units of work
     against 6 for an honest chain of the same depth.
 -   Reduces the ability of a single algorithm to reorg multiple blocks.
 -   Preserves the multi-algorithm decentralization objective.
--   Grouping RxM and RxT into one penalty class closes the cheapest
-    bypass, since both are mined by the same hardware.
--   The cost is progressive in concentration rather than flat: a class
-    at balanced share pays about 1.9x on average, one at 60% share pays
-    about 5.5x.
+-   Treating every algorithm independently keeps the mechanism neutral
+    between them: all four carry the same steady-state block share and
+    the same expected modifier, so no algorithm is taxed more than
+    another for mining honestly.
+-   The cost to honest mining is small --- about 1.16x on average with
+    four algorithms live --- while remaining progressive in
+    concentration.
 
 ### Negative
 
 -   Requires a hard fork.
 -   Changes block-time dynamics under certain hash rate distributions.
 -   May introduce more short-term variance in block intervals.
--   Inflates the mean block interval by a factor of `E[m]` unless the
-    base target times are reduced to compensate. See *Effect on mean
-    block time*.
--   The 32x cap blunts the majority threshold: a class at 50% block
+-   Inflates the mean block interval by roughly 2% with four algorithms
+    live, rising as algorithms are abandoned. See *Effect on mean block
+    time*.
+-   The 32x cap blunts the majority threshold: an algorithm at 50% block
     share pays 3.5x on average rather than an unbounded amount.
--   Does not prevent a miner holding capacity in two or more penalty
-    classes from alternating between them to avoid the penalty
-    entirely.
--   If a single penalty class is left as the only active miner, the
-    chain runs at up to 32x the base target time until another class
-    mines a block.
+-   Does not prevent a miner holding capacity in two or more algorithms
+    from alternating between them to avoid the penalty entirely. Because
+    RxM and RxT run on the same hardware, this exempts RandomX capacity
+    in full, including when building a private chain.
+-   If a single algorithm is left as the only active miner, the chain
+    runs at up to 32x the base target time until another algorithm mines
+    a block.
 -   Penalizes a single-algorithm miner for a run that occurs by chance,
     not only for one produced deliberately.
 
@@ -453,3 +534,15 @@ window should be reduced to 45 blocks.
 ### 2026-06-11
 
 * Document Created.
+
+### 2026-08-19
+
+* RxM and RxT are no longer grouped into a shared RandomX penalty class;
+  every algorithm is its own penalty scope.
+* Corrected the *Effect on mean block time* analysis. The previous
+  figure of 87% came from the independent-arrival model, which ignores
+  that the penalty suppresses the runs it taxes, that unpenalized
+  algorithms keep mining at full rate, and that the per-algorithm LWMA
+  is only partially blinded by the normalization. Simulated inflation is
+  1.7% with four algorithms live, and the base target times no longer
+  need to be reduced to compensate.
