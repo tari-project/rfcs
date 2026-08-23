@@ -18,6 +18,7 @@
       - [MT-0110: Base nodes](RFC-0110_BaseNodes.md)
       - [MT-0111: Base node architecture](RFC-0111_BaseNodeArchitecture.md)
       - [MT-0120: Consensus rules](RFC-0120_Consensus.md)
+      - [MT-0122: Burning](RFC-0122_Burning.md)
       - [MT-0131: Mining](RFC-0131_Mining.md)
       - [MT-0132: Merge Mining Monero](RFC-0132_Merge_Mining_Monero.md)
       - [MT-0140: Synchronizing the Blockchain: Archival and Pruned modes](RFC-0140_Syncing_and_seeding.md)

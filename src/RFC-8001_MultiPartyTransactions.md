@@ -56,7 +56,7 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This document describes a few extensions to [MimbleWimble](MimbleWimble) to allow multi-party [UTXOs](utxo).
+This document describes a few extensions to [MimbleWimble] to allow multi-party [UTXOs][UTXO].
 
 ## Related RFCs
 

@@ -173,16 +173,16 @@ The epoch must also be short enough that we can effectively remove inactive [VN]
 
 [VNC]: RFC-0314_VNCSelection.md#Intro
 
-[VN]: RFC-0XXX.md
+[VN]: Glossary.md#validator-node
 
 [base node]: Glossary.md#base-node
 
 [Minotari]: Glossary.md#base-layer
 
-[shard space]: RFC-0304-DanGlossarymd#Consensus-level
+[shard space]: RFC-0313_VNRegistration.md#shard-key-and-shuffling
 
-[shard key]: RFC-0304-DanGlossarymd#Consensus-level
+[shard key]: RFC-0313_VNRegistration.md#shard-key-and-shuffling
 
 [FTL]: RFC-0120_Consensus.md#FTL
 
-[VN registration]: RFC-0XXX.md
+[VN registration]: RFC-0313_VNRegistration.md#validator-registration
