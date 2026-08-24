@@ -139,7 +139,7 @@ one-time private key \\( c + a \\).
 [one-sided payment]: ./RFC-0201_TariScript.md#one-sided-payment
 [utxo]: ./Glossary.md#unspent-transaction-outputs
 [bytecoin]: https://bitcointalk.org/index.php?topic=5965.0
-[Cryptonote]: https://cryptonote.org/whitepaper.pdf
+[Cryptonote]: https://web.archive.org/web/20200926050427/https://cryptonote.org/whitepaper.pdf
 [Peter Todd]: https://www.mail-archive.com/bitcoin-development@lists.sourceforge.net/msg03613.html
 [BIP-32]: https://en.bitcoin.it/wiki/BIP_0032
 
