@@ -61,7 +61,7 @@ The aim of this Request for Comment (RFC) is to describe ways we can block repla
 
 ## Related Requests for Comment
 
-* [RFC-0120: Base Layer Consensus](RFC-0120_consensus.md)
+* [RFC-0120: Base Layer Consensus](RFC-0120_Consensus.md)
 * [RFC-0201: TariScript](RFC-0201_TariScript.md)
 
 ## Replay attack

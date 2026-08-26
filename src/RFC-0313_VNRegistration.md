@@ -318,7 +318,7 @@ to re-sync their state and spend time not participating in the network, losing o
 [VNC]: RFC-0314_VNCSelection.md#Intro
 [Schnorr signature]: https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures
 [utxo]: Glossary.md#unspent-transaction-outputs
-[shard space]: RFC-0304-DanGlossarymd#Consensus-level
+[shard space]: #shard-key-and-shuffling
 [Blake256]: https://github.com/tari-project/tari-crypto/blob/fa042e498be144d8d2af7b96efe805c5af0b2d4f/src/hash/blake2.rs
 [Ristretto]: https://ristretto.group/
 [Block header]: Glossary.md#block-header

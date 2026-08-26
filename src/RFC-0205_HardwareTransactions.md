@@ -64,7 +64,7 @@ This Request for Comment (RFC) presents a design for a hardware wallet with Mimb
 ## Related Requests for Comment
 
 - [RFC-0201: TariScript](RFC-0201_TariScript.md)
-- [RFC-0203: Stealth Address](RFC-0203_StealthAddress.md)
+- [RFC-0203: Stealth Address](RFC-0203_StealthAddresses.md)
 
 ## Introduction
 

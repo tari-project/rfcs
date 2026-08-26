@@ -62,7 +62,7 @@ and [communication client]s on the Tari network.
 
 ## Related Requests for Comment
 
-- [RFC-0170: NetworkCommunicationProtocol](rfc-0170_NetworkCommunicationProtocol.md)
+- [RFC-0170: NetworkCommunicationProtocol](RFC-0170_NetworkCommunicationProtocol.md)
 - [RFC-0171: MessageSerialization](RFC-0171_MessageSerialisation.md)
 
 ## Description

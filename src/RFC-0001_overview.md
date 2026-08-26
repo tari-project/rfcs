@@ -107,7 +107,7 @@ the DAN to continue.
 
 ### Base Layer
 
-[The Tari base layer](RFC-0100_BaseLayer.md) has the following primary features:
+[The Tari base layer](base_layer.md) has the following primary features:
 
 - PoW-based blockchain using Nakamoto consensus
 - Transactions and blocks based on the [Mimblewimble] protocol

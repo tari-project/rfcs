@@ -92,7 +92,7 @@ goals:
 * Secondarily, to maintain the total circulating supply at a target value (satisfying an implicit assumption in 
   cryptocurrencies that token supplies are finite).
 
-A proof-of-concept controller has been implemented and tested in a simulation environment ([repository]). As the 
+A proof-of-concept controller has been implemented and tested in a simulation environment. As the
 results below attest, the controller logic is sufficient to achieve these goals, even under highly volatile layer 
 two fee conditions. 
 
@@ -135,7 +135,7 @@ The PID controller has three components:
 
 ## Tari throttle
 
-The `burn-sim` [repository] was used to generate the results in this exploratory study.
+The `burn-sim` repository was used to generate the results in this exploratory study.
 
 The primary module in the repository is the `TariThrottle` struct.
 
@@ -224,7 +224,7 @@ operations, since the IEEE leaves some aspects of floating-point math
 [unspecified](https://randomascii.wordpress.com/2013/07/16/floating-point-determinism/).
 
 This is not permissible in Tari, and therefore an integer-based approach to control is implemented in the `tari-sim` 
-[repository].
+repository.
 
 Simply put, this involves scaling the error values by a constant to convert them to integers of roughly the same 
 order of magnitude, (via `error_i_scale`). The control parameters are also integers, expressed as "parts per million" 
@@ -717,5 +717,4 @@ A controller model that incorporates these target conditions will be the subject
 
 
 
-[repository]: https://github.com/tari-project/burn-sim "TariThrottle simulation repository"
 [turbine model]: /RFC-0320_TurbineModel.html "Turbine model"
