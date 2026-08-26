@@ -29,6 +29,14 @@ code {
 h2, h3 { margin-top: 2.5em; }
 h4, h5 { margin-top: 2em; }
 
+/* Content headings double as permalink/Glossary anchor targets (mdBook gives
+   every heading an id and a `.header` self-link). #menu-bar (chrome.css) is
+   sticky and covers the top of the viewport, so without this the browser's
+   native fragment scroll lands the target right under it. */
+h1, h2, h3, h4, h5, h6 {
+    scroll-margin-top: 90px;
+}
+
 .header + .header h3,
 .header + .header h4,
 .header + .header h5 {
