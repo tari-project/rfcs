@@ -1,8 +1,18 @@
-# RFC-0325/DanEpochManagement
+# I-TIP-RFC-O-0325: EpochManagement
 
-## Epochs and time management
+| TIP             | [I-TIP-RFC-O-0325](#i-tip-rfc-o-0325-epochmanagement)                     |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Epochs and Time Management                                                |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-10-19                                                                |
+| References      | [I-TIP-RFC-O-0313](RFC-0313_VNRegistration.md)                            |
 
-![status: draft](theme/images/status-draft.svg)
+## Epochs and Time Management
+
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [SW van Heerden](https://github.com/SWvheerden)
 
@@ -49,11 +59,16 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to describe the role of Epochs and time management on the DAN.
+The aim of this Request for Comment (RFC) is to describe the role of epochs and time management on the Ootle: what an
+epoch is, where the network gets its clock from, and how it transitions from one epoch to the next without breaking
+liveness.
 
 ## Related Requests for Comment
 
-* [RFC-0303: The Digital Assets Network Overview](RFC-0303_DanOverview.md)
+* [I-TIP-RFC-O-0303: The Tari Ootle](./RFC-0303_DanOverview.md)
+* [I-TIP-RFC-O-0305: The Ootle Consensus Layer](./RFC-0305_Consensus.md)
+* [I-TIP-RFC-O-0313: Validator Node Registration](./RFC-0313_VNRegistration.md)
+* [I-TIP-RFC-O-0314: Validator Node Committee Selection](./RFC-0314_VNCSelection.md)
 
 ## Motivation
 
@@ -61,128 +76,137 @@ For stability and security in the [VNC]s we have the following requirements:
 
 * We need to know who the valid and active [VN]s are.
 * [VNC]s need to be periodically shuffled to prevent shard targeting attacks.
-* [VNC] members cannot be swapped on a whim and need to be stable to allow members to vote on and process instructions.
-* Chain re-organisations on the Minotari chain should not have an effect on the [VNC] distribution.
-* When swapping [VN]s from one [shard] to another, the [VN] has enough time to sync the required state before the
-  swapping takes effect.
-* When swapping [VN]s from one [shard] to another, the [VNC] must retain enough members so as to keep functioning.
+* [VNC] membership cannot change on a whim; it must be stable enough for members to vote on and process transactions.
+* Chain reorganisations on the Minotari chain must not affect [VNC] distribution.
+* When a [VN] moves from one shard group to another, it must have enough time to sync the required state before the
+  move takes effect.
+* When a [VN] moves from one shard group to another, the [VNC] it leaves must retain enough members to keep
+  functioning.
 
-## DAN Lag
+An **epoch** is the unit that satisfies all of these. Within an epoch, the validator set and every committee's
+membership are fixed. All change — activations, exits, evictions, shard key shuffles, changes in the number of
+committees — takes effect at an epoch boundary and nowhere else.
 
-Because the [Minotari] chain influences the DAN layer and is used as a timing mechanism for the DAN, we need to ensure
-that the DAN has a stable view of the [Minotari].
+## Where the clock comes from
 
-The [Minotari] is built on Proof-of-Work and this means that chain might undergo re-organisation. We need to ensure
-that re-orgs do cause a [VNC] reshuffle. We introduce a concept called `DAN Lag` which is an offset between when a
-[VNC] change is recorded on the Minotari chain and when it takes effect.
+The Ootle takes its epoch clock from an **epoch oracle**. Three implementations exist, selected by configuration:
 
-For example, if we define `DAN Lag` as 720 blocks, or a day. Then when a VN registers and that transaction is
-mined in the [Minotari] at height 1000 then only at height 1720 will the DAN Layer recognise the [VN] as being
-registered.
+* **Base layer oracle.** Epochs are derived from Minotari block height: $\epsilon = \lfloor h / \texttt{
+  vn\_epoch\_length} \rfloor$. Validator set changes are read from the base layer as they are scanned. This is the
+  production oracle, and the rest of this RFC assumes it unless stated otherwise.
+* **Configured oracle.** Epochs advance on a wall-clock interval from a configured base time, and the validator set is
+  a static list in the configuration. This is what makes a local network or an integration test deterministic and
+  independent of a running base node. The configuration is validated for the invariants the oracle relies on to emit
+  the same event stream on every node — no validator may be listed twice, and a claim key rotation may not take effect
+  before the validator activates.
+* **Hybrid oracle.** Validator set changes come from the base layer, but epoch ticks come from the configured ticker,
+  driven by base-layer epoch changes. This is used while bootstrapping a network against a base layer.
 
-This `DAN Lag` allows the [Minotari] chain to have small re-orgs of less than the `DAN Lag` without it having any
-effect on the DAN Layer.
-An added benefit of this is that the DAN Layer knows all changes in advance of when it will happen, so when a [VN] is
-swapped to a new [shard space] it will give it the `DAN Lag` period to sync the required state.
+An oracle emits a stream of `EpochEvent`s: `EpochChanged`, `ActiveValidatorNodeSetChanged`, `NewValidatorRegistered`,
+`NewValidatorNodeExit` and `DoneForNow`. The epoch manager consumes them and maintains the validator set, the
+committee assignment and the epoch hash.
 
-## DAN Grace Time
+## Lag: insulating the Ootle from base-layer reorgs
 
-Minotari nodes are decentralized. Thus, we don't have a single point of view of the state of the chain.
+Because the [Minotari] chain drives the Ootle clock, the Ootle needs a stable view of it. Minotari is built on
+proof-of-work, so its recent history can be reorganised. A reorg must not cause a committee reshuffle.
 
-The DAN operates in ms timeframes, while the [Minotari] chain runs at the minute timeframe, averaging 2 minutes per
-block. These blocks also take a few seconds to process and propagate through the network.
+The base layer oracle therefore does not read the tip. It scans at a configured `height_lag` behind the tip, and a
+block is only treated as final once `base_layer_confirmations` blocks sit on top of it — 1000 on mainnet, 100 on
+Esmeralda and the testnets, and 3 on a local devnet. Reorgs shallower than the lag are invisible to the Ootle: the data it extracted is still on the canonical
+chain. The point of finality is therefore monotonic, and reorg "noise" at the tip is filtered out entirely.
 
-This means that for some [VN]s the [Minotari] block height might be 999, while for others it might be 1000. The
-practical problem for this is that we cannot base consensus decisions on the block height if the [VN]s cannot come to
-some consensus as to what the [Minotari] height is.
+This has a second, deliberate benefit. Because the Ootle's view of the base layer is deliberately behind, it knows
+about registrations, exits and shuffles *before* the epoch in which they take effect. A validator moving to a new
+shard group therefore learns about the move in advance and can sync the state it will be responsible for before it is
+expected to vote on it.
 
-We define `DAN Grace Time` or DGT as the number of blocks in the past or future of the [VN]'s own current block height,
-that it will accept. This is very similar to the [FTL] concept concerning the timestamp in the block header.
+<div class="note">
+Earlier drafts of this RFC called this <em>DAN Lag</em>. The mechanism is the same; the name in the implementation is
+<code>height_lag</code>, alongside <code>base_layer_confirmations</code>.
+</div>
 
-In example of this would be, that we have `VN_1` whose [base node] is on height 999 and `VN_2` whose [base node] is on
-height 1000. We have set the DGT as 1.
-An instruction has specified that from height 1000 the [VNC] that must process it contain both `VN_1` and `VN_2`, but
-before that it is only `VN_1`. From this it can be seen that `VN_1` thinks only it must be in the [VNC] but `VN_2`
-thinks they both need to be. But using the DGT of 1 block, `VN_1` will accept `VN_2` as part of the [VNC]
-because it is withing the DGT period and it assumes that its own [base node] is simply lagging 1 block.
+## Spread: tolerating disagreement about the boundary
 
-The DGT has the additional benefit of allowing a [VN] to finish processing an instruction after a block height has been
-reached.
+Base nodes are decentralised, so there is no single view of the chain's height. The Ootle operates on millisecond
+timescales while the Minotari chain runs at minutes, and blocks take seconds to propagate. Validators also poll their
+base node only every `scanning_interval`.
 
-With the example mentioned above if `VN_1` has to stop processing an instruction at height 1000, but it started the
-instruction at height 999. When height 1000 comes
-along it can still continue to process the instruction till height 1001.
+This means that at any instant, one validator's scanner may have crossed an epoch boundary while another's has not. A
+single strict changeover point would therefore cause a liveness failure at every epoch transition.
 
-## VN Epoch
+`epoch_end_spread_blocks` — 5 base-layer blocks — is the leeway. A validator whose own scan has not yet crossed the
+boundary, but which is within that many blocks of it, will still accept and vote on an `EndEpoch` proposal from peers
+whose oracle has crossed. Setting it to zero disables the leeway.
 
-We define `VN Epoch` as the time period a [VN] must serve in a single [shard] before being moved to a different
-[shard]. The purpose of this shuffling is to prevent having a single [VNC] cover the same shard for an extended
-period of time and thus reduce the risk of VN collusion.
+<div class="note">
+Earlier drafts of this RFC called this <em>DAN Grace Time</em>, defined symmetrically as a number of blocks in the
+past or future that a validator would accept. As implemented it is one-sided — a lagging validator accepts a peer that
+is ahead, not the reverse — and it applies specifically to <code>EndEpoch</code> proposals rather than to instruction
+acceptance generally.
+</div>
 
-The shuffling algorithm can be linked to the [VN registration] hash. This provides a random and uniformly 
-distributed seed that allows us to shuffle the [VN]s around the [shard space] in a deterministic way. The algorithm 
-can also be constructed such that a minority of nodes are shuffled at every epoch, while still maintaining 
-equal-sized VNCs.
+## The epoch transition
 
+An epoch does not end because each node independently notices that a height has passed. It ends because the committee
+agrees that it has.
 
-## Summary
+1. A leader whose oracle has crossed the boundary proposes an `EndEpoch` command, carrying the `next_epoch_hash` — the
+   hash of the base-layer block at the next epoch's boundary.
+2. Replicas ratify that hash against their own oracle, applying the `epoch_end_spread_blocks` leeway, and vote.
+3. Once the end-of-epoch block commits with a quorum, the committed hash — not each node's locally derived one — is
+   the epoch hash for the next epoch. A node that diverged on the boundary block, for instance because of a
+   base-layer reorg deeper than the confirmation depth, adopts the committee's hash rather than wedging on its own.
+4. The node locks the next epoch (`lock_epoch`), so that a later reorg surfacing a different view cannot rewrite the
+   agreed hash.
+5. The epoch manager recomputes the number of committees and reassigns every validator to a shard group. The node
+   determines its own shard group for the next epoch, checkpoints state, and creates the genesis block for the new
+   epoch.
 
-VNs must re-register periodically. This is to ensure that the [VN]s are still active and to prevent a [VN] from
-registering once and then never being removed from the VN registry. A new [shard key] is generated each time that a 
-VN re-registers. 
+If a node's own oracle has not yet observed the next epoch when the end-of-epoch block commits — rare, given the scan
+lag — the transition is deferred and retried when the oracle catches up.
 
-(Open question: Is the re-registration fee cheaper than the initial registration fee? Is it zero?)
+## Validator set changes
 
-VNs that miss their re-registration deadline will automatically be de-registered. (Open question: Is the 
-registration deposit lost in this case?)
-Therefore it is always possible to maintain a list of recently active VNs.
+A [VN] must re-register before its registration's `max_epoch` passes, or it is dropped from the validator set. This is
+a proof-of-liveness mechanism: it prevents a validator registering once and remaining in the registry forever. It is
+therefore always possible to maintain a list of recently active validators.
 
-The `DAN Lag` gives [VN]s enough time to sync their new shard's state. 
-
-[VN] are shuffled periodically, but a minority of nodes are shuffled every epoch.
+Joins, exits and evictions are all rate-limited per epoch, and shard key shuffles affect only a small fraction of the
+set in any epoch. Together these bound how much of any committee can turn over at a single boundary. See
+[I-TIP-RFC-O-0313](./RFC-0313_VNRegistration.md).
 
 ## Tuning the values
 
-We need to ensure that all the consensus values defined in the RFC needs to be tuned with the following in mind:
+### Lag and confirmations
 
-### DAN Lag
+The lag must be long enough that ordinary reorgs have no effect on the Ootle, and long enough to give a validator
+ample time to download the state for a shard group it is about to join.
 
-The `DAN Lag` must be long enough that small frequent re-orgs dont have an effect on the DAN layer. This must also be
-long enough to give any new [VN] ample time to download any required state for [shard] it will cover.
+### Spread
 
-### DAN Grace Time
+This should be only a block or two — enough to cover a validator whose base node has not yet seen the boundary block,
+or whose scan interval has not yet elapsed.
 
-This must be only a block or two. This is just to handle the edge case of what happens if a [VN]'s node has not yet seen
-a new height, or the height changes while processing an instruction
+### Epoch length
 
-### VN Epoch
+An epoch must be long enough that validators do not flood the network with sync requests, and can spend most of their
+time processing transactions. It must clearly be longer than the lag.
 
-This must be long enough so that [VN]s don't flood the network with sync requests and are able to spend most of their 
-time processing instructions. 
-It must clearly be longer than the `DAN Lag`. 
-
-It must be short enough that we don't allow [VN]s to collude and carry out sharding attacks. 
-
-The epoch must also be short enough that we can effectively remove inactive [VN]s from the [VN] registry.
+It must be short enough that validators cannot collude and carry out sharding attacks, and short enough that inactive
+validators are removed from the registry promptly.
 
 ## Change Log
 
-| Date        | Change        | Author     |
-|:------------|:--------------|:-----------|
-| 19 Oct 2022 | First outline | SWvHeerden |
+| Date        | Change                                                                             | Author     |
+|:------------|:-------------------------------------------------------------------------------------|:-----------|
+| 07 Sep 2026 | Epoch oracles, `EndEpoch` agreement; DAN Lag/Grace Time renamed to lag and spread    | Tari Labs  |
+| 19 Oct 2022 | First outline                                                                        | SWvHeerden |
 
-[VNC]: RFC-0314_VNCSelection.md#Intro
+[VNC]: RFC-0314_VNCSelection.md#intro
 
 [VN]: Glossary.md#validator-node
 
 [base node]: Glossary.md#base-node
 
 [Minotari]: Glossary.md#base-layer
-
-[shard space]: RFC-0313_VNRegistration.md#shard-key-and-shuffling
-
-[shard key]: RFC-0313_VNRegistration.md#shard-key-and-shuffling
-
-[FTL]: RFC-0120_Consensus.md#FTL
-
-[VN registration]: RFC-0313_VNRegistration.md#validator-registration

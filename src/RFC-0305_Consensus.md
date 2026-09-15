@@ -1,8 +1,18 @@
-# RFC-0305/Consensus
+# I-TIP-RFC-O-0305: ConsensusLayer
 
-## The Tari Network Consensus Layer
+| TIP             | [I-TIP-RFC-O-0305](#i-tip-rfc-o-0305-consensuslayer)                      |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | The Ootle Consensus Layer                                                 |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2023-10-30                                                                |
+| References      | [I-TIP-RFC-O-0330](RFC-0330_Cerberus.md)                                  |
 
-![status: draft](theme/images/status-draft.svg)
+## The Ootle Consensus Layer
+
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77),[stringhandler](https://github.com/stringhandler)
 
@@ -49,186 +59,197 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This Request for Comment (RFC) describe the consensus mechanism known as Cerberus as it is implemented in Tari.
-Tari implements the Cerberus variant known as Pessimistic Cerberus, for the most part, with Hotstuff BFT replacing
-pBFT as described in the Cerberus paper.
-
-This RFC serves to document any deviations from the academic paper as well as finer-grained details of the
-implementation.
+This Request for Comment (RFC) describes the responsibilities of the Ootle consensus layer, and how each of them is
+discharged. It is the map; the algorithm itself is specified in
+[I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md).
 
 ## Related Requests for Comment
 
-* [RFC-303: Digital Assets Network](./RFC-0303_DanOverview.md)
-
-## Introduction
-
-The Tari DAN is based on a sharded BFT consensus mechanism called [Cerberus](https://arxiv.org/abs/2008.04450).
-
-One particular note is that Tari has chosen Hotstuff as the base BFT consensus algorithm over pBFT mentioned in the
-paper.
-
-The core idea of Cerberus is that instead of dividing work up between validator nodes according to the contracts
-they are managing (as per Tari DANv1, Polkadot, Avalanche, etc.), Cerberus distributes nodes evenly over a set of
-state slots. Any time an instruction modifies the state of a contract, it will affect one or more state
-slot, and only those nodes that are responsible for covering those addresses will reach consensus on the correct
-state changes.
-
-This means that nodes have to be prepared to execute instructions on any contract in the network. This
-does create a data synchronisation burden, but the added benefit of a highly scalable, decentralised DAN significantly
-outweighs this trade-off.
+* [I-TIP-RFC-O-0303: The Tari Ootle](./RFC-0303_DanOverview.md)
+* [I-TIP-RFC-O-0313: Validator Node Registration](./RFC-0313_VNRegistration.md)
+* [I-TIP-RFC-O-0314: Validator Node Committee Selection](./RFC-0314_VNCSelection.md)
+* [I-TIP-RFC-O-0321: Processing Foreign Proposals](./RFC-0321_ProcessingForeignProposals.md)
+* [I-TIP-RFC-O-0325: Epochs and Time Management](./RFC-0325_DanTimeManagement.md)
+* [I-TIP-RFC-O-0330: The Ootle HotStuff Consensus Algorithm](./RFC-0330_Cerberus.md)
 
 ## The consensus layer is logic agnostic
 
-The first key point to make about the Cerberus layer is that it is _logic agnostic_. The consensus layer does not
-know anything about Tari, about digital assets, or smart contracts. It has one job:
+The first key point to make about the consensus layer is that it is _logic agnostic_. The consensus layer does not
+know anything about digital assets or smart contracts. It has one job:
 
-> Ensure that a super-majority of participating nodes agree on the state transition for every Tari transaction.
+> Ensure that a super-majority of participating nodes agree on the state transition for every Ootle transaction.
 
-Defining the consensus layer in this way allows us to separate the concerns of the consensus layer from the concerns
-of the smart contract layer. This is important because it reduces the attack surface of the consensus layer, and allows
-us to develop the consensus layer in isolation from the smart contract, or "business logic" layer.
+Defining the consensus layer this way separates its concerns from those of the smart contract layer. That matters,
+because it reduces the attack surface of the consensus layer, and lets it be developed in isolation from the
+"business logic" layer.
 
-To be clear, if 67% percent of nodes decide that $1 + 1 = 3$ then that is the truth as far as the consensus layer is
-concerned.
+To be clear, if a super-majority of a committee decides that $1 + 1 = 3$, then that is the truth as far as the
+consensus layer is concerned.
 
-This job can be subdivided into several smaller, co-ordinated tasks:
+The job subdivides into several co-ordinated tasks, each covered below:
 
-1. Deterministic distribution of validator nodes across the state space, to form **validator committees**.
-2. Periodically re-distributing validator nodes across the state space to reduce the likelihood and opportunity for
-   collusion.
-3. Efficient transmission of consensus messages to the rest of the network.
-4. Identifying and removing malicious nodes from the network.
-5. Correct identification of nodes participating in cross-shard consensus.
+1. Deterministic distribution of validator nodes across the state space, forming **validator node committees**.
+2. Periodic redistribution of validator nodes, to reduce the opportunity for collusion.
+3. Efficient transmission of consensus messages across the network.
+4. Identifying and removing malicious or unresponsive nodes.
+5. Correct identification of the nodes participating in a cross-shard transaction.
 6. Requesting and responding to state requests from other nodes.
 7. Reaching consensus on the state transition for a given transaction.
-8. Effective leader rollover in the case of a faulty leader.
+8. Effective leader rollover when a leader is faulty.
 9. Guaranteeing liveness in the face of a Byzantine stoppage.
 
 ## Distribution of validator nodes
 
-Validator node selection and distribution is described in [RFC-314](./RFC-0314_VNCSelection.md). RFC-314 also covers
-the periodic re-distribution of validator nodes across the state space.
+The substate address space is split into a fixed number of **preshards** — `NumPreshards::current()`, currently 256.
+Contiguous runs of preshards are grouped into **shard groups**, and one validator node committee covers each shard
+group. The number of committees is $\max(1, \lfloor N_\text{vn} / \texttt{committee\_size\_per\_shard\_group}
+\rfloor)$, capped at the number of preshards, where `committee_size_per_shard_group` is 40 on mainnet, Esmeralda and
+the testnets.
 
-## Efficient transmission of consensus messages to the rest of the network
+A validator node's shard group follows from its `VN_Shard_Key`: the key locates a preshard, and the preshard locates
+the shard group. Assignment is therefore deterministic and verifiable by anyone with the validator set for the epoch.
+Committee membership is recomputed at every epoch transition, in `EpochManager::assign_validators_for_epoch`.
 
-The Tari communications layer is used to transmit consensus messages to the rest of the network.
-The Comms layer is described in [RFC-170](./RFC-0170_NetworkCommunicationProtocol.md) and related sub-RFCs.
+Periodic redistribution happens by two mechanisms, both described in
+[I-TIP-RFC-O-0313](./RFC-0313_VNRegistration.md): shard keys are reshuffled on a base-layer interval
+(`vn_registration_shuffle_interval`), and the number of committees changes as validators join and leave, which moves
+the shard group boundaries. Committee selection is described in detail in
+[I-TIP-RFC-O-0314](./RFC-0314_VNCSelection.md).
 
-<div class="note">
-TODO:
-<ul>
-    <li> Describe differences in configuration between the Tari and Minotari networks.</li>
-    <li> Describe how VNC members find each other and how they keep in touch.</li>
-    <li> Describe how banning or other sanctioning behaviour works.</li> 
-    <li> How client messages are propagated and routed to the correct nodes in the network.</li>
-    <li> How consensus messages are communicated across the network.</li>
-</ul>  
-</div>
+## Efficient transmission of consensus messages
+
+The Ootle runs its own libp2p-based networking stack (`tari_ootle_p2p`), separate from the base layer's. Consensus
+messages take one of two paths:
+
+* **Direct messages** to a specific peer — a leader's proposal to its committee, votes back to the leader, `NewView`
+  messages, and the request/response exchanges for missing transactions and foreign proposals.
+* **Gossip** on a topic, for messages whose audience is more than one committee: new transactions, and foreign
+  proposal notifications. Foreign proposal notifications name their target shard groups in the payload, and are
+  published on a single network-wide topic; receivers not in the audience ignore them. The payload is deterministic
+  so that gossipsub's content-addressed message id deduplicates the copies published by each local validator.
+
+Committee members find each other through the epoch manager: the validator set for an epoch is known from the base
+layer, and each node's peer address is part of its registration.
+
+Peers that send invalid messages are banned at the networking layer. Banning is a local decision and does not by
+itself remove a node from the validator set; the consensus-level mechanism for that is eviction, below.
 
 ## Identifying and removing malicious nodes from the network
 
-In the current proposal, malicious nodes are not actively removed from the network. Instead, they can be banned by
-peers, as described above, and then de-registered as validator nodes at an epoch transition.
+Unresponsive nodes are removed from consensus by their own committee, without base-layer involvement.
 
-This is still an indirect punishment, since a substantial deposit is required to register as a validator node. After
-de-registration, the deposit is locked up for a significant period (3-6 months). Therefore, a serial offender running
-bad validator nodes will incur a significant opportunity cost over time.
+Each node tracks how many proposals every committee member has missed while it was leader:
 
-However, the community is open to other proposals, both game-theoretic and technical, for dealing with malicious
-nodes.
+* After `missed_proposal_suspend_threshold` missed proposals (5), the node is **suspended**: peers immediately send a
+  `NewView` to the *next* leader when the suspended node's turn comes, rather than waiting out the pacemaker timeout.
+  A suspended node still participates as a replica.
+* After `missed_proposal_evict_threshold` missed proposals (10), an `EvictNode` command is proposed, carrying an
+  `EvictionProof`. Once that command commits, the node is removed from the committee for the remainder of the epoch.
+* A suspended node recovers by participating: each block it votes in decrements its missed-proposal count, up to
+  `missed_proposal_recovery_threshold` (5). At zero it is no longer suspended.
 
-Many proof-of-stake systems utilise "slashing" to punish non-cooperative nodes. Slashing mechanisms sound good at
-first, but in fact, there are many edge cases that can result in honest-but-poorly-configured nodes being punished.
-We are somewhat sceptical that slashing will achieve their intended goals.
+Beyond eviction, the deterrent against malicious behaviour remains economic. A substantial deposit is required to
+register as a validator node, and after de-registration that deposit is locked for a significant period. A serial
+offender therefore incurs a real opportunity cost over time.
+
+Many proof-of-stake systems use "slashing" instead. Slashing sounds good at first, but there are many edge cases in
+which honest-but-poorly-configured nodes are punished. We are somewhat sceptical that slashing achieves its intended
+goals.
 
 Slashing introduces
-[significant additional complexity](https://hedera.com/blog/why-is-there-no-slashing-in-hederas-proof-of-stake),  
-including the need for additional tuning parameters, the need for 'watchtowers' to police the VN
-set's behaviour (which is a centralising force), the need for trustless fraud-proofs (a non-trivial problem), and
-the fact that software bugs don't follow the rules of economic game-theory (in other words, they're not rational).
+[significant additional complexity](https://hedera.com/blog/why-is-there-no-slashing-in-hederas-proof-of-stake),
+including the need for additional tuning parameters, the need for 'watchtowers' to police the validator set (a
+centralising force), the need for trustless fraud proofs (a non-trivial problem), and the fact that software bugs
+don't follow the rules of economic game theory — in other words, they're not rational.
 
-Furthermore, slashing is less relevant in a BFT process where safety and liveness is _guaranteed_ as long as 67% of
-the committee is honest. The motivation for punishing malicious nodes in Tari is essentially two-fold:
+Furthermore, slashing is less relevant in a BFT process where safety and liveness are _guaranteed_ as long as
+two-thirds of the committee is honest. The motivation for punishing malicious nodes on the Ootle is two-fold:
 
-* to reduce the chance that a critical mass of 1/3 malicious nodes accumulate on the network.
-* to deter nodes from colluding to try and achieve 33% (to break liveness) or 67% (to break safety).
+* to reduce the chance that a critical mass of $1/3$ malicious nodes accumulates on the network, and
+* to deter nodes from colluding to reach 33% (breaking liveness) or 67% (breaking safety).
 
-One alternative to slashing os to make _all_ VN deposits non-refundable. Therefore, a malicious node will
-implicitly have their deposit slashed once they are banned. Banning can also be made temporary, depending on the
-offense. Honest nodes will need to run for a period of time before they become profitable, akin to an 
-apprenticeship, or 'paying your dues'. VN fees would be increased to compensate for this mechanism.
+One alternative to slashing is to make _all_ validator node deposits non-refundable, so that a malicious node has its
+deposit implicitly slashed once it is evicted. Honest nodes would need to run for a period before becoming
+profitable, akin to an apprenticeship. Validator fees would rise to compensate. This is very similar to slashing in
+effect, but simpler to implement and police.
 
-Overall, this strategy is very similar to slashing, but is simpler to implement and police.
+Another option is to make use of auditability and fraud proofs (see section
+[V.B](https://arxiv.org/pdf/1708.03778.pdf) of the Chainspace paper), which would allow retroactive punitive action
+against colluding nodes that act together to subvert an entire committee. This is worth exploring: it is quite clear
+from the experience of incumbent proof-of-stake networks that essentially _all_ slashing events are due to
+configuration errors rather than intentional attempts to bring the network down.
 
-Another option is to make use of the auditability and fraud-proof properties of Cerberus (See Section
-[V.B](https://arxiv.org/pdf/1708.03778.pdf) of the Chainspace paper). This would allow retroactive punitive actions
-against malicious nodes, and in particular, colluding nodes that act together to subvert an entire validator node
-committee. This is an avenue worth exploring, since it's quite clear from the experience of incumbent
-proof-of-stake networks, controlling hundreds of billions of dollars of value, that essentially _all_
-slashing events are due to configuration errors or intentional bugs, rather than intentional attempts to bring the
-network down.
+## Identification of nodes participating in cross-shard consensus
 
-## Identification of nodes participating in cross-shard consensus.
+Every validator node is registered on the base layer, so anyone with a synchronised Minotari node is in possession of
+the current validator set. The rules for mapping a validator to a shard group are deterministic
+([I-TIP-RFC-O-0314](./RFC-0314_VNCSelection.md)).
 
-Every validator node is registered on the base layer. Therefore, anyone with a synchronised Minotari node will be in
-possession of the current set of validator nodes running the Tari network.
+It follows that a validator node must also have access to a Minotari node it trusts, unless the network is running a
+configured epoch oracle ([I-TIP-RFC-O-0325](./RFC-0325_DanTimeManagement.md)). Either way, every node can determine
+every committee's membership, and therefore which nodes to contact for a cross-shard transaction.
 
-The rules for assigning a given validator node (with its public key) to a Tari shard are deterministic and described
-in [RFC-314](./RFC-0314_VNCSelection.md).
+## Requesting and responding to state requests from other nodes
 
-It therefore follows that every validator node must also run a Minotari node (or connect to one that they trust).
-This will provide all the information that they need to determine which VNs are part of every committee and
-therefore which nodes to contact when participating in cross-shard consensus.
+State requests come from three sources:
 
-## Requesting and responding to state requests from other nodes.
+1. **Cross-shard consensus.** A committee does not fetch foreign input state on demand. Instead, when a foreign
+   committee commits a block that prepared a shared transaction, it broadcasts a notification; interested committees
+   pull the block and its commit proof and sequence it as a `ForeignProposal` command. See
+   [I-TIP-RFC-O-0321](./RFC-0321_ProcessingForeignProposals.md).
+2. **State sync.** A node joining a shard group, or catching up after downtime, syncs substates and blocks from peers
+   in that shard group over the `rpc_state_sync` protocol. Because committee membership changes at epoch boundaries,
+   a node learns its next shard group in advance and syncs before the transition takes effect.
+3. **Clients.** Wallets and dApps read state from an Indexer that follows the components they care about. Indexers
+   are a trusted party; users wanting a trustless view run their own. See
+   [I-TIP-RFC-O-0331](./RFC-0331_Indexers.md).
 
-State requests come from two primary sources:
+## Reaching consensus on the state transition for a given transaction
 
-1. Other validator nodes requesting state that they need to process an instruction. They will typically request this
-   state from peers in the braided consensus group as part of a consensus round, although there are opportunities to 
-   optimise this process through caching and pre-fetching via an Indexer.
-2. Clients (wallets, dApp users etc.) will usually request state from an Indexer that is following the history of a
-   set of contracts on interest. Indexers are a trusted party. Users wanting to operate in a trustless environment
-   will need to run their own indexer. Indexers are described in [RFC-331](./RFC-0331_Indexers.md).
+The Ootle uses HotStuff BFT over sharded state. This process is described in detail in
+[I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md).
 
-## Reaching consensus on the state transition for a given transaction.
+## Effective leader rollover in the case of a faulty leader
 
-Tari uses Cerberus in conjunction with HotStuff BFT to achieve consensus on substate transitions. This process is
-described in detail in [RFC-330](RFC-0330_Cerberus.md).
+The leader for a block height is chosen round-robin: position $h \bmod n$ in the committee, where $h$ is the block
+height and $n$ the committee size. Committee ordering is deterministic, so every member agrees on the leader for
+every height.
 
-## Effective leader rollover in the case of a faulty leader.
+A pacemaker drives the round. If no valid proposal arrives within `pacemaker_block_time` (10 seconds) plus a delta,
+the node sends a `NewView` to the leader for the next height, carrying its highest quorum certificate. On collecting
+a quorum of `NewView` messages, the new leader proposes at the next height. Repeated failure to propose leads to
+suspension and eventually eviction, as described above.
 
-Leader rollover is also covered in  [RFC-330](RFC-0330_Cerberus.md).
+Leader rollover is covered in more detail in [I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md).
 
-## Guaranteeing liveness in the face of a Byzantine stoppage.
+## Guaranteeing liveness in the face of a Byzantine stoppage
 
 <div class="note">
-The final design for liveness guarantees is still under active discussion.
+Eviction handles the common case — nodes that are offline or unresponsive. The design for forcing liveness through a
+<em>deliberate</em> Byzantine stoppage, where at least a third of a committee actively colludes to prevent progress,
+is still under discussion. What follows is the current thinking, not an implemented mechanism.
 </div>
 
-A liveness break will only occur if at least a third of nodes in a single VNC are actively or passively colluding to
-prevent consensus being reached. Successive leader rollovers will have failed to resolve the issue, and the
-transaction will become stuck.
+A liveness break occurs when at least a third of the nodes in a single committee actively or passively collude to
+prevent consensus. Successive leader rollovers fail to resolve the issue, and transactions touching that committee's
+shard group become stuck.
 
-Eventually, the entire network will stop functioning even though the network is sharded, because probabilistically,
-every contract will eventually produce a state change that required the Byzantine committee to be part of the
-consensus.
+Left alone, the whole network eventually stops functioning, even though it is sharded: probabilistically, most
+components will eventually produce a state change that requires the Byzantine committee to take part.
 
-Therefore, it's critical that liveness can be forced relatively quickly and efficiently.
+It is therefore critical that liveness can be restored relatively quickly and efficiently.
 
-The basic strategy is that enough nodes vote to force an epoch change. Nodes need to provide proof of recent
-activity in order to participate in the new epoch. Nodes that cannot provide proof will be banned and de-registered
-as validator nodes.
-
-The epoch change causes a validator node shuffle, and any remaining nodes that may have been preparing to collude
-will be assigned new shards.
+The basic strategy is that enough nodes vote to force an epoch change. Nodes must provide proof of recent activity in
+order to participate in the new epoch; nodes that cannot are evicted. The epoch change reshuffles committee
+membership, and any remaining colluding nodes are dispersed across new shard groups.
 
 # Change Log
 
-| Date        | Change       | Author |
-|:------------|:-------------|:-------|
-| 16 Dec 2023 | Second draft | CjS77  |
-| 30 Oct 2023 | First draft  | CjS77  |
+| Date        | Change                                                                       | Author    |
+|:------------|:-----------------------------------------------------------------------------|:----------|
+| 07 Sep 2026 | Realign with the implementation: shard groups, eviction, gossip, state sync  | Tari Labs |
+| 16 Dec 2023 | Second draft                                                                 | CjS77     |
+| 30 Oct 2023 | First draft                                                                  | CjS77     |
 
 [base layer]: Glossary.md#base-layer
 
