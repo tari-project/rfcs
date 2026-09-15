@@ -1,8 +1,18 @@
-# RFC-0330/Cerberus
+# I-TIP-RFC-O-0330: OotleConsensus
 
-## The Tari Cerberus-Hotsuff Consensus Algorithm
+| TIP             | [I-TIP-RFC-O-0330](#i-tip-rfc-o-0330-ootleconsensus)                      |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | The Ootle HotStuff Consensus Algorithm                                    |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2023-10-30                                                                |
+| References      | [I-TIP-RFC-O-0305](RFC-0305_Consensus.md)                                 |
 
-![status: draft](theme/images/status-draft.svg)
+## The Ootle HotStuff Consensus Algorithm
+
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77),[stringhandler](https://github.com/stringhandler)
 
@@ -49,251 +59,252 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This Request for Comment (RFC) describe the consensus mechanism known as Cerberus as it is implemented in Tari.
-Tari implements the Cerberus variant known as Optimistic Cerberus, for the most part, with Hotstuff BFT replacing
-pBFT as described in the Cerberus paper.
-
-This RFC serves to document any deviations from the academic paper as well as finer-grained details of the
-implementation.
+This Request for Comment (RFC) describes the consensus algorithm that the Ootle uses to agree on substate
+transitions: HotStuff BFT running over a fixed partition of the substate address space, with an explicit cross-shard
+protocol for transactions that span more than one partition.
 
 ## Related Requests for Comment
 
-* [RFC-303: Digital Assets Network](./RFC-0303_DanOverview.md)
+* [I-TIP-RFC-O-0303: The Tari Ootle](./RFC-0303_DanOverview.md)
+* [I-TIP-RFC-O-0305: The Ootle Consensus Layer](./RFC-0305_Consensus.md)
+* [I-TIP-RFC-O-0314: Validator Node Committee Selection](./RFC-0314_VNCSelection.md)
+* [I-TIP-RFC-O-0321: Processing Foreign Proposals](./RFC-0321_ProcessingForeignProposals.md)
+* [I-TIP-RFC-O-0350: The Tari Virtual Machine](./RFC-0350_TariVM.md)
 
 ## Introduction
 
-The Tari DAN is based on a sharded BFT consensus mechanism called [Cerberus](https://arxiv.org/abs/2008.04450).
+Work is not divided between validator nodes according to the contracts they manage, as in Tari DANv1, Polkadot or
+Avalanche. Instead the substate address space is partitioned, and validator nodes are distributed over the partitions.
+A transaction that reads or writes a substate is agreed by the committee covering that substate's partition, and a
+transaction spanning several partitions is agreed by those committees jointly.
 
-One particular note is that Tari has chosen Hotstuff as the base BFT consensus algorithm over pBFT mentioned in the
-paper.
+This means that nodes have to be prepared to execute transactions against any contract in the network. It creates a
+data synchronisation burden, but the payoff — a scalable, decentralised contract layer — significantly outweighs the
+trade-off.
 
-The core idea of Cerberus is that instead of dividing work up between validator nodes according to the contracts
-they are managing (as per Tari DANv1, Polkadot, Avalanche, etc.), Cerberus distributes nodes evenly over a set of
-state slots, called substates. Any time an instruction modifies the state of a contract, it will affect one or more
-substates, and only those nodes that are responsible for covering those addresses will reach consensus on the correct
-state changes.
+<div class="note">
+<p><strong>Naming.</strong> This RFC was previously titled "The Tari Cerberus-HotStuff Consensus Algorithm", and
+earlier drafts described the protocol in the terms of the <a href="https://arxiv.org/abs/2008.04450">Cerberus</a>
+paper — variously as Optimistic and as Pessimistic Cerberus. The design started there, and the paper (together with
+the <a href="https://arxiv.org/pdf/1708.03778.pdf">Chainspace</a> paper) remains useful background. What was built
+diverges enough that the name is no longer used in the code or in these RFCs. The principal differences are noted
+inline below.</p>
+</div>
 
-This means that nodes have to be prepared to execute instructions on any contract in the network. This
-does create a data synchronisation burden, but the added benefit of a highly scalable, decentralised DAN significantly
-outweighs this trade-off.
+## Shards, substates and addresses
 
-## Shards, substates and state addresses
+A **substate** is a unit of state. Every substate has an address, and the address determines which committee is
+responsible for it.
 
-The central idea of Cerberus is that all possible state objects are assigned a unique address, deterministically.
-Know the provenance of the state, know the address [^1]. The state space is incredibly large, with 2^256 possible 
-substate addresses;
-which is way more than the number of atoms in our galaxy.
-The chance of any two pieces of state ever trying to occupy the same substate is vanishingly small.
+A substate address is 36 bytes: a 32-byte **object key** followed by a 4-byte version number. The object key is
+itself a 1-byte **entity id** followed by a 31-byte component key.
 
-The state space is also evenly divided into contiguous sections, called shards. Each shard covers a set of
-non-overlapping substate addresses and the full set of shards covers the entire state space.
+That leading entity id byte is what selects the shard. With at most 256 preshards, one byte is a sufficient prefix to
+bind a substate to a shard, and `SubstateAddress::to_shard` reads the shard directly from the top bits of it.
 
-Each validator node registered on the base layer is randomly assigned a shard to cover. The number of shards
-depends on the total number of validator nodes in the network.
+<div class="note">
+<p>This is a deliberate departure from the "state is scattered uniformly at random across the address space" model of
+the Cerberus paper, and from earlier drafts of this RFC. Substates created by the same entity share an entity id, so
+a component and the vaults it owns land in the <em>same</em> shard and are agreed by a <em>single</em> committee.</p>
+<p>Uniform scattering maximises parallelism but makes almost every transaction a cross-shard transaction, and
+cross-shard agreement is expensive. Co-locating an entity's substates means the common case — a transaction touching
+one component and its vaults — is a purely local decision, while transactions that genuinely span entities still work
+through the cross-shard path. Sharding is by <em>entity</em>, not by individual substate.</p>
+</div>
 
-Collectively, all the nodes covering the same shard are known as a _validator (node) committee_ (VNC).
+The address space is divided into a fixed number of contiguous preshards (currently 256), which are collected into
+shard groups, one per committee. See [I-TIP-RFC-O-0314](./RFC-0314_VNCSelection.md).
 
-Broadly speaking, the shard-assignment algorithm will try to arrange things in a way that every shard has the same
-number of validator nodes covering it.
+Substates are versioned rather than being single-use slots. The lifecycle of a given version is:
 
-The number of nodes in a VNC is set system-wide. The final number has not been determined yet, but it will be a
-value, 3n+1, where n is an integer between 8 and 33, giving a committee size of between 25 and 100 nodes.
+* `Up` — this version is the current state at this address.
+* `Down` — this version has been superseded. A downed version can never be used as an input again.
 
-As nodes continue to join the network, the target committee size stays fixed, whereas the shard size will shrink.
-This is what will allow the Tari network to scale to achieve
-[thousands of transactions per second](https://www.tari.com/updates/2023-09-11-update-117).
+A transaction that mutates a substate downs version $n$ and ups version $n+1$. Because the version is part of the
+address, each version has its own address, and a transaction's inputs name a specific version.
 
-Every substate slot can only be used once. The substate lifecycle is
+<div class="note">
+Earlier drafts described substate slots as strictly single-use, in the Cerberus sense: an address is used once and
+then dead forever. Versioning is the same idea expressed differently — a given <em>version</em> of an address is
+single-use — but it means an entity's state has a stable identity across its lifetime, and it is why substate ids and
+substate addresses are distinct types.
+</div>
 
-* `Empty`. No state has ever been stored in this slot.
-* `Up`. A transaction output has resulted in some object being stored in this substate slot.
-* `Down`. The state in this slot has changed. We mark the substate as 'down' to indicate that the state is no longer
-  valid. Once a substate is down, it can never be used again [^2].
+### Substate types
 
-[^1]: This is a simplification to convey the general idea. The address derivation procedure is explained in full below.
+A substate's value is exactly one of:
 
-[^2]: It's possible that substates could be reset, decades in the future, if substate address collisions
-become a risk. For now, we treat all down substates as permanently unusable.
+* **Component** — an instance of a template, holding contract state.
+* **Resource** — the global identifier for a token type: fungible, non-fungible or confidential. The `Resource`
+  substate does not hold the tokens; `Vault` and `NonFungible` substates do.
+* **Vault** — holds resources. Vaults provide deposit and withdrawal into and out of `Bucket`s during execution.
+* **NonFungible** — a single non-fungible item, associated with its resource.
+* **Template** — a published template: the WASM module and its metadata. Created by the `PublishTemplate`
+  instruction.
+* **TransactionReceipt** — the recorded result of a transaction.
+* **ValidatorFeePool** — the pool a validator's leader fees accrue to, derived from its claim key. Batching fees into
+  a pool avoids a dust-sized value transfer per transaction; the validator withdraws with `ClaimValidatorFees`.
+* **Utxo** and **ConfidentialOutput** — a base-layer output brought into the Ootle, and a confidential output within
+  it.
+* **ClaimedOutputTombstone** — the record that a particular base-layer burn has been claimed, which is what makes a
+  peg-in claimable exactly once.
 
-## Braided consensus
+Substate ids are derived deterministically from the transaction hash and a per-transaction counter, under
+domain-separated hashes, so that the outputs of a transaction are known before it is executed and every node derives
+the same ones.
 
-A question that naturally arises whenever sharded distributed networks are discussed is, what happens when
-cross-shard communication happens. With Cerberus, the procedure is that affected shards come together to form a
-temporary Hotstuff consensus group, and reach agreement on the correct outcome of the instruction.
+### Locks
 
-A correct outcome is one of:
+A transaction declares the substates it touches and the lock it needs on each:
 
-* `Abort`: The instruction was invalid, and any state changes are rolled back such that the instruction never happened.
-* `Commit`: All input substates for the instruction will be set to `Down`, and at least one new substate will be
-  marked to `Up` (from `Empty`).
+* `Read` — the substate is used as a reference and is not changed. Read locks do not conflict with each other.
+* `Write` — the substate is downed and a new version upped. Write locks conflict with everything.
+* `Output` — the address is created by this transaction.
 
-Achieving this outcome entails a fairly complicated dance between the participating nodes[^3]:
+Two transactions requiring conflicting locks on the same substate cannot both commit.
 
-* When nodes receive an instruction that affects contract state, the nodes determine the _input substates_ that will
-  be consumed in the instruction. This substates MUST currently _all_ be in an `Up` state. If any input state is
-  `Empty`, or `Down`, the nodes can immediately vote `Abort` on the instruction.
-* Assuming all input states are valid, nodes will then _pledge_ these substates, effectively marking them as pending
-  `Down`.
-* Then we have cross-shard exchange. Every leader for the round will forward the instruction and the pledged states
-  to all other nodes in the wider consensus group.
-* Nodes wait until they have received the transaction and pledges from all the other committee leaders. Otherwise
-  they time-out, and ???.
-* Once this is complete, and all pledges have been received, nodes decide within their local committee whether to
-  `Commit` or `Abort`. This procedure proceeds via Hotstuff consensus rules and takes several rounds of
-  communication between the local leader and the committee members.
+## The transaction lifecycle
 
-[^3]: For a more formal treatment, refer to Pessimistic-Cerberus in the
-[Cerberus paper](https://arxiv.org/abs/2008.04450).
+Consensus proceeds by committees producing blocks of ordered **commands**. A command moves one transaction from one
+stage to the next; a block may contain many. The stages are:
 
-## Cerberus consensus - a diagram
+| Stage           | Meaning                                                                                      |
+|:----------------|:----------------------------------------------------------------------------------------------|
+| `New`           | Received, never proposed                                                                     |
+| `LocalOnly`     | Every input and output is in this shard group; no cross-shard agreement is needed              |
+| `LocalPrepared` | This shard group has agreed the transaction is preparable and has pledged its local inputs     |
+| `LocalAccepted` | Every involved shard group has prepared and pledged; this shard group has agreed the outcome   |
+| `AllAccepted`   | Every involved shard group accepted; the transaction commits                                   |
+| `SomeAccepted`  | At least one involved shard group aborted; the transaction aborts                              |
 
-Transaction processing for Pessimistic Cerberus follows the following broad algorithm:
+The corresponding commands are `LocalOnly`, `LocalPrepare`, `LocalAccept`, `AllAccept` and `SomeAccept`. Three
+further commands are not transaction commands: `ForeignProposal`
+([I-TIP-RFC-O-0321](./RFC-0321_ProcessingForeignProposals.md)), `EvictNode`
+([I-TIP-RFC-O-0305](./RFC-0305_Consensus.md)) and `EndEpoch`
+([I-TIP-RFC-O-0325](./RFC-0325_DanTimeManagement.md)).
 
-1. A client broadcasts a transaction to multiple validator nodes, ensuring that at least one node from every shard
-   that covers the inputs for the transaction receives the transaction. In practice, this can be achieved by
-   communicating with a single node, and the node shoulders the responsibility of broadcasting the transaction to
-   the rest of the network, including to every node in the node's local VNC.
-2. When a transaction is received by a validator node, it checks to see if at least one input for the transaction is
-   in the node's shard space. If not, it may ignore the transaction. Otherwise, it forwards the message to the
-   current round leader.
-3. Soon, every round leader for the shards that contain affected inputs will have received the transaction.
-4. The affected shards then begin the _local consensus_ phase. This consists of a full Hotstuff consensus chain with
-   the leader proposing a new block containing the transaction, and the committee members voting on the block.
-5. At the same time, all local inputs (the subset of transaction inputs covered by the local shard) are marked as
-   `Pledged`. If any input is already marked as `Pledged`, the transaction immediately resolves as `Abort`. This step
-   prevents double-spending of inputs across concurrent transactions in separate shards. Note that if a double-spend
-   is attempted by submitting the two transactions to different shards, then _both_ transactions will be aborted, since
-   Cerberus does not have a way to determine which transaction was 'first'.
-6. If _every_ input is in a single shard, then the local consensus is sufficient to finalise the outcome of the
-   transaction (proceeding to execution phase as described below), and the result can be broadcast to the client.
-6. Otherwise, the leader of the round broadcasts the transaction, some metadata, and the local input state to the
-   other shards leaders involved in the transaction. Notice that up until this point, _execution_ of the transaction is
-   impossible in a multi-shard transaction because no node has all the input state it needs to run the transaction
-   instruction. The local consensus phase is solely to determine the validity of the transaction from an input and
-   double-spend perspective.
-7. When every shard leader has received a message from every other shard leader participating the transaction, and
-   none of the messages received was `Abort`, then the shards can begin the _global consensus_ phase.
-8. Round leaders transmit the received messages to the rest of their VNC.
-9. Each VN checks that the state received from each foreign shard corresponds to the inputs in the transaction. If
-   not, the VN can immediately vote `Abort`.
-8. At this point, the shard leaders have all the state they need to execute the transaction. Execution is handed off
-   to the TariVM which returns a new set of state objects as output. It is important to note that if a transaction
-   _execution_ returns an error (because someone tried to spend more than they have, for example), then this _does
-   not lead to an `Abort` decision!`
-9. Each shard executes the transaction independently, and another Hotstuff consensus chain is produced to achieve
-   consensus on the resulting output set. If the transaction is `Abort`, then all pledged inputs are rolled back.
-   Otherwise, the decision is `Commit`, and the pledged inputs are marked as `Down`. Any output objects that belong
-   in the current shard can be marked as `Up`, and the transaction result is broadcast to the client as well as
-   other shards that need to mark new substates as `Up` as a result of the transaction output.
+Commands are ordered deterministically within a block: `EvictNode` first, then `ForeignProposal` ordered by shard
+group and block id, then transaction commands ordered by transaction id, then `EndEpoch`. Every replica therefore
+processes a block's commands in exactly the same order and derives the same result.
 
-A mermaid flow diagram of the above process is shown below:
+### Single-shard transactions
+
+If every substate a transaction touches falls in the local shard group, no cross-shard exchange is needed. The
+transaction is sequenced as a single `LocalOnly` command: the leader executes it while proposing, replicas re-execute
+it while validating, and the block's three-chain commits the result. This is the common case, because an entity's
+substates are co-located.
+
+### Cross-shard transactions
+
+1. A client submits the transaction to any validator, or to an indexer, which gossips it. Each committee holding an
+   input picks it up.
+2. Each involved committee independently sequences a `LocalPrepare`: it checks that its local inputs are at the
+   declared versions and are not already locked, and pledges them. A committee that finds an input missing, downed or
+   conflicting decides `ABORT` immediately.
+3. When the `LocalPrepare` block commits, the committee broadcasts a notification; the other involved committees pull
+   the block with its commit proof and sequence it as a `ForeignProposal`
+   ([I-TIP-RFC-O-0321](./RFC-0321_ProcessingForeignProposals.md)). Processing it merges the foreign pledges and
+   decision into the local transaction record.
+4. Once a committee has evidence from every involved shard group, it has the foreign input state it needs. It
+   executes the transaction in the Tari Virtual Machine and sequences a `LocalAccept` carrying its decision.
+5. `LocalAccept` blocks are exchanged the same way. When every involved shard group has accepted, each sequences
+   `AllAccept` and the transaction commits: pledged inputs are downed and outputs in the local shard group are upped.
+   If any shard group aborted, each sequences `SomeAccept` and the transaction aborts, releasing all pledges.
+
+Two things are worth calling out.
+
+**Execution failure is not abort.** If executing the transaction returns an error — a template panics, or an account
+has insufficient funds — that is a *successful* consensus outcome. The committee agrees the transaction failed,
+records the failure in a transaction receipt, and charges the fee. `ABORT` is reserved for the case where the
+transaction could not be sequenced at all: a missing or conflicting input, or a foreign shard group that aborted.
+
+**Concurrent conflicting transactions both abort.** If two transactions pledge the same input in different shard
+groups, there is no way to determine which was "first", so both abort. This is `ForeignPledgeInputConflict`.
+
+<div class="note">
+Earlier drafts described this exchange as leader-to-leader: each round's leader forwards the transaction and its
+pledged state directly to the leaders of the other involved committees, which forward it to their members. What was
+built exchanges <em>committed blocks with commit proofs</em>, pulled on demand after a gossiped notification. The
+difference matters: a foreign committee's contribution is only accepted once it has been committed by that committee
+and can prove it, so a faulty foreign leader cannot inject state that its own committee never agreed to.
+</div>
+
+## Local consensus: HotStuff
+
+Within a committee, agreement on each block follows HotStuff. A block is committed once a three-chain of quorum
+certificates is built on top of it: each subsequent block's quorum certificate justifies its parent, and a block is
+locked and then committed as that chain extends. A quorum is $2f+1$ of the committee's vote power.
+
+The leader for a height is `height % committee_size` over the committee ordered by shard key. A pacemaker triggers a
+new view if no valid proposal arrives within `pacemaker_block_time` — 10 seconds — plus a delta; replicas then send a
+`NewView` carrying their highest quorum certificate to the leader at the next height. Repeated failure to propose
+leads to suspension and eventually to an `EvictNode` command. See
+[I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
+
+### Bounding a block's cost
+
+A leader could otherwise propose a block that takes replicas longer to validate than the block time, stalling the
+chain. Four budgets bound this:
+
+* `max_block_weight` and `max_commands_in_block` — what a leader will pack. These are local proposing heuristics, not
+  validated on receive, so nodes may run different values without fork risk.
+* `max_block_validation_weight` and `max_block_validation_execution_points` — what a replica will accept. These *are*
+  consensus rules: a replica keeps a running total while executing a block's commands and stops at the first command
+  that pushes it over the limit, voting no. Both are set above the proposing budgets so that honest proposals are
+  never rejected.
+
+Weight is size- and IO-based; execution points come from WASM metering plus native cryptographic verification. Both
+are needed, because a small transaction can be compute-heavy and a large one cheap to execute. Both are
+deterministic, so every replica stops at the same command and votes identically.
+
+## Consensus flow
 
 ```mermaid
-
 flowchart TD
-    A[Client] --> B([Broadcast transaction])
-    B --> C{Any tx inputs in my shard?}
-    C --> |Yes| D[Forward to leader]
-    C --> |No| E[Ignore transaction]
-    D -.-> L
-    
-    L[Leader] ==> BL([ Broadcast message to VNC ])
-    BL -.-> |PREPARE| LN[VNC nodes]
-    subgraph Local_Consensus
-        LN --> G{Any inputs already pledged?}    
-        G --> |Yes. 
-        Vote PREPARED_ABORT | LC
-        
-        G --> |No| I[Pledge inputs]
-        I --> |Vote PREPARED_COMMIT| LC[[Consensus on pledges]]
-        LC --> LCD{Consensus on PREPARED?}
-        LCD --> |No| LocalStall[Local liveness break!]
-    end
-        
-    
-    LCD --> |Yes| Pledge[Pledge inputs]
-    Pledge --> SS{ Single shard tx? }
-    SS --> |Yes| EX1[[Execute transaction]]
-    EX1 --> SSC[[Consensus on result]]
-    SSC --> GCD
-    
-    ssCommit --> |No| Abort[Abort!] 
-    ssCommit --> |Yes| createSubstates[[Substate creation]]
-    
-    SS -.-> |No| BLC([ Send LOCAL_PREPARED_*
-     & local state to other Leaders ])
-    BLC -.-> Leaders
-    Leaders -.-> |Forward to VNC| Fwd[Validator node]
-    
-    subgraph Global_consensus
-        Fwd --> wait{Are ANY messages 
-        LOCAL_PREPARED_ABORT or
-        timed out? }
-        wait --> |Yes
-        Vote SOMEPREPARED_ABORT| globalConsensus
-        wait --> |No| EX[[Execute transaction]]
-        
-        EX --> |Vote ACCEPT_*| globalConsensus[[Intershard Consensus on result]]
-    end
-    globalConsensus --> GCD{Consensus on ACCEPT_*?}
-    GCD --> |No.| Stall[Abandon block!]
-    GCD--> |Yes| ssCommit{Decision == ACCEPT_COMMIT?}
+    C[Client] --> |gossip transaction| M[Validators holding an input]
+    M --> L[Local committee leader]
+    L --> LO{All substates local?}
+
+    LO --> |Yes| Only[["Sequence LocalOnly: execute, agree result"]]
+    Only --> Commit
+
+    LO --> |No| Prep[["Sequence LocalPrepare: check and pledge local inputs"]]
+    Prep --> PrepOk{"Inputs valid and unlocked?"}
+    PrepOk --> |No| Abort[["Sequence SomeAccept: ABORT, release pledges"]]
+    PrepOk --> |Yes| Notify(["Broadcast notification on block commit"])
+    Notify -.-> |foreign committees pull| FP[["Sequence ForeignProposal"]]
+    FP --> Ev{"Evidence from every involved shard group?"}
+    Ev --> |Not yet| FP
+    Ev --> |"Foreign ABORT or pledge conflict"| Abort
+    Ev --> |Yes| Exec[["Execute in the TVM"]]
+    Exec --> Acc[["Sequence LocalAccept"]]
+    Acc -.-> |exchanged the same way| AllAcc{"All shard groups accepted?"}
+    AllAcc --> |No| Abort
+    AllAcc --> |Yes| Commit[["Sequence AllAccept: down inputs, up outputs"]]
 ```
-
-The process above describes PCerberus in general, with some modifications from [Chainspace]. There are a few details
-that need some additional explanation. In particular, this includes substate address derivation and state
-synchronisation.
-
-## Substate address derivation
-
-A substate contains two pieces of information:
-
-* The value of the substate object,
-* The version number of the substate object.
-
-The _substate address_ is the universal location of the substate in the 256-bit state space. Most substate addresses
-are derived from a hash of their id, the provenance of which depends on the substate value type, and their version.
-
-The substate value depends on the type of data the value represents. It is exactly one of the following:
-
-* Component - A component is an instantiation of a [contract template].
-* Resource - A resource represents a token. Tokens can be fungible, non-fungible, or confidential. The `Resource`
-  substate does not store the tokens themselves, but serves as the global identifier for the resource. The tokens
-  themselves are kept in `Vaults`, or `NonFungible` substates.
-* Vault - Resources are stored in Vaults. Vaults provide generalised functionality for depositing and withdrawing
-  their resources from the vaults into Buckets.
-* NonFungible - A substate representing a singular non-fungible item. Non-fungible items are always associated with
-  their associated non-fungible `Resource`.
-* NonFungibleIndex - A substate that holds a reference to another substate.
-* UnclaimedConfidentialOutput - A substate representing funds that were burnt on the Minotari layer and are yet to
-  be claimed in the Tari network.
-* TransactionReceipt - A substate recording the result of a transaction.
-* FeeClaim - To prevent a proliferation of dust-like value transfers for every transaction due to fees, a fee claim is
-  generated instead that allows VNs to aggregate fees and claim them in a single batched transaction at a later time.
-  Fee claims remain in the up state forever to prevent double claims.
-
-Substate ids are domain-separated hashes of their identifying data, which depends on substate type as follows:
-
-* Component - Component addresses are derived from the hash of the component's contract template id and a component
-  id. The component id is typically a hash of the origin transaction's hash and a counter.
-* Resource - Generally a unique, random 256-bit integer, derived from the hash of the transaction hash and a counter.
-  Some ids for special resources are hard-coded.
-* Vault - Vault ids are a unique, random 256-bit integer, derived from the hash of the transaction hash and a counter.
-* NonFungible - The id of a non-fungible item is derived from the item's resource address, and its id. The id
-  depends on the specifics of the NFT, and could be an integer, a string, a hash, or a uuid.
-* NonFungibleIndex - Non-fungible index ids are derived from the resource they are pointing to and an index offset.
-* UnclaimedConfidentialOutput - The UCO id is derived from the burn commitment on the Minotari layer.
-* TransactionReceipt - The id of a transaction receipt is the hash of the associated transaction.
-* FeeClaim - The id of a fee claim is derived from the epoch number and the validator's public key.
 
 ## State synchronisation
 
+A validator joining a shard group — at first registration, or after a shuffle moves it — must hold that shard group's
+substates before it can validate proposals against them.
+
+Because committee assignment for the next epoch is known before the epoch begins
+([I-TIP-RFC-O-0325](./RFC-0325_DanTimeManagement.md)), a validator learns its next shard group in advance and syncs
+during the remainder of the current epoch. Sync runs over the `rpc_state_sync` protocol against peers already in the
+target shard group, transferring blocks and the substate state tree. A node that falls behind during an epoch
+recovers through the same path, driven by catch-up sync requests when it detects that its view is behind its
+committee's.
+
+The state tree is a Jellyfish Merkle tree per shard, so a syncing node can verify the state it receives against the
+state merkle root committed in blocks rather than trusting the peer serving it.
+
 # Change Log
 
-| Date        | Change       | Author |
-|:------------|:-------------|:-------|
-| 17 Dec 2023 | Second draft | CjS77  |
-| 30 Oct 2023 | First draft  | CjS77  |
+| Date        | Change                                                                                  | Author |
+|:------------|:------------------------------------------------------------------------------------------|:-------|
+| 07 Sep 2026 | Retitled; realigned with the implementation: entity-id sharding, command stages, budgets | Tari Labs |
+| 17 Dec 2023 | Second draft                                                                             | CjS77  |
+| 30 Oct 2023 | First draft                                                                              | CjS77  |
 
 [base layer]: Glossary.md#base-layer
 

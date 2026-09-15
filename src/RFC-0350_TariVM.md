@@ -1,8 +1,18 @@
-# RFC-0350/TariVM
+# I-TIP-RFC-O-0350: TariVM
+
+| TIP             | [I-TIP-RFC-O-0350](#i-tip-rfc-o-0350-tarivm)                              |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | The Tari Virtual Machine                                                  |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2023-12-20                                                                |
+| References      |                                                                           |
 
 ## The Tari Virtual Machine
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
@@ -49,79 +59,73 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This RFC describes the design goals and rationale for the Tari Virtual Machine (TVM).
+This RFC describes the design goals and rationale for the Tari Virtual Machine (TVM), and the logic layer built
+around it.
 
 ## Related Requests for Comment
 
-* [RFC-0303: Digital Assets Network](RFC-0303_DanOverview.md)
-* [RFC-305: The Tari Network Consensus Layer](RFC-0305_Consensus.md)
+* [I-TIP-RFC-O-0303: The Tari Ootle](./RFC-0303_DanOverview.md)
+* [I-TIP-RFC-O-0305: The Ootle Consensus Layer](./RFC-0305_Consensus.md)
+* [I-TIP-RFC-O-0330: The Ootle HotStuff Consensus Algorithm](./RFC-0330_Cerberus.md)
+* [I-TIP-RFC-O-0331: Ootle Indexers](./RFC-0331_Indexers.md)
 
 ## Description
 
-The Consensus Layer for the Tari network, described in [RFC-0305](RFC-0305_Consensus.md), is responsible for
-distributed and trust-minimised decision-making in the Tari digital assets network (DAN).
+The consensus layer, described in [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md), is responsible for distributed and
+trust-minimised decision-making. It is blind to any notion of smart contracts, NFTs or stablecoins; it merely enforces
+that decisions made by honest nodes are propagated to the rest of the network.
 
-The consensus layer is blind to any notions of smart contracts, NFTs or stablecoins. It merely enforces that
-decision made by honest nodes are propagated to the rest of the network.
+Business logic is encapsulated in the Tari logic layer.
 
-Business logic is encapsulated in the Tari Logic layer.
+The relationship between the two layers is best illustrated by the transaction flow, from client to resolution, shown
+in Figure 1.
 
-The relationship between the logic and the consensus layers is best illustrated by the transaction flow, from client
-to resolution. This flow is diagrammed in Figure 1.
+The client builds a transaction, typically from a [transaction manifest](#the-transaction-manifest). The manifest
+collates every template invocation, method call and log entry the client wants to execute into a single bundle. It is
+usually submitted to an indexer, which collects the input state required for the transaction and can dry-run it before
+it is submitted to a validator node. This is a deviation from the Cerberus and Chainspace papers.
 
-The client creates a transaction using a [transaction manifest](#the-transaction-manifest). The manifest collates
-every contract, function call and log entry that the client wants to execute into a single bundle. The manifest is then
-submitted to an indexer that will collect all the input state required for the transaction pre-emptively. This is a
-deviation from the Cerberus and Chainspace papers and allows the indexer to perform a dry-run of the transaction before
-submitting it to a validator node.
+The advantage is that the client can be told about errors before submitting to the network and incurring fees.
 
-The advantage of this is that the client can be notified of any errors before submitting the transaction to the
-network and incurring fees.
+On the other hand, the indexer commits to a given set of input versions when it submits the transaction. If the
+indexer is mistaken, or lagging, the transaction will be aborted for using a downed input.
 
-On the other hand, the indexer commits to the given set of inputs when submitting the transaction to the validator node.
-If the indexer is mistaken, or lagging in its updates, it is possible that the transaction will be aborted due to
-attempting to use expired inputs.
+Assuming everything is in order, the validator committees confirm the input versions, collect the local and foreign
+substates involved, and pass the transaction and its input state to the Tari engine for execution.
 
-However, this is not expected to happen often, and assuming everything is in order, the validator node will confirm
-the correct version of all the input states by collecting all local and foreign substates involved in the transaction.
+The engine determines which WASM modules are required, loads them into a WASM runtime, and executes the instructions.
+It makes use of several services to do this, including the template provider, the template library and the runtime
+wrapper.
 
-If these are satisfactory and match what was provided by the indexer, the validator node will pass the transaction
-manifest data along with the input state to the Tari Engine for execution.
+The execution result — successful or not — is returned to the validator node, which compares it with its peers'
+results through HotStuff consensus. If consensus is achieved, the affected substates are updated (see
+[I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md)) and the result is relayed to the indexer, which passes it to the client.
 
-The Tari Engine will determine which WASM modules are required to perform this work, load them into a WASM runtime,
-and execute the functions. The Tari engine makes use of several services to help it in this task, including the
-template manager, the Tari SDK, and Tari runtime wrapper.
-
-The execution result (whether successful or not) is returned to the validator node, which then compares the results
-with its peers via Hotstuff consensus to achieve agreement on the final result. If consensus is achieved, the affected
-substates are updated (see [RFC-330](RFC-0330_Cerberus.md)) and the result is relayed to the indexer who passes it
-on to the client.
-
-A key point here is that the consensus layer delegates *all* business logic to the logic layer. However, _only_ the
-consensus layer has the ability to make changes to the state of the network, after reaching consensus.
+A key point: the consensus layer delegates *all* business logic to the logic layer, but _only_ the consensus layer can
+change the state of the network, and only after reaching agreement.
 
 ```mermaid
 flowchart LR
     Cl((Client)) -------> |tx
     'Transfer JPG to Bob'| Ix1
     Ix1 -.-> |returns result| Cl
-    
+
     subgraph Indexer
         TM --> Ix1([Indexer])
         Ix1 <-.-> |reads| SS1[(Substates)]
-        Ix1 <-.-> |requests| VN1[[VNC]]    
+        Ix1 <-.-> |requests| VN1[[VNC]]
         Ix1 <-.-> |dry run| VM1[[TariVM]]
     end
-    Ix1 -->|submits with\nlocked inputs| C
-    
- 
+    Ix1 -->|submits with
+    input versions| C
+
     subgraph Logic Layer
-      T[Template manager]
+      T[Template provider]
       W[Wasm compiler]
-      ABI[Contract interface]
+      ABI[Template interface]
       E[Tari engine]
       RT[WASM Runtime]
-      SDK[Tari SDK]
+      SDK[Template library]
       E <--> RT
     end
 
@@ -129,111 +133,141 @@ flowchart LR
     E --> |returns new substates| C
     subgraph Consensus Layer
         C[Validator node]
-        C <-.-> |reads/writes| SS[(Local substates)] 
-        C <-.-> |foreign state\nrequests| VNC[[VNC]]
+        C <-.-> |reads/writes| SS[(Local substates)]
+        C <-.-> |foreign proposals| VNC[[VNC]]
         EM[Epoch management]
-        VNCm[Validator committee\n management]
-        HS[Cerberus-Hotstuff]
+        VNCm[Validator committee
+         management]
+        HS[HotStuff]
     end
 ```
 
-The Tari Logic layer comprises several submodules:
+The logic layer comprises several submodules:
 
-* **The Tari engine**. The Tari engine is responsible for the transaction execution process and fee disbursements.
-* **The Template manager**. The template manager polls the Minotari base layer looking for template registration
-  transactions.
-* **The Tari runtime**. The Tari runtime wraps a [WASM virtual machine](#why-web-assembly) that executes the compiled
-  contract code. The runtime is able to calculate the total compute requirements for every instruction, which determines
-  the transaction fee.
-* **The contract interface (ABI)**. This is a list of functions, their arguments and return values that a particular
-  contract is able to execute. The ABI is generated when the contract template is compiled.
-* **The transaction manifest**. This is a high-level set of instructions that a client application generates to achieve
-  some user goal.
+* **The Tari engine.** Responsible for transaction execution and fee accounting.
+* **The template provider.** Locates and supplies template code to the engine, from the network or from a local cache.
+* **The Tari runtime.** Wraps a [WASM virtual machine](#why-web-assembly) that executes compiled template code. The
+  runtime meters compute, which is an input to the transaction fee.
+* **The template interface (ABI).** The list of functions and methods a template exposes, with their arguments and
+  return values. Generated when the template is compiled.
+* **The transaction manifest.** A high-level set of instructions that a client application generates to achieve some
+  user goal.
 
 ### The Tari engine
 
-The Tari engine is responsible for the transaction execution process and fee disbursements. It communicates with
-other actors in the Tari network via JSON-RPC. Transactions can be submitted to be executed via the
-`submit_transaction` procedure call.
+The engine executes transactions and accounts for fees. A transaction contains:
 
-A transaction contains the following information:
+* the network it is for,
+* a list of *fee instructions*, executed first and charged even if the main instructions fail,
+* the list of *instructions* to execute,
+* a set of input substate requirements, each naming an address and optionally a version,
+* `min_epoch` and a mandatory `max_epoch`, bounding the transaction's lifetime,
+* an optional side-channel of prunable blobs, referenced by instructions and committed to by hash,
+* a nonce, distinguishing otherwise-identical transactions, and
+* signatures.
 
-* A list of input substate that will be downed (spent).
-* A list of input substates that are used as references, but their state is not altered.
-* The list of instructions to execute (call method, claim funds, emit logs etc.).
-* Signatures
-* Network metadata
+The mandatory `max_epoch` is worth calling out: it is capped at `max_transaction_validity_epochs` past the current
+epoch, so every transaction's death is deterministic. A wallet can declare a transaction permanently dead once that
+epoch has passed, and an aborted attempt — which consensus deliberately allows to be re-sequenced — cannot be retried
+indefinitely.
 
-Transaction execution proceeds via the following high-level flow:
+The instruction set includes `CallFunction` and `CallMethod`, workspace manipulation (`PutLastInstructionOutputOn`
+`Workspace`, `TakeFromBucket`, `PutIntoBucket`, `DropAllProofsInWorkspace`), `Assert`, `CreateAccount`,
+`AllocateAddress`, `PublishTemplate`, `UpdateComponentTemplate`, `StealthTransfer`, `PayFeeFromBucket`, `ClaimBurn`
+and `ClaimValidatorFees`.
 
-* The engine determines the total fee for the transaction by charging for every operation executed within the WASM
-  runtime, as per the [fee schedule](#the-tari-fee-schedule).
-* The engine initializes a WASM runtime, which executes the instructions embedded in the transaction. For each
-  instruction, a [template provider] will attempt to provide the WASM, or other compatible binary, to execute the
-  instruction with the given input parameters. See also the [base node scanner](#base-node-scanner). For now, only
-  WASM modules are supported, but in future, additional runtimes could be supported by the Tari Engine, including
-  Zero-Knowledge contracts, or the EVM.
-* The result of execution -- the execution status, and the set of outputs -- is passed back to the consensus layer.
-  Note that outside of the vanishingly small chance of an output substate collision, even a failed execution attempt is
-  a 'positive' (i.e. `COMMIT`ted) result in terms of consensus, as long as the super-majority of nodes agree that
-  "failure" is the consensus result!
+Transaction execution proceeds as follows:
 
-#### Template manager
+* The engine executes the fee instructions, then the main instructions, charging for each operation as it goes.
+* For each instruction, the template provider supplies the WASM to execute it. Only WASM is supported today, but the
+  engine's native execution path is priced in the same units, so other runtimes — zero-knowledge templates, or an EVM
+  — could be added.
+* The result of execution — the status and the set of outputs — is passed back to the consensus layer.
 
-The Tari engine maintains a service that scans the Minotari chain every few minutes that among other things, looks
-for template registration transactions.
+Note that outside the vanishingly small chance of an output address collision, even a failed execution is a
+`COMMIT` as far as consensus is concerned, as long as a super-majority of nodes agree that "failure" is the result.
 
-When a new template is registered, the template manager will locate the registered WASM module, validate it, and
-store it in the local database.
+#### Fees
 
-The template manager abstracts away issues such as template versioning, whether the module is stored in IPFS, or a
-centralised repository. It can also request binaries from a peer to reduce the load on external services.
+Fees are charged per unit of work actually consumed, not by a flat per-instruction price. The engine attributes every
+charge to a `FeeSource`:
 
-In future, the template manager might also be able to retrieve source code, and make use of reproducible builds to
-compile audited source code and add it to the local WASM repository.
+| Source                  | What it prices                                                                       |
+|:------------------------|:---------------------------------------------------------------------------------------|
+| `Initial`               | A flat charge for admitting the transaction                                           |
+| `TransactionWeight`     | Size and IO cost, proportional to the transaction's serialised weight                 |
+| `RuntimeCall`           | Engine host calls, plus the per-byte cost of log messages                             |
+| `Storage`               | Bytes of state written                                                                |
+| `SubstateCreate`        | Creating a new substate                                                               |
+| `TemplateLoad`          | Loading and instantiating a template                                                  |
+| `WasmExecution`         | WASM execution, in proportion to consumed Wasmer metering points                      |
+| `NativeExecution`       | Native verification — stealth transfers, confidential withdraws, burn claims — priced in the same points via wall-clock equivalence |
+| `SignatureVerification` | Verifying transaction signatures                                                      |
+| `TemplatePublish`       | Publishing a template binary. The first `template_size_premium_free_bytes` are priced at the storage rate; every unit beyond is charged quadratically, to discourage oversized templates |
+| `ExhaustBurn`           | The exhaust burn ([I-TIP-RFC-O-0320](./RFC-0320_TurbineModel.md)), destroyed rather than paid to the leader |
+
+Metering both WASM and native work in the same units matters for consensus, not just for pricing: block admission is
+bounded by total execution points ([I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md)), and that bound would be trivially
+evaded by a block full of cheap-to-serialise, expensive-to-verify confidential statements if native work were free.
+
+#### Templates and the template provider
+
+Templates are published to the Ootle with the `PublishTemplate` instruction, which creates a `Template` substate
+holding the WASM module. The template address is derived from the publisher and the module, so a published template
+is content-addressed and immutable. Publishing a new version yields a new address; an existing component can be moved
+to it with `UpdateComponentTemplate`, subject to the component's owner rule.
+
+The template provider is what the engine calls to obtain a template's compiled module. It resolves the template from
+the network and caches it, with an on-disk Wasmer module cache so that a hot template does not have to be recompiled
+per execution.
+
+<div class="note">
+<p>Earlier drafts of this RFC described a <em>template manager</em> that scanned the Minotari chain for template
+registration transactions and fetched the referenced module from IPFS or a centralised repository.</p>
+<p>Base-layer template registration (<code>CodeTemplateRegistration</code>) still exists and is still scanned, but
+on-chain publishing has superseded it as the mechanism new templates should use: it removes the dependency on external
+hosting, and makes the module part of consensus state rather than something each node fetches and hopes matches.</p>
+</div>
 
 ### The Tari runtime
 
-The Tari runtime is a wrapper that provides common functionality for executing arbitrary smart contracts in WASM  
-modules. Functionality includes:
+The Tari runtime wraps the WASM VM and provides the common functionality templates need:
 
-* calling a function,
-* calling a method,
+* calling a function or method,
 * emitting a log entry,
-* pushing an object into the workspace.
+* pushing an object onto the workspace,
+* creating and consuming buckets and proofs, and
+* reading and writing component state.
 
-In combination with a contract's ABI, the runtime is able to execute almost any contract code.
+Combined with a template's ABI, the runtime can execute almost any template.
 
-Tari uses the [wasmer](https://wasmer.io/) runtime to actually load and execute Web Assembly inside a secure,
-sandboxed environment.
+The Ootle uses the [wasmer](https://wasmer.io/) runtime with the Cranelift compiler, together with
+`wasmer-middlewares` for metering. Metering is what makes execution cost deterministic and identical on every node,
+which is a consensus requirement, not merely a billing convenience.
 
-## The contract interface (ABI)
+## The template interface (ABI)
 
-Rust is strongly-typed, yet we need to be able to call an unlimited variety of functions and methods from arbitrary
-contracts in a unified, consistent way. This is where the ABI comes in. It defines all the public methods and
-their arguments that a contract exposes.
+Rust is strongly typed, yet we need to call an unlimited variety of functions and methods from arbitrary templates in
+a unified, consistent way. This is where the ABI comes in: it defines all the public functions and methods a template
+exposes, and their arguments.
 
-The ABI is generated when a contract template is compiled from Rust source.
+The ABI is generated when a template is compiled from Rust source, by the `#[template]` procedural macro.
 
 ## The transaction manifest
 
-When a client wants to interact with the DAN, it is often the case that she wants to invoke multiple functions
-across multiple contracts simultaneously. For example, Alice may want to buy a monkey NFT from Bob. Her transaction
-might lock funds in a cryptographic escrow (in the Tari contract) until she has proof that the NFT has landed in her
-NFT account (which is in a different contract).
+When a client wants to interact with the Ootle, it is often the case that it wants to invoke multiple functions
+across multiple components at once. For example, Alice may want to buy a monkey NFT from Bob: her transaction locks
+funds until she has proof that the NFT has landed in her account.
 
-The transaction manifest collects all the information necessary to achieve this goal, including the contract(s)
-function(s) to call, their arguments, fee information and all the necessary signature and witness data to authorise the
-transaction. The transaction manifest is compiled into an abstract syntax tree (AST) that can be consumed by a
-validator node.
+The transaction manifest collects everything necessary to achieve this: the functions to call, their arguments, fee
+instructions, and the signature and witness data authorising the transaction. It is a small DSL, parsed by
+`tari_transaction_manifest::parse_manifest` into a list of instructions that a validator node can execute.
 
-Internally, A manifest is simply a list of manifest _intents_ that are bundled together into an atomic whole.
+Internally, a manifest is a list of instructions bundled into an atomic whole. An instruction is typically:
 
-An intent is typically one of the following:
-
-* A template invocation or component invocation, indicating that the user wants to execute a function on a contract,
-  supplying the necessary input arguments.
-* A log entry, providing the log level and message.
+* a template or component invocation, supplying the necessary input arguments,
+* a workspace operation moving values between instructions, or
+* an assertion or log entry.
 
 ## Why Web Assembly?
 
@@ -293,11 +327,7 @@ For the time-being, WebAssembly is a pretty clear winner.
 
 # Change Log
 
-| Date        | Change           | Author |
-|:------------|:-----------------|:-------|
-| 20 Dec 2023 | First draft      | CjS77  |
-
-
-
-
-
+| Date        | Change                                                                     | Author |
+|:------------|:-----------------------------------------------------------------------------|:-------|
+| 07 Sep 2026 | On-chain template publishing, fee sources, transaction structure; DAN -> Ootle | Tari Labs |
+| 20 Dec 2023 | First draft                                                                  | CjS77  |

@@ -1,8 +1,18 @@
-# RFC-0320/TurbineModel
+# I-TIP-RFC-O-0320: TurbineModel
 
-## The DAN peg-in mechanism, or Turbine model
+| TIP             | [I-TIP-RFC-O-0320](#i-tip-rfc-o-0320-turbinemodel)                        |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | The Ootle Peg-In Mechanism, or Turbine Model                              |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-11-01                                                                |
+| References      |                                                                           |
 
-![status: draft](theme/images/status-draft.svg)
+## The Ootle Peg-In Mechanism, or Turbine Model
+
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
@@ -48,36 +58,36 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-Tari is used to power the DAN's economic engine.
+Tari powers the Ootle's economic engine.
 
-This RFC describes the motivation and mechanism of the Minotari to DAN peg-in mechanism. 
+This RFC describes the motivation for, and the mechanism of, the Minotari-to-Ootle peg-in.
 
 ## Related Requests for Comment
 
-* [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
-* [RFC-0303: Digital Assets Network](RFC-0303_DanOverview.md)
+* [I-TIP-RFC-O-0303: The Tari Ootle](./RFC-0303_DanOverview.md)
+* [I-TIP-RFC-O-0350: The Tari Virtual Machine](./RFC-0350_TariVM.md)
+* [RFC-0310: Submarine Swaps](./RFC-0310_SubmarineSwaps.md)
+* [I-TIP-RFC-MT-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
 
 ## Description
 
-Side-chains are related to their parent chains via a pegging mechanism. In general, peg-in transactions (transferring
-value to the side-chain) are straightforward. One locks value up on the parent chain, which can be referenced by the
-side-chains. However, the reverse transaction is fraught with difficulty, since the parent chain must know almost
-nothing about the transaction particulars of the side chain. We know this is the case, otherwise the entire
-side-chain + parent-chain system are forced to work in lock-step and the two chains are really just one larger, more 
-complicated chain.
+Side-chains are related to their parent chains via a pegging mechanism. In general, peg-in transactions — transferring
+value to the side-chain — are straightforward. One locks value up on the parent chain, which can be referenced by the
+side-chain. The reverse transaction is fraught with difficulty, since the parent chain must know almost nothing about
+the transaction particulars of the side chain. We know this is the case; otherwise the side-chain and parent-chain
+system are forced to work in lock-step, and the two chains are really just one larger, more complicated chain.
 
-Peg outs are particularly difficult if the participants change on the side-chain (as opposed to say, payment 
-channels, like the Lightning Network, where the same parties peg-in and -out).
+Peg outs are particularly difficult if the participants change on the side-chain, as opposed to, say, payment
+channels like the Lightning Network, where the same parties peg in and out.
 
-There are several proposals to develop a reliable two-way peg, including [space-chains], [drive-chains] and federated
-side-chains, like [elements]. All of them have particular trade-offs and difficulties.
+There are several proposals for a reliable two-way peg, including [space-chains], [drive-chains] and federated
+side-chains like [elements]. All of them have particular trade-offs and difficulties.
 
-For Tari, we propose a slightly different approach: A one-way peg with persistent 2nd-layer burn.
+For Tari, we propose a slightly different approach: a one-way peg with persistent second-layer burn.
 
 Because the operating principle is quite similar to that of a gas turbine, we call this approach the _turbine model_.
-Fuel (Minotari) is fed into the turbine, which is burnt (also burnt :)) which produces a hot, motive gas (Tari) that 
-drives the engine (the DAN). The exhaust gas is ejected from the rear of the turbine (a portion of the instruction 
-fees are burnt).
+Fuel (Minotari) is fed into the turbine, where it is burnt, producing a hot, motive gas (Tari) that drives the engine
+(the Ootle). Exhaust gas is ejected from the rear of the turbine: a portion of every transaction fee is burnt.
 
 ### An aside - the monetary policy trilemma
 
@@ -88,7 +98,7 @@ control all 3 of these things simultaneously_:
 2. monetary policy (i.e. minting and burning to control supply)
 3. flow of capital (money leaving or entering the system)
 
-Let's briefly consider the trilemma from the point of view of the DAN.
+Let's briefly consider the trilemma from the point of view of the Ootle.
 
 #### Monetary policy
 
@@ -101,7 +111,7 @@ The designers of a decentralised monetary system have precious few levers availa
 
 #### Capital flow
 
-Allowing free capital flow would require a reliable and efficient peg-out mechanism from the DAN back to the base layer.
+Allowing free capital flow would require a reliable and efficient peg-out mechanism from the Ootle back to the base layer.
 However, I argue that this is an Achilles heel. _Any_ peg-out system you can devise that is coupled with a burn-type 
 peg-in mechanism is an existential threat to the base layer.
 
@@ -110,17 +120,17 @@ external to it. Note that we're not bringing UTXOs that were pegged-in back into
 case they would not be burned, merely locked-up as in a traditional peg). Therefore, the base layer accounting simply 
 has to accept these mints as valid. 
 
-Consequently, _any bug whatsoever on the DAN related to the minting process' authenticity_  could lead to undetectable 
+Consequently, _any bug whatsoever on the Ootle related to the minting process' authenticity_  could lead to undetectable 
 inflation on the base layer. 
 
 A central axiom of side-chain design, if there is such a thing, is that the side-chain should pose _zero_ risk to the 
-security of the base layer. For this reason, the burn mechanism effectively _excludes the possibility of peg ins_.
+security of the base layer. For this reason, the burn mechanism effectively _excludes the possibility of peg outs_.
 
 So essentially, we cannot allow the free flow of capital either.
 
 #### Exchange rate
 
-Since we have already picked two legs of the trilemma, we cannot do anything about the third, and must allow the change 
+Since we have already picked two legs of the trilemma, we cannot do anything about the third, and must allow the exchange
 rate to float.
 
 ### The turbine model
@@ -138,7 +148,7 @@ model:
 
 ![turbine](./assets/turbine.png)
 
-The DAN Tari supply is increased by user peg-in deposits, and any other mechanism that we may want to enforce, 
+The Ootle's Tari supply is increased by user peg-in deposits, and any other mechanism that we may want to enforce, 
 such as asset issuer financing. 
 
 To prevent the eventual collapse of the Tari price to zero, there must be an exhaust mechanism that continually 
@@ -149,7 +159,7 @@ low. Presumably, over the long-run the burn rate should approximately match the 
 
 The exhaust places a permanent upward pressure on the Tari exchange rate; but it will never exceed 1:1 with Minotari,
 since any premium will be immediately arbitraged away. This is because anyone can _always_ burn as much Minotari as they 
-wish and mint Tari at a 1:1 ratio on the DAN and then sell them for a risk-free profit. This action will increase 
+wish and mint Tari at a 1:1 ratio on the Ootle and then sell them for a risk-free profit. This action will increase 
 the supply of Tari and drive the price back down to parity.
 
 If the exhaust is temporarily insufficient to hold the peg, the Tari price will drop below 1 XTR. This will 
@@ -163,12 +173,61 @@ Tari-Minotari pair matures, this event will immediately create a bid on Tari, si
 failure -- speculators know that the Tari price will eventually return to parity, causing upward pressure to come into 
 play quickly and efficiently.
 
+
+## The turbine model as implemented
+
+The two halves of the turbine — the peg-in and the exhaust — are both in the network today.
+
+### Peg-in: burning Minotari, claiming Tari
+
+Peg-in is a burn on the base layer followed by a claim on the Ootle.
+
+1. The user creates a Minotari transaction with a burned output. The burn destroys the Minotari; there is nothing to
+   spend and nothing locked up.
+2. The user submits a transaction to the Ootle containing a `ClaimBurn` instruction. The instruction carries a
+   `MinotariBurnClaimProof`: the burn public key, the output commitment, a Schnorr ownership proof over that
+   commitment, a Merkle proof that the output is in the base-layer chain, the abridged transaction kernel, and the
+   claimed value.
+3. Validator nodes verify the proof against their view of the base layer and mint the equivalent Tari into the
+   claiming account.
+
+The burn is recorded on the Ootle as a substate, so a given burn can be claimed exactly once. There is no trusted
+party and no federation: the peg-in is a proof about base-layer data that any validator can check.
+
+The peg-in is 1:1 by construction. One µXTM burnt yields one µXTR.
+
+### Exhaust: burning a fraction of every fee
+
+The exhaust is the `ExhaustBurnRate` consensus constant, currently 500 basis points (5%) on every network. When the
+engine settles a transaction's fees it charges the burn on top of the accrued execution fee, as a separate
+`FeeSource::ExhaustBurn` charge. The leader therefore receives the execution fee in full, and the burnt amount is
+destroyed rather than redistributed.
+
+The rate is a consensus rule: it must be identical network-wide, or nodes would disagree on the burn totals recorded
+in block headers. It is resolved per epoch (`ConsensusConstants::exhaust_burn_rate(epoch)`), which leaves room for a
+schedule or a controller to vary it in future without changing the fee-charging path.
+
+<div class="note">
+A dynamic burn rate — a controller that varies the exhaust to steer the circulating supply — was studied in
+<a href="RFC-0323_TariThrottle.md">D-TIP-RFC-O-0323</a> and not adopted. That RFC is deprecated; its conclusion was
+that a supply-targeting controller moves the burn rate too sharply to be compatible with sustainable validator node
+economics. The fixed rate is the design in force.
+</div>
+
+### Where fees go
+
+Fees not burnt as exhaust accrue to the block leader's `ValidatorFeePool` substate, which is derived from the
+validator's claim key rather than its identity key ([I-TIP-RFC-O-0313](./RFC-0313_VNRegistration.md)). Pooling avoids
+a dust-sized value transfer per transaction; the validator withdraws the accumulated balance with a
+`ClaimValidatorFees` instruction when it chooses to.
+
 # Change Log
 
-| Date        | Change        | Author |
-|:------------|:--------------|:-------|
-| 23 Nov 2023 | Thaum -> Tari | CjS77  |
-| 1 Nov 2022  | First draft   | CjS77  |
+| Date        | Change                                                              | Author |
+|:------------|:----------------------------------------------------------------------|:-------|
+| 07 Sep 2026 | DAN -> Ootle; document the peg-in and exhaust mechanisms as built    | Tari Labs |
+| 23 Nov 2023 | Thaum -> Tari                                                        | CjS77  |
+| 1 Nov 2022  | First draft                                                          | CjS77  |
 
 [space-chains]: https://www.youtube.com/watch?v=N2ow4Q34Jeg
 [drive-chains]: https://www.drivechain.info/

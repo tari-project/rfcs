@@ -1,7 +1,18 @@
-# RFC-314/VNC Selection
+# I-TIP-RFC-O-0314: VNCSelection
 
-## Validator node committee selection
-![status: out of date](theme/images/status-outofdate.svg)
+| TIP             | [I-TIP-RFC-O-0314](#i-tip-rfc-o-0314-vncselection)                        |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Validator Node Committee Selection                                        |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-10-11                                                                |
+| References      | [I-TIP-RFC-O-0313](RFC-0313_VNRegistration.md)                            |
+
+## Validator Node Committee Selection
+
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [stringhandler](https://github.com/stringhandler) and [SW van heerden](https://github.com/SWvheerden)
 
@@ -48,127 +59,143 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The goal of this RFC is to describe the process for allocating Validator Nodes (VNs) to Validator Node Committees (VNCs)
+The goal of this RFC is to describe how validator nodes are allocated to validator node committees (VNCs), and how the
+leader for a consensus round is chosen.
+
+## Related Requests for Comment
+
+* [I-TIP-RFC-O-0305: The Ootle Consensus Layer](./RFC-0305_Consensus.md)
+* [I-TIP-RFC-O-0313: Validator Node Registration](./RFC-0313_VNRegistration.md)
+* [I-TIP-RFC-O-0325: Epochs and Time Management](./RFC-0325_DanTimeManagement.md)
+* [I-TIP-RFC-O-0330: The Ootle HotStuff Consensus Algorithm](./RFC-0330_Cerberus.md)
 
 ## Intro
 
-Validator nodes will have to group themselves into Validator Node Committees (VNC) for transactions/shard processing.
-Committees will be formed for each new transaction/shard processing. This committee needs to be determined
-pseudo-randomly, and we use the VN_Key as this changes periodically and is pseudorandom. Each VN will be allocated a
-unique and individual shard space to serve in as a VNC member.
+Validator nodes are organised into validator node committees, each of which is responsible for a contiguous region of
+the substate address space. Membership must be determined pseudo-randomly, must be the same for every observer, and
+must be stable enough for members to sync the state they are responsible for before they have to vote on it.
+
+<div class="note">
+<p>The design in earlier drafts of this RFC — a balanced Merkle tree of validator keys, with a committee formed from
+the <code>COMMITTEE_SIZE / 2</code> keys either side of each substate address, so that a transaction touching $n$
+substates was processed by up to $n$ overlapping committees — was not built. It has been replaced by the fixed
+preshard partition described below.</p>
+<p>The practical problem with per-substate committees is that a committee had to be assembled, and its members had to
+hold the relevant state, for every substate a transaction touched. With a fixed partition, the set of committees is
+small and known in advance, membership changes only at epoch boundaries, and a node knows exactly which slice of
+state to hold.</p>
+</div>
 
 ## Requirements
 
-In order to ensure that VNCs are selected securely and can operate successfully, we pin down the following requirements:
+1. A minority of nodes must move to a new region of the address space periodically.
+2. A validator must not be able to determine its own region ahead of time; it only learns its position once the block
+   assigning its shard key is mined.
+3. Calculating the committee for a given address must be cheap, and must not require replaying the history of past
+   assignments.
+4. A validator must have time to sync state for a new region before it is expected to participate in consensus there.
+5. The rate at which validators join and leave must be bounded, so that no epoch transition replaces enough of a
+   committee to threaten its safety or liveness.
 
-1. A percentage of the nodes must change to a new shard space every epoch (e.g. exactly 25%)
-2. A VN must not be able to determine its own shard space location ahead of time, i.e. the VN only knows it's new
-   location once the block with the new epoch is mined.
-3. It must be easy, e.g. 𝓞(log n), to calculate the VN set. (You should have to replay all shuffles to calculate the
-   current VN set).
-4. A VN must be able to be part of a committee for a certain period to allow time to sync state, before being
-   penalised (if applicable) for not participating in consensus.
-5. Open Question: Should there be a limit (e.g. 10%) in the number of nodes that can join per epoch
+Requirements 1 and 2 are met by shard key shuffling, and requirement 5 by the join and exit queues; both are described
+in [I-TIP-RFC-O-0313](./RFC-0313_VNRegistration.md). Requirements 3 and 4 are met by the scheme below.
 
-## VN-key expiry
+## Preshards and shard groups
 
-Each new VN will get a [VN-key] on registration. This key will expire on some pseudorandom height. This is calculated as
-follows:
+The substate address space is divided into a fixed number of equal **preshards** — `NumPreshards::current()`,
+currently 256. A substate address begins with a one-byte *entity id*, and the preshard is read directly from the top
+bits of that byte (`SubstateAddress::to_shard`). Mapping an address to a preshard is therefore $\mathcal{O}(1)$ and
+requires no network state at all.
+
+Because substates created by the same entity share an entity id, a component and the vaults it owns fall in the same
+preshard, and are therefore the responsibility of a single committee. Sharding is by entity, not by individual
+substate; see [I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md) for why.
+
+Preshards are collected into **shard groups**. One committee covers each shard group, so the number of shard groups is
+the number of committees:
 
 $$
-\begin{aligned}
-\text{Expire height} = \text{(Current block height)} + \text{(min expire height)} + \text{new VN-pubkey } MOD \text{ (
-max expire height)}
-\end{aligned}
+n_\text{committees} = \min\left( n_\text{preshards},\ \max\left(1, \left\lfloor \frac{N_\text{vn}}
+{\texttt{committee\_size\_per\_shard\_group}} \right\rfloor \right) \right)
 $$
 
-Every time a new VN-Key is assigned a new expiry date is calculated. Because the [miner]s calculate the VN-key, they
-also calculate the new VN-key every time
-it expires.
+where $N_\text{vn}$ is the number of validators registered for the epoch and `committee_size_per_shard_group` is a
+consensus constant, currently 40 on mainnet, Esmeralda and the testnets. Preshards are distributed as evenly as
+possible across the shard groups; when the division is not exact, the remainder is spread one preshard at a time over
+the lowest-numbered groups, so group sizes differ by at most one.
 
-# Process of choosing committees when an instruction needs to be processed
+Two consequences follow. First, while the network is small there is a single shard group covering the whole address
+space, and every validator is in one committee — the network behaves as an unsharded HotStuff chain. Second, the
+committee size stays near its target as the network grows, and it is the number of shard groups that increases. This
+is what allows throughput to scale with the validator count.
 
-For each instruction, the substates involved in this instruction **MUST** be known before they can be processed.
-For each involved substate, the address of the substate is mapped to a shard. For each shard, the VN committee is
-constructed from `COMMITTEE_SIZE/2` VNs to the left and right of the shard,
-in the [VNKey Merkle tree].
+## Assigning validators to committees
 
-Thus, a single instruction will have a maximum N * `COMMITTEE_SIZE` validator nodes processing it, when N is the number
-of involved substates.
+A validator's committee follows from its `VN_Shard_Key`:
 
-## Committee Creation
-                       
-<div class="note">
-This section is out of date
-</div>
+1. The shard key is a 256-bit value in the substate address space, assigned by the base layer
+   ([I-TIP-RFC-O-0313](./RFC-0313_VNRegistration.md)).
+2. The shard key locates a preshard.
+3. The preshard locates a shard group, given the number of committees for the epoch.
 
-Because we have the base layer where each VN needs to publish a registration transaction, we can get base_node and
-miners to keep track of all active VNs. We represent all VNs in a (balanced) Merkle tree with the VN_keys as leaves. We
-declare a constant `COMMITTEE_SIZE` which can be changed in the consensus constants.
+This is `SubstateAddress::to_shard_group`, and it is recomputed for every validator at each epoch transition by
+`EpochManager::assign_validators_for_epoch`. Because it depends only on the validator set for the epoch — which every
+base node has — any observer can compute any committee's membership for any epoch, without replaying history.
 
-For the sake of simplicity, `COMMITTEE_SIZE` MUST be an even positive integer.
+The same function maps a *substate* address to its shard group, and hence to the committee responsible for it. A
+transaction's involved committees are therefore known as soon as its inputs and outputs are known.
 
-As per the Cerberus algorithm, validator nodes are responsible for managing _sub-states_, rather than contract
-semantics.
-A given instruction may involve dozens of sub-states, meaning that there are potentially dozens of non-overlapping
-committees that are required to reach a braided consensus.
+An important edge case, implied but worth stating: if the whole network is smaller than
+`committee_size_per_shard_group`, there is one committee and the whole network is in it.
 
-Each committee is determined independently. For each sub-state, a committee is formed by taking the
-first  `COMMITTEE_SIZE / 2` VN_keys to the left and `COMMITTEE_SIZE / 2` VN_Keys to the right of the sub-state's shard
-address in the merkle tree.
-
-This makes it very easy to determine what shard space a VN needs to serve, which states the VN needs to sync from peers,
-and who has them. Because the
-second layer has a delayed view of the network. VNs can also know beforehand and prep to ensure they are ready when new
-block heights appear.
-
-An important edge case here that is implied but not listed, is that if the whole network is less or equal to
-the `COMMITTEE_SIZE`, then the whole network participates in the VNC.
+Note that committee membership changes only at an epoch transition. A validator whose shard key is reshuffled learns
+its new shard group at the boundary and, because activation is deferred and shuffles affect only a small fraction of
+the set per epoch, has the remainder of the epoch to sync state for its new region before it is expected to vote on
+it.
 
 ## Committee proofs
 
-We construct the balanced Merkle tree from all active VN registration transactions and prune away all inactive ones.
-Because the [base node]s have to keep track
-of the entire unspent UTXO set, it becomes easy for them to track and validate all active VN registration UTXOs. This
-means we can keep [base node]s
-responsible for validating and constructing the Merkle tree. We commit this Merkle tree per block as a Merkle root
-inside the block's header as the `validator_node_set_root`.
+The base layer commits to the active validator set in each block header, as the `validator_node_mr` Jellyfish Merkle
+root over $H(V_i \mathbin\Vert S_i)$, with `validator_node_size` alongside it. The root is rebuilt at each epoch
+boundary and carried forward unchanged within an epoch.
 
-This Merkle root in the header always lags by one block, meaning that the Merkle root is for the state of the VN's
-before the start of the block it's mined in.
-When a VN registers, that new VN key will only appear inside the Merkle tree in the next block. The reason for this is
-that header_hash is used in the
-the calculation process of the VN_key.
+A validator can therefore prove membership of the validator set for an epoch by producing an inclusion proof against
+the `validator_node_mr` of any block in that epoch. Since committee assignment is a pure function of the shard key and
+the set size, proving set membership proves committee membership.
 
-### Option 2 for Committee proofs
-
-The VN_key needs some random entropy that's not minable to ensure that a VN cannot choose its VN_key. This random
-entropy is currently the block hash of the
-block the VN registration was mined in. Hence the reason for the Merkle root lagging by one block. If we change this
-entropy value be another source of
-randomness, such as the `utxo_merkle_root`, then we don't have to do the lag by 1, and it can all be calculated in the
-single block.
+The entropy for shard key generation is the hash of the block preceding the one in which the registration is mined.
+Using the previous block's hash means the miner assembling the block containing a registration cannot influence the
+resulting shard key.
 
 ## Leader selection
 
-The VNC leader should not be decided beforehand and must be chosen pseudorandomly only when a tx is published. We also
-need to select an order of leaders
-in the case, the first leader is offline/and or not responsive.
+Within a committee, the leader for a block height is selected round-robin:
 
 $$
-\begin{aligned}
-vn\_position\_hash(vn, tx) = Hash(vn.signing_key || hash(tx))
-\end{aligned}
+\text{leader index} = h \bmod n
 $$
 
-This will give a sortable list we use to order the VNs for leader selection.
+where $h$ is the block height and $n$ the committee size. Committee ordering is deterministic — members are ordered by
+shard key — so every member computes the same leader for every height, and successive heights rotate through the
+committee.
+
+This also provides the rollover order when a leader is faulty. If no valid proposal arrives within the pacemaker's
+block time, replicas send a `NewView` to the leader at $h + 1$, which is the next member in the rotation. A node that
+repeatedly fails to propose is first suspended — peers skip its turn immediately rather than waiting out the timeout —
+and eventually evicted. See [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
+
+<div class="note">
+Round-robin selection is public and predictable a round in advance, which is a deliberate trade: it lets replicas
+pre-empt a known-bad leader and lets the next leader prepare its proposal. An unpredictable, per-transaction leader
+draw was considered in earlier drafts of this RFC. It was not adopted, because it is incompatible with the
+block-based pipeline the network actually runs — leaders propose blocks of commands, not individual transactions.
+</div>
 
 # Change Log
 
-| Date        | Change        | Author     |
-|:------------|:--------------|:-----------|
-| 11 Oct 2022 | First outline | SWvHeerden |
+| Date        | Change                                                                            | Author     |
+|:------------|:------------------------------------------------------------------------------------|:-----------|
+| 07 Sep 2026 | Replace the Merkle-neighbour design with preshards and shard groups; leader rotation | Tari Labs |
+| 11 Oct 2022 | First outline                                                                       | SWvHeerden |
 
 [base node]: Glossary.md#base-node
-
-[VN-key]: RFC-0313_VNRegistration.md#XXXX

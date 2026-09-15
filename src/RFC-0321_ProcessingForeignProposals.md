@@ -1,8 +1,18 @@
-# RFC-0321/ProcessingForeignProposals
+# I-TIP-RFC-O-0321: ForeignProposals
+
+| TIP             | [I-TIP-RFC-O-0321](#i-tip-rfc-o-0321-foreignproposals)                    |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Processing Foreign Proposals                                              |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2023-11-17                                                                |
+| References      | [I-TIP-RFC-O-0330](RFC-0330_Cerberus.md)                                  |
 
 ## Processing Foreign Proposals
 
-![status: draft](theme/images/status-draft.svg)
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [stringhandler](https://github.com/stringhandler)
 
@@ -48,62 +58,129 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This RFC describes the process of distributing and processing foreign proposals in the Tari DAN Cerberus Model
+This RFC describes how a validator node committee learns what other committees have decided about a transaction they
+share, and how it sequences that information into its own chain.
 
-Across the entire network transactions must be processed or time out. When a transaction is started on a shard, it locks up substates, preventing other transactions from completing. Therefore if a transaction is started on a shard, it
-should complete or be aborted in a timely manner to release the resources.
+Across the network, transactions must be processed or time out. When a transaction is prepared on a shard group it
+pledges substates, preventing other transactions from using them. A prepared transaction must therefore complete or be
+aborted in a timely manner, so that those substates are released.
 
 ## Related Requests for Comment
 
-<!-- * [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md) -->
-None
+* [I-TIP-RFC-O-0305: The Ootle Consensus Layer](./RFC-0305_Consensus.md)
+* [I-TIP-RFC-O-0330: The Ootle HotStuff Consensus Algorithm](./RFC-0330_Cerberus.md)
+* [I-TIP-RFC-O-0314: Validator Node Committee Selection](./RFC-0314_VNCSelection.md)
 
 ## Glossary
 
-* Block - A second layer block, consisting of ordered commands
-* Command - Command can either be Prepare, LocalPrepared, Accept, and moves a transaction into that state.
+* **Block** — an Ootle block, consisting of an ordered set of commands.
+* **Command** — one of `LocalOnly`, `LocalPrepare`, `LocalAccept`, `AllAccept`, `SomeAccept`, `ForeignProposal`,
+  `EvictNode` or `EndEpoch`. The transaction commands move a transaction through its consensus stages.
+* **Foreign proposal** — a block committed by another shard group's committee, which a local committee needs in order
+  to make progress on a shared transaction.
+* **Shard group** — the contiguous range of the address space covered by one committee. See
+  [I-TIP-RFC-O-0314](./RFC-0314_VNCSelection.md).
 
 ## Description
 
-To solve the above problems, we'll use reliable broadcast between shards and process foreign evidence in order.
+Cross-shard progress uses a notify-then-pull reliable broadcast, with the foreign block sequenced into the local chain
+as an explicit `ForeignProposal` command.
 
-In a local shard committee, the proposed block **must** include a reliable broadcast counter for each other shard. If the proposal includes transactions that involve other shards, this counter **must** be incremented.
-At the beginning of each epoch, all reliable broadcast counters must be reset.
+### Broadcasting
 
-When the proposed block becomes committed locally (i.e. it has a chain of 3 QCs validating it), the block **must** be broadcast to each involved shard that was incremented, along with evidence of being committeed (The chain of QCs must be included).
+When a block commits locally, each validator inspects the transaction commands in it and determines which foreign
+shard groups need to see it. A shard group is in the audience if it holds inputs for a transaction whose command in
+this block is relevant to it — a `LocalPrepare` is only sent to shard groups that hold inputs, since a shard group
+holding only outputs has nothing to pledge and nothing to conflict on.
 
-To ensure this, `f+1` nodes in the local committee will forward this committed block to each relevant committee, along with a 3 chain of QC's proving it was committeed.
+If the audience is non-empty, the validator broadcasts a `ForeignProposalNotification` on a single network-wide gossip
+topic. The notification carries only the block id, the epoch, and the sorted list of target shard groups; it does not
+carry the block. Because the shard groups are sorted, every local validator produces byte-identical payloads for the
+same block, so gossipsub's content-addressed message id collapses the copies into one.
 
-As a local committee member, when I receive a foreign proposal, if it is valid I will queue up a special command ForeignProposal(number, QC_Hash) that I must propose
-when I am next leader (if it has not been proposed already). I also **should** request all transaction hashes that I have not seen from involved_shards for each transaction in the proposal, and add them to my mempool for execution.
+<div class="note">
+Every validator in the committee currently publishes the notification. Reducing this to $f+1$ publishers is a known
+optimisation that has not been made.
+</div>
 
-When processing transactions from a foreign, there are two methodologies we can try.
-1. Strict ordering
-2. Relaxed ordering
+### Fetching
 
-### Strict ordering
-In strict ordering, before transactions in the `N+1`th foreign proposal for a shard, all transactions in the `N`th foreign proposal for that shard must be sequenced into the local chain as either a ABORT(reason = Timeout) or a LOCALPREPARE(TxId, ForeignShardId).
-This means that if a transaction is going to timeout, it will hold up all transactions in future proposals. While timeouts are expected to be rare when at least one honest node is able to provide the transaction, this approach could lead to
-really long finalization times, slowing down all cross shard transactions. In addition, there may be potential for deadlocks, where state is locked for a long time while transactions wait to timeout.
+A validator receiving a notification:
 
-### Relaxed ordering
-In relaxed ordering, transactions from foreign proposals can be processed in any order, but transactions must still timeout if they are not processed after a certain number of blocks from the FOREIGN_PROPOSAL command. This could lead to some
-strange behaviour where a transaction can be aborted due to double spends, even though the double spend happens much later in one shard. This however could happen even with strict ordering if the transactions arrive at different times.
+1. ignores it if it has already requested or already holds that block;
+2. ignores it if its own shard group is not in the target list;
+3. ignores it if the sender is in its own shard group;
+4. otherwise, picks a random member of the sending committee and sends a `ForeignProposalRequest` for the block.
 
-Given the above, we shall use relaxed ordering unless future development reveals other problems.
+The response carries the block together with a commit proof — the chain of quorum certificates establishing that the
+foreign committee committed it. The receiving node validates that proof against the foreign committee's membership for
+the epoch, which it derives from the base layer. A node that has fallen behind and cannot validate a proposal can
+request it explicitly rather than waiting for another notification.
 
-NOTE: ForeignProposal commands can be proposed in between a previous ForeignProposal and LocalPrepare/Timeout commands, but commands from the ForeignProposal **must** only be proposed after all transactions in the first ForeignProposal have been sequenced.
-The TIMEOUT_TIME block is counted from the height where the ForeignProposal is sequenced.
+Pulling rather than pushing means the network cost of a cross-shard transaction is one small gossip message plus one
+request/response per interested committee, instead of a full block pushed by $f+1$ nodes to every interested
+committee.
 
-ForeignProposal commands **must** appear in strict ascending order in the blockchain, but do not have to be in sequential blocks. In other words, for shard *s*, the block containing ForeignProposal(*s*, 1) must have a height lower than ForeignProposal(*s*, 2). Also, if a chain contains ForeignProposal(*s*, 1) and ForeignProposal(*s*, 3), then it **must** also contain ForeignProposal(*s*, 2).
+### Sequencing
 
-If a node receives a foreign proposal (not the command), and it has not received
-the previous foreign proposal, then it should ask the committee to provide it to them.
+A validated foreign proposal is recorded locally with status `New`. The next time this node is leader, it includes a
+`ForeignProposal(block_id, shard_group)` command in its proposal; the record moves to `Proposed`, and to `Confirmed`
+once the block containing the command is locked. A proposal that fails validation is recorded as `Invalid`.
 
+Sequencing the foreign block as a command — rather than acting on it as soon as it arrives — is what makes the
+outcome deterministic. Every committee member processes the foreign block at exactly the same point in the local
+chain, so every member derives the same decision from it.
+
+Foreign proposals are ordered first within a block, ahead of the transaction commands, so that the evidence they carry
+is available to the commands that depend on it. The block's command ordering is fixed:
+`EvictNode`, then `ForeignProposal` (ordered by shard group and block id), then transaction commands ordered by
+transaction id, then `EndEpoch`.
+
+### Processing
+
+Processing a foreign proposal walks its transaction atoms and updates the local record for each shared transaction:
+
+* If the foreign committee decided `ABORT`, the local decision becomes `ABORT` with reason
+  `ForeignShardGroupDecidedToAbort`, and an abort execution is recorded even if this committee had previously decided
+  to commit.
+* If a foreign pledge conflicts with a substate this committee has already pledged to a different transaction, the
+  local decision becomes `ABORT` with reason `ForeignPledgeInputConflict`. This is the cross-shard double-spend case:
+  where two transactions pledge the same input in different shard groups, both abort, because there is no way to
+  determine which was "first".
+* Otherwise the foreign evidence is merged into the transaction's evidence. Once evidence has been received from every
+  involved shard group, the transaction is ready to move to its next stage.
+
+### Ordering: strict versus relaxed
+
+Two orderings were considered.
+
+**Strict ordering.** Before any transaction in the $N+1$th foreign proposal from a shard group is processed, every
+transaction in the $N$th must have been sequenced locally as either `ABORT(reason = Timeout)` or `LocalPrepare`. A
+transaction that is going to time out therefore holds up every transaction in later proposals. Timeouts are expected
+to be rare — one honest node able to supply the transaction is enough — but this could lead to very long finalisation
+times for all cross-shard transactions, and there is potential for deadlock while state stays locked waiting for
+timeouts.
+
+**Relaxed ordering.** Transactions from foreign proposals may be processed in any order, but a transaction must still
+time out if it is not resolved within a certain number of blocks after the `ForeignProposal` command is sequenced.
+This admits some odd-looking behaviour, where a transaction is aborted for a double-spend that happened much later on
+one shard group — but that can happen under strict ordering too, if the proposals arrive at different times.
+
+The network uses relaxed ordering.
+
+<div class="note">
+Earlier drafts of this RFC specified per-shard-group reliable broadcast counters carried in each block, with the rule
+that <code>ForeignProposal</code> commands from a given shard group must appear in strict, gap-free ascending counter
+order. That mechanism was not built. Ordering is instead established by the commit proof accompanying each foreign
+proposal — a block that has not been committed by its own committee cannot be sequenced — and by evidence
+accumulation on the transaction record, which will not let a transaction advance until every involved shard group has
+been heard from. Gaps are therefore harmless: a missing intermediate block simply means the transactions it carried
+are still awaiting evidence.
+</div>
 
 # Change Log
 
-| Date        | Change        | Author |
-|:------------|:--------------|:-------|
-| 17 Nov 2023  | First draft   | stringhandler  |
-
+| Date        | Change                                                                     | Author        |
+|:------------|:-----------------------------------------------------------------------------|:--------------|
+| 07 Sep 2026 | Realign with the implementation: notify-then-pull, commit proofs, ordering  | Tari Labs     |
+| 17 Nov 2023 | First draft                                                                | stringhandler |
