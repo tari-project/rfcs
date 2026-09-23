@@ -90,6 +90,7 @@ The current categories are:
 * [Code](#code-ccs)
 * [Product](#product-ccs)
 * [Ecosystem](#ecosystem-ccs)
+* [Infrastructure](#infrastructure-ccs)
 * [Community](#community-ccs)
 * [Project](#project-ccs).
 
