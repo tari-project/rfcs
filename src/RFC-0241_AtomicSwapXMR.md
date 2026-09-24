@@ -258,7 +258,7 @@ hardware. Thus this is still secure even though we leaked part of the secret key
 
 ### Detail
 
-This method relies purely on TariScript to enforce the exposure of the private Monero aggregate keys. Based on [Point Time Lock Contracts](https://suredbits.com/payment-points-part-1/), the script forces the spending party to supply their Monero
+This method relies purely on TariScript to enforce the exposure of the private Monero aggregate keys. Based on [Point Time Lock Contracts](https://nkohen.github.io/blog/replacing-htlcs/), the script forces the spending party to supply their Monero
 private key part as input data to the script, evaluated via the operation `ToRistrettoPoint`. This TariScript operation will
 publicly reveal part of the aggregated Monero private key, but this is still secure: see [Key security](#key-security).
 
