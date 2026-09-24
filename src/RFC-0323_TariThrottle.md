@@ -1,8 +1,18 @@
-# RFC-0323/TariThrottle
+# D-TIP-RFC-O-0323: TariThrottle
 
-## The Tari throttle, or Layer 2 burn rate controller
+| TIP             | [D-TIP-RFC-O-0323](#d-tip-rfc-o-0323-tarithrottle)                        |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | The Tari Throttle Exploratory Analysis                                    |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Deprecated                                                                |
+| Type            | RFC                                                                       |
+| Created         | 2023-11-01                                                                |
+| References      | [I-TIP-RFC-O-0320](RFC-0320_TurbineModel.md)                              |
 
-![status: draft](theme/images/status-draft.svg)
+## The Tari Throttle Exploratory Analysis
+
+![status: deprecated](theme/images/status-deprecated.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77)
 
@@ -45,6 +55,35 @@ without notice.
 This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
 community. The release of this document is intended solely for review and discussion by the community of the
 technological merits of the potential system outlined herein.
+
+## Deprecation notice
+
+<div class="note">
+This RFC is <strong>deprecated</strong>. It records an exploratory simulation study whose central proposal — a PID
+controller that targets a fixed circulating supply of Tari — was <em>not</em> adopted.
+</div>
+
+The study's own conclusion (see [Conclusions](#conclusions)) is that a supply-targeting controller achieves its
+target only by moving the layer-two burn rate sharply and often, which is corrosive to validator node economics. That
+conclusion was accepted, and the network ships the simple alternative instead: the exhaust burn rate is a fixed
+network-wide consensus constant, `ConsensusConstants::exhaust_burn_rate`, currently 500 basis points (5%) on every
+network. The engine charges it on top of the accrued execution fee for each transaction, so leaders receive the
+execution fee in full and the burnt amount is destroyed separately.
+
+Nothing in this document is implemented. The `burn-sim` repository, the `TariThrottle` struct, the controller
+parameters `kp`/`ki`/`kd`/`target_supply`/`trigger_at`/`min`/`max`, and the per-epoch burn rate updates described
+below exist only in the simulation used to produce these results.
+
+The follow-up study proposed at the end of the [Summary](#summary) — a controller that maintains a constant demand
+gradient rather than a supply target — has not been written. If a dynamic burn rate is revisited, it should be
+proposed as a new RFC rather than by amending this one; the exhaust burn rate accessor is already epoch-aware
+(`exhaust_burn_rate(&self, epoch: Epoch)`), so varying it per epoch is a change to consensus constants rather than
+to the fee-charging path.
+
+For the peg-in and exhaust mechanism that the burn rate is part of, see
+[I-TIP-RFC-O-0320](RFC-0320_TurbineModel.md).
+
+The remainder of this document is retained for historical reference only.
 
 ## Goals
 

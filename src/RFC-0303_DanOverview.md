@@ -1,8 +1,18 @@
-# RFC-0303/DanOverview
+# I-TIP-RFC-O-0303: OotleOverview
 
-## Digital Assets Network
+| TIP             | [I-TIP-RFC-O-0303](#i-tip-rfc-o-0303-ootleoverview)                       |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | The Tari Ootle                                                            |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Implemented                                                               |
+| Type            | RFC                                                                       |
+| Created         | 2022-10-26                                                                |
+| References      | [I-TIP-RFC-O-0305](RFC-0305_Consensus.md), [I-TIP-RFC-O-0330](RFC-0330_Cerberus.md) |
 
-![status: draft](theme/images/status-draft.svg)
+## The Tari Ootle
+
+![status: stable](theme/images/status-stable.svg)
 
 **Maintainer(s)**: [Cayle Sharrock](https://github.com/CjS77),[S W van Heerden](https://github.com/SWvheerden)
 
@@ -48,150 +58,193 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-The aim of this Request for Comment (RFC) is to describe the key elements of the Tari second layer, also known as the 
-Digital Assets Network (DAN).
+The aim of this Request for Comment (RFC) is to describe the key elements of the Tari smart contract layer, the
+**Ootle**.
+
+<div class="note">
+The Ootle was previously called the Digital Assets Network, or DAN. The older name survives in some places (the
+<code>dan</code> prefix on a few crates and RPC methods, and in the deprecated RFCs listed under
+<a href="deprecated_rfc.md">Deprecated</a>). This RFC and its siblings use "Ootle" throughout.
+</div>
 
 ## Related Requests for Comment
 
-* [RFC-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
+* [I-TIP-RFC-O-0305: The Ootle Consensus Layer](./RFC-0305_Consensus.md)
+* [I-TIP-RFC-O-0313: Validator Node Registration](./RFC-0313_VNRegistration.md)
+* [I-TIP-RFC-O-0314: Validator Node Committee Selection](./RFC-0314_VNCSelection.md)
+* [I-TIP-RFC-O-0320: The Turbine Model](./RFC-0320_TurbineModel.md)
+* [I-TIP-RFC-O-0325: Epochs and Time Management](./RFC-0325_DanTimeManagement.md)
+* [I-TIP-RFC-O-0330: The Ootle HotStuff Consensus Algorithm](./RFC-0330_Cerberus.md)
+* [I-TIP-RFC-O-0331: Ootle Indexers](./RFC-0331_Indexers.md)
+* [I-TIP-RFC-O-0350: The Tari Virtual Machine](./RFC-0350_TariVM.md)
+* [I-TIP-RFC-MT-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
 
 ## Description
 
-The Tari DAN is based on a sharded BFT consensus mechanism called [Cerberus](https://arxiv.org/abs/2008.04450). 
+The Ootle is a sharded, BFT-replicated smart contract layer that settles against the Minotari base layer.
 
-One particular note is that Tari has chosen Hotstuff as the base BFT consensus algorithm over pBFT mentioned in the paper.
+State is not partitioned by contract, as it is in Tari DANv1, Polkadot or Avalanche. Instead the entire 256-bit
+substate address space is partitioned into contiguous **shards**, and validator nodes are distributed evenly across
+those shards. When a transaction reads or writes a substate, only the nodes covering that substate's shard take part
+in agreeing the resulting state change. A transaction touching substates in several shards is agreed by those shards
+jointly, through the cross-shard protocol described in
+[I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md).
 
-The core idea of Cerberus is that instead of dividing work up between validator nodes according to the contracts 
-they are managing (as per Tari DANv1, Polkadot, Avalanche, etc.), Cerberus distributes nodes evenly over a set of 
-shard addresses. Any time an instruction modifies the state of a contract, it will affect one or more shard 
-addresses, and only those nodes that are responsible for covering those addresses will reach consensus on the correct 
-state changes.
+This means that nodes have to be prepared to execute transactions against any contract in the network. It creates a
+data synchronisation burden, but the payoff — a scalable, decentralised contract layer — significantly outweighs the
+trade-off.
 
-This means that nodes have to be prepared to execute instructions on any contract in the network. This 
-does create a data synchronisation burden, but the added benefit of a highly scalable, decentralised DAN significantly 
-outweighs this trade-off.
+<div class="note">
+<p><strong>Provenance.</strong> The design started from
+<a href="https://arxiv.org/abs/2008.04450">Cerberus</a>, substituting HotStuff for the pBFT used in that paper. The
+network as built has diverged far enough from the paper that the name is no longer used in the code or in these
+RFCs: notably, shards are grouped into fixed <em>shard groups</em> rather than assigned per substate address, and the
+cross-shard exchange is a pull-based reliable broadcast of committed blocks
+(<a href="RFC-0321_ProcessingForeignProposals.md">I-TIP-RFC-O-0321</a>) rather than the leader-to-leader message
+exchange of the paper. The Cerberus and <a href="https://arxiv.org/pdf/1708.03778.pdf">Chainspace</a> papers remain
+useful background reading.</p>
+</div>
 
 ## Key actors
 
-There are several components on both the Tari Digital Assets Network (DAN) and base layer that interoperate to 
-collectively enable scalable smart contracts on Tari.
+Several components on both the Ootle and the base layer interoperate to enable scalable smart contracts on Tari:
 
-These components include:
-* Minotari base layer - Enforces Tari monetary policy and plays the role of global registrar.
-* Templates - Reusable smart contract components.
-* Contracts - Self-contained pieces of code that describe the behaviour of a smart contract. They are compiled and 
-  executed in the Tari VM.
-* Validator Nodes - VNs validate smart contracts and earn fees for doing so.
-* Cerberus consensus engine - highly scalable, high-speed sharded BFT consensus engine.
-* Tari Virtual Machine - Runs smart contracts in a secure sandbox.
-* Tari - the token that fuels the Tari Network a.k.a DAN.
+* **Minotari base layer** — enforces Tari monetary policy and acts as global registrar.
+* **Templates** — reusable smart contract code, published to the Ootle.
+* **Components** — instances of a template, holding the state of a running contract.
+* **Validator nodes** — execute transactions and reach consensus on the resulting state changes, earning fees for
+  doing so.
+* **Consensus layer** — a scalable, sharded HotStuff BFT engine.
+* **Tari Virtual Machine** — runs template code in a WASM sandbox.
+* **Indexers** — follow the state of a chosen set of components across the shard space and serve it to clients.
+* **Tari** — the token that pays for execution on the Ootle.
 
 The remainder of this document describes these elements in a little more detail and how they relate to each other.
 
 ## The Minotari Base Layer
 
-Obviously, the most important role of the Minotari base layer (formerly, Tari base layer) is to issue and secure the 
-base Tari token.
+The most important role of the Minotari base layer is to issue and secure the base Tari token.
 
-As it relates to the DAN, the base layer also serves as an immutable global registry for several key pieces of data:
-* It maintains the register of all validator nodes.
-* It provides the only means of minting more [Tari] into the DAN economy.
-* It maintains the register of all DAN contract templates.
+As it relates to the Ootle, the base layer also serves as an immutable global registry:
 
-The base layer also forces the DAN to make progress in the case of a Byzantine stoppage.
+* It maintains the register of all validator nodes, including each node's shard key, claim key and the epoch range
+  for which its registration is valid. See [I-TIP-RFC-O-0313](./RFC-0313_VNRegistration.md).
+* It provides the only means of minting new Tari into the Ootle economy, by burning Minotari. See
+  [I-TIP-RFC-O-0320](./RFC-0320_TurbineModel.md).
+* It provides the shared clock that drives Ootle epoch transitions, when the base-layer epoch oracle is in use. See
+  [I-TIP-RFC-O-0325](./RFC-0325_DanTimeManagement.md).
 
 ### Templates
 
-Templates are parameterised smart contracts. Templates are intended to be well-tested, secure, reusable components 
-for building and running smart contracts on the DAN.
+Templates are smart contract code: a WASM module plus the ABI describing the functions and methods it exposes.
+Templates are intended to be well-tested, secure, reusable building blocks.
 
-For example, an NFT template would allow a user to populate a few fields, such as name, number of tokens, media 
-locations, and then launch a new NFT series without having to write any actual code.
+For example, an NFT template lets a user populate a few fields — name, number of tokens, media locations — and launch
+a new NFT series without writing any code.
 
-Templates are stored and managed on the base layer. You can think of the Tari base layer as a type of _git_ for 
-smart contracts. Templates will also have version control features and a smooth upgrade path for existing contracts.
+Templates are published to the Ootle itself with the `PublishTemplate` instruction, which creates a `Template`
+substate holding the module. A template's address is derived from the publisher and the module, so a published
+template is content-addressed and immutable; publishing a new version creates a new address, and a component can be
+migrated to it with `UpdateComponentTemplate` subject to the component's owner rule.
 
-### Contracts
+<div class="note">
+Base-layer template registration (the <code>CodeTemplateRegistration</code> transaction output and the
+<code>get_template_registrations</code> base node RPC) still exists and is still scanned by validator nodes. It
+predates on-chain publishing and points at a module hosted off-chain. On-chain publishing is the mechanism new
+templates should use: it removes the dependency on external hosting and makes the module part of consensus state.
+</div>
 
-Tari smart contracts are the meat of the Tari ecosystem. Usually, a smart contract will be comprised of one or more 
-Tari templates, glue code, and initialisation code.
+### Components
 
-The contracts are always executed in the Tari Virtual machines. The input and output of every contract instruction 
-is validated by validator nodes that reach consensus using the Cerberus consensus engine.
+A component is a live instance of a template — the "contract" in everyday usage. Components hold their state in
+`Component` substates and their tokens in `Vault` substates.
+
+Components are always executed in the Tari Virtual Machine. The inputs and outputs of every transaction are agreed by
+the validator committees covering the affected substates.
 
 ### Validator Nodes
 
-Validator Nodes (VNs) execute and reach consensus on DAN contract instructions. VNs must register on the base layer 
-and lock up funds (the registration deposit) in order to participate in the DAN. 
+Validator nodes (VNs) execute Ootle transactions and reach consensus on the outcome. A VN must register on the base
+layer and lock up funds — the registration deposit — in order to participate. The deposit is a Sybil-resistance
+mechanism, and the registration gives every base node an up-to-date list of active validator nodes and their
+metadata.
 
-With this in place, every base node has an up-to-the-minute list of all active validator nodes and their metadata. The 
-registration deposit also serves as a Sybil prevention mechanism.
+Registrations carry a maximum epoch, so a VN must re-register periodically as a proof-of-liveness mechanism. A VN
+registers a separate **claim key** alongside its identity key; leader fees accrue to a `ValidatorFeePool` substate
+derived from that claim key, and are claimed in a batch with the `ClaimValidatorFees` instruction rather than being
+paid out per transaction.
 
-Validator nodes are the bridge between the consensus layer and the Tari Virtual Machine (TVM).
+Validator nodes must be able to:
 
-VNs are required to re-register periodically as a proof-of-liveness mechanism.
+1. interpret the transactions they receive from clients, identifying the template code each instruction refers to,
+2. retrieve and deserialise the relevant input state,
+3. compute the output state resulting from applying the template logic to the input state, and
+4. reach consensus with their peers.
 
-Validator nodes must be able to
-1. interpret the instructions they receive from clients, identifying the contract code that the instruction refers,
-2. retrieve and deserialize the relevant input state,
-3. compute the output state that result from applying the contract logic to the input state, and
-4. reach consensus with its peers.
+Steps 1–3 are carried out in the Tari Virtual Machine. Step 4 is achieved by communicating with peers via the
+consensus layer.
 
-Steps 1 - 3 are carried out in the Tari Virtual Machine (TVM).
-Step 4 is achieved by communicating with peers via the DAN consensus layer.
+Validator nodes that misbehave can be evicted from the network by their own committee, using the `EvictNode` command
+described in [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
 
-[Tari](#tari-and-the-turbine-model) exists at the Validator node level, and VNs earn fees, in Tari, for each 
-instruction -- in aggregate -- that it aids in getting finalised.
+### Consensus layer
 
-### DAN consensus layer
-
-The Cerberus BFT consensus algorithm runs on the consensus layer. This layer is completely ignorant of the 
-semantics of DAN smart contracts.
+The BFT consensus algorithm runs on the consensus layer. This layer is completely ignorant of the semantics of Ootle
+smart contracts.
 
 This layer only cares that:
-* _only_ VNs that have registered on the base layer are participating in consensus.
-* VNs are self-organising into VN committees and are carrying out the rules of Cerberus
-  correctly.
 
-In particular, the consensus layer has _no idea_ whether an instruction's output is correct. If two-thirds (plus one)
-of the committee agree on the results, then consensus has been reached and the consensus layer is happy.
+* _only_ VNs registered for the current epoch are participating in consensus, and
+* VNs are organised into validator node committees and are following the consensus rules correctly.
 
-For example, if consensus decides that 2 + 2 = 5, then for the purposes of this contract, that is the case. 
+In particular, the consensus layer has _no idea_ whether a transaction's output is correct. If a super-majority of
+the committee agree on the result, then consensus has been reached and the consensus layer is happy.
+
+For example, if consensus decides that 2 + 2 = 5, then for the purposes of that contract, that is the case.
 
 ### The Tari Virtual Machine
 
-The TVM is a WASM-based virtual machine designed to run Tari contracts.
-Contracts are composed of one or more Tari templates, glue code and a state schema. Tari Labs provides a Rust 
-implementation for TVM contracts, but in principle, other languages could implement the specification as well.
+The TVM is a WASM-based virtual machine designed to run Tari templates. Tari Labs provides a Rust implementation of
+the template library, but in principle other languages could target the same ABI.
 
-The TVM is able to
-* load a contract.
-* provide a list of methods that the contract exposes.
-* Execute calls on the contract.
-* Initiate retrieval and persistence of the state of the contract. The state itself is not stored in the VM, but by 
-  Indexers.
+The TVM is able to:
+
+* load a template,
+* provide a list of the functions and methods the template exposes,
+* execute calls against those functions and methods, and
+* initiate retrieval and persistence of component state. The state itself is not stored in the VM; it is held as
+  substates by the validator committees, and served to clients by Indexers.
+
+See [I-TIP-RFC-O-0350](./RFC-0350_TariVM.md).
+
+### Indexers
+
+Where validator nodes stay in position and manage a fixed slice of the address space, Indexers follow a chosen set of
+components wherever their state moves across the shard space. Client applications — wallets, dApps, exchange
+front-ends — talk to an Indexer to read state and to dry-run transactions before submitting them. See
+[I-TIP-RFC-O-0331](./RFC-0331_Indexers.md).
 
 ### Tari and the turbine model
 
-Tari is used to power the DAN's economic 
-engine. Tari is minted via a one-way perpetual peg as described in [RFC-0320]. Briefly, Minotari are burnt to create 
-Tari, which are used to pay for the execution of instructions on the DAN. A portion of instruction fees are burnt 
-with every instruction to provide a constant source of demand for Tari in the DAN.
+Tari powers the Ootle's economic engine. Tari is minted via a one-way perpetual peg as described in
+[I-TIP-RFC-O-0320](./RFC-0320_TurbineModel.md). Briefly: Minotari are burnt on the base layer to create Tari, which
+pay for execution on the Ootle. A fraction of every transaction fee — the *exhaust*, currently 5% — is burnt, which
+provides a constant source of demand for Tari.
 
-There is no peg out back to the base layer for Tari. The reason for this is explained in [RFC-0320]. 
-Tari holders wishing to convert back to Tari will be able to perform a submarine swap with a Tari seller. 
-We also anticipate that exchanges will list the Tari-Minotari pair to enable easy conversion of Tari back to Minotari.
+There is no peg-out back to the base layer. The reason is explained in
+[I-TIP-RFC-O-0320](./RFC-0320_TurbineModel.md). Holders wishing to convert Tari back to Minotari can perform a
+submarine swap with a buyer ([RFC-0310: Submarine Swaps](./RFC-0310_SubmarineSwaps.md)), and we anticipate that exchanges will
+list the pair.
 
 # Change Log
 
-| Date        | Change              | Author     |
-|:------------|:--------------------|:-----------|
-| 23 Oct 2023 | Thaum -> Tari       | CjS77      |
-| 1 Nov 2022  | High-level overview | CjS77      |
-| 26 Oct 2022 | First outline       | SWvHeerden |
+| Date        | Change                                                            | Author     |
+|:------------|:------------------------------------------------------------------|:-----------|
+| 07 Sep 2026 | DAN -> Ootle; realign with the implementation; drop Cerberus name | Tari Labs  |
+| 23 Oct 2023 | Thaum -> Tari                                                     | CjS77      |
+| 1 Nov 2022  | High-level overview                                               | CjS77      |
+| 26 Oct 2022 | First outline                                                     | SWvHeerden |
 
 [base layer]: Glossary.md#base-layer
 [validator node]: Glossary.md#validator-node
 [validator node comittee]: Glossary.md#validator-node-committee
-[FTL]: RFC-0120_Consensus.md#FTL
-[RFC-0320]: RFC-0320_TurbineModel.md

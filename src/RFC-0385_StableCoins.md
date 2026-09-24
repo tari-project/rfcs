@@ -1,6 +1,16 @@
-# RFC-0385/StableCoin
+# P-TIP-RFC-O-0385: StableCoin
 
-## Privacy-enabled Stablecoin contract design
+| TIP             | [P-TIP-RFC-O-0385](#p-tip-rfc-o-0385-stablecoin)                          |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Privacy-Enabled Stablecoin Contract Design                                |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Proposed                                                                  |
+| Type            | RFC                                                                       |
+| Created         | 2023-08-01                                                                |
+| References      |                                                                           |
+
+## Privacy-Enabled Stablecoin Contract Design
 
 ![status: draft](theme/images/status-draft.svg)
 
@@ -49,10 +59,37 @@ technological merits of the potential system outlined herein.
 
 ## Goals
 
-This Request for Comment (RFC) describes the a possible manifestation of a privacy-preserving
-stablecoin on the Tari Digital Assets Network (DAN).
+This Request for Comment (RFC) describes one possible manifestation of a privacy-preserving stablecoin on the Tari
+Ootle.
+
+## Status
+
+<div class="note">
+<p>This RFC is a <strong>proposal</strong>. No such template has been built, and none is scheduled. It is retained
+because the design remains viable on the engine as it exists today, and because the requirements analysis in the
+first half — what an issuer of a regulated stablecoin actually needs to be able to do — is independently useful to
+anyone designing an asset template.</p>
+<p>Some of the machinery this RFC would have had to build itself is now provided by the engine:</p>
+<ul>
+<li><strong>Confidential resources.</strong> Values held in Pedersen commitments, with range proofs and confidential
+withdrawals, are a resource type in <code>tari_template_lib</code> rather than something a template implements.</li>
+<li><strong>Authorisation.</strong> The whitelist/blacklist and issuer-privilege model below predates the engine's
+access rule system. Issuer powers — mint, burn, recall, updating access rules — are expressible as
+<code>AccessRule</code>s over badges, and account eligibility as holding (or not holding) a badge, without a
+template-managed list. See <a href="RFC-0350_TariVM.md">I-TIP-RFC-O-0350</a>.</li>
+<li><strong>Stealth transfers.</strong> The <code>StealthTransfer</code> instruction covers recipient privacy, which
+is a different axis to the value privacy this RFC addresses, but interacts with the e-cheque scheme below.</li>
+</ul>
+<p>A future revision should be rewritten against those primitives. The cryptographic constructions in the second half
+— verifiable encryption to the issuer, value equality, and the e-cheque transfer protocol — are the part that has no
+counterpart in the engine, and are the reason this document is worth keeping.</p>
+</div>
 
 ## Related Requests for Comment
+
+* [I-TIP-RFC-O-0350: The Tari Virtual Machine](./RFC-0350_TariVM.md)
+* [I-TIP-RFC-O-0330: The Ootle HotStuff Consensus Algorithm](./RFC-0330_Cerberus.md)
+* [I-TIP-RFC-MT-0181: Bulletproofs+ range proving](./RFC-0181_BulletproofsPlus.md)
 
 ## Evaluation of existing stablecoins
 
@@ -243,7 +280,7 @@ The following functions are available to the public:
    required to act responsibly and issue and redeem tokens in a timely manner in order to engender confidence in the
    coin and maintain the peg.
 3. Aside from the administrator privileges conferred on the `issuer` by the stablecoin contract, the coin is operated
-   in a decentralised manner, and transfers are facilitated by the Tari network, and are not processed by any
+   in a decentralised manner, and transfers are facilitated by the Ootle, and are not processed by any
    centralised
    entity, including the `issuer`.
 4. The `issuer` has the following "administrator" powers:
