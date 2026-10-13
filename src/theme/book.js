@@ -511,3 +511,24 @@ function playpen_text(playpen) {
         }
     );
 })();
+
+// mdbook has a nasty bug that breaks relative links and there's not a way around it yet.
+// To watch: https://github.com/rust-lang/mdBook/pull/3139
+(function sidebarAbsoluteLinks() {
+    const sidebar = document.getElementById("sidebar");
+    Array.prototype.forEach.call(
+        sidebar.querySelectorAll("a[href]"),
+        function (link) {
+            const rawValue = link.getAttribute("href");
+            const needsPrefix = (
+                link.href.startsWith(window.location.origin)
+                && !rawValue.startsWith(window.location.origin)
+                && !rawValue.startsWith("/")
+                && !rawValue.startsWith("#")
+            );
+            if (needsPrefix) {
+               link.setAttribute("href", "/" + rawValue);
+            }
+        }
+    );
+})();

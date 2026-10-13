@@ -332,6 +332,10 @@ li .section li .section {
     margin-bottom: 0px;
 }
 
+.sidebar .chapter-link-wrapper span {
+    color: var(--sidebar-fg);
+}
+
 
 .js .sidebar {
     transition: transform 0.3s; /* Animation: slide away */
