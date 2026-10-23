@@ -74,8 +74,8 @@ aborted in a timely manner, so that those substates are released.
 ## Glossary
 
 * **Block** — an Ootle block, consisting of an ordered set of commands.
-* **Command** — one of `LocalOnly`, `LocalPrepare`, `LocalAccept`, `AllAccept`, `SomeAccept`, `ForeignProposal`,
-  `EvictNode` or `EndEpoch`. The transaction commands move a transaction through its consensus stages.
+* **Command** — one of `LocalOnly`, `LocalPrepare`, `LocalAccept`, `AllAccept`, `SomeAccept`, `ForeignProposal`
+  or `EndEpoch`. The transaction commands move a transaction through its consensus stages.
 * **Foreign proposal** — a block committed by another shard group's committee, which a local committee needs in order
   to make progress on a shared transaction.
 * **Shard group** — the contiguous range of the address space covered by one committee. See
@@ -133,7 +133,7 @@ chain, so every member derives the same decision from it.
 
 Foreign proposals are ordered first within a block, ahead of the transaction commands, so that the evidence they carry
 is available to the commands that depend on it. The block's command ordering is fixed:
-`EvictNode`, then `ForeignProposal` (ordered by shard group and block id), then transaction commands ordered by
+`ForeignProposal` (ordered by shard group and block id), then transaction commands ordered by
 transaction id, then `EndEpoch`.
 
 ### Processing

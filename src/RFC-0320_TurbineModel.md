@@ -66,7 +66,7 @@ This RFC describes the motivation for, and the mechanism of, the Minotari-to-Oot
 
 * [I-TIP-RFC-O-0303: The Tari Ootle](./RFC-0303_DanOverview.md)
 * [I-TIP-RFC-O-0350: The Tari Virtual Machine](./RFC-0350_TariVM.md)
-* [RFC-0310: Submarine Swaps](./RFC-0310_SubmarineSwaps.md)
+* [P-TIP-RFC-O-0310: Submarine Swaps](./RFC-0310_SubmarineSwaps.md)
 * [I-TIP-RFC-MT-0111: Base Node Architecture](./RFC-0111_BaseNodeArchitecture.md)
 
 ## Description
@@ -194,14 +194,15 @@ Peg-in is a burn on the base layer followed by a claim on the Ootle.
 The burn is recorded on the Ootle as a substate, so a given burn can be claimed exactly once. There is no trusted
 party and no federation: the peg-in is a proof about base-layer data that any validator can check.
 
-The peg-in is 1:1 by construction. One µXTM burnt yields one µXTR.
+The peg-in is 1:1 by construction. One µXTM burnt yields one µT of Tari.
 
 ### Exhaust: burning a fraction of every fee
 
 The exhaust is the `ExhaustBurnRate` consensus constant, currently 500 basis points (5%) on every network. When the
-engine settles a transaction's fees it charges the burn on top of the accrued execution fee, as a separate
-`FeeSource::ExhaustBurn` charge. The leader therefore receives the execution fee in full, and the burnt amount is
-destroyed rather than redistributed.
+engine settles a transaction's fees, the burn is taken as a share of the fees the transaction paid, not charged on
+top of them. The leader receives the fees collected less the exhaust burn, and the burnt amount is destroyed rather
+than redistributed. Because the burn is a share of what was paid, no network can be configured to burn more than it
+collected.
 
 The rate is a consensus rule: it must be identical network-wide, or nodes would disagree on the burn totals recorded
 in block headers. It is resolved per epoch (`ConsensusConstants::exhaust_burn_rate(epoch)`), which leaves room for a

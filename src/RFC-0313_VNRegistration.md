@@ -128,8 +128,7 @@ These are defined in `ConsensusConstants` in the `tari-ootle` repository.
 
 | Name (code)                  | Value      | Description                                                                        |
 |:-----------------------------|:-----------|:------------------------------------------------------------------------------------|
-| `base_layer_confirmations`   | 1000 (mainnet), 100 (Esmeralda and testnets), 3 (devnet) | Base-layer confirmations before a block is treated as final |
-| `epoch_end_spread_blocks`    | 5          | Base-layer blocks of leeway when voting on `EndEpoch` proposals                     |
+| `base_layer_confirmations`   | 780 (mainnet), 100 (Esmeralda and testnets), 3 (devnet) | Base-layer confirmations before a block is treated as final; also the oracle's `height_lag` |
 
 ## Validator Registration
 
@@ -198,18 +197,17 @@ one supersedes it.
 > A validator node may implement auto re-registration so that it stays in the validator set without constant manual
 > intervention.
 
-### Exit and eviction
+### Exit
 
-A validator leaves the set in one of three ways:
+A validator leaves the set in one of two ways:
 
 1. **Expiry.** The registration's `max_epoch` passes without re-registration.
 2. **Voluntary exit.** The operator publishes a `ValidatorNodeExit` side-chain feature. The exit is queued the same
    way joins are: at most `vn_registration_max_exits_per_epoch` exits are processed per epoch, so a coordinated mass
    departure cannot drain a committee below its safety threshold in a single transition.
-3. **Eviction.** A committee that agrees a validator has missed too many proposals commits an `EvictNode` command
-   (see [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md)). The resulting `EvictionProof` is published to the base layer as
-   a side-chain feature, and the base layer removes the validator from the set at the next epoch. This is the one
-   path by which layer-two consensus writes back to the layer-one registry.
+
+There is no path by which layer-two consensus removes a validator from the layer-one registry. Ootle committees do
+not evict their members (see [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md)).
 
 ### Base-layer consensus
 
@@ -241,19 +239,20 @@ current epoch and validator set.
 As mentioned in the [overview](#overview), any proof-of-work chain is prone to [reorg]s. How do we achieve a shared,
 consistent view of a chain whose recent history can change?
 
-Validators do not read the tip. The base-layer epoch oracle scans at a configured `height_lag` behind the tip, and
-`base_layer_confirmations` blocks must have accumulated before a block is treated as final. The lag is chosen so that
-reorgs deeper than it are practically impossible. Reorgs shallower than the lag are invisible to the Ootle, since the
-data it has extracted is still valid. The point of finality is therefore monotonic, which removes reorg "noise" at
-the chain tip entirely.
+Validators do not read the tip. The base-layer epoch oracle scans `height_lag` blocks behind the tip, and validator
+nodes set `height_lag` to `base_layer_confirmations`, so a block is treated as final once it is that deep. The lag is
+chosen so that reorgs deeper than it are practically impossible. Reorgs shallower than the lag are invisible to the
+Ootle, since the data it has extracted is still valid. The point of finality is therefore monotonic, which removes reorg
+"noise" at the chain tip entirely.
 
 That does not address latency. Base nodes receive and process blocks at slightly different times, and validators poll
 their base node only every `scanning_interval`. A single strict changeover point would therefore cause liveness
 failures at every epoch transition, as some nodes crossed the boundary before others.
 
-To address this, `epoch_end_spread_blocks` defines a window in which a validator whose own scan has not yet crossed
-the boundary will still accept an `EndEpoch` proposal from peers whose oracle has crossed. Setting it to zero
-disables the leeway.
+The epoch therefore does not change when each node independently crosses the boundary. A leader whose oracle has
+crossed proposes an `EndEpoch` command, and replicas vote for it only once their own oracle has observed the same
+boundary, abstaining until then. The scan lag makes disagreement rare, and when it occurs the transition waits for
+its quorum until enough oracles have caught up. See [I-TIP-RFC-O-0325](./RFC-0325_DanTimeManagement.md).
 
 To illustrate, consider the following view of a [base layer] chain, with three points of interest marked.
 
@@ -287,10 +286,9 @@ Point (c) — the transition point for epoch 12:
 
 ### Validator Node Set Definition
 
-The function $\text{get\_vn\_set}(\epsilon) \rightarrow \vec{S}$ returns the ordered vector $\vec{S}$ of
-`VN_Shard_Key`s active for epoch $\epsilon$, ordered by `VN_Shard_Key`. A validator is active for $\epsilon$ if its
-activation epoch is at or before $\epsilon$, its `max_epoch` is at or after $\epsilon$, and it has not exited or been
-evicted before $\epsilon$.
+The function $\text{get\_vn\_set}(\epsilon) \rightarrow \vec{S}$ returns the ordered vector $\vec{S}$ of `VN_Shard_Key`s
+active for epoch $\epsilon$, ordered by `VN_Shard_Key`. A validator is active for $\epsilon$ if its activation epoch is
+at or before $\epsilon$, its `max_epoch` is at or after $\epsilon$, and it has not exited before $\epsilon$.
 
 Registrations, activations and exits are held in separate indexes keyed by sidechain id, so that a query is scoped to
 one sidechain. Index entries are _not_ removed when a registration is spent or expires, so that state can be rewound
@@ -342,12 +340,11 @@ while it does.
 
 | Date        | Change                                                                                | Author     |
 |:------------|:---------------------------------------------------------------------------------------|:-----------|
-| 07 Sep 2026 | Claim keys, sidechain ids, join/exit queues, eviction, epoch oracle; DAN -> Ootle      | Tari Labs  |
+| 07 Sep 2026 | Claim keys, sidechain ids, join/exit queues, epoch oracle; DAN -> Ootle                | Tari Labs  |
 | 18 Nov 2022 | Implementation updates                                                                 | sdbondi    |
 | 08 Nov 2022 | Updates                                                                                | sdbondi    |
 | 12 Oct 2022 | First outline                                                                          | SWvHeerden |
 
-[base node]: Glossary.md#base-node
 [Base Layer]: Glossary.md#base-layer
 [reorg]: Glossary.md#chain-reorganization
 [Schnorr signature]: https://tlu.tarilabs.com/cryptography/introduction-schnorr-signatures

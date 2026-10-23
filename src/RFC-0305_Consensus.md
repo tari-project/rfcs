@@ -132,25 +132,24 @@ Committee members find each other through the epoch manager: the validator set f
 layer, and each node's peer address is part of its registration.
 
 Peers that send invalid messages are banned at the networking layer. Banning is a local decision and does not by
-itself remove a node from the validator set; the consensus-level mechanism for that is eviction, below.
+itself remove a node from the validator set.
 
 ## Identifying and removing malicious nodes from the network
 
-Unresponsive nodes are removed from consensus by their own committee, without base-layer involvement.
+There is no consensus-level mechanism by which a committee removes one of its own members. A validator leaves the
+validator set only through the base layer: by exiting, or by letting its registration expire
+([I-TIP-RFC-O-0313](./RFC-0313_VNRegistration.md)). An earlier design let a committee evict a member that repeatedly
+missed proposals; it was removed because it was a consensus-level punishment with no recovery path, gated on a
+missed-proposal counter that conflates liveness faults with equivocation.
 
-Each node tracks how many proposals every committee member has missed while it was leader:
+An unresponsive leader costs its committee one pacemaker timeout per turn: replicas send a `NewView` to the next
+leader and consensus continues. Each node still tracks how many proposals every committee member has missed while it
+was leader (`missed_proposal_suspend_threshold` and `missed_proposal_recovery_threshold`, both 5), but these counters
+are informational and do not change consensus behaviour.
 
-* After `missed_proposal_suspend_threshold` missed proposals (5), the node is **suspended**: peers immediately send a
-  `NewView` to the *next* leader when the suspended node's turn comes, rather than waiting out the pacemaker timeout.
-  A suspended node still participates as a replica.
-* After `missed_proposal_evict_threshold` missed proposals (10), an `EvictNode` command is proposed, carrying an
-  `EvictionProof`. Once that command commits, the node is removed from the committee for the remainder of the epoch.
-* A suspended node recovers by participating: each block it votes in decrements its missed-proposal count, up to
-  `missed_proposal_recovery_threshold` (5). At zero it is no longer suspended.
-
-Beyond eviction, the deterrent against malicious behaviour remains economic. A substantial deposit is required to
-register as a validator node, and after de-registration that deposit is locked for a significant period. A serial
-offender therefore incurs a real opportunity cost over time.
+The deterrent against malicious behaviour is economic. A substantial deposit is required to register as a validator
+node, and after de-registration that deposit is locked for a significant period. A serial offender therefore incurs a
+real opportunity cost over time.
 
 Many proof-of-stake systems use "slashing" instead. Slashing sounds good at first, but there are many edge cases in
 which honest-but-poorly-configured nodes are punished. We are somewhat sceptical that slashing achieves its intended
@@ -169,9 +168,9 @@ two-thirds of the committee is honest. The motivation for punishing malicious no
 * to deter nodes from colluding to reach 33% (breaking liveness) or 67% (breaking safety).
 
 One alternative to slashing is to make _all_ validator node deposits non-refundable, so that a malicious node has its
-deposit implicitly slashed once it is evicted. Honest nodes would need to run for a period before becoming
-profitable, akin to an apprenticeship. Validator fees would rise to compensate. This is very similar to slashing in
-effect, but simpler to implement and police.
+deposit implicitly slashed once it leaves the validator set. Honest nodes would need to run for a period before
+becoming profitable, akin to an apprenticeship. Validator fees would rise to compensate. This is very similar to
+slashing in effect, but simpler to implement and police.
 
 Another option is to make use of auditability and fraud proofs (see section
 [V.B](https://arxiv.org/pdf/1708.03778.pdf) of the Chainspace paper), which would allow retroactive punitive action
@@ -217,17 +216,17 @@ every height.
 
 A pacemaker drives the round. If no valid proposal arrives within `pacemaker_block_time` (10 seconds) plus a delta,
 the node sends a `NewView` to the leader for the next height, carrying its highest quorum certificate. On collecting
-a quorum of `NewView` messages, the new leader proposes at the next height. Repeated failure to propose leads to
-suspension and eventually eviction, as described above.
+a quorum of `NewView` messages, the new leader proposes at the next height. A leader that repeatedly fails to propose
+costs its committee a timeout on each of its turns, but is not removed from the committee; see above.
 
 Leader rollover is covered in more detail in [I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md).
 
 ## Guaranteeing liveness in the face of a Byzantine stoppage
 
 <div class="note">
-Eviction handles the common case — nodes that are offline or unresponsive. The design for forcing liveness through a
-<em>deliberate</em> Byzantine stoppage, where at least a third of a committee actively colludes to prevent progress,
-is still under discussion. What follows is the current thinking, not an implemented mechanism.
+Leader rollover handles the common case — nodes that are offline or unresponsive. The design for forcing liveness
+through a <em>deliberate</em> Byzantine stoppage, where at least a third of a committee actively colludes to prevent
+progress, is still under discussion. What follows is the current thinking, not an implemented mechanism.
 </div>
 
 A liveness break occurs when at least a third of the nodes in a single committee actively or passively collude to
@@ -240,14 +239,14 @@ components will eventually produce a state change that requires the Byzantine co
 It is therefore critical that liveness can be restored relatively quickly and efficiently.
 
 The basic strategy is that enough nodes vote to force an epoch change. Nodes must provide proof of recent activity in
-order to participate in the new epoch; nodes that cannot are evicted. The epoch change reshuffles committee
+order to participate in the new epoch; nodes that cannot are excluded from it. The epoch change reshuffles committee
 membership, and any remaining colluding nodes are dispersed across new shard groups.
 
 # Change Log
 
 | Date        | Change                                                                       | Author    |
 |:------------|:-----------------------------------------------------------------------------|:----------|
-| 07 Sep 2026 | Realign with the implementation: shard groups, eviction, gossip, state sync  | Tari Labs |
+| 07 Sep 2026 | Realign with the implementation: shard groups, node removal, gossip, state sync | Tari Labs |
 | 16 Dec 2023 | Second draft                                                                 | CjS77     |
 | 30 Oct 2023 | First draft                                                                  | CjS77     |
 

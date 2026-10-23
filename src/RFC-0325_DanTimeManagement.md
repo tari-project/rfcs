@@ -84,7 +84,7 @@ For stability and security in the [VNC]s we have the following requirements:
   functioning.
 
 An **epoch** is the unit that satisfies all of these. Within an epoch, the validator set and every committee's
-membership are fixed. All change — activations, exits, evictions, shard key shuffles, changes in the number of
+membership are fixed. All change — activations, exits, expiries, shard key shuffles, changes in the number of
 committees — takes effect at an epoch boundary and nowhere else.
 
 ## Where the clock comes from
@@ -103,18 +103,21 @@ The Ootle takes its epoch clock from an **epoch oracle**. Three implementations 
   driven by base-layer epoch changes. This is used while bootstrapping a network against a base layer.
 
 An oracle emits a stream of `EpochEvent`s: `EpochChanged`, `ActiveValidatorNodeSetChanged`, `NewValidatorRegistered`,
-`NewValidatorNodeExit` and `DoneForNow`. The epoch manager consumes them and maintains the validator set, the
-committee assignment and the epoch hash.
+`NewValidatorNodeExit`, `DoneForNow` and `Error`. The epoch manager consumes them and maintains the validator set,
+the committee assignment and the epoch hash.
 
 ## Lag: insulating the Ootle from base-layer reorgs
 
 Because the [Minotari] chain drives the Ootle clock, the Ootle needs a stable view of it. Minotari is built on
 proof-of-work, so its recent history can be reorganised. A reorg must not cause a committee reshuffle.
 
-The base layer oracle therefore does not read the tip. It scans at a configured `height_lag` behind the tip, and a
-block is only treated as final once `base_layer_confirmations` blocks sit on top of it — 1000 on mainnet, 100 on
-Esmeralda and the testnets, and 3 on a local devnet. Reorgs shallower than the lag are invisible to the Ootle: the data it extracted is still on the canonical
-chain. The point of finality is therefore monotonic, and reorg "noise" at the tip is filtered out entirely.
+The base layer oracle therefore does not read the tip. It scans `height_lag` blocks behind the tip, and a block is
+treated as final once it is that deep. Validator nodes and indexers set `height_lag` to the `base_layer_confirmations`
+consensus constant — 780 on mainnet, 100 on Esmeralda and the testnets, and 3 on a local devnet — so the lag and the
+confirmation depth are one value, not two independent gates. The mainnet value is Minotari's coinbase maturity (720
+blocks) plus a 60-block margin, chosen as a multiple of `vn_epoch_length` so that the lag ends on an epoch boundary.
+Reorgs shallower than the lag are invisible to the Ootle: the data it extracted is still on the canonical chain. The
+point of finality is therefore monotonic, and reorg "noise" at the tip is filtered out entirely.
 
 This has a second, deliberate benefit. Because the Ootle's view of the base layer is deliberately behind, it knows
 about registrations, exits and shuffles *before* the epoch in which they take effect. A validator moving to a new
@@ -123,27 +126,25 @@ expected to vote on it.
 
 <div class="note">
 Earlier drafts of this RFC called this <em>DAN Lag</em>. The mechanism is the same; the name in the implementation is
-<code>height_lag</code>, alongside <code>base_layer_confirmations</code>.
+<code>height_lag</code>, configured from the <code>base_layer_confirmations</code> consensus constant.
 </div>
 
-## Spread: tolerating disagreement about the boundary
+## Disagreement about the boundary
 
 Base nodes are decentralised, so there is no single view of the chain's height. The Ootle operates on millisecond
 timescales while the Minotari chain runs at minutes, and blocks take seconds to propagate. Validators also poll their
 base node only every `scanning_interval`.
 
-This means that at any instant, one validator's scanner may have crossed an epoch boundary while another's has not. A
-single strict changeover point would therefore cause a liveness failure at every epoch transition.
-
-`epoch_end_spread_blocks` — 5 base-layer blocks — is the leeway. A validator whose own scan has not yet crossed the
-boundary, but which is within that many blocks of it, will still accept and vote on an `EndEpoch` proposal from peers
-whose oracle has crossed. Setting it to zero disables the leeway.
+This means that at any instant, one validator's scanner may have crossed an epoch boundary while another's has not.
+There is no leeway window for this. A validator only votes for an `EndEpoch` proposal once its own oracle has observed
+the boundary; until then it abstains (`EndOfEpochHashNotObserved`). Gating on the local oracle means a node never
+lends its vote to a boundary hash it has not itself seen. Liveness is preserved by the scan lag, which makes it rare
+for validators to disagree about a boundary that is already `height_lag` blocks deep; when they do, the end-of-epoch
+block simply waits for its quorum until enough replicas' oracles have caught up.
 
 <div class="note">
-Earlier drafts of this RFC called this <em>DAN Grace Time</em>, defined symmetrically as a number of blocks in the
-past or future that a validator would accept. As implemented it is one-sided — a lagging validator accepts a peer that
-is ahead, not the reverse — and it applies specifically to <code>EndEpoch</code> proposals rather than to instruction
-acceptance generally.
+Earlier drafts of this RFC described a <em>DAN Grace Time</em>, a number of blocks in the past or future within which a
+validator would accept a peer's view of the boundary. The implementation has no such window.
 </div>
 
 ## The epoch transition
@@ -153,7 +154,8 @@ agrees that it has.
 
 1. A leader whose oracle has crossed the boundary proposes an `EndEpoch` command, carrying the `next_epoch_hash` — the
    hash of the base-layer block at the next epoch's boundary.
-2. Replicas ratify that hash against their own oracle, applying the `epoch_end_spread_blocks` leeway, and vote.
+2. Replicas ratify that hash against their own oracle, and vote only if their oracle has observed the same
+   boundary; otherwise they abstain until it has.
 3. Once the end-of-epoch block commits with a quorum, the committed hash — not each node's locally derived one — is
    the epoch hash for the next epoch. A node that diverged on the boundary block, for instance because of a
    base-layer reorg deeper than the confirmation depth, adopts the committee's hash rather than wedging on its own.
@@ -172,7 +174,7 @@ A [VN] must re-register before its registration's `max_epoch` passes, or it is d
 a proof-of-liveness mechanism: it prevents a validator registering once and remaining in the registry forever. It is
 therefore always possible to maintain a list of recently active validators.
 
-Joins, exits and evictions are all rate-limited per epoch, and shard key shuffles affect only a small fraction of the
+Joins and exits are both rate-limited per epoch, and shard key shuffles affect only a small fraction of the
 set in any epoch. Together these bound how much of any committee can turn over at a single boundary. See
 [I-TIP-RFC-O-0313](./RFC-0313_VNRegistration.md).
 
@@ -182,11 +184,6 @@ set in any epoch. Together these bound how much of any committee can turn over a
 
 The lag must be long enough that ordinary reorgs have no effect on the Ootle, and long enough to give a validator
 ample time to download the state for a shard group it is about to join.
-
-### Spread
-
-This should be only a block or two — enough to cover a validator whose base node has not yet seen the boundary block,
-or whose scan interval has not yet elapsed.
 
 ### Epoch length
 
@@ -200,13 +197,11 @@ validators are removed from the registry promptly.
 
 | Date        | Change                                                                             | Author     |
 |:------------|:-------------------------------------------------------------------------------------|:-----------|
-| 07 Sep 2026 | Epoch oracles, `EndEpoch` agreement; DAN Lag/Grace Time renamed to lag and spread    | Tari Labs  |
+| 07 Sep 2026 | Epoch oracles, `EndEpoch` agreement; DAN Lag renamed to lag; Grace Time dropped        | Tari Labs  |
 | 19 Oct 2022 | First outline                                                                        | SWvHeerden |
 
 [VNC]: RFC-0314_VNCSelection.md#intro
 
 [VN]: Glossary.md#validator-node
-
-[base node]: Glossary.md#base-node
 
 [Minotari]: Glossary.md#base-layer

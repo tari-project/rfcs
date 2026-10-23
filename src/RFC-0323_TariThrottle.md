@@ -67,8 +67,8 @@ The study's own conclusion (see [Conclusions](#conclusions)) is that a supply-ta
 target only by moving the layer-two burn rate sharply and often, which is corrosive to validator node economics. That
 conclusion was accepted, and the network ships the simple alternative instead: the exhaust burn rate is a fixed
 network-wide consensus constant, `ConsensusConstants::exhaust_burn_rate`, currently 500 basis points (5%) on every
-network. The engine charges it on top of the accrued execution fee for each transaction, so leaders receive the
-execution fee in full and the burnt amount is destroyed separately.
+network. The burn is taken as a share of the fees each transaction pays, so leaders receive the fees collected
+less the burn, and the burnt amount is destroyed.
 
 Nothing in this document is implemented. The `burn-sim` repository, the `TariThrottle` struct, the controller
 parameters `kp`/`ki`/`kd`/`target_supply`/`trigger_at`/`min`/`max`, and the per-epoch burn rate updates described

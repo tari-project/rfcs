@@ -184,8 +184,8 @@ Validator nodes must be able to:
 Steps 1–3 are carried out in the Tari Virtual Machine. Step 4 is achieved by communicating with peers via the
 consensus layer.
 
-Validator nodes that misbehave can be evicted from the network by their own committee, using the `EvictNode` command
-described in [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
+Committees cannot remove their own members; a validator leaves the network only through the base-layer registry. The
+deterrents against misbehaviour are described in [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
 
 ### Consensus layer
 
@@ -233,7 +233,7 @@ provides a constant source of demand for Tari.
 
 There is no peg-out back to the base layer. The reason is explained in
 [I-TIP-RFC-O-0320](./RFC-0320_TurbineModel.md). Holders wishing to convert Tari back to Minotari can perform a
-submarine swap with a buyer ([RFC-0310: Submarine Swaps](./RFC-0310_SubmarineSwaps.md)), and we anticipate that exchanges will
+submarine swap with a buyer ([P-TIP-RFC-O-0310](./RFC-0310_SubmarineSwaps.md)), and we anticipate that exchanges will
 list the pair.
 
 # Change Log

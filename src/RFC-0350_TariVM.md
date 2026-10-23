@@ -171,10 +171,10 @@ epoch, so every transaction's death is deterministic. A wallet can declare a tra
 epoch has passed, and an aborted attempt — which consensus deliberately allows to be re-sequenced — cannot be retried
 indefinitely.
 
-The instruction set includes `CallFunction` and `CallMethod`, workspace manipulation (`PutLastInstructionOutputOn`
-`Workspace`, `TakeFromBucket`, `PutIntoBucket`, `DropAllProofsInWorkspace`), `Assert`, `CreateAccount`,
-`AllocateAddress`, `PublishTemplate`, `UpdateComponentTemplate`, `StealthTransfer`, `PayFeeFromBucket`, `ClaimBurn`
-and `ClaimValidatorFees`.
+The instruction set includes `CallFunction` and `CallMethod`, workspace manipulation
+(`PutLastInstructionOutputOnWorkspace`, `TakeFromBucket`, `PutIntoBucket`, `DropAllProofsInWorkspace`), `Assert`,
+`CreateAccount`, `AllocateAddress`, `PublishTemplate`, `UpdateComponentTemplate`, `StealthTransfer`, `PayFeeFromBucket`,
+`ClaimBurn` and `ClaimValidatorFees`.
 
 Transaction execution proceeds as follows:
 
@@ -202,9 +202,10 @@ charge to a `FeeSource`:
 | `TemplateLoad`          | Loading and instantiating a template                                                  |
 | `WasmExecution`         | WASM execution, in proportion to consumed Wasmer metering points                      |
 | `NativeExecution`       | Native verification — stealth transfers, confidential withdraws, burn claims — priced in the same points via wall-clock equivalence |
-| `SignatureVerification` | Verifying transaction signatures                                                      |
 | `TemplatePublish`       | Publishing a template binary. The first `template_size_premium_free_bytes` are priced at the storage rate; every unit beyond is charged quadratically, to discourage oversized templates |
-| `ExhaustBurn`           | The exhaust burn ([I-TIP-RFC-O-0320](./RFC-0320_TurbineModel.md)), destroyed rather than paid to the leader |
+
+The exhaust burn ([I-TIP-RFC-O-0320](./RFC-0320_TurbineModel.md)) is not a fee source. It is taken as a share of the
+fees a transaction paid, and the leader receives the remainder.
 
 Metering both WASM and native work in the same units matters for consensus, not just for pricing: block admission is
 bounded by total execution points ([I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md)), and that bound would be trivially

@@ -177,13 +177,12 @@ stage to the next; a block may contain many. The stages are:
 | `AllAccepted`   | Every involved shard group accepted; the transaction commits                                   |
 | `SomeAccepted`  | At least one involved shard group aborted; the transaction aborts                              |
 
-The corresponding commands are `LocalOnly`, `LocalPrepare`, `LocalAccept`, `AllAccept` and `SomeAccept`. Three
+The corresponding commands are `LocalOnly`, `LocalPrepare`, `LocalAccept`, `AllAccept` and `SomeAccept`. Two
 further commands are not transaction commands: `ForeignProposal`
-([I-TIP-RFC-O-0321](./RFC-0321_ProcessingForeignProposals.md)), `EvictNode`
-([I-TIP-RFC-O-0305](./RFC-0305_Consensus.md)) and `EndEpoch`
+([I-TIP-RFC-O-0321](./RFC-0321_ProcessingForeignProposals.md)) and `EndEpoch`
 ([I-TIP-RFC-O-0325](./RFC-0325_DanTimeManagement.md)).
 
-Commands are ordered deterministically within a block: `EvictNode` first, then `ForeignProposal` ordered by shard
+Commands are ordered deterministically within a block: `ForeignProposal` first, ordered by shard
 group and block id, then transaction commands ordered by transaction id, then `EndEpoch`. Every replica therefore
 processes a block's commands in exactly the same order and derives the same result.
 
@@ -233,12 +232,13 @@ and can prove it, so a faulty foreign leader cannot inject state that its own co
 
 Within a committee, agreement on each block follows HotStuff. A block is committed once a three-chain of quorum
 certificates is built on top of it: each subsequent block's quorum certificate justifies its parent, and a block is
-locked and then committed as that chain extends. A quorum is $2f+1$ of the committee's vote power.
+locked and then committed as that chain extends. A quorum is $n - f$ of the committee's vote power, where $n$ is the
+total vote power and $f$ the largest faulty share it tolerates. This equals $2f+1$ only when $n = 3f+1$.
 
 The leader for a height is `height % committee_size` over the committee ordered by shard key. A pacemaker triggers a
 new view if no valid proposal arrives within `pacemaker_block_time` — 10 seconds — plus a delta; replicas then send a
-`NewView` carrying their highest quorum certificate to the leader at the next height. Repeated failure to propose
-leads to suspension and eventually to an `EvictNode` command. See
+`NewView` carrying their highest quorum certificate to the leader at the next height. A leader that repeatedly fails to
+propose is not removed from the committee; see
 [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
 
 ### Bounding a block's cost
@@ -313,5 +313,3 @@ state merkle root committed in blocks rather than trusting the peer serving it.
 [validator node comittee]: Glossary.md#validator-node-committee
 
 [chainspace]: https://arxiv.org/pdf/1708.03778.pdf "Chainspace whitepaper"
-
-[contract template]: RFC-0303_DanOverview.md#templates

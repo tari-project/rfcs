@@ -181,8 +181,8 @@ committee.
 
 This also provides the rollover order when a leader is faulty. If no valid proposal arrives within the pacemaker's
 block time, replicas send a `NewView` to the leader at $h + 1$, which is the next member in the rotation. A node that
-repeatedly fails to propose is first suspended — peers skip its turn immediately rather than waiting out the timeout —
-and eventually evicted. See [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
+repeatedly fails to propose costs its committee a timeout on each of its turns, but is not removed from the committee.
+See [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
 
 <div class="note">
 Round-robin selection is public and predictable a round in advance, which is a deliberate trade: it lets replicas
@@ -197,5 +197,3 @@ block-based pipeline the network actually runs — leaders propose blocks of com
 |:------------|:------------------------------------------------------------------------------------|:-----------|
 | 07 Sep 2026 | Replace the Merkle-neighbour design with preshards and shard groups; leader rotation | Tari Labs |
 | 11 Oct 2022 | First outline                                                                       | SWvHeerden |
-
-[base node]: Glossary.md#base-node
