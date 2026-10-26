@@ -1,8 +1,18 @@
-# RFC-0388 Bearer Tokens
+# D-TIP-RFC-O-0388: BearerTokens
 
-## A Scheme for Granting the Bearer Permissions on Second Layer Assets
+| TIP             | [D-TIP-RFC-O-0388](#d-tip-rfc-o-0388-bearertokens)                        |
+|-----------------|---------------------------------------------------------------------------|
+| Title           | Bearer Tokens for Delegated Authority                                     |
+| Last Modified   | 2026-09-07                                                                |
+| Authors         | Tari Labs                                                                 |
+| Status          | Deprecated                                                                |
+| Type            | RFC                                                                       |
+| Created         | 2023-01-01                                                                |
+| References      | [I-TIP-RFC-O-0350](RFC-0350_TariVM.md)                                    |
 
-![status: raw](theme/images/status-raw.svg)
+## Bearer Tokens for Delegated Authority
+
+![status: deprecated](theme/images/status-deprecated.svg)
 
 **Maintainer(s)**: @mikethetike
 
@@ -45,6 +55,33 @@ without notice.
 This document may include preliminary concepts that may or may not be in the process of being developed by the Tari
 community. The release of this document is intended solely for review and discussion by the community regarding the
 technological merits of the potential system outlined herein.
+
+## Deprecation notice
+
+<div class="note">
+This RFC is <strong>deprecated</strong>. The scheme described here was never implemented and is not planned.
+</div>
+
+Delegated authority on the Ootle is instead expressed with the capability model that ships in
+`tari_template_lib_types::access_rules`:
+
+* Every component method and every resource action — mint, burn, recall, withdraw, deposit, update non-fungible
+  data, freeze, update metadata — carries an `AccessRule`, which is `AllowAll`, `DenyAll`, or a `Restricted` rule tree
+  composed of `AnyOf`/`AllOf` over `RequireRule`s.
+* A `RuleRequirement` is satisfied by presenting a *proof* in the transaction's auth scope — a badge, meaning a
+  `Resource` or a specific `NonFungibleAddress` held in a vault — or by the call being scoped to a given component or
+  template. Proofs are created from vaults and dropped at the end of the transaction, so authority is scoped to a
+  single execution rather than being a persistent allowance.
+* Substate ownership is a separate `SubstateOwnerRule`; only the owner may change a substate's access rules after
+  creation.
+
+This model achieves the goals stated below — no `approve`-style persistent allowance, and no fee to grant or revoke
+authority — by a different route. Delegation is done by transferring or lending a badge rather than by attenuating a
+signed token, and revocation is done by reclaiming the badge (or by a recall rule) rather than by rotating a root
+nonce. The macaroon-style caveat expression language, the `based_on` attenuation chain, and the `root_nonce`
+revocation register have no counterpart in the engine, and no work is planned to add them.
+
+The remainder of this document is retained for historical reference only.
 
 ## Goals
 
