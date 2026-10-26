@@ -199,6 +199,8 @@ charge to a `FeeSource`:
 | `RuntimeCall`           | Engine host calls, plus the per-byte cost of log messages                             |
 | `Storage`               | Bytes of state written                                                                |
 | `SubstateCreate`        | Creating a new substate                                                               |
+| `InputLoad`             | Loading the transaction's declared inputs, priced by encoded size                     |
+| `InputFanout`           | Pledging inputs to the other involved shard groups, priced by size × number of groups |
 | `TemplateLoad`          | Loading and instantiating a template                                                  |
 | `WasmExecution`         | WASM execution, in proportion to consumed Wasmer metering points                      |
 | `NativeExecution`       | Native verification — stealth transfers, confidential withdraws, burn claims — priced in the same points via wall-clock equivalence |

@@ -142,10 +142,18 @@ validator set only through the base layer: by exiting, or by letting its registr
 missed proposals; it was removed because it was a consensus-level punishment with no recovery path, gated on a
 missed-proposal counter that conflates liveness faults with equivocation.
 
-An unresponsive leader costs its committee one pacemaker timeout per turn: replicas send a `NewView` to the next
-leader and consensus continues. Each node still tracks how many proposals every committee member has missed while it
-was leader (`missed_proposal_suspend_threshold` and `missed_proposal_recovery_threshold`, both 5), but these counters
-are informational and do not change consensus behaviour.
+Unresponsive leaders are instead **suspended**. Each node tracks how many proposals every committee member has missed
+while it was leader. Once a validator has missed `missed_proposal_suspend_threshold` proposals (5), it is suspended,
+and its leader slots are remapped to the next non-suspended member of the committee. A skipped validator costs no
+dummy block, no timeout certificate and no `NewView`. Because this decides who may propose, it is a consensus rule:
+the thresholds must be uniform network-wide, and liveness state is read as of a fixed lag behind the justified block
+so that every node picks the same effective leader.
+
+Suspension is self-healing. A suspended validator is never removed from the committee, and its votes keep counting
+towards every quorum. It earns a leader slot back on probation once `probation_base_votes` (5) of its votes have landed
+in the certificates of committed blocks, or after `probation_base_blocks` (100) committed blocks, whichever comes
+first. Proposing a block that commits clears the suspension; failing probation doubles both waits, up to
+`probation_max_backoff_exp` (6) doublings.
 
 The deterrent against malicious behaviour is economic. A substantial deposit is required to register as a validator
 node, and after de-registration that deposit is locked for a significant period. A serial offender therefore incurs a
@@ -217,7 +225,7 @@ every height.
 A pacemaker drives the round. If no valid proposal arrives within `pacemaker_block_time` (10 seconds) plus a delta,
 the node sends a `NewView` to the leader for the next height, carrying its highest quorum certificate. On collecting
 a quorum of `NewView` messages, the new leader proposes at the next height. A leader that repeatedly fails to propose
-costs its committee a timeout on each of its turns, but is not removed from the committee; see above.
+is suspended and its turns are skipped, but it is not removed from the committee; see above.
 
 Leader rollover is covered in more detail in [I-TIP-RFC-O-0330](./RFC-0330_Cerberus.md).
 

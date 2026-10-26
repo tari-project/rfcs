@@ -235,16 +235,17 @@ certificates is built on top of it: each subsequent block's quorum certificate j
 locked and then committed as that chain extends. A quorum is $n - f$ of the committee's vote power, where $n$ is the
 total vote power and $f$ the largest faulty share it tolerates. This equals $2f+1$ only when $n = 3f+1$.
 
-The leader for a height is `height % committee_size` over the committee ordered by shard key. A pacemaker triggers a
-new view if no valid proposal arrives within `pacemaker_block_time` — 10 seconds — plus a delta; replicas then send a
-`NewView` carrying their highest quorum certificate to the leader at the next height. A leader that repeatedly fails to
-propose is not removed from the committee; see
-[I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
+The round-robin leader slot for a height is `height % committee_size` over the committee ordered by shard key. The
+effective leader is the first non-suspended member from that slot onwards; liveness state is read as of
+`justify_height - 3` (`LIVENESS_ANCHOR_LAG`) so that every node picks the same one. A pacemaker triggers a new view if
+no valid proposal arrives within `pacemaker_block_time` — 10 seconds — plus a delta; replicas then send a `NewView`
+carrying their highest quorum certificate to the leader at the next height. A leader that repeatedly fails to propose
+is suspended and skipped, but is not removed from the committee; see [I-TIP-RFC-O-0305](./RFC-0305_Consensus.md).
 
 ### Bounding a block's cost
 
 A leader could otherwise propose a block that takes replicas longer to validate than the block time, stalling the
-chain. Four budgets bound this:
+chain. Several budgets bound this:
 
 * `max_block_weight` and `max_commands_in_block` — what a leader will pack. These are local proposing heuristics, not
   validated on receive, so nodes may run different values without fork risk.
@@ -252,6 +253,10 @@ chain. Four budgets bound this:
   consensus rules: a replica keeps a running total while executing a block's commands and stops at the first command
   that pushes it over the limit, voting no. Both are set above the proposing budgets so that honest proposals are
   never rejected.
+* Byte budgets on a block's shard outputs, pledges and foreign proposals (`max_block_shard_output_bytes`,
+  `max_block_pledge_bytes` and `max_block_foreign_proposal_bytes`) are proposing limits, with `max_block_validation_*`
+  counterparts that are consensus rules. The shard-output bound also bounds the size of a state version, which state
+  sync transfers whole.
 
 Weight is size- and IO-based; execution points come from WASM metering plus native cryptographic verification. Both
 are needed, because a small transaction can be compute-heavy and a large one cheap to execute. Both are

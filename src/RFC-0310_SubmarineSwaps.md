@@ -160,7 +160,7 @@ ample time after the first to reclaim her Minotari. Larger heights make refunds 
 The Ootle refund leaf's `AfterEpoch` deadline must be set relative to the base-layer lock heights, not independently.
 An Ootle epoch is a base-layer block count ([I-TIP-RFC-O-0325](RFC-0325_DanTimeManagement.md)), so the two clocks are
 commensurable, but the Ootle's view of the base layer is deliberately lagged — the refund deadline must allow for
-that lag plus the epoch-transition spread.
+that lag, plus the time an `EndEpoch` can wait for a quorum of oracles to catch up.
 
 Allowing both parties to claim the Minotari after the second lock height is, on face value, the safer option. It
 opens an attack, though: either party could claim the Tari while claiming the Minotari, by front-running. The

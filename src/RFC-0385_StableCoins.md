@@ -23,7 +23,7 @@
 Copyright 2022 The Tari Development Community
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
-following conditions are met:[RFC-0303_DanOverview.md](RFC-0303_DanOverview.md)
+following conditions are met:
 
 1. Redistributions of this document must retain the above copyright notice, this list of conditions and the following
    disclaimer.
