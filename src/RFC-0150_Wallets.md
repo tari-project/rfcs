@@ -3,7 +3,7 @@
 | TIP             | [I-TIP-RFC-MT-0150](#I-TIP-RFC-MT-0150-wallets)                   |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Base Layer Wallet Module                                                  |
-| Last Modified   | 2026-07-16                                                                |
+| Last Modified   | 2026-10-22                                                                |
 | Authors         | Tari Labs                                                                 |
 | Status          | Implemented                                                               |
 | Type            | RFC                                                                       |
@@ -149,13 +149,17 @@ If one can successfully decrypt the encrypted value, then the UTXO is successful
 recovery by decrypting the extra data on the output. All recognized and verified outputs are stored in the newly initialized, local wallet database,
 available for further spending.
 
-The recovery of simple and stealth one-sided outputs is more complex, as we first have to recognize the output by its script pattern before we can try to decrypt the encrypted value.
-
-An output is recognized if it matches any of the following input script patterns:
+The recovery of simple and stealth one-sided outputs differs in how the output is recognized and how its script key is found:
 
 - The standard output is the simplest, having a single `Nop` instruction.
-- The simple one-sided is matched by `[Opcode::PushPubKey(scanned_pk)]`, so if the `scanned_pk` matches the key derived from the recovery phrase, it is recognized.
-- The [stealth one-sided](RFC-0203_StealthAddresses.md) is similar to its simple counterpart with only the script pattern being different `[Opcode::PushPubKey(nonce), Opcode::Drop, Opcode::PushPubKey(scanned_pk)]`, matching by the last provided `Opcode::PushPubKey(scanned_pk)` instruction.
+- The simple one-sided output is matched by `[Opcode::PushPubKey(scanned_pk)]`, where `scanned_pk` matches a script key the
+  wallet already knows.
+- The [stealth one-sided](RFC-0203_StealthAddresses.md) output also has the script `[Opcode::PushPubKey(scanned_pk)]`, but is
+  recognized cryptographically rather than by its script. The wallet computes a Diffie-Hellman shared secret between its
+  view key and the output's sender offset public key, derives the encryption key from it and decrypts the value and mask.
+  It then checks that they open the commitment, and that `scanned_pk` equals the one-time script key derived from the mask
+  and the wallet's public spend key. Because this uses only the view key and the public spend key, a view-only wallet can
+  recognize these outputs too.
 
 
 

@@ -3,7 +3,7 @@
 | TIP             | [I-TIP-RFC-MT-0203](#I-TIP-RFC-MT-0203-stealth-addresses) |
 |-----------------|---------------------------------------------------------------------------|
 | Title           | Stealth Addresses                                                         |
-| Last Modified   | 2026-07-16                                                                |
+| Last Modified   | 2026-10-22                                                                |
 | Authors         | Tari Labs                                                                 |
 | Status          | Implemented                                                               |
 | Type            | RFC                                                                       |
@@ -90,48 +90,82 @@ key to derive the private key required to spend the output.
 It is important to note that while one-time addresses are not algebraically linkable, it is possible to observe transactions
 that consume multiple such outputs and infer common ownership of them.
 
-For use in Tari, single-key one-time addresses are supported.
+For use in Tari, the dual-key design is used. A Tari wallet address carries both a public view key and a public spend key.
+The view key is sufficient to identify outputs, decrypt their values and confirm that they are spendable by the wallet,
+while the spend key is required to spend them.
+
+## Keys and notation
+
+A recipient holds two key pairs:
+
+- a spend key pair \\( (a, A = a \cdot G) \\), and
+- a view key pair \\( (k_V, K_V = k_V \cdot G) \\).
+
+Both public keys are published in the recipient's (dual) Tari address. An address that carries only a spend key (a single
+address) cannot receive one-sided stealth payments, and a sender **MUST** refuse to build one to it.
+
+The following domain-separated hash functions are used. Each is Blake2b-512, and the 64-byte output is reduced to a scalar
+with a uniform (wide) reduction:
+
+| Symbol | Hash domain | Label | Used for |
+|:-------|:------------|:------|:---------|
+| \\( H_{mask} \\) | `com.tari.base_layer.wallet.output_spending_keys` v1 | (none) | commitment mask |
+| \\( H_{enc} \\) | `com.tari.base_layer.wallet.output_encryption_keys` v1 | (none) | encrypted data key |
+| \\( H_{script} \\) | `com.tari.base_layer.core.transactions.key_manager` v1 | `script key` | one-time script key |
+
+\\( H_{mask} \\) and \\( H_{enc} \\) take the compressed encoding of a Diffie-Hellman point as input; \\( H_{script} \\) takes the
+32-byte encoding of a scalar.
 
 ## One-time (stealth) addresses
 
-Single-key one-time stealth addresses require only that a recipient possess a private key \\( a \\) and corresponding public
-key \\( A = a \cdot G \\), and distribute the public key out of band to receive [one-sided payments] in a non-interactive
-manner.
+Every TariScript output already carries a sender offset public key \\( K_{O} \\), whose private key \\( k_{O} \\) is generated
+fresh by the sender for each output. It therefore serves as the ephemeral Diffie-Hellman nonce, and no separate nonce is
+included in the script.
 
-The protocol that a sender will use to make a payment to the recipient is as follows:
-1. Generate a random nonce \\( r \\) and use it to produce an ephemeral public key \\( R = r \cdot G \\).
-2. Compute a Diffie-Hellman exchange to obtain the shared secret \\( c = H( r \cdot A ) \\), where \\( H \\) is a cryptographic
-hash function.
-3. Include \\( K_S = c \cdot G + A \\) as the last public key in a [one-sided payment] script in a transaction.
-4. Include \\( R \\) in the script for use by the recipient, but `DROP` it so that it is not used in script execution.
-This changes the script for a [one-sided payment] from `PushPubkey(K_S)` to `PushPubkey(R) Drop PushPubkey(K_S)`.
+The protocol a sender uses to make a one-sided payment of value \\( v \\) to the recipient is as follows:
 
-To identify [one-sided payments], the recipient scans the blockchain for outputs containing a [one-sided payment] script. It
-then does the following to test for ownership:
-1. Extract the ephemeral public key \\( R \\) from the script.
-2. Compute a Diffie-Hellman exchange to obtain the shared secret \\( c = H( a \cdot R ) \\).
-3. Compute \\( K_S' = c \cdot G + A \\).
-If \\( K_S' = K_S \\) is included in the script, the recipient can produce the required script signature using the corresponding
-one-time private key \\( c + a \\).
+1. Compute the Diffie-Hellman shared secret with the recipient's **view** key, \\( S = k_{O} \cdot K_V \\).
+2. Derive the commitment mask \\( k_i = H_{mask}(S) \\) and build the commitment \\( C = k_i \cdot G + v \cdot H \\).
+3. Derive the encryption key \\( k_E = H_{enc}(S) \\) and use it to encrypt the value, the commitment mask and the memo into
+   the output's encrypted data.
+4. Compute the one-time script key \\( K_S = H_{script}(k_i) \cdot G + A \\).
+5. Set the script to `PushPubkey(K_S)`.
 
-## Implementation notes
+To identify [one-sided payments], the recipient scans the blockchain and, for each output, does the following to test for
+ownership:
 
-As part of TariScript, each output contains the sender offset public key \\( K_{Oi} \\), a random key pair generated by the
-sender when creating the transaction. This key pair is unique per output, per transaction. For this reason, a dedicated
-nonce \\( R \\) is not required on each script: the nonce can be replaced by \\( K_{Oi} \\), reducing the script to simply
-`PushPubkey(K_S)`. The protocol a sender uses to make a payment to the recipient is then defined as follows:
-1. Compute a Diffie-Hellman exchange to obtain the shared secret \\( c = H( k_{Oi} \cdot A ) \\), where \\( H \\) is a cryptographic
-hash function.
-2. Include \\( K_S = c \cdot G + A \\) as the last public key in a [one-sided payment] script in a transaction.
-3. Set the script to `PushPubkey(K_S)`.
+1. Compute the shared secret \\( S' = k_V \cdot K_{O} \\) from the output's sender offset public key.
+2. Derive \\( k_E' = H_{enc}(S') \\) and attempt to decrypt the encrypted data. If decryption fails, the output is not ours.
+3. Check that the decrypted value \\( v \\) and mask \\( k_i \\) open the commitment, i.e. \\( C = k_i \cdot G + v \cdot H \\). If
+   they do not, the output is not ours.
+4. Compute \\( K_S' = H_{script}(k_i) \cdot G + A \\). If the script is not `PushPubkey(K_S')`, the output is not ours.
 
-To identify [one-sided payments], the recipient scans the blockchain for outputs containing a [one-sided payment] script. It
-then does the following to test for ownership:
-1. Extract the sender offset public key \\( K_{Oi} \\) from the output.
-2. Compute a Diffie-Hellman exchange to obtain the shared secret \\( c = H( a \cdot K_{Oi} ) \\).
-3. Compute \\( K_S' = c \cdot G + A \\).
-If \\( K_S' = K_S \\) is included in the script, the recipient can produce the required script signature using the corresponding
-one-time private key \\( c + a \\).
+If all checks pass, the recipient can produce the required script signature using the one-time private key
+\\( k_S = H_{script}(k_i) + a \\).
+
+## View-only wallets
+
+Every step of the scanning procedure above uses only the private view key \\( k_V \\) and the **public** spend key \\( A \\).
+A view-only wallet holding \\( (k_V, A) \\) can therefore identify its outputs, recover their values and memos, and confirm
+that each one is spendable by the owner of \\( a \\). It cannot spend them, because the script signature requires
+\\( k_S \\), and therefore \\( a \\).
+
+Note that the view key reveals the commitment mask \\( k_i \\) of every received output. In plain [Mimblewimble] the mask
+alone is spend authority; in Tari it is not, because spending also requires the script signature. The view key **MUST**
+nevertheless be treated as confidential, as it reveals all received values and memos.
+
+This construction also allows a hardware wallet to keep \\( a \\) on the device while a helper scans with \\( k_V \\); see
+[RFC-0205: Hardware Transactions](RFC-0205_HardwareTransactions.md).
+
+## Notes
+
+Earlier revisions of this RFC described a single-key construction, in which the shared secret was computed against the
+spend key, \\( c = H( k_{O} \cdot A ) \\) with \\( K_S = c \cdot G + A \\), optionally with the script
+`PushPubkey(R) Drop PushPubkey(K_S)`. One-sided payments do not use that construction. Under it, only the holder of
+\\( a \\) could compute \\( c \\), so a wallet holding only the view key could not confirm ownership of an output.
+
+The single-key form \\( H( k \cdot A ) \cdot G + A \\) (hashed with the label `stealth_address`) is still used outside
+one-sided payment scripts, for example for burn-claim public keys and for message signing with an offset spend key.
 
 [tariscript]: ./Glossary.md#tariscript
 [mimblewimble]: ./Glossary.md#mimblewimble
