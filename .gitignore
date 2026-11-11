@@ -1,5 +1,4 @@
 target
-.env
 build
 node_modules
 
@@ -8,7 +7,6 @@ node_modules
 *.iml
 .vs/
 *.userprefs
-.vscode/
 *.code-workspace
 tags
 
@@ -24,3 +22,4 @@ book/
 
 # mdBook binaries fetched by scripts/build.sh
 .build-tools/
+config.bat
