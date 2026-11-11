@@ -476,7 +476,72 @@ function playpen_text(playpen) {
         return;
     }
 
-    // Toggle a chapter open/closed when its chevron is clicked.
+    var STORAGE_KEY = "mdbook-expanded-chapters";
+    var expandedMap = {};
+    try {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            expandedMap = JSON.parse(saved) || {};
+        }
+    } catch (e) {
+        // localStorage may be disabled or throw in restricted contexts.
+    }
+
+    function saveState() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(expandedMap));
+        } catch (e) {
+            // Ignore quota or access errors.
+        }
+    }
+
+    // Generate a stable key for each chapter item across page navigations.
+    function getChapterKey(item) {
+        if (!item) {
+            return null;
+        }
+        var wrapper = item.querySelector(".chapter-link-wrapper") || item;
+        var link = wrapper.querySelector("a:not(.chapter-fold-toggle)");
+        if (link) {
+            var raw = link.getAttribute("href");
+            if (raw && raw !== "#") {
+                return link.pathname || raw;
+            }
+        }
+        var text = Array.prototype.filter.call(wrapper.childNodes, function (node) {
+            return !node.classList || !node.classList.contains("chapter-fold-toggle");
+        }).map(function (node) {
+            return node.textContent || "";
+        }).join("").replace(/\s+/g, " ").trim();
+
+        var parentItem = item.parentElement ? item.parentElement.closest("li.chapter-item") : null;
+        if (parentItem) {
+            var parentKey = getChapterKey(parentItem);
+            return parentKey ? parentKey + " > " + text : text;
+        }
+        return text;
+    }
+
+    // Apply persisted state to all foldable chapters.
+    Array.prototype.forEach.call(
+        sidebar.querySelectorAll("li.chapter-item"),
+        function (item) {
+            var toggle = item.querySelector(".chapter-fold-toggle");
+            if (!toggle) {
+                return;
+            }
+            var key = getChapterKey(item);
+            if (key && Object.prototype.hasOwnProperty.call(expandedMap, key)) {
+                if (expandedMap[key]) {
+                    item.classList.add("expanded");
+                } else {
+                    item.classList.remove("expanded");
+                }
+            }
+        }
+    );
+
+    // Toggle a chapter open/closed when its chevron is clicked and persist choice.
     Array.prototype.forEach.call(
         sidebar.querySelectorAll(".chapter-fold-toggle"),
         function (toggle) {
@@ -485,6 +550,11 @@ function playpen_text(playpen) {
                 var item = toggle.closest("li.chapter-item");
                 if (item) {
                     item.classList.toggle("expanded");
+                    var key = getChapterKey(item);
+                    if (key) {
+                        expandedMap[key] = item.classList.contains("expanded");
+                        saveState();
+                    }
                 }
             });
         }
