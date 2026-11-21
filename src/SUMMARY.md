@@ -10,6 +10,7 @@
   - [Proposed]()
     - [PROC-1: Tari Improvement Proposals](TIP-0001_tari_improvement_proposals.md)
     - [PROC-3: Community Forums](TIP-0003_community_forums.md)
+    - [PROC-7: Bounty Program](Process/TIP-PROC-0007_bounty_program.md)
 - [RFC-0001: An overview of the Tari network](RFC-0001_overview.md)
 - [The Base Layer (XTM)](base_layer.md)
   - [Implemented]()
