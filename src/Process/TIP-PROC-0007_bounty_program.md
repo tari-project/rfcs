@@ -31,7 +31,7 @@ Special contributions bounties are bounties that are general-purpose and for wor
 
 ### Security Bounties
 
-Security bounties are a standing promise to the wider developer community to reward responsible disclosure of bugs. Unlike other bounty types, security bounties do not have a specific budget cap, but instead rely on rules, requirements, iterative improvements in processes, and reporting to keep their spending under control. See [Restrictions](#restrictions) and [Appendix: Tari Vulnerability Disclosure Policy](#appendix-tari-vulnerability-disclosure-policy) for details of the restrictions, and visit the [Security Bounty Budget](#security-bounty-budget) section for budget process considerations.
+Security bounties are a standing promise to the wider developer community to reward responsible disclosure of bugs.
 
 ## Bounty Sizing
 
@@ -61,6 +61,8 @@ The Code Core Contributor who is chiefly responsible for a repository's maintena
 The council will approve and publish a budget of XTM to award toward special contributions. They will name one or more Core Contributors who will be responsible for determining what efforts are to be awarded with these bounties, whether in retroactive or prescribed form. The council may allocate zero (0) XTM if they do not want to budget special contributions during a specific period.
 
 ### Security Bounty Budget
+
+Unlike other bounty types, security bounties do not have a specific budget cap, but instead rely on rules, requirements, iterative improvements in processes, and reporting to keep their spending under control.
 
 The council will budget a forecasted security budget for bounties over a period. Contributors in charge of managing bounty payouts will monitor payouts for security vulnerabilities and report, at an interval the council requests, on the payouts made verses the budget allocated.
 
