@@ -5,7 +5,7 @@
 | Title         | Core Contributor Program                               |
 | Last Modified | 2026-07-11                                             |
 | Authors       | Fox Piacenti &lt;fox@vulpinity.com&gt;                 |
-| Status        | Implemented                                               |
+| Status        | Proposed                                               |
 | Type          | Process                                                |
 | Created       | 2026-07-29                                             |
 
